@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dark_grey_background"
+    tools:context=".ui.MainUIActivity">
+
+    <!-- Welcome Text -->
+    <TextView
+        android:id="@+id/txtWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="544dp"
+        android:fontFamily="sans-serif-light"
+        android:text="Welcome to Neurow"
+        android:textColor="@color/white"
+        android:textSize="60sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Existing User Button -->
+    <Button
+        android:id="@+id/btnExistingUser"
+        android:layout_width="256dp"
+        android:layout_height="97dp"
+        android:layout_marginTop="84dp"
+        android:backgroundTint="#19B258"
+        android:text="Existing User"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtWelcome" />
+
+    <Button
+        android:id="@+id/btnBLEData"
+        android:layout_width="185dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="550dp"
+        android:backgroundTint="#DE3164"
+        android:text="BLE Data Viewer"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtWelcome" />
+
+    <!-- New User Button -->
+    <Button
+        android:id="@+id/btnNewUser"
+        android:layout_width="256dp"
+        android:layout_height="97dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#19B2A4"
+        android:text="New User"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnExistingUser" />
+
+    <!-- Rower Icon -->
+    <ImageView
+        android:id="@+id/rower_icon"
+        android:layout_width="163dp"
+        android:layout_height="146dp"
+        android:layout_marginTop="120dp"
+        app:layout_constraintBottom_toTopOf="@+id/txtWelcome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.913"
+        app:srcCompat="@drawable/rowing_empty_white" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

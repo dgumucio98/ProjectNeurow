@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dark_grey_background"
+    tools:context=".ui.Interval20Activity">
+
+    <ImageView
+        android:layout_width="773dp"
+        android:layout_height="458dp"
+        android:layout_marginStart="600dp"
+        android:layout_marginTop="220dp"
+        android:src="@drawable/sample_curve" />
+
+    <Button
+        android:id="@+id/btnBegin"
+        android:layout_width="158dp"
+        android:layout_height="270dp"
+        android:layout_marginStart="400dp"
+        android:layout_marginTop="465dp"
+        android:backgroundTint="#489C52"
+        android:text="BEGIN"
+        android:textColor="@color/white"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/txtWorkoutName"
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="interval workout"
+        android:textColor="@color/white"
+        android:textSize="60sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/txtWorkoutAttribute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="25dp"
+        android:layout_toRightOf="@+id/txtWorkoutName"
+        android:fontFamily="casual"
+        android:text="20-minute"
+        android:textColor="#569A5B"
+        android:textSize="40sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/txtUserID"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="#802D7B"
+        android:text="[UserID]"
+        android:textColor="@color/white"
+        android:textSize="25sp" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifRippleGreen"
+        android:layout_width="107dp"
+        android:layout_height="93dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="325dp"
+        android:src="@drawable/ripple_green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.501" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifRippleRed"
+        android:layout_width="107dp"
+        android:layout_height="93dp"
+        android:layout_marginLeft="350dp"
+        android:layout_marginTop="325dp"
+        android:src="@drawable/ripple_red"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.501" />
+
+    <ImageView
+        android:id="@+id/timerHousing"
+        android:layout_width="326dp"
+        android:layout_height="158dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="38dp"
+        android:layout_marginTop="441dp"
+        android:src="@drawable/hr_housing" />
+
+    <TextView
+        android:id="@+id/txtHR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="480dp"
+        android:backgroundTint="#802D7B"
+        android:text="68 "
+        android:textColor="@color/black"
+        android:textSize="55sp" />
+
+    <ImageView
+        android:id="@+id/heartIcon"
+        android:layout_width="72dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="270dp"
+        android:layout_marginTop="490dp"
+        android:src="@drawable/heart" />
+
+    <ImageView
+        android:id="@+id/distHousing"
+        android:layout_width="326dp"
+        android:layout_height="158dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="37dp"
+        android:layout_marginTop="595dp"
+        android:src="@drawable/distance_housing" />
+
+    <TextView
+        android:id="@+id/txtDist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="635dp"
+        android:backgroundTint="#802D7B"
+        android:text="442"
+        android:textColor="@color/black"
+        android:textSize="55sp" />
+
+    <TextView
+        android:id="@+id/txtMeter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="285dp"
+        android:layout_marginTop="635dp"
+        android:backgroundTint="#802D7B"
+        android:text="m"
+        android:textColor="@color/black"
+        android:textSize="55sp"/>
+
+    <TextView
+        android:id="@+id/txtZoneStatus1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="70dp"
+        android:layout_marginLeft="103dp"
+        android:layout_marginTop="252dp"
+        android:backgroundTint="#802D7B"
+        android:text="IN-ZONE"
+        android:textColor="@color/white"
+        android:textSize="45sp"
+        android:fontFamily="sans-serif-light"/>
+
+    <TextView
+        android:id="@+id/txtZoneStatus2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="300dp"
+        android:layout_marginLeft="103dp"
+        android:layout_marginTop="252dp"
+        android:backgroundTint="#802D7B"
+        android:text="OUT-ZONE"
+        android:textColor="@color/white"
+        android:textSize="45sp" />
+
+    <Chronometer
+        android:id="@+id/simpleChronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="100dp"
+        android:textColor="#D3D3D3"
+        android:textSize="60sp"/>
+
+</RelativeLayout>

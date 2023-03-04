@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/pace_interval1"
+        android:title="20-minute"/>
+    <item android:id="@+id/pace_interval2"
+        android:title="30-minute"/>
+    <item android:id="@+id/pace_interval3"
+        android:title="40-minute"/>
+</menu>

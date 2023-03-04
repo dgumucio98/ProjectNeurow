@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="edtTxtPromptUserID" type="id" />
+    <item name="edtTxtPromptPassword" type="id" />
+    <item name="btnLogIn" type="id" />
+    <item name="btnBack" type="id" />
+    <item name="btnRegister" type="id" />
+    <item name="btnBack2" type="id" />
+    <item name="btnWorkout3" type="id" />
+    <item name="btnWorkout1" type="id" />
+    <item name="btnWorkout2" type="id" />
+    <item name="txtUserID" type="id" />
+    <item name="btnLogOut" type="id" />
+    <item name="infoIcon" type="id" />
+    <item name="baselineBanner" type="id" />
+    <item name="txtBanner" type="id" />
+    <item name="simpleChronometer" type="id" />
+    <item name="txtZoneStatus" type="id" />
+    <item name="txtMeter" type="id" />
+    <item name="txtDist" type="id" />
+    <item name="txtTimer" type="id" />
+</resources>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Nick Version</string>
+    <string name="prompt_userID">User ID</string>
+    <string name="prompt_password">Password</string>
+    <string name="welcome">Welcome to Neurow</string>
+    <string name="ble_playground">BLE Playground</string>
+    <string name="welcomeBack">Welcome Back</string>
+</resources>
