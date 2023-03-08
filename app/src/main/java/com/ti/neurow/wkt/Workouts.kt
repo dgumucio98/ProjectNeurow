@@ -40,6 +40,7 @@ class workouts : AppCompatActivity() {
         pz_6 = 54
         pz_7 = 67
     }
+    //adding comment for fun
 
     // ftp calculator workout method
     // TODO changed from ftp_calc to ftpCalc
