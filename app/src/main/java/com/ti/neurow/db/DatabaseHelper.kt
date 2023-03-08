@@ -259,16 +259,16 @@ class DatabaseHelper  //Constructor
         return DB.rawQuery("Select * from history_info where COLUMN_USER = ?", arrayOf(username))
     }
 
-    fun getAllPower(username: String, workout_type: String): ArrayList<*>? {
+    fun getAllPower(username: String, workout_type: String): ArrayList<Double> {
         val DB = this.readableDatabase
         val cursor = DB.rawQuery(
             "Select * from history_info where COLUMN_USER = ? AND + COLUMN_WORKOUT = ?",
             arrayOf(username, workout_type)
         )
         //Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + User.TABLE_NAME + " WHERE "+ User.COL_NAME + " = ? AND " + User.COL_PASS +" = ?", new String[]{UserName , PassWord});
-        val allPower = ArrayList<String>()
+        val allPower = ArrayList<Double>()
         while (cursor.moveToNext()) {
-            allPower.add(cursor.getString(5))
+            allPower.add(cursor.getDouble(5))
         }
         cursor.close()
         return allPower
