@@ -1,7 +1,10 @@
-package com.ti.neurow.wkt
+package com.ti.neurow.db
+
 
 import androidx.appcompat.app.AppCompatActivity
-import com.ti.neurow.db.DatabaseHelper
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
 
 class workouts : AppCompatActivity() {
     private var ftp = 45
@@ -40,7 +43,6 @@ class workouts : AppCompatActivity() {
         pz_6 = 54
         pz_7 = 67
     }
-    //adding comment for fun
 
     // ftp calculator workout method
     // TODO changed from ftp_calc to ftpCalc
@@ -112,9 +114,13 @@ class workouts : AppCompatActivity() {
         var k20 = 0
         var k21 = 0
         var k22 = 0
+        var sum = 0
+        var length = 0
         //for (int i = 0; i < time_33.size(); i++) {
         // 5 min at zone 2
         while (db.time_33 <= 300) {
+            sum += db.power
+            length += 1
             //TODO how to integrate with UI
             if (k1 == 0) {
                 println()
@@ -137,6 +143,8 @@ class workouts : AppCompatActivity() {
         }
         // 40 sec at zone 5
         while (db.time_33 <= 340 && db.time_33 > 300) {
+            sum += db.power
+            length += 1
             if (k2 == 0) {
                 println()
                 println("**********************")
@@ -158,6 +166,8 @@ class workouts : AppCompatActivity() {
         }
         // 20 sec at zone 2
         while (db.time_33 <= 360 && db.time_33 > 340) {
+            sum += db.power
+            length += 1
             if (k3 == 0) {
                 println()
                 println("**********************")
@@ -179,6 +189,8 @@ class workouts : AppCompatActivity() {
         }
         // 40 sec at zone 5
         while (db.time_33 <= 400 && db.time_33 > 360) {
+            sum += db.power
+            length += 1
             if (k4 == 0) {
                 println()
                 println("**********************")
@@ -200,6 +212,8 @@ class workouts : AppCompatActivity() {
         }
         // 20 sec at zone 2
         while (db.time_33 <= 420 && db.time_33 > 400) {
+            sum += db.power
+            length += 1
             if (k5 == 0) {
                 println()
                 println("**********************")
@@ -221,6 +235,8 @@ class workouts : AppCompatActivity() {
         }
         // 40 sec at zone 5
         while (db.time_33 <= 460 && db.time_33 > 420) {
+            sum += db.power
+            length += 1
             if (k6 == 0) {
                 println()
                 println("**********************")
@@ -242,6 +258,8 @@ class workouts : AppCompatActivity() {
         }
         // 20 sec at zone 2
         while (db.time_33 <= 480 && db.time_33 > 460) {
+            sum += db.power
+            length += 1
             if (k7 == 0) {
                 println()
                 println("**********************")
@@ -263,6 +281,8 @@ class workouts : AppCompatActivity() {
         }
         // 40 sec at zone 5
         while (db.time_33 <= 520 && db.time_33 > 480) {
+            sum += db.power
+            length += 1
             if (k8 == 0) {
                 println()
                 println("**********************")
@@ -284,6 +304,8 @@ class workouts : AppCompatActivity() {
         }
         // 20 sec at zone 2
         while (db.time_33 <= 540 && db.time_33 > 520) {
+            sum += db.power
+            length += 1
             if (k9 == 0) {
                 println()
                 println("**********************")
@@ -305,6 +327,8 @@ class workouts : AppCompatActivity() {
         }
         // 40 sec at zone 5
         while (db.time_33 <= 580 && db.time_33 > 540) {
+            sum += db.power
+            length += 1
             if (k10 == 0) {
                 println()
                 println("**********************")
@@ -326,6 +350,8 @@ class workouts : AppCompatActivity() {
         }
         // 20 sec at zone 2
         while (db.time_33 <= 600 && db.time_33 > 580) {
+            sum += db.power
+            length += 1
             if (k11 == 0) {
                 println()
                 println("**********************")
@@ -347,6 +373,8 @@ class workouts : AppCompatActivity() {
         }
         // 40 sec at zone 5
         while (db.time_33 <= 640 && db.time_33 > 600) {
+            sum += db.power
+            length += 1
             if (k12 == 0) {
                 println()
                 println("**********************")
@@ -368,6 +396,8 @@ class workouts : AppCompatActivity() {
         }
         // 20 sec at zone 2
         while (db.time_33 <= 660 && db.time_33 > 640) {
+            sum += db.power
+            length += 1
             if (k13 == 0) {
                 println()
                 println("**********************")
@@ -389,6 +419,8 @@ class workouts : AppCompatActivity() {
         }
         // 40 sec at zone 5
         while (db.time_33 <= 700 && db.time_33 > 660) {
+            sum += db.power
+            length += 1
             if (k14 == 0) {
                 println()
                 println("**********************")
@@ -410,6 +442,8 @@ class workouts : AppCompatActivity() {
         }
         // 20 sec at zone 2
         while (db.time_33 <= 720 && db.time_33 > 700) {
+            sum += db.power
+            length += 1
             if (k15 == 0) {
                 println()
                 println("**********************")
@@ -431,6 +465,8 @@ class workouts : AppCompatActivity() {
         }
         // 40 sec at zone 5
         while (db.time_33 <= 760 && db.time_33 > 720) {
+            sum += db.power
+            length += 1
             if (k16 == 0) {
                 println()
                 println("**********************")
@@ -452,6 +488,8 @@ class workouts : AppCompatActivity() {
         }
         // 20 sec at zone 2
         while (db.time_33 <= 780 && db.time_33 > 760) {
+            sum += db.power
+            length += 1
             if (k17 == 0) {
                 println()
                 println("**********************")
@@ -473,6 +511,8 @@ class workouts : AppCompatActivity() {
         }
         // 40 sec at zone 5
         while (db.time_33 <= 820 && db.time_33 > 780) {
+            sum += db.power
+            length += 1
             if (k18 == 0) {
                 println()
                 println("**********************")
@@ -494,6 +534,8 @@ class workouts : AppCompatActivity() {
         }
         // 20 sec at zone 2
         while (db.time_33 <= 840 && db.time_33 > 820) {
+            sum += db.power
+            length += 1
             if (k19 == 0) {
                 println()
                 println("**********************")
@@ -515,6 +557,8 @@ class workouts : AppCompatActivity() {
         }
         // 40 sec at zone 5
         while (db.time_33 <= 880 && db.time_33 > 840) {
+            sum += db.power
+            length += 1
             if (k20 == 0) {
                 println()
                 println("**********************")
@@ -536,6 +580,8 @@ class workouts : AppCompatActivity() {
         }
         // 20 sec at zone 2
         while (db.time_33 <= 900 && db.time_33 > 880) {
+            sum += db.power
+            length += 1
             if (k21 == 0) {
                 println()
                 println("**********************")
@@ -557,6 +603,8 @@ class workouts : AppCompatActivity() {
         }
         // 5 min at zone 1
         while (db.time_33 <= 1200 && db.time_33 > 900) {
+            sum += db.power
+            length += 1
             if (k22 == 0) {
                 println()
                 println("**********************")
@@ -576,6 +624,8 @@ class workouts : AppCompatActivity() {
                 count = 0
             }
         }
+        val avgPow = sum.toDouble() / length //uncomment
+        // TODO add avg power to database
         //}
         //println("fail count: $fail_count_1")
         //interval_predictor("1", fail_count_1)
@@ -1080,51 +1130,68 @@ class workouts : AppCompatActivity() {
         return pace_fail_20
     }
 
-    fun powerPredictor(power: ArrayList<Int>) {
+    // Returns value of predicted power
+    fun powerPredictor(power: ArrayList<Double>): Double {
+        println("in predictor")
+
+        //TODO CHECK INT TO DOUBLE CONVERSION
         //TODO add statements about if list is empty or what to do if just one element
         //TODO two elements is ok?
-
+        println("power array " + power)
         // declare empty x arraylist
         val x = ArrayList<Int>()
         val length = power.size
         // sum up powers and x sequence
         var x_sum = 0
-        var y_sum = 0
+        var y_sum = 0.0
         for (i in power.indices) {
             x.add(i) //adding the sequence of x values into arraylist
             y_sum += power[i]
             x_sum += i
         }
+        println("x sum " + x_sum)
+        println("y sum " + y_sum)
+
         //calculate mean of x values
-        val x_mean = x_sum / length
+        val x_mean: Double = x_sum.toDouble() / length
+        println("x mean " + x_mean)
         //calculate mean of y values
         val y_mean = y_sum / length
+        println("y mean " + y_mean)
 
         //numerator of slope equation
-        var num_sum = 0
-        var x_diff = 0
-        var y_diff = 0
-        for (i in 1..length+1){
+        var num_sum = 0.0
+        var x_diff = 0.0
+        var y_diff = 0.0
+        for (i in 0..length-1){
             x_diff = x[i] - x_mean
             y_diff = power[i] - y_mean
             num_sum += x_diff * y_diff
         }
+        println("num sum " + num_sum)
         //denominator of slope equation
-        var den_sum = 0
-        var x_diff_den = 0
-        for (i in 1..length+1){
+        var den_sum = 0.0
+        var x_diff_den = 0.0
+        for (i in 0..length-1){
             x_diff_den = x[i] - x_mean
             den_sum += x_diff_den * x_diff_den
         }
+        println("den sum " + den_sum)
 
         //compute slope of line of best fit
         val slope = num_sum / den_sum
-
+        println("slope " + slope)
         //compute y intercept of line of best fit
         val y_int = y_mean - slope * x_mean
-
+        println("y int " + y_int)
         // in five more workouts your power output might be...
+        // y = mx + b
+        val predic = (slope * (length + 4)) + y_int // TODO is that length + 4 correct?
+        // TODO does the predicted power need to be an integer or not
+        println("In 5 more workouts your power could be " + predic + " watts")
+        println("end predictor")
 
+        return predic
     }
 
     //static void power_predictor() {
