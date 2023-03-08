@@ -7,7 +7,35 @@
     android:background="@drawable/dark_grey_background"
     tools:context=".ui.MainUIActivity">
 
-    <!-- Welcome Text -->
+    <ImageView
+        android:id="@+id/rower_icon"
+        android:layout_width="168dp"
+        android:layout_height="160dp"
+
+        android:layout_marginTop="550dp"
+        android:src="@drawable/rowing_empty_white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/neurow_text"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_below="@+id/rower_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="456dp"
+        android:gravity="center"
+        android:text="N  E  U  R  O  W"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rower_icon"
+        app:layout_constraintVertical_bias="0.289" />
+
+
     <TextView
         android:id="@+id/txtWelcome"
         android:layout_width="wrap_content"
@@ -18,63 +46,70 @@
         android:textColor="@color/white"
         android:textSize="60sp"
         android:textStyle="normal"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Existing User Button -->
     <Button
         android:id="@+id/btnExistingUser"
         android:layout_width="256dp"
         android:layout_height="97dp"
         android:layout_marginTop="84dp"
-        android:backgroundTint="#19B258"
+        android:backgroundTint="#007791"
         android:text="Existing User"
         android:textColor="@color/white"
         android:textSize="25sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtWelcome" />
 
-    <Button
-        android:id="@+id/btnBLEData"
-        android:layout_width="185dp"
-        android:layout_height="68dp"
-        android:layout_marginTop="550dp"
-        android:backgroundTint="#DE3164"
-        android:text="BLE Data Viewer"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtWelcome" />
-
-    <!-- New User Button -->
     <Button
         android:id="@+id/btnNewUser"
         android:layout_width="256dp"
         android:layout_height="97dp"
         android:layout_marginTop="8dp"
-        android:backgroundTint="#19B2A4"
+        android:backgroundTint="#5F8575"
         android:text="New User"
         android:textColor="@color/white"
         android:textSize="25sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnExistingUser" />
+        app:layout_constraintTop_toBottomOf="@+id/btnExistingUser"
+        tools:visibility="visible" />
 
-    <!-- Rower Icon -->
-    <ImageView
-        android:id="@+id/rower_icon"
-        android:layout_width="163dp"
-        android:layout_height="146dp"
-        android:layout_marginTop="120dp"
-        app:layout_constraintBottom_toTopOf="@+id/txtWelcome"
+    <Button
+        android:id="@+id/btnBLEData"
+        android:layout_width="185dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="548dp"
+        android:backgroundTint="#DE3164"
+        android:text="BLE Data Viewer"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnDBViewer"
+        app:layout_constraintTop_toBottomOf="@+id/txtWelcome"
+        tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/btnDBViewer"
+        android:layout_width="185dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="548dp"
+        android:backgroundTint="#F28C28"
+        android:text="DB Viewer (coming soon)"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.913"
-        app:srcCompat="@drawable/rowing_empty_white" />
+        app:layout_constraintEnd_toStartOf="@id/btnBLEData"
+        app:layout_constraintTop_toBottomOf="@+id/txtWelcome"
+        tools:visibility="visible" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
