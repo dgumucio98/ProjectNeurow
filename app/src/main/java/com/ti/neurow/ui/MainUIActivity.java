@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.ti.neurow.R;
 import com.ti.neurow.ble.MainActivity;
+import com.ti.neurow.db.MainDBActivity;
 
 public class MainUIActivity extends AppCompatActivity {
 
@@ -120,11 +121,11 @@ public class MainUIActivity extends AppCompatActivity {
         });
 
         // TEMP: DB Data Viewer (Dev) button listener
-        BLEData.setOnClickListener(new View.OnClickListener() {
+        DBdata.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Create intent to launch next activity (RawDataActivity)
-                Intent i = new Intent(MainUIActivity.this, MainActivity.class);
+                Intent i = new Intent(MainUIActivity.this, MainDBActivity.class);
                 startActivity(i); // Launch BLE Data View
             }
         });

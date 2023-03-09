@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:visibility="visible"
+    tools:context=".db.MainDBActivity">
+
+    <TextView
+        android:id="@+id/texttitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Please Log In"
+        android:textSize="24dp" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/texttitle"
+        android:layout_marginTop="0dp"
+        android:hint="Username"
+        android:inputType="textPersonName"
+        android:textSize="24dp" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textSize="24dp" />
+
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/password"
+        android:text="Log In"/>
+
+    <Button
+        android:id="@+id/btnCreateAccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/btnLogin"
+        android:text="Create Account"/>
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/btnCreateAccount"
+        android:text="Delete Account"/>
+
+    <Button
+        android:id="@+id/btnUpdateFTP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/btnUpdatePassword"
+        android:text="Update FTP"/>
+
+    <Button
+        android:id="@+id/btnUserInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/btnDelete"
+        android:text="Testing Go Getters"/>
+
+    <Button
+        android:id="@+id/btnClassTesting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/btnUserInfo"
+        android:text="Class Testing"/>
+
+    <Button
+        android:id="@+id/btnUpdatePassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/btnClassTesting"
+        android:text="Update Password"/>
+
+
+
+    <Button
+        android:id="@+id/btnDeleteTables"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/btnUpdateFTP"
+        android:text="Delete Real Time Tables"/>
+
+    <Button
+        android:id="@+id/btnHistoryErrorTables"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/btnDeleteTables"
+        android:text="Insert Hist/Error Tables"/>
+
+    <Button
+        android:id="@+id/btnViewHistoryErrorTables"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/btnHistoryErrorTables"
+        android:text="View Hist/Error Tables"/>
+
+    <Button
+        android:id="@+id/btnPredictions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/btnHistoryErrorTables"
+        android:text="Test Prediction Methods"/>
+
+
+</RelativeLayout>
