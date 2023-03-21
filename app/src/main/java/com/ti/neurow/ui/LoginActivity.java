@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.text.TextUtils;
 
+import com.ti.neurow.db.DatabaseHelper; // access database
+import com.ti.neurow.db.User; // for user handling
 import com.ti.neurow.R;
 import com.ti.neurow.ble.PromptRotateActivity;
 
@@ -33,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // Lock orientation to portrait
 
         setContentView(R.layout.activity_login);
+
+        DatabaseHelper db = new DatabaseHelper(this); // create instance of database in this activity
 
         // Define views to elements in XML
         usernameEditText = (EditText) findViewById(R.id.edtTxtPromptUserID);
@@ -94,10 +98,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     void logUserIn(String username, String password) {
-        // TODO: Talk to Meredith about how to actually look up user from here
+        String Username = usernameEditText.getText().toString();
+        String Password = usernameEditText.getText().toString();
+
+
+
     }
 
-    //***********c
+    //***********
     // Launchers
     //***********
 

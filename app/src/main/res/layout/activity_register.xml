@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="330dp"
         android:fontFamily="sans-serif-light"
-        android:text="Create User"
+        android:text="Create Profile"
         android:textColor="@color/white"
         android:textSize="60sp"
         android:textStyle="normal"

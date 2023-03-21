@@ -11,12 +11,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.text.TextUtils;
 
+import com.ti.neurow.db.DatabaseHelper; // access database
+import com.ti.neurow.db.User; // for user handling
 import com.ti.neurow.R;
 import com.ti.neurow.ble.PromptRotateActivity;
 
 import java.util.regex.Pattern; // regular expression support for registration validation
 
 public class RegisterActivity extends AppCompatActivity {
+
+    public String loggedInUsername = "NULL"; // global variable that store logged in user's username
 
     // Declare buttons and EditTexts
     EditText usernameEditText,passwordEditText;
@@ -42,44 +46,74 @@ public class RegisterActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get username and password from fields
-                String username = usernameEditText.getText().toString().trim();
-                String password = passwordEditText.getText().toString().trim();
+                // Create instance of database in this activity
+                DatabaseHelper db = new DatabaseHelper(RegisterActivity.this);
 
-                if (TextUtils.isEmpty(username)) {
+                // Get username and password from fields
+                String Username = usernameEditText.getText().toString(); // extract username from EditText
+                String Password = usernameEditText.getText().toString(); // extract password from EditText
+
+                if (TextUtils.isEmpty(Username)) { // if username EditText is empty
                     Toast.makeText(RegisterActivity.this, "Please enter a username", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                if (!isValidUsername(username)) {
+                if (!isValidUsername(Username)) { // if username EditText is not valid
                     Toast.makeText(RegisterActivity.this, "Username can only contain letters and numbers", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                if (TextUtils.isEmpty(password)) {
+                if (TextUtils.isEmpty(Password)) { // if password EditText is empty
                     Toast.makeText(RegisterActivity.this, "Please enter a password", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                if (!isValidPassword(password)) {
+                if (!isValidPassword(Password)) { // if password EditText is not valid
                     Toast.makeText(RegisterActivity.this, "Password can only contain the following special characters: !@#$%^&*()-_+=", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // if we get here, we should hypothetically be ready to register and move on
-                // TEMPORARY FUNCTIONALITY: No registration happens, we just get taken to the next activity
-                Toast.makeText(RegisterActivity.this, "TODO (Meredith & Diego): Create this new user to database", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(RegisterActivity.this, PromptRotateActivity.class);
-                startActivity(i);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                finish(); // Can't go back
+                boolean userExists = db.user_exists(Username); // boolean used to check existence of user in DB
+
+                // Check if user exists in database
+                if (userExists) { // prompt that username is taken with toast
+                    Toast.makeText(RegisterActivity.this, "Username is taken!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else { // add user to database
+                    // TODO: (Future functionality) Ask for password confirmation
+                    User newUser = new User(Username, Password, 0, 0, 0, 0, 0, 0, 0,0);
+                    boolean success = db.add_account(newUser);
+                    if (success == true) { // if successful
+                        Toast.makeText(RegisterActivity.this, "User " + Username + " has been registered!", Toast.LENGTH_SHORT).show();
+                        loggedInUsername = Username; // update universal loggedinUsername value
+                        Toast.makeText(RegisterActivity.this, "loggedInUsername: " + loggedInUsername, Toast.LENGTH_SHORT).show();
+
+                        // Logged in, now launch PromptRotateActivity
+                        Intent i = new Intent(RegisterActivity.this, PromptRotateActivity.class);
+                        startActivity(i); // Launch Registration
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
+                    }
+                    else { // if not successful
+                        Toast.makeText(RegisterActivity.this, "User " + Username + " has NOT been registered", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
     }
 
-    //*********************************
-    // Input guidelines & user creation
-    //*********************************
+    @Override
+    public void onBackPressed() {
+        // Check if the user is coming from the RegisterActivity
+        if (isTaskRoot()) {
+            // If the user is coming from RegisterActivity, don't replay the animations
+            Intent intent = new Intent(this, MainUIActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        } else {
+            // If the user is not coming from RegisterActivity, continue with the default behavior
+            super.onBackPressed();
+        }
+    }
 
     // Define valid username guidelines
     boolean isValidUsername(String username) {
@@ -93,15 +127,11 @@ public class RegisterActivity extends AppCompatActivity {
         return pattern.matcher(password).matches();
     }
 
-    void createUser(String username, String password) {
-        // TODO: Talk to Meredith about how to actually create user from here
-    }
-
     //***********
     // Launchers
     //***********
 
-    // TEMP: Launch PromptRotateActivity when register button is pressed (bypasses actual user authentication)
+    // TEMP BYPASS: Launch PromptRotateActivity when "Bypass Login" button is pressed (bypasses actual user authentication)
     public void launchPromptRotate(View v) {
         // Launch Log-in activity
         Intent i = new Intent(this, PromptRotateActivity.class);

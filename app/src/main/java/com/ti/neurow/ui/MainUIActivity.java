@@ -105,7 +105,7 @@ public class MainUIActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Create intent to launch next activity (SignupActivity)
                 Intent i = new Intent(MainUIActivity.this, RegisterActivity.class);
-                startActivity(i); // Launch Signup
+                startActivity(i); // Launch Registration
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
