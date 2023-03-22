@@ -11,7 +11,6 @@
         android:id="@+id/rower_icon"
         android:layout_width="168dp"
         android:layout_height="160dp"
-
         android:layout_marginTop="550dp"
         android:src="@drawable/rowing_empty_white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,6 +78,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnExistingUser"
+        tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/btnBluetoothConnections"
+        android:layout_width="185dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="100dp"
+        android:backgroundTint="#E8BE18"
+        android:text="Connections"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnNewUser"
         tools:visibility="visible" />
 
     <Button

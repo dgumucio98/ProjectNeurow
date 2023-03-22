@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dark_grey_background"
-    tools:context=".ble.PromptRotateActivity">
+    tools:context=".ui.PromptRotateActivity">
 
     <!-- Welcome Text -->
     <TextView

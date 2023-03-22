@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
 import android.view.WindowManager;
@@ -11,10 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.text.TextUtils;
 
+import com.ti.neurow.GlobalVariables;
 import com.ti.neurow.db.DatabaseHelper; // access database
-import com.ti.neurow.db.User; // for user handling
 import com.ti.neurow.R;
-import com.ti.neurow.ble.PromptRotateActivity;
 
 import java.util.regex.Pattern; // regular expression support for registration validation
 
@@ -36,8 +36,6 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-        DatabaseHelper db = new DatabaseHelper(this); // create instance of database in this activity
-
         // Define views to elements in XML
         usernameEditText = (EditText) findViewById(R.id.edtTxtPromptUserID);
         passwordEditText = (EditText)findViewById(R.id.edtTxtPromptPassword);
@@ -46,44 +44,71 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get username and password from fields
-                String username = usernameEditText.getText().toString().trim();
-                String password = passwordEditText.getText().toString().trim();
+                // Create instance of database in this activity
+                DatabaseHelper db = new DatabaseHelper(LoginActivity.this);
 
-                if (TextUtils.isEmpty(username)) {
+                // Get username and password from fields
+                String Username = usernameEditText.getText().toString(); // extract username from EditText
+                String Password = usernameEditText.getText().toString(); // extract password from EditText
+
+                if (TextUtils.isEmpty(Username)) { // if username EditText is empty
                     Toast.makeText(LoginActivity.this, "Please enter a username", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                if (!isValidUsername(username)) {
+                if (!isValidUsername(Username)) { // if username EditText is not valid
                     Toast.makeText(LoginActivity.this, "Username can only contain letters and numbers", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                if (TextUtils.isEmpty(password)) {
+                if (TextUtils.isEmpty(Password)) { // if password EditText is empty
                     Toast.makeText(LoginActivity.this, "Please enter a password", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                if (!isValidPassword(password)) {
+                if (!isValidPassword(Password)) { // if password EditText is not valid
                     Toast.makeText(LoginActivity.this, "Password can only contain the following special characters: !@#$%^&*()-_+=", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // if we get here, we should hypothetically be ready to login and move on
-                // TEMPORARY FUNCTIONALITY: No registration happens, we just get taken to the next activity
-                Toast.makeText(LoginActivity.this, "TODO (Meredith & Diego): Call this username from database", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(LoginActivity.this, PromptRotateActivity.class);
-                startActivity(i);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                finish(); // Can't go back
+                boolean userExists = db.user_exists(Username); // boolean used to check existence of user in DB
+
+                // Check if user exists in database
+                if (!userExists || !db.getPassword(Username).equals(Password)) { // if user doesn't exist or passwords don't match
+                    Toast.makeText(LoginActivity.this, "Invalid User ID or password", Toast.LENGTH_SHORT).show();
+                }
+
+                // TODO: below comparison doesn't seem to be case-sensitive, meaning it will accept "foobar123" and "Foobar123"
+                else if (userExists && db.getPassword(Username).equals(Password)) { // if user exists and passwords match
+
+                    GlobalVariables.loggedInUsername = Username; // update universal loggedinUsername value
+
+                    Toast.makeText(LoginActivity.this, "[TEST] User " + Username + " has been logged in!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "[TEST] loggedInUsername: " + GlobalVariables.loggedInUsername, Toast.LENGTH_SHORT).show();
+
+                    // Logged in, now launch PromptRotateActivity
+                    Intent i = new Intent(LoginActivity.this, PromptRotateActivity.class);
+                    startActivity(i); // launches PromptRotateActivity
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    return; // exit method
+                }
             }
         });
     }
 
-    //*********************************
-    // Input guidelines & user creation
-    //*********************************
+    @Override
+    public void onBackPressed() {
+        // Check if the user is coming from the LoginActivity
+        if (isTaskRoot()) { // if user just logged in/registered
+
+            Intent intent = new Intent(this, MainUIActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+
+        } else {
+            // If the user is not coming from LoginActivity, continue with the default behavior
+            super.onBackPressed();
+
+        }
+    }
 
     // Define valid username guidelines
     boolean isValidUsername(String username) {
@@ -105,11 +130,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    //***********
-    // Launchers
-    //***********
-
-    // TEMP: Launch PromptRotateActivity when login button is pressed (bypasses actual user authentication)
+    // DEV BYPASS: Launch PromptRotateActivity when login button is pressed (bypasses actual user authentication)
     public void launchPromptRotate(View v) {
         // Launch Log-in activity
         Intent i = new Intent(this, PromptRotateActivity.class);

@@ -11,16 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.text.TextUtils;
 
+import com.ti.neurow.GlobalVariables;
 import com.ti.neurow.db.DatabaseHelper; // access database
 import com.ti.neurow.db.User; // for user handling
 import com.ti.neurow.R;
-import com.ti.neurow.ble.PromptRotateActivity;
 
 import java.util.regex.Pattern; // regular expression support for registration validation
 
 public class RegisterActivity extends AppCompatActivity {
-
-    public String loggedInUsername = "NULL"; // global variable that store logged in user's username
 
     // Declare buttons and EditTexts
     EditText usernameEditText,passwordEditText;
@@ -74,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 // Check if user exists in database
                 if (userExists) { // prompt that username is taken with toast
-                    Toast.makeText(RegisterActivity.this, "Username is taken!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "[TEST] Username is taken!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else { // add user to database
@@ -82,37 +80,22 @@ public class RegisterActivity extends AppCompatActivity {
                     User newUser = new User(Username, Password, 0, 0, 0, 0, 0, 0, 0,0);
                     boolean success = db.add_account(newUser);
                     if (success == true) { // if successful
-                        Toast.makeText(RegisterActivity.this, "User " + Username + " has been registered!", Toast.LENGTH_SHORT).show();
-                        loggedInUsername = Username; // update universal loggedinUsername value
-                        Toast.makeText(RegisterActivity.this, "loggedInUsername: " + loggedInUsername, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "[TEST] User " + Username + " has been registered!", Toast.LENGTH_SHORT).show();
+                        GlobalVariables.loggedInUsername = Username; // update global value
+                        Toast.makeText(RegisterActivity.this, "[TEST] loggedInUsername: " + GlobalVariables.loggedInUsername, Toast.LENGTH_SHORT).show();
 
                         // Logged in, now launch PromptRotateActivity
                         Intent i = new Intent(RegisterActivity.this, PromptRotateActivity.class);
-                        startActivity(i); // Launch Registration
+                        startActivity(i); // launches PromptRotateActivity
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
                     }
                     else { // if not successful
-                        Toast.makeText(RegisterActivity.this, "User " + Username + " has NOT been registered", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "[TEST] User " + Username + " has NOT been registered", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        // Check if the user is coming from the RegisterActivity
-        if (isTaskRoot()) {
-            // If the user is coming from RegisterActivity, don't replay the animations
-            Intent intent = new Intent(this, MainUIActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-        } else {
-            // If the user is not coming from RegisterActivity, continue with the default behavior
-            super.onBackPressed();
-        }
     }
 
     // Define valid username guidelines
@@ -131,7 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
     // Launchers
     //***********
 
-    // TEMP BYPASS: Launch PromptRotateActivity when "Bypass Login" button is pressed (bypasses actual user authentication)
+    // DEV BYPASS: Launch PromptRotateActivity when "Bypass Login" button is pressed (bypasses actual user authentication)
     public void launchPromptRotate(View v) {
         // Launch Log-in activity
         Intent i = new Intent(this, PromptRotateActivity.class);

@@ -17,14 +17,16 @@ import android.widget.Toast;
 
 import com.ti.neurow.R;
 import com.ti.neurow.ble.MainActivity;
+import com.ti.neurow.ble.UserBTConfig;
 import com.ti.neurow.db.MainDBActivity;
+import com.ti.neurow.db.User;
 
 public class MainUIActivity extends AppCompatActivity {
 
     // Declare views
     ImageView rower, rowerIcon; // image
     TextView neurowText, welcomeText; // text views
-    Button existingUser, newUser, BLEData, DBdata; // buttons
+    Button existingUser, newUser, BLEData, DBdata, Config; // buttons
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,8 @@ public class MainUIActivity extends AppCompatActivity {
         rowerIcon = findViewById(R.id.rower_icon);
         BLEData = findViewById(R.id.btnBLEData);
         DBdata = findViewById(R.id.btnDBViewer);
+        Config = findViewById(R.id.btnBluetoothConnections);
+
 
         Animation animation1 = AnimationUtils.loadAnimation(MainUIActivity.this, R.anim.slide_in_left);
         Animation animation2 = AnimationUtils.loadAnimation(MainUIActivity.this, R.anim.slide_in_right);
@@ -85,6 +89,11 @@ public class MainUIActivity extends AppCompatActivity {
                 DBdata.setAlpha(0f);
                 DBdata.animate().alpha(1f).setDuration(700).start();
 
+                Config.setVisibility(View.VISIBLE);
+                Config.setAlpha(0f);
+                Config.animate().alpha(1f).setDuration(700).start();
+
+
             }
         }, 3500);
 
@@ -107,6 +116,16 @@ public class MainUIActivity extends AppCompatActivity {
                 Intent i = new Intent(MainUIActivity.this, RegisterActivity.class);
                 startActivity(i); // Launch Registration
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+        });
+
+        // Connections Configurator button listener
+        Config.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Create intent to launch next activity (RawDataActivity)
+                Intent i = new Intent(MainUIActivity.this, UserBTConfig.class);
+                startActivity(i); // Launch BLE Data View
             }
         });
 
@@ -136,6 +155,16 @@ public class MainUIActivity extends AppCompatActivity {
             public boolean onLongClick(View view) {
                 // Display message
                 Toast.makeText(MainUIActivity.this, "An app by Diego, Alyson, Meredith, and Nick", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+        // Config button cue
+        Config.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                // Display message
+                Toast.makeText(MainUIActivity.this, "Set up Bluetooth device connection", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });

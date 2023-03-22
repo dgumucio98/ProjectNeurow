@@ -1,4 +1,4 @@
-package com.ti.neurow.ble;
+package com.ti.neurow.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.ti.neurow.GlobalVariables;
 import com.ti.neurow.R;
-import com.ti.neurow.ui.WorkoutMainActivity;
 
 public class PromptRotateActivity extends AppCompatActivity {
 
@@ -32,7 +32,6 @@ public class PromptRotateActivity extends AppCompatActivity {
                 Toast.makeText(PromptRotateActivity.this, "Rotate your device to get started", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     @Override
@@ -43,4 +42,10 @@ public class PromptRotateActivity extends AppCompatActivity {
             finish(); // Can't go back
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        // Do nothing
+    }
+
 }
