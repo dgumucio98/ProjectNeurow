@@ -1,5 +1,7 @@
 package com.ti.neurow.ui
 
+import android.R.attr.x
+import android.R.attr.y
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.jjoe64.graphview.GraphView
@@ -24,24 +26,34 @@ class PostWorkoutActivity : AppCompatActivity() {
 
         // on below line we are adding data to our graph view.
         //two example arraylists to mirror power and time ones that will be sent as parameters
-        val x = ArrayList<Int>()
-        x.add(1)
-        x.add(2)
-        x.add(3)
-        x.add(4)
+        //one array to mirror the way the time/power array will be
+        //odd indices are time, even indices are power
+        val x = ArrayList<Double>()
+        x.add(1.0)
+        x.add(1.0)
+        x.add(2.0)
+        x.add(2.0)
+        x.add(3.0)
+        x.add(3.0)
+        x.add(4.0)
+        x.add(4.0)
         println(x)
-        val y = ArrayList<Int>()
-        y.add(1)
-        y.add(2)
-        y.add(3)
-        y.add(4)
-        println(y)
+        //val y = ArrayList<Int>()
+        //y.add(1)
+        //y.add(2)
+        //y.add(3)
+        //y.add(4)
+        //println(y)
         val length = x.size
-        val dp = arrayOfNulls<DataPoint>(length)
+        val dp = arrayOfNulls<DataPoint>(length/2)
         //TODO i cant assume that power and time are the same size??
-        for (i in 0 until length) {
-            dp[i] = DataPoint(x[i].toDouble(), y[i].toDouble())
+        var j = 0
+        for (i in 0..length-1 step 2) {
+            dp[j] = (DataPoint(x[i], x[i+1]))
             println(dp[i])
+            if(i%2 == 0){
+                j++
+            }
         }
         val series = LineGraphSeries(dp)
 
