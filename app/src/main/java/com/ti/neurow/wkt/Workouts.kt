@@ -1,12 +1,15 @@
 package com.ti.neurow.db
 
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import com.ti.neurow.GlobalVariables
 import kotlinx.android.synthetic.main.activity_db_main.*
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import com.ti.neurow.R
+import com.ti.neurow.ui.Interval20Activity
 
 class workouts : AppCompatActivity() {
     private var ftp = 45
@@ -54,19 +57,26 @@ class workouts : AppCompatActivity() {
         //method returns integer ftp value
         //System.out.println("You are now in the ftp workout!");
         //System.out.println("Please row for 20 minutes at a pace that is challenging but sustainable");
-        var sum = 0
-        var length = 0
+        //var sum = 0 //uncomment
+        //var length = 0 //uncomment
         //define one arraylist to return from function
         //holds time in odd indices and power in even indices
         val powtimearray = arrayListOf<Double>()
 
-        while (db.time_33 < 1200) {
+        //testing UI integration
+        val message = "You aren't in power zone 2!"
+        val intent = Intent(this, Interval20Activity::class.java)
+        intent.putExtra("message", message)
+        startActivity(intent)
+
+/*        while (db.time_33 < 1200) { //uncomment
             sum += db.power
             length += 1
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
-        }
-        val avgPow = sum.toDouble() / length //uncomment
+        }*/
+        //val avgPow = sum.toDouble() / length //uncomment
+        val avgPow = 50
         //define ftp = 95% of average power
         ftp = (0.95 * avgPow).toInt() //uncomment
 
@@ -88,6 +98,15 @@ class workouts : AppCompatActivity() {
         pz_6 = 1
         pz_7 = 1
         ftp = 45;
+
+        powtimearray.add(1.0)
+        powtimearray.add(1.0)
+        powtimearray.add(2.0)
+        powtimearray.add(2.0)
+        powtimearray.add(3.0)
+        powtimearray.add(3.0)
+        powtimearray.add(4.0)
+        powtimearray.add(4.0)
 
         db.updateuserFTP(GlobalVariables.loggedInUsername, this.ftp, this.pz_1, this.pz_2, this.pz_3, this.pz_4, this.pz_5, this.pz_6, this.pz_7);
 
