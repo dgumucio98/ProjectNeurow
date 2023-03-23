@@ -2,6 +2,8 @@ package com.ti.neurow.db
 
 
 import androidx.appcompat.app.AppCompatActivity
+import com.ti.neurow.GlobalVariables
+import kotlinx.android.synthetic.main.activity_db_main.*
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -15,7 +17,7 @@ class workouts : AppCompatActivity() {
     private var pace_fail_30 = 0
     private var pace_fail_40 = 0
 
-    private var pow_pull = ArrayList<Int>()
+    //private var pow_pull = ArrayList<Int>()
 
     //TODO update naming convention?
     private var pz_1: Int
@@ -34,7 +36,7 @@ class workouts : AppCompatActivity() {
         // fail count 20-min pace workout
         // fail count 30-min pace workout
         // fail count 40-min pace workout
-        pow_pull = ArrayList()
+        //pow_pull = ArrayList()
         pz_1 = 0
         pz_2 = 25
         pz_3 = 34
@@ -54,12 +56,11 @@ class workouts : AppCompatActivity() {
         //System.out.println("Please row for 20 minutes at a pace that is challenging but sustainable");
         var sum = 0
         var length = 0
-        //ftp = 50
-        //define two arraylists to return from function
+        //define one arraylist to return from function
+        //holds time in odd indices and power in even indices
         val powtimearray = arrayListOf<Double>()
 
         while (db.time_33 < 1200) {
-            //sum = 50; //testing
             sum += db.power
             length += 1
             powtimearray.add(db.time_33)
@@ -78,7 +79,7 @@ class workouts : AppCompatActivity() {
         pz_6 = (1.21 * ftp).toInt() //Very Hard: 121%-150% of FTP
         pz_7 = (1.51 * ftp).toInt() //Max Effort: >151% of FTP
 
-        //uncomment
+        //this is just for testing, delete
         pz_1 = 1
         pz_2 = 1
         pz_3 = 1
@@ -87,13 +88,11 @@ class workouts : AppCompatActivity() {
         pz_6 = 1
         pz_7 = 1
         ftp = 45;
-        //TODO is this working??
-        println("about to load database")
-        db.updateuserFTP(username, this.ftp, this.pz_1, this.pz_2, this.pz_3, this.pz_4, this.pz_5, this.pz_6, this.pz_7);
+
+        db.updateuserFTP(GlobalVariables.loggedInUsername, this.ftp, this.pz_1, this.pz_2, this.pz_3, this.pz_4, this.pz_5, this.pz_6, this.pz_7);
 
         //return arraylist of time and power
         return powtimearray
-
     }
 
     // interval_1 workout method, 20 min
@@ -122,10 +121,11 @@ class workouts : AppCompatActivity() {
         var k20 = 0
         var k21 = 0
         var k22 = 0
+
         var sum = 0
         var length = 0
         val powtimearray = arrayListOf<Double>()
-        //for (int i = 0; i < time_33.size(); i++) {
+
         // 5 min at zone 2
         while (db.time_33 <= 300) {
             //this is adding all of the powers to then get average
@@ -685,6 +685,7 @@ class workouts : AppCompatActivity() {
         //interval_predictor("1", fail_count_1)
         //TODO add line to add failcount to database
         fail_count_1 = 25 // for database integration testing
+        db.add_history(GlobalVariables.loggedInUsername, "interval1", fail_count_1, avgPow)
         return powtimearray
     }
 
@@ -863,6 +864,7 @@ class workouts : AppCompatActivity() {
         //interval_predictor("2", fail_count_2)
         //TODO add fail count to database
         fail_count_2 = 25 //for database integration testing
+        db.add_history(GlobalVariables.loggedInUsername, "interval2", fail_count_2, avgPow)
         return powtimearray
     }
 
@@ -1179,6 +1181,7 @@ class workouts : AppCompatActivity() {
         //interval_predictor("2", fail_count_2)
         //TODO add fail count to database
         fail_count_3 = 66 //for database integration testing
+        db.add_history(GlobalVariables.loggedInUsername, "interval3", fail_count_3, avgPow)
         return powtimearray
     }
 
@@ -1219,6 +1222,8 @@ class workouts : AppCompatActivity() {
             pace_fail_20 = 202020
             println("fail count 20: " + pace_fail_20)
             //pace_predictor("20", pace_fail_20)
+            val avgPow = sum.toDouble() / length //uncomment
+            db.add_history(GlobalVariables.loggedInUsername, "pace20", pace_fail_20, avgPow)
         } else if (length == 30) {
             println()
             println("**********************")
@@ -1245,8 +1250,10 @@ class workouts : AppCompatActivity() {
             }
             //}
             pace_fail_30 = 303030
-            println("fail count 30: " + pace_fail_30)
+            //println("fail count 30: " + pace_fail_30)
             //pace_predictor("30", pace_fail_30)
+            val avgPow = sum.toDouble() / length //uncomment
+            db.add_history(GlobalVariables.loggedInUsername, "pace30", pace_fail_30, avgPow)
         } else if (length == 40) {
             println()
             println("**********************")
@@ -1275,8 +1282,9 @@ class workouts : AppCompatActivity() {
             pace_fail_40 = 404040
             println("fail count 40: " + pace_fail_40)
             //pace_predictor("40", pace_fail_40)
+            val avgPow = sum.toDouble() / length //uncomment
+            db.add_history(GlobalVariables.loggedInUsername, "pace40", pace_fail_40, avgPow)
         }
-        val avgPow = sum.toDouble() / length //uncomment
         // TODO add avg power to database
         //TODO add fail count to database????!!
         return powtimearray
