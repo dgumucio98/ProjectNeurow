@@ -96,6 +96,21 @@
         tools:visibility="visible" />
 
     <Button
+        android:id="@+id/btnAddToDB"
+        android:layout_width="185dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="200dp"
+        android:backgroundTint="#AABE18"
+        android:text="Add to DB"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnNewUser"
+        tools:visibility="visible" />
+
+    <Button
         android:id="@+id/btnBLEData"
         android:layout_width="185dp"
         android:layout_height="68dp"

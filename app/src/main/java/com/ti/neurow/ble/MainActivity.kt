@@ -369,3 +369,4 @@ class MainActivity : AppCompatActivity() {
         ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
     }
 }
+

@@ -110,10 +110,6 @@ public class RegisterActivity extends AppCompatActivity {
         return pattern.matcher(password).matches();
     }
 
-    //***********
-    // Launchers
-    //***********
-
     // DEV BYPASS: Launch PromptRotateActivity when "Bypass Login" button is pressed (bypasses actual user authentication)
     public void launchPromptRotate(View v) {
         // Launch Log-in activity

@@ -26,7 +26,7 @@ public class MainUIActivity extends AppCompatActivity {
     // Declare views
     ImageView rower, rowerIcon; // image
     TextView neurowText, welcomeText; // text views
-    Button existingUser, newUser, BLEData, DBdata, Config; // buttons
+    Button existingUser, newUser, BLEData, DBdata, Config, AddToDB; // buttons
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,7 @@ public class MainUIActivity extends AppCompatActivity {
         BLEData = findViewById(R.id.btnBLEData);
         DBdata = findViewById(R.id.btnDBViewer);
         Config = findViewById(R.id.btnBluetoothConnections);
+        AddToDB = findViewById(R.id.btnAddToDB);
 
 
         Animation animation1 = AnimationUtils.loadAnimation(MainUIActivity.this, R.anim.slide_in_left);
