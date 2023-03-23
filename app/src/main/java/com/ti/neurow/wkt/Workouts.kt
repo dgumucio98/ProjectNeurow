@@ -1,10 +1,15 @@
 package com.ti.neurow.db
 
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
+import com.ti.neurow.GlobalVariables
+import kotlinx.android.synthetic.main.activity_db_main.*
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import com.ti.neurow.R
+import com.ti.neurow.ui.Interval20Activity
 
 class workouts : AppCompatActivity() {
     private var ftp = 45
@@ -15,7 +20,7 @@ class workouts : AppCompatActivity() {
     private var pace_fail_30 = 0
     private var pace_fail_40 = 0
 
-    private var pow_pull = ArrayList<Int>()
+    //private var pow_pull = ArrayList<Int>()
 
     //TODO update naming convention?
     private var pz_1: Int
@@ -34,7 +39,7 @@ class workouts : AppCompatActivity() {
         // fail count 20-min pace workout
         // fail count 30-min pace workout
         // fail count 40-min pace workout
-        pow_pull = ArrayList()
+        //pow_pull = ArrayList()
         pz_1 = 0
         pz_2 = 25
         pz_3 = 34
@@ -47,20 +52,31 @@ class workouts : AppCompatActivity() {
     // ftp calculator workout method
     // TODO changed from ftp_calc to ftpCalc
     // TODO In main activity change db constructor
-    fun ftpCalc(username: String, db: DatabaseHelper): Int {
+    fun ftpCalc(username: String, db: DatabaseHelper): ArrayList<Double> {
         //ftp calculator code that calculates ftp and defines power zones
         //method returns integer ftp value
         //System.out.println("You are now in the ftp workout!");
         //System.out.println("Please row for 20 minutes at a pace that is challenging but sustainable");
-        var sum = 0
-        var length = 0
-        //ftp = 50
-        while (db.time_33 < 1200) {
-            //sum = 50; //testing
+        //var sum = 0 //uncomment
+        //var length = 0 //uncomment
+        //define one arraylist to return from function
+        //holds time in odd indices and power in even indices
+        val powtimearray = arrayListOf<Double>()
+
+        //testing UI integration
+        val message = "You aren't in power zone 2!"
+        val intent = Intent(this, Interval20Activity::class.java)
+        intent.putExtra("message", message)
+        startActivity(intent)
+
+/*        while (db.time_33 < 1200) { //uncomment
             sum += db.power
             length += 1
-        }
-        val avgPow = sum.toDouble() / length //uncomment
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
+        }*/
+        //val avgPow = sum.toDouble() / length //uncomment
+        val avgPow = 50
         //define ftp = 95% of average power
         ftp = (0.95 * avgPow).toInt() //uncomment
 
@@ -73,7 +89,7 @@ class workouts : AppCompatActivity() {
         pz_6 = (1.21 * ftp).toInt() //Very Hard: 121%-150% of FTP
         pz_7 = (1.51 * ftp).toInt() //Max Effort: >151% of FTP
 
-        //uncomment
+        //this is just for testing, delete
         pz_1 = 1
         pz_2 = 1
         pz_3 = 1
@@ -82,14 +98,24 @@ class workouts : AppCompatActivity() {
         pz_6 = 1
         pz_7 = 1
         ftp = 45;
-        //TODO is this working??
-        println("about to load database")
-        db.updateuserFTP(username, this.ftp, this.pz_1, this.pz_2, this.pz_3, this.pz_4, this.pz_5, this.pz_6, this.pz_7);
-        return ftp
+
+        powtimearray.add(1.0)
+        powtimearray.add(1.0)
+        powtimearray.add(2.0)
+        powtimearray.add(2.0)
+        powtimearray.add(3.0)
+        powtimearray.add(3.0)
+        powtimearray.add(4.0)
+        powtimearray.add(4.0)
+
+        db.updateuserFTP(GlobalVariables.loggedInUsername, this.ftp, this.pz_1, this.pz_2, this.pz_3, this.pz_4, this.pz_5, this.pz_6, this.pz_7);
+
+        //return arraylist of time and power
+        return powtimearray
     }
 
     // interval_1 workout method, 20 min
-    fun interval_1(db: DatabaseHelper): Int {
+    fun interval_1(db: DatabaseHelper): ArrayList<Double> {
         //interval_1 code
         var count = 0
         var k1 = 0
@@ -114,13 +140,18 @@ class workouts : AppCompatActivity() {
         var k20 = 0
         var k21 = 0
         var k22 = 0
+
         var sum = 0
         var length = 0
-        //for (int i = 0; i < time_33.size(); i++) {
+        val powtimearray = arrayListOf<Double>()
+
         // 5 min at zone 2
         while (db.time_33 <= 300) {
+            //this is adding all of the powers to then get average
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             //TODO how to integrate with UI
             if (k1 == 0) {
                 println()
@@ -145,6 +176,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 340 && db.time_33 > 300) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k2 == 0) {
                 println()
                 println("**********************")
@@ -168,6 +201,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 360 && db.time_33 > 340) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k3 == 0) {
                 println()
                 println("**********************")
@@ -191,6 +226,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 400 && db.time_33 > 360) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k4 == 0) {
                 println()
                 println("**********************")
@@ -214,6 +251,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 420 && db.time_33 > 400) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k5 == 0) {
                 println()
                 println("**********************")
@@ -237,6 +276,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 460 && db.time_33 > 420) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k6 == 0) {
                 println()
                 println("**********************")
@@ -260,6 +301,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 480 && db.time_33 > 460) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k7 == 0) {
                 println()
                 println("**********************")
@@ -283,6 +326,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 520 && db.time_33 > 480) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k8 == 0) {
                 println()
                 println("**********************")
@@ -306,6 +351,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 540 && db.time_33 > 520) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k9 == 0) {
                 println()
                 println("**********************")
@@ -329,6 +376,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 580 && db.time_33 > 540) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k10 == 0) {
                 println()
                 println("**********************")
@@ -352,6 +401,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 600 && db.time_33 > 580) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k11 == 0) {
                 println()
                 println("**********************")
@@ -375,6 +426,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 640 && db.time_33 > 600) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k12 == 0) {
                 println()
                 println("**********************")
@@ -398,6 +451,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 660 && db.time_33 > 640) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k13 == 0) {
                 println()
                 println("**********************")
@@ -421,6 +476,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 700 && db.time_33 > 660) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k14 == 0) {
                 println()
                 println("**********************")
@@ -444,6 +501,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 720 && db.time_33 > 700) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k15 == 0) {
                 println()
                 println("**********************")
@@ -467,6 +526,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 760 && db.time_33 > 720) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k16 == 0) {
                 println()
                 println("**********************")
@@ -490,6 +551,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 780 && db.time_33 > 760) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k17 == 0) {
                 println()
                 println("**********************")
@@ -513,6 +576,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 820 && db.time_33 > 780) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k18 == 0) {
                 println()
                 println("**********************")
@@ -536,6 +601,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 840 && db.time_33 > 820) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k19 == 0) {
                 println()
                 println("**********************")
@@ -559,6 +626,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 880 && db.time_33 > 840) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k20 == 0) {
                 println()
                 println("**********************")
@@ -582,6 +651,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 900 && db.time_33 > 880) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k21 == 0) {
                 println()
                 println("**********************")
@@ -605,6 +676,8 @@ class workouts : AppCompatActivity() {
         while (db.time_33 <= 1200 && db.time_33 > 900) {
             sum += db.power
             length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k22 == 0) {
                 println()
                 println("**********************")
@@ -629,12 +702,14 @@ class workouts : AppCompatActivity() {
         //}
         //println("fail count: $fail_count_1")
         //interval_predictor("1", fail_count_1)
+        //TODO add line to add failcount to database
         fail_count_1 = 25 // for database integration testing
-        return fail_count_1
+        db.add_history(GlobalVariables.loggedInUsername, "interval1", fail_count_1, avgPow)
+        return powtimearray
     }
 
     // interval_2 workout method, 30 min
-    fun interval_2(db: DatabaseHelper): Int {
+    fun interval_2(db: DatabaseHelper): ArrayList<Double> {
         //interval_2 code
         println("You are now in the interval_2 workout!")
         var count = 0
@@ -644,9 +719,16 @@ class workouts : AppCompatActivity() {
         var k4 = 0
         var k5 = 0
         var k6 = 0
+        var sum = 0
+        var length = 0
+        val powtimearray = arrayListOf<Double>()
         //for (int i = 0; i < time_33.size(); i++) {
         // 6 min at zone 3
         while (db.time_33 <= 360) {
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k1 == 0) {
                 println()
                 println("**********************")
@@ -668,6 +750,10 @@ class workouts : AppCompatActivity() {
         }
         // 5 min at zone 1
         while (db.time_33 <= 660 && db.time_33 > 360) {
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k2 == 0) {
                 println()
                 println("**********************")
@@ -689,6 +775,10 @@ class workouts : AppCompatActivity() {
         }
         // 5 min at zone 4
         while (db.time_33 <= 960 && db.time_33 > 660) {
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k3 == 0) {
                 println()
                 println("**********************")
@@ -711,6 +801,10 @@ class workouts : AppCompatActivity() {
         }
         // 5 min at zone 1
         while (db.time_33 <= 1260 && db.time_33 > 960) {
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k4 == 0) {
                 println()
                 println("**********************")
@@ -732,6 +826,10 @@ class workouts : AppCompatActivity() {
         }
         // 4 min at zone 5
         while (db.time_33 <= 1500 && db.time_33 > 1260) {
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k5 == 0) {
                 println()
                 println("**********************")
@@ -754,6 +852,10 @@ class workouts : AppCompatActivity() {
         }
         // 5 min at zone 1
         while (db.time_33 <= 1800 && db.time_33 > 1500) {
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k6 == 0) {
                 println()
                 println("**********************")
@@ -774,15 +876,19 @@ class workouts : AppCompatActivity() {
                 count = 0
             }
         }
+        val avgPow = sum.toDouble() / length //uncomment
+        // TODO add avg power to database
         //}
         //println("fail count: $fail_count_2")
         //interval_predictor("2", fail_count_2)
+        //TODO add fail count to database
         fail_count_2 = 25 //for database integration testing
-        return fail_count_2
+        db.add_history(GlobalVariables.loggedInUsername, "interval2", fail_count_2, avgPow)
+        return powtimearray
     }
 
     // interval_3 workout method, 40 min
-    fun interval_3(db: DatabaseHelper): Int {
+    fun interval_3(db: DatabaseHelper): ArrayList<Double> {
         //interval_1 code
         println("You are now in the interval_3 workout!")
         var count = 0
@@ -797,10 +903,16 @@ class workouts : AppCompatActivity() {
         var k9 = 0
         var k10 = 0
         var k11 = 0
-
+        var sum = 0
+        var length = 0
+        val powtimearray = arrayListOf<Double>()
         //for (int i = 0; i < time_33.size(); i++) {
         // 2 min at zone 2
         while (db.time_33 <= 120) {
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k1 == 0) {
                 println()
                 println("**********************")
@@ -823,6 +935,10 @@ class workouts : AppCompatActivity() {
         }
         // 1 min at zone 5
         while (db.time_33 <= 180 && db.time_33 > 120) {
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k2 == 0) {
                 println()
                 println("**********************")
@@ -845,6 +961,10 @@ class workouts : AppCompatActivity() {
         }
         // 2 min at zone 2
         while (db.time_33 <= 300 && db.time_33 > 180) {
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k3 == 0) {
                 println()
                 println("**********************")
@@ -867,6 +987,10 @@ class workouts : AppCompatActivity() {
         }
         // 1 min at zone 5
         while (db.time_33 <= 360 && db.time_33 > 300) {
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k4 == 0) {
                 println()
                 println("**********************")
@@ -889,6 +1013,10 @@ class workouts : AppCompatActivity() {
         }
         // 2 min at zone 2
         while (db.time_33 <= 480 && db.time_33 > 360) {
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k5 == 0) {
                 println()
                 println("**********************")
@@ -911,6 +1039,10 @@ class workouts : AppCompatActivity() {
         }
         // 1 min at zone 5
         while (db.time_33 <= 540 && db.time_33 > 480) {
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k6 == 0) {
                 println()
                 println("**********************")
@@ -933,6 +1065,10 @@ class workouts : AppCompatActivity() {
         }
         // 2 min at zone 2
         while (db.time_33 <= 660 && db.time_33 > 540) {
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k7 == 0) {
                 println()
                 println("**********************")
@@ -955,6 +1091,10 @@ class workouts : AppCompatActivity() {
         }
         // 10 min at zone 4
         while (db.time_33 <= 1260 && db.time_33 > 660) {
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k8 == 0) {
                 println()
                 println("**********************")
@@ -977,6 +1117,10 @@ class workouts : AppCompatActivity() {
         }
         // 5 min at zone 1
         while (db.time_33 <= 1560 && db.time_33 > 1260) {
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k9 == 0) {
                 println()
                 println("**********************")
@@ -999,6 +1143,10 @@ class workouts : AppCompatActivity() {
         }
         // 10 min at zone 4
         while (db.time_33 <= 2160 && db.time_33 > 1560) {
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k10 == 0) {
                 println()
                 println("**********************")
@@ -1020,7 +1168,11 @@ class workouts : AppCompatActivity() {
             }
         }
         // 5 min at zone 1
-        if (db.time_33 <= 2460 && db.time_33 > 2160) {
+        while (db.time_33 <= 2460 && db.time_33 > 2160) {
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
             if (k11 == 0) {
                 //println()
                 //println("**********************")
@@ -1041,17 +1193,24 @@ class workouts : AppCompatActivity() {
                 count = 0
             }
         }
+        val avgPow = sum.toDouble() / length //uncomment
+        // TODO add avg power to database
         //}
-        //println("fail count: $fail_count_3")
-        //interval_predictor("3", fail_count_3)
+        //println("fail count: $fail_count_2")
+        //interval_predictor("2", fail_count_2)
+        //TODO add fail count to database
         fail_count_3 = 66 //for database integration testing
-        return fail_count_3
+        db.add_history(GlobalVariables.loggedInUsername, "interval3", fail_count_3, avgPow)
+        return powtimearray
     }
 
-    fun pace(length: Int, db: DatabaseHelper): Int {
+    fun pace(length: Int, db: DatabaseHelper): ArrayList<Double> {
         //pace code
         var count = 0
         val j = 0
+        var sum = 0
+        var length = 0
+        val powtimearray = arrayListOf<Double>()
         if (length == 20) {
             println()
             println("**********************")
@@ -1061,6 +1220,10 @@ class workouts : AppCompatActivity() {
             //ignore first 5 to allow for user to get to steady state
             //for (int i = 5; i < time_33.size(); i++) {
             while (db.time_33 <= 1200) { // less than 20-min
+                sum += db.power
+                length += 1
+                powtimearray.add(db.time_33)
+                powtimearray.add(db.power.toDouble())
                 //if difference between current stroke and previous stroke is greater than 4 watts
                 if (Math.abs(db.power - db.pastPower) > 4) {
                     count++
@@ -1078,6 +1241,8 @@ class workouts : AppCompatActivity() {
             pace_fail_20 = 202020
             println("fail count 20: " + pace_fail_20)
             //pace_predictor("20", pace_fail_20)
+            val avgPow = sum.toDouble() / length //uncomment
+            db.add_history(GlobalVariables.loggedInUsername, "pace20", pace_fail_20, avgPow)
         } else if (length == 30) {
             println()
             println("**********************")
@@ -1085,7 +1250,11 @@ class workouts : AppCompatActivity() {
             println("**********************")
             println() //ignore first 5 to allow for user to get to steady state
             //for (int i = 5; i < time_33.size(); i++) {
-            if (db.time_33 <= 1800) { // less than 30-min
+            while (db.time_33 <= 1800) { // less than 30-min
+                sum += db.power
+                length += 1
+                powtimearray.add(db.time_33)
+                powtimearray.add(db.power.toDouble())
                 //if difference between current stroke and previous stroke is greater than 4 watts
                 if (Math.abs(db.power - db.pastPower) > 4) {
                     count++
@@ -1100,8 +1269,10 @@ class workouts : AppCompatActivity() {
             }
             //}
             pace_fail_30 = 303030
-            println("fail count 30: " + pace_fail_30)
+            //println("fail count 30: " + pace_fail_30)
             //pace_predictor("30", pace_fail_30)
+            val avgPow = sum.toDouble() / length //uncomment
+            db.add_history(GlobalVariables.loggedInUsername, "pace30", pace_fail_30, avgPow)
         } else if (length == 40) {
             println()
             println("**********************")
@@ -1109,7 +1280,11 @@ class workouts : AppCompatActivity() {
             println("**********************")
             println() //ignore first 5 to allow for user to get to steady state
             //for (int i = 5; i < time_33.size(); i++) {
-            if (db.time_33 <= 2400) { // less than 40-min
+            while (db.time_33 <= 2400) { // less than 40-min
+                sum += db.power
+                length += 1
+                powtimearray.add(db.time_33)
+                powtimearray.add(db.power.toDouble())
                 //if difference between current stroke and previous stroke is greater than 4 watts
                 if (Math.abs(db.power - db.pastPower) > 4) {
                     count++
@@ -1126,8 +1301,12 @@ class workouts : AppCompatActivity() {
             pace_fail_40 = 404040
             println("fail count 40: " + pace_fail_40)
             //pace_predictor("40", pace_fail_40)
+            val avgPow = sum.toDouble() / length //uncomment
+            db.add_history(GlobalVariables.loggedInUsername, "pace40", pace_fail_40, avgPow)
         }
-        return pace_fail_20
+        // TODO add avg power to database
+        //TODO add fail count to database????!!
+        return powtimearray
     }
 
     // Returns value of predicted power
