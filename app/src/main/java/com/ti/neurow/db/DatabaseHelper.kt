@@ -476,7 +476,7 @@ class DatabaseHelper  //Constructor
 
     //getters for databaseHelper33
     //Username and password entered
-    val time_33: Int
+    val time_33: Double
         get() {
             val DB = this.readableDatabase
             val cursor = DB.rawQuery(
@@ -486,19 +486,19 @@ class DatabaseHelper  //Constructor
             if (cursor.count > 0) {
                 while (cursor.moveToNext()) {
                     val index = cursor.getColumnIndex(COLUMN_TIME_33)
-                    val pz = cursor.getInt(index)
+                    val pz = cursor.getDouble(index)
                     cursor.close()
                     return pz
                 }
             } else {
                 cursor.close()
-                return -1
+                return (-1).toDouble()
             }
-            return -1
+            return (-1).toDouble()
         }//Find the data
 
     //Username and password entered
-    val pastTime_33: Int
+    val pastTime_33: Double
         get() {
             val DB = this.readableDatabase
             val cursor = DB.rawQuery(
@@ -508,15 +508,15 @@ class DatabaseHelper  //Constructor
             if (cursor.count > 0) {
                 while (cursor.moveToNext()) {
                     val index = cursor.getColumnIndex(COLUMN_TIME_33)
-                    val pz = cursor.getInt(index)
+                    val pz = cursor.getDouble(index)
                     cursor.close()
                     return pz
                 }
             } else {
                 cursor.close()
-                return -1
+                return (-1).toDouble()
             }
-            return -1
+            return (-1).toDouble()
         }//Find the data
 
     //Username and password entered
