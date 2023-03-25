@@ -4,15 +4,26 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.TextView;
+import android.widget.Toast;
 
+
+import com.ti.neurow.GlobalVariables;
+import com.ti.neurow.VariableChanges;
+import com.ti.neurow.db.DatabaseHelper;
+import com.ti.neurow.wkt.workouts; // [TEST] for workout testing
 import com.ti.neurow.R;
+
+import java.util.ArrayList;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -20,7 +31,7 @@ public class Interval20Activity extends AppCompatActivity {
 
     // Define some variables
     Chronometer chron; // declare chronometer (count-up timer)
-    Button btnStartChron; // declare timer button
+    Button btnAlyson, btnStartChron; // declare timer button
     boolean isChronRunning = false; // define boolean state of the timer
     GifImageView gifRipple; // define ripple gif
 
@@ -55,7 +66,7 @@ public class Interval20Activity extends AppCompatActivity {
         });
 
 
-        gifRipple = (GifImageView) findViewById(R.id.gifRippleRed);
+//        gifRipple = (GifImageView) findViewById(R.id.gifRippleRed);
         btnStartChron = (Button) findViewById(R.id.btnBegin);
         btnStartChron.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +74,32 @@ public class Interval20Activity extends AppCompatActivity {
                 gifRipple.setVisibility(View.INVISIBLE);
             }
         });
+
+        // [TEST] Alyson button listener
+        btnAlyson = (Button) findViewById(R.id.btnAlyson);
+        btnAlyson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseHelper db = new DatabaseHelper(Interval20Activity.this);
+                workouts workouts = new workouts();
+
+                VariableChanges myChanges = new VariableChanges();
+                myChanges.setMessageListener(new VariableChanges.MessageListener() {
+                    @Override
+                    public void onMessageChanged(String newMessage) {
+                        Toast.makeText(Interval20Activity.this,newMessage,Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                ArrayList pow = workouts.ftpCalc(myChanges,db);
+                Toast.makeText(Interval20Activity.this,pow.toString(),Toast.LENGTH_LONG).show();
+            }
+
+        });
+
+        TextView txtMessage = findViewById(R.id.txtTest);
+        String message = getIntent().getStringExtra("message");
+        txtMessage.setText(message);
 
     }
 
