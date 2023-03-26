@@ -1,5 +1,18 @@
 package com.ti.neurow.ble
 
+/*
+*
+* This class is for the data frame associated with the
+* PM5 uuid: ce060032-43e5-11e4-916c-0800200c9a66
+* In order to access the object's contents you simply call whatever the object's name is and
+* access it's property
+* For example, in the AidingFunctions.kt, a DataFrame33 object is called `DF33`
+* to access the value of the Time, we use the code of:
+* DF33.elapsedTime
+* For total calories used thus far, we do:
+* DF33.totalCalories
+ */
+
 class DataFrame33(data: UByteArray) {
     //In seconds Unit: 0.01 sec
     //Position: 0, 2 Bytes
@@ -38,7 +51,6 @@ class DataFrame33(data: UByteArray) {
     val lastSplitDist: Int = byteToDec(17, 19, data).toInt()
 
     fun printAllAtt(): Unit {
-        //println("Elapsed time: ${this.elapsedTime} seconds(s)")
         println("Elapsed time: %.2f seconds(s)".format(this.elapsedTime))
         println("Interval Count: ${this.intervalCount}")
         println("Average Power: ${this.averagePower} watts")
