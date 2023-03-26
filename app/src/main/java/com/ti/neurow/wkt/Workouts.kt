@@ -68,7 +68,6 @@ class workouts : AppCompatActivity() {
 
         //testing UI integration
         val message = "You aren't in power zone 2!"
-
         myChanges.setMessage(message)
 
 /*        while (db.time_33 < 1200) { //uncomment
@@ -117,7 +116,7 @@ class workouts : AppCompatActivity() {
     }
 
     // interval_1 workout method, 20 min
-    fun interval_1(db: DatabaseHelper): ArrayList<Double> {
+    fun interval_1(pzSetChanges: VariableChanges, pzFixChanges: VariableChanges, db: DatabaseHelper): ArrayList<Double> {
         //interval_1 code
         var count = 0
         var k1 = 0
@@ -147,6 +146,9 @@ class workouts : AppCompatActivity() {
         var length = 0
         val powtimearray = arrayListOf<Double>()
 
+        var pzMessage = ""
+        var fixMessage = ""
+
         // 5 min at zone 2
         while (db.time_33 <= 300) {
             //this is adding all of the powers to then get average
@@ -154,23 +156,22 @@ class workouts : AppCompatActivity() {
             length += 1
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
-            //TODO how to integrate with UI
             if (k1 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 2")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 2"
+                pzSetChanges.setMessage(pzMessage)
                 k1 = 100
             }
             if (db.power < pz_2 || db.power >= pz_3) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 2!!!!")
+                    fixMessage = "You aren't in power zone 2!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {    // only consecutive power zone exits increment count
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -181,21 +182,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k2 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 5")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 5"
+                pzSetChanges.setMessage(pzMessage)
                 k2 = 100
             }
             if (db.power < pz_5 || db.power >= pz_6) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 5!!!!")
+                    fixMessage = "You aren't in power zone 5!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -206,21 +207,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k3 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 2")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 2"
+                pzSetChanges.setMessage(pzMessage)
                 k3 = 100
             }
             if (db.power < pz_2 || db.power >= pz_3) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 2!!!!")
+                    fixMessage = "You aren't in power zone 2!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -231,21 +232,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k4 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 5")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 5"
+                pzSetChanges.setMessage(pzMessage)
                 k4 = 100
             }
             if (db.power < pz_5 || db.power >= pz_6) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 5!!!!")
+                    fixMessage = "You aren't in power zone 5!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -256,21 +257,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k5 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 2")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 2"
+                pzSetChanges.setMessage(pzMessage)
                 k5 = 100
             }
             if (db.power < pz_2 || db.power >= pz_3) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 2!!!!")
+                    fixMessage = "You aren't in power zone 2!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -281,21 +282,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k6 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 5")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 5"
+                pzSetChanges.setMessage(pzMessage)
                 k6 = 100
             }
             if (db.power < pz_5 || db.power >= pz_6) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 5!!!!")
+                    fixMessage = "You aren't in power zone 5!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -306,21 +307,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k7 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 2")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 2"
+                pzSetChanges.setMessage(pzMessage)
                 k7 = 100
             }
             if (db.power < pz_2 || db.power >= pz_3) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 2!!!!")
+                    fixMessage = "You aren't in power zone 2!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -331,21 +332,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k8 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 5")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 5"
+                pzSetChanges.setMessage(pzMessage)
                 k8 = 100
             }
             if (db.power < pz_5 || db.power >= pz_6) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 5!!!!")
+                    fixMessage = "You aren't in power zone 5!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -356,21 +357,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k9 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 2")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 2"
+                pzSetChanges.setMessage(pzMessage)
                 k9 = 100
             }
             if (db.power < pz_2 || db.power >= pz_3) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 2!!!!")
+                    fixMessage = "You aren't in power zone 2!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -381,21 +382,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k10 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 5")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 5"
+                pzSetChanges.setMessage(pzMessage)
                 k10 = 100
             }
             if (db.power < pz_5 || db.power >= pz_6) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 5!!!!")
+                    fixMessage = "You aren't in power zone 5!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -406,21 +407,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k11 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 2")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 2"
+                pzSetChanges.setMessage(pzMessage)
                 k11 = 100
             }
             if (db.power < pz_2 || db.power >= pz_3) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 2!!!!")
+                    fixMessage = "You aren't in power zone 2!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -431,21 +432,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k12 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 5")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 5"
+                pzSetChanges.setMessage(pzMessage)
                 k12 = 100
             }
             if (db.power < pz_5 || db.power >= pz_6) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 5!!!!")
+                    fixMessage = "You aren't in power zone 5!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -456,21 +457,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k13 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 2")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 2"
+                pzSetChanges.setMessage(pzMessage)
                 k13 = 100
             }
             if (db.power < pz_2 || db.power >= pz_3) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 2!!!!")
+                    fixMessage = "You aren't in power zone 2!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -481,21 +482,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k14 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 5")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 5"
+                pzSetChanges.setMessage(pzMessage)
                 k14 = 100
             }
             if (db.power < pz_5 || db.power >= pz_6) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 5!!!!")
+                    fixMessage = "You aren't in power zone 5!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -506,21 +507,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k15 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 2")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 2"
+                pzSetChanges.setMessage(pzMessage)
                 k15 = 100
             }
             if (db.power < pz_2 || db.power >= pz_3) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 2!!!!")
+                    fixMessage = "You aren't in power zone 2!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -531,21 +532,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k16 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 5")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 5"
+                pzSetChanges.setMessage(pzMessage)
                 k16 = 100
             }
             if (db.power < pz_5 || db.power >= pz_6) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 5!!!!")
+                    fixMessage = "You aren't in power zone 5!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -556,21 +557,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k17 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 2")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 2"
+                pzSetChanges.setMessage(pzMessage)
                 k17 = 100
             }
             if (db.power < pz_2 || db.power >= pz_3) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 2!!!!")
+                    fixMessage = "You aren't in power zone 2!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -581,21 +582,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k18 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 5")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 5"
+                pzSetChanges.setMessage(pzMessage)
                 k18 = 100
             }
             if (db.power < pz_5 || db.power >= pz_6) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 5!!!!")
+                    fixMessage = "You aren't in power zone 5!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -606,21 +607,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k19 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 2")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 2"
+                pzSetChanges.setMessage(pzMessage)
                 k19 = 100
             }
             if (db.power < pz_2 || db.power >= pz_3) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 2!!!!")
+                    fixMessage = "You aren't in power zone 2!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -631,21 +632,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k20 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 5")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 5"
+                pzSetChanges.setMessage(pzMessage)
                 k20 = 100
             }
             if (db.power < pz_5 || db.power >= pz_6) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 5!!!!")
+                    fixMessage = "You aren't in power zone 5!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -656,21 +657,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k21 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 2")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 2"
+                pzSetChanges.setMessage(pzMessage)
                 k21 = 100
             }
             if (db.power < pz_2 || db.power >= pz_3) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 2!!!!")
+                    fixMessage = "You aren't in power zone 2!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -681,21 +682,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k22 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 1")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 1"
+                pzSetChanges.setMessage(pzMessage)
                 k22 = 100
             }
             if (db.power >= pz_2) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 1!!!!")
+                    fixMessage = "You aren't in power zone 1!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_1++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -705,13 +706,13 @@ class workouts : AppCompatActivity() {
         //println("fail count: $fail_count_1")
         //interval_predictor("1", fail_count_1)
         //TODO add line to add failcount to database
-        fail_count_1 = 25 // for database integration testing
+        fail_count_1 = 25 // for  integration testing
         db.add_history(GlobalVariables.loggedInUsername, "interval1", fail_count_1, avgPow)
         return powtimearray
     }
 
     // interval_2 workout method, 30 min
-    fun interval_2(db: DatabaseHelper): ArrayList<Double> {
+    fun interval_2(pzSetChanges: VariableChanges, pzFixChanges: VariableChanges, db: DatabaseHelper): ArrayList<Double> {
         //interval_2 code
         println("You are now in the interval_2 workout!")
         var count = 0
@@ -724,7 +725,10 @@ class workouts : AppCompatActivity() {
         var sum = 0
         var length = 0
         val powtimearray = arrayListOf<Double>()
-        //for (int i = 0; i < time_33.size(); i++) {
+
+        var pzMessage = ""
+        var fixMessage = ""
+
         // 6 min at zone 3
         while (db.time_33 <= 360) {
             sum += db.power
@@ -732,21 +736,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k1 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 3")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 3"
+                pzSetChanges.setMessage(pzMessage)
                 k1 = 100
             }
             if (db.power < pz_3 || db.power >= pz_4) {
                 count++
                 if (count > 2) {
-                    println("You aren't in power zone 3!!!!")
+                    fixMessage = "You aren't in power zone 3!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_2++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -757,21 +761,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k2 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 1")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 1"
+                pzSetChanges.setMessage(pzMessage)
                 k2 = 100
             }
             if (db.power >= pz_2) {
                 count++
                 if (count > 2) {
-                    println("You aren't in power zone 1!!!!")
+                    fixMessage = "You aren't in power zone 1!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_2++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -782,22 +786,22 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k3 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 4")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 4"
+                pzSetChanges.setMessage(pzMessage)
                 k3 = 100
             }
             //System.out.println("Row in power zone 4");
             if (db.power < pz_4 || db.power >= pz_5) {
                 count++
                 if (count > 2) {
-                    println("You aren't in power zone 4!!!!")
+                    fixMessage = "You aren't in power zone 4!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_2++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -808,21 +812,21 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k4 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 1")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 1"
+                pzSetChanges.setMessage(pzMessage)
                 k4 = 100
             }
             if (db.power >= pz_2) {
                 count++
                 if (count > 2) {
-                    println("You aren't in power zone 1!!!!")
+                    fixMessage = "You aren't in power zone 1!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_2++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -833,22 +837,22 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k5 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 5")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 5"
+                pzSetChanges.setMessage(pzMessage)
                 k5 = 100
             }
             //System.out.println("Row in power zone 5");
             if (db.power < pz_5 || db.power >= pz_6) {
                 count++
                 if (count > 2) {
-                    println("You aren't in power zone 5!!!!")
+                    fixMessage = "You aren't in power zone 5!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_2++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -859,22 +863,22 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k6 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 1")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 1"
+                pzSetChanges.setMessage(pzMessage)
                 k6 = 100
             }
             //System.out.println("Row in power zone 1");
             if (db.power >= pz_2) {
                 count++
                 if (count > 2) {
-                    println("You aren't in power zone 1!!!!")
+                    fixMessage = "You aren't in power zone 1!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_2++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -890,9 +894,7 @@ class workouts : AppCompatActivity() {
     }
 
     // interval_3 workout method, 40 min
-    fun interval_3(db: DatabaseHelper): ArrayList<Double> {
-        //interval_1 code
-        println("You are now in the interval_3 workout!")
+    fun interval_3(pzSetChanges: VariableChanges, pzFixChanges: VariableChanges, db: DatabaseHelper): ArrayList<Double> {
         var count = 0
         var k1 = 0
         var k2 = 0
@@ -908,7 +910,10 @@ class workouts : AppCompatActivity() {
         var sum = 0
         var length = 0
         val powtimearray = arrayListOf<Double>()
-        //for (int i = 0; i < time_33.size(); i++) {
+
+        var pzMessage = ""
+        var fixMessage = ""
+
         // 2 min at zone 2
         while (db.time_33 <= 120) {
             sum += db.power
@@ -916,22 +921,22 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k1 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 2")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 2"
+                pzSetChanges.setMessage(pzMessage)
                 k1 = 100
             }
             //System.out.println("Row in power zone 2");
             if (db.power < pz_2 || db.power >= pz_3) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 2!!!!")
+                    fixMessage = "You aren't in power zone 2!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_3++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -942,22 +947,22 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k2 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 5")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 5"
+                pzSetChanges.setMessage(pzMessage)
                 k2 = 100
             }
             //System.out.println("Row at a fast pace!!");
             if (db.power < pz_5 || db.power >= pz_6) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 5!!!!")
+                    fixMessage = "You aren't in power zone 5!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_3++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -968,22 +973,22 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k3 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 2")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 2"
+                pzSetChanges.setMessage(pzMessage)
                 k3 = 100
             }
             //System.out.println("Row in power zone 2");
             if (db.power < pz_2 || db.power >= pz_3) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 2!!!!")
+                    fixMessage = "You aren't in power zone 2!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_3++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -994,22 +999,22 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k4 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 5")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 5"
+                pzSetChanges.setMessage(pzMessage)
                 k4 = 100
             }
             //System.out.println("Row at a fast pace!!");
             if (db.power < pz_5 || db.power >= pz_6) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 5!!!!")
+                    fixMessage = "You aren't in power zone 5!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_3++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -1020,22 +1025,22 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k5 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 2")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 2"
+                pzSetChanges.setMessage(pzMessage)
                 k5 = 100
             }
             //System.out.println("Row in power zone 2");
             if (db.power < pz_2 || db.power >= pz_3) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 2!!!!")
+                    fixMessage = "You aren't in power zone 2!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_3++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -1046,22 +1051,22 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k6 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 5")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 5"
+                pzSetChanges.setMessage(pzMessage)
                 k6 = 100
             }
             //System.out.println("Row at a fast pace!!");
             if (db.power < pz_5 || db.power >= pz_6) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 5!!!!")
+                    fixMessage = "You aren't in power zone 5!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_3++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -1072,22 +1077,22 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k7 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 2")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 2"
+                pzSetChanges.setMessage(pzMessage)
                 k7 = 100
             }
             //System.out.println("Row in power zone 2");
             if (db.power < pz_2 || db.power >= pz_3) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 2!!!!")
+                    fixMessage = "You aren't in power zone 2!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_3++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -1098,22 +1103,22 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k8 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 4")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 4"
+                pzSetChanges.setMessage(pzMessage)
                 k8 = 100
             }
             //System.out.println("Row in power zone 4");
             if (db.power < pz_4 || db.power >= pz_5) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 4!!!!")
+                    fixMessage = "You aren't in power zone 4!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_3++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -1124,22 +1129,22 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k9 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 1")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 1"
+                pzSetChanges.setMessage(pzMessage)
                 k9 = 100
             }
             //System.out.println("Row in power zone 1");
             if (db.power >= pz_2) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 1!!!!")
+                    fixMessage = "You aren't in power zone 1!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_3++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -1150,22 +1155,22 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k10 == 0) {
-                println()
-                println("**********************")
-                println("Row in power zone 4")
-                println("**********************")
-                println()
+                pzMessage = "Row in power zone 4"
+                pzSetChanges.setMessage(pzMessage)
                 k10 = 100
             }
             //System.out.println("Row in power zone 4");
             if (db.power < pz_4 || db.power >= pz_5) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 4!!!!")
+                    fixMessage = "You aren't in power zone 4!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_3++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
@@ -1176,51 +1181,47 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
             if (k11 == 0) {
-                //println()
-                //println("**********************")
-                //println("Row in power zone 1")
-                //println("**********************")
-                //println()
+                pzMessage = "Row in power zone 1"
+                pzSetChanges.setMessage(pzMessage)
                 k11 = 666
             }
             //System.out.println("Row in power zone 1");
             if (db.power >= pz_2) {
                 count++
                 if (count > 4) {
-                    println("You aren't in power zone 1!!!!")
+                    fixMessage = "You aren't in power zone 1!!!!"
+                    pzFixChanges.setMessage(fixMessage)
                     fail_count_3++
                     count = 0
                 }
             } else {
+                fixMessage = "You are in zone!! Keep it up!!"
+                pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
         }
         val avgPow = sum.toDouble() / length //uncomment
-        // TODO add avg power to database
-        //}
-        //println("fail count: $fail_count_2")
+
         //interval_predictor("2", fail_count_2)
-        //TODO add fail count to database
         fail_count_3 = 66 //for database integration testing
         db.add_history(GlobalVariables.loggedInUsername, "interval3", fail_count_3, avgPow)
         return powtimearray
     }
 
-    fun pace(length: Int, db: DatabaseHelper): ArrayList<Double> {
+    fun pace(pzSetChanges: VariableChanges, pzFixChanges: VariableChanges, length: Int, db: DatabaseHelper): ArrayList<Double> {
         //pace code
         var count = 0
         val j = 0
         var sum = 0
         var length = 0
         val powtimearray = arrayListOf<Double>()
+
+        var pzMessage = ""
+        var fixMessage = ""
+
         if (length == 20) {
-            println()
-            println("**********************")
-            println("Begin rowing!")
-            println("**********************")
-            println()
-            //ignore first 5 to allow for user to get to steady state
-            //for (int i = 5; i < time_33.size(); i++) {
+            pzMessage = "Begin Rowing!"
+            pzSetChanges.setMessage(pzMessage)
             while (db.time_33 <= 1200) { // less than 20-min
                 sum += db.power
                 length += 1
@@ -1230,28 +1231,25 @@ class workouts : AppCompatActivity() {
                 if (Math.abs(db.power - db.pastPower) > 4) {
                     count++
                     if (count > 2) {
-                        //TODO incorporate UI?
-                        println("Your power output is inconsistent! Try to improve pacing!")
+                        fixMessage = "Your power output is inconsistent! Try to improve pacing!"
+                        pzFixChanges.setMessage(fixMessage)
                         pace_fail_20++
                         count = 0
                     }
                 } else {
+                    fixMessage = "Nice pace!! Keep it up!!"
+                    pzFixChanges.setMessage(fixMessage)
                     count = 0
                 }
             }
             //}
-            pace_fail_20 = 202020
-            println("fail count 20: " + pace_fail_20)
+            pace_fail_20 = 202020 //for integration testing
             //pace_predictor("20", pace_fail_20)
             val avgPow = sum.toDouble() / length //uncomment
             db.add_history(GlobalVariables.loggedInUsername, "pace20", pace_fail_20, avgPow)
         } else if (length == 30) {
-            println()
-            println("**********************")
-            println("Begin rowing!")
-            println("**********************")
-            println() //ignore first 5 to allow for user to get to steady state
-            //for (int i = 5; i < time_33.size(); i++) {
+            pzMessage = "Begin Rowing!"
+            pzSetChanges.setMessage(pzMessage)
             while (db.time_33 <= 1800) { // less than 30-min
                 sum += db.power
                 length += 1
@@ -1261,27 +1259,25 @@ class workouts : AppCompatActivity() {
                 if (Math.abs(db.power - db.pastPower) > 4) {
                     count++
                     if (count > 2) {
-                        println("Your power output is inconsistent! Try to improve pacing!")
+                        fixMessage = "Your power output is inconsistent! Try to improve pacing!"
+                        pzFixChanges.setMessage(fixMessage)
                         pace_fail_30++
                         count = 0
                     }
                 } else {
+                    fixMessage = "Nice pace!! Keep it up!!"
+                    pzFixChanges.setMessage(fixMessage)
                     count = 0
                 }
             }
             //}
-            pace_fail_30 = 303030
-            //println("fail count 30: " + pace_fail_30)
+            pace_fail_30 = 303030 // for integration testing
             //pace_predictor("30", pace_fail_30)
             val avgPow = sum.toDouble() / length //uncomment
             db.add_history(GlobalVariables.loggedInUsername, "pace30", pace_fail_30, avgPow)
         } else if (length == 40) {
-            println()
-            println("**********************")
-            println("Begin rowing!")
-            println("**********************")
-            println() //ignore first 5 to allow for user to get to steady state
-            //for (int i = 5; i < time_33.size(); i++) {
+            pzMessage = "Begin Rowing!"
+            pzSetChanges.setMessage(pzMessage)
             while (db.time_33 <= 2400) { // less than 40-min
                 sum += db.power
                 length += 1
@@ -1291,23 +1287,22 @@ class workouts : AppCompatActivity() {
                 if (Math.abs(db.power - db.pastPower) > 4) {
                     count++
                     if (count > 2) {
-                        println("Your power output is inconsistent! Try to improve pacing!")
+                        fixMessage = "Your power output is inconsistent! Try to improve pacing!"
+                        pzFixChanges.setMessage(fixMessage)
                         pace_fail_40++
                         count = 0
                     }
                 } else {
+                    fixMessage = "Nice pace!! Keep it up!!"
+                    pzFixChanges.setMessage(fixMessage)
                     count = 0
                 }
             }
-            //}
-            pace_fail_40 = 404040
-            println("fail count 40: " + pace_fail_40)
+            pace_fail_40 = 404040 //for integration testing
             //pace_predictor("40", pace_fail_40)
             val avgPow = sum.toDouble() / length //uncomment
             db.add_history(GlobalVariables.loggedInUsername, "pace40", pace_fail_40, avgPow)
         }
-        // TODO add avg power to database
-        //TODO add fail count to database????!!
         return powtimearray
     }
 
