@@ -19,7 +19,6 @@ import com.ti.neurow.R;
 import com.ti.neurow.ble.MainActivity;
 import com.ti.neurow.ble.UserBTConfig;
 import com.ti.neurow.db.MainDBActivity;
-import com.ti.neurow.db.User;
 
 public class MainUIActivity extends AppCompatActivity {
 
