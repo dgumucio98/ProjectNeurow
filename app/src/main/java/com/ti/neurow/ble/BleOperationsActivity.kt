@@ -95,83 +95,100 @@ class BleOperationsActivity : AppCompatActivity() {
         }
 
 
+        /*
+        * This function is not working leads to hangups in the code do not use this
+        * the while loop stalls the entire application
+        * TO DO: Rewrite this with listeners
+         */
         add_to_db.setOnClickListener {
+            print("The `ADD TO DB` button has been pressed!\n")
             val db = DatabaseHelper(this@BleOperationsActivity) //making reference to database
             //Adding to data33 table
             var time_limit = 300.0 // 2400sec for 40mins     300.0sec for 5mins
             var past_time33 = 0.0
-            var past_time35 = 0.0
-            while (globalTime33 > time_limit || globalTime33 > time_limit) {
-                // adding to data33 Table
-                var current_time33 = globalTime33
-                  if (past_time33 < current_time33) {
-                      var realdata33 = data33(
-                          globalTime33,
-                          globalIntCnt,
-                          globalAvgPwr33,
-                          globalTotCal33,
-                          globalSpltIntAvgPace33,
-                          globalSpltIntAvgPwr33,
-                          globalSpltIntAvgCal33.toDouble(),
-                          globalLstSpltTime33,
-                          globalLstSpltDist33.toDouble()
-                      )
-                      var success = db.add_dataframe33(realdata33)
-                      if (success == true) {
-                          Toast.makeText(
-                              this@BleOperationsActivity,
-                              "Successfully entered table",
-                              Toast.LENGTH_SHORT
-                          ).show() //Testing
-                      } else {
-                          Toast.makeText(
-                              this@BleOperationsActivity,
-                              "Did not enter table",
-                              Toast.LENGTH_SHORT
-                          ).show() //Testing
-                      }
-                  } else {
-                      continue
-                  }
-                  past_time33 = current_time33
-
-
-/*                // adding to data35 Table
-                var current_time35 = time.ble
-                if (past_time35 < current_time35) {
-                    var realdata35 = data35(
-                        time_35.ble,
-                        dist.ble,
-                        drive_len.ble,
-                        drive_time.ble,
-                        stroke_rec_time.ble,
-                        stroke_dist.ble,
-                        peak_drive_force.ble,
-                        avg_drive_force.ble,
-                        work_per_stroke.ble,
-                        stroke_count.ble
-                    )
-                    var success35 = db.add_dataframe35(realdata35)
-                    if (success35 == true) {
-                        Toast.makeText(
-                            this@BleOperationsActivity,
-                            "Successfully entered table",
-                            Toast.LENGTH_SHORT
-                        ).show() //Testing
-                    } else {
-                        Toast.makeText(
-                            this@BleOperationsActivity,
-                            "Did not enter table",
-                            Toast.LENGTH_SHORT
-                        ).show() //Testing
-                    }
-                } else {
-                    continue
-                }
-                past_time35 = current_time35 */
-
-
-            }
+            print("The global time is $globalTime33\n")
+            print("The loop time is $past_time33\n")
+//            while (globalTime33 < time_limit) {// || globalTime33 < time_limit) {
+//                print("The global time is $globalTime33\n")
+//                var past_time35 = 0.0
+//                print("The while loop has begun\n")
+//                // adding to data33 Table
+//                var current_time33 = globalTime33
+//                if (past_time33 < current_time33) {
+//                      var realdata33 = data33(
+//                          globalTime33,
+//                          globalIntCnt,
+//                          globalAvgPwr33,
+//                          globalTotCal33,
+//                          globalSpltIntAvgPace33,
+//                          globalSpltIntAvgPwr33,
+//                          globalSpltIntAvgCal33.toDouble(),
+//                          globalLstSpltTime33,
+//                          globalLstSpltDist33.toDouble()
+//                      )
+//                      var success = db.add_dataframe33(realdata33)
+//                      if (success == true) {
+//                          print("==============================")
+//                          print("The DF33 has been added to the Database\n")
+//                          print("==============================")
+//
+////                          Toast.makeText(
+////                              this@BleOperationsActivity,
+////                              "Successfully entered table",
+////                              Toast.LENGTH_SHORT
+////                          ).show() //Testing
+//                      } else {
+//                          print("==============================")
+//                          print("The DF33 has failed to the Database\n")
+//                          print("==============================")
+////                          Toast.makeText(
+////                              this@BleOperationsActivity,
+////                              "Did not enter table",
+////                              Toast.LENGTH_SHORT
+////                          ).show() //Testing
+//                      }
+//                  } else {
+//                      continue
+//                  }
+//                  past_time33 = current_time33
+//
+//
+///*                // adding to data35 Table
+//                var current_time35 = time.ble
+//                if (past_time35 < current_time35) {
+//                    var realdata35 = data35(
+//                        time_35.ble,
+//                        dist.ble,
+//                        drive_len.ble,
+//                        drive_time.ble,
+//                        stroke_rec_time.ble,
+//                        stroke_dist.ble,
+//                        peak_drive_force.ble,
+//                        avg_drive_force.ble,
+//                        work_per_stroke.ble,
+//                        stroke_count.ble
+//                    )
+//                    var success35 = db.add_dataframe35(realdata35)
+//                    if (success35 == true) {
+//                        Toast.makeText(
+//                            this@BleOperationsActivity,
+//                            "Successfully entered table",
+//                            Toast.LENGTH_SHORT
+//                        ).show() //Testing
+//                    } else {
+//                        Toast.makeText(
+//                            this@BleOperationsActivity,
+//                            "Did not enter table",
+//                            Toast.LENGTH_SHORT
+//                        ).show() //Testing
+//                    }
+//                } else {
+//                    continue
+//                }
+//                past_time35 = current_time35 */
+//
+//
+//            }
         }
 
     }
