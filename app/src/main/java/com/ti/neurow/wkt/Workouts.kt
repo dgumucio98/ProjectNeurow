@@ -11,6 +11,7 @@ import java.io.InputStreamReader
 import com.ti.neurow.R
 import com.ti.neurow.ui.Interval20Activity
 import com.ti.neurow.db.DatabaseHelper
+import com.ti.neurow.VariableChanges
 
 class workouts : AppCompatActivity() {
     private var ftp = 45
@@ -53,7 +54,8 @@ class workouts : AppCompatActivity() {
     // ftp calculator workout method
     // TODO changed from ftp_calc to ftpCalc
     // TODO In main activity change db constructor
-    fun ftpCalc(db: DatabaseHelper): ArrayList<Double> {
+
+    fun ftpCalc(myChanges: VariableChanges , db: DatabaseHelper): ArrayList<Double> {
         //ftp calculator code that calculates ftp and defines power zones
         //method returns integer ftp value
         //System.out.println("You are now in the ftp workout!");
@@ -66,9 +68,8 @@ class workouts : AppCompatActivity() {
 
         //testing UI integration
         val message = "You aren't in power zone 2!"
-//        val intent = Intent(this, Interval20Activity::class.java)
-//        intent.putExtra("message", message)
-//        startActivity(intent)
+
+        myChanges.setMessage(message)
 
 /*        while (db.time_33 < 1200) { //uncomment
             sum += db.power
