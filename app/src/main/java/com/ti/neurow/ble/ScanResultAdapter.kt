@@ -10,6 +10,10 @@ import kotlinx.android.synthetic.main.row_scan_result.view.mac_address
 import kotlinx.android.synthetic.main.row_scan_result.view.signal_strength
 import org.jetbrains.anko.layoutInflater
 
+/*
+* Here is the custom class of ScanResultAdapter, an adapter for the recyclerview
+* So in part this is an extension of that class
+ */
 class ScanResultAdapter(
     private val items: List<ScanResult>,
     private val onClickListener: ((device: ScanResult) -> Unit)
