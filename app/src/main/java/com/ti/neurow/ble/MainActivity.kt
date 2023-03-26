@@ -45,7 +45,11 @@ class MainActivity : AppCompatActivity() {
     private val bluetoothAdapter: BluetoothAdapter by lazy {
         // This casts whatever is returned by getSystemService as type BluetoothManager
         val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        // The return value is the adapter for the bluetoothManager
+        // The adapter is required for any bluetooth activity
+        // will return null if there is no BT, since via Lazy check is already done
         bluetoothManager.adapter
+        // The above is the BT Radio
     }
 
     private val bleScanner by lazy {
@@ -74,17 +78,13 @@ class MainActivity : AppCompatActivity() {
 
     // This is an empty list of objects ScanResult objects
     private val scanResults = mutableListOf<ScanResult>()
-    /* To this is a later initialization that runs the lambda function
-    in the body, which returns the ScanResultAdapter to the value of 'scanResultAdapter'
-    Which has it's own lambda function in the constructor  of ScanResultAdapter
-    the parameter result will check if it isscanning and if so stopBleScan
-    Then, 'with(value)' do function block {}
-    The last expression in the lambda is considered the return value */
 
-    /* ScanResultAdapter is a recycler view
-    * scanResultAdapter : RecyclerView.Adapter
-    * This is a recyclerview
-    */
+    /* ScanResultAdapter is a recycler view Adapter, see class extension definition in file for more
+    * This block works be using the ScanResultAdapter Constructor which takes a list of ScanResults
+    * and an onclick listener, which in this case is the lambda function as the argument, so when
+    *  a user clicks on said item from the adapter, the lambda is ran hence vvvvvvvv
+    * This is where we connect to the device selected on screen from adapter in the recylerview
+     */
     private val scanResultAdapter: ScanResultAdapter by lazy {
         ScanResultAdapter(scanResults) { result ->
             if (isScanning) {
@@ -136,12 +136,9 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         ConnectionManager.registerListener(connectionEventListener)
-//        if (!bluetoothAdapter.isEnabled) {
-//            promptEnableBluetooth()
-//        }
-        //Placing our own custom bluetooth enable
-        if(!bluetoothAdapter.isEnabled) {
-
+        //Reenable this for working prompt, should work even with new API
+        if (!bluetoothAdapter.isEnabled) {
+            promptEnableBluetooth()
         }
     }
 
@@ -180,16 +177,6 @@ class MainActivity : AppCompatActivity() {
     private fun promptEnableBluetooth() {
         if (!bluetoothAdapter.isEnabled) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return
-            }
             startActivityForResult(enableBtIntent, ENABLE_BLUETOOTH_REQUEST_CODE)
         }
     }
@@ -205,55 +192,12 @@ class MainActivity : AppCompatActivity() {
             //For any discoverable devices uncomment
             //bleScanner.startScan(null, scanSettings, scanCallback)
             //with parsing for PM5
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return
-            }
             bleScanner.startScan(scanFilters, scanSettings, scanCallback)
             isScanning = true
         }
     }
-//    private fun startBleScan() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !isLocationPermissionGranted) {
-//            requestLocationPermission()
-//        } else {
-//            scanResults.clear()
-//            scanResultAdapter.notifyDataSetChanged()
-//            //For any discoverable devices uncomment
-//            //bleScanner.startScan(null, scanSettings, scanCallback)
-//            //with parsing for PM5
-//            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-//                // TODO: Consider calling
-//                //    ActivityCompat#requestPermissions
-//                // here to request the missing permissions, and then overriding
-//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                //                                          int[] grantResults)
-//                // to handle the case where the user grants the permission. See the documentation
-//                // for ActivityCompat#requestPermissions for more details.
-//                return
-//            }
-//            bleScanner.startScan(scanFilters, scanSettings, scanCallback)
-//            isScanning = true
-//        }
-//    }
 
     private fun stopBleScan() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
         bleScanner.stopScan(scanCallback)
         isScanning = false
     }
@@ -302,25 +246,17 @@ class MainActivity : AppCompatActivity() {
     //call back for overrides on the scanCallBack
     private val scanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult) {
-            // searches chan scanResults for a device address result
-            // the predicate takes a collection element ad compares it
-            // returns true and if so returns the list in w/e item matches
+            // searches scanResults for a device address result
+            // scanResults is defined earlier to be an initial empty set of type ScanResult
+            // `it` is the current ScanResult object and the device associated with the object
+            // indexOfFirst is a function that is given an expression and returns the first
+            // index of the match
             val indexQuery = scanResults.indexOfFirst { it.device.address == result.device.address }
             if (indexQuery != -1) { // A scan result already exists with the same address
                 scanResults[indexQuery] = result
                 scanResultAdapter.notifyItemChanged(indexQuery)
             } else {
                 with(result.device) {
-                    if (ActivityCompat.checkSelfPermission(this@MainActivity, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return
-                    }
                     Timber.i("Found BLE device! Name: ${name ?: "Unnamed"}, address: $address")
                 }
                 scanResults.add(result)
@@ -335,6 +271,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     // What is .apply?
+    // This event listener is completed it launches the second activity
+    // The connectionEvent Listener is
     private val connectionEventListener by lazy {
         ConnectionEventListener().apply {
             onConnectionSetupComplete = { gatt ->

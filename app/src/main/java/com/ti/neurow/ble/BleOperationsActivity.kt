@@ -9,7 +9,9 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,8 +30,13 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.UUID
+import com.ti.neurow.db.DatabaseHelper// access database
+import com.ti.neurow.db.data33       // access data33 class
+import com.ti.neurow.db.data35       // access data33 class
+
 
 class BleOperationsActivity : AppCompatActivity() {
+    lateinit var add_to_db: Button
 
     private lateinit var device: BluetoothDevice
     private val dateFormatter = SimpleDateFormat("MMM d, HH:mm:ss", Locale.US)
@@ -58,7 +65,9 @@ class BleOperationsActivity : AppCompatActivity() {
     }
     private var notifyingCharacteristics = mutableListOf<UUID>()
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
+
         ConnectionManager.registerListener(connectionEventListener)
         super.onCreate(savedInstanceState)
         device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
@@ -70,6 +79,8 @@ class BleOperationsActivity : AppCompatActivity() {
             setDisplayShowTitleEnabled(true)
             title = getString(R.string.ble_playground)
         }
+        // When adding things we need our layout first to assign an ID
+        add_to_db = findViewById(R.id.add_to_db)
         setupRecyclerView()
         request_mtu_button.setOnClickListener {
             if (mtu_field.text.isNotEmpty() && mtu_field.text.isNotBlank()) {
@@ -82,6 +93,87 @@ class BleOperationsActivity : AppCompatActivity() {
             }
             hideKeyboard()
         }
+
+
+        add_to_db.setOnClickListener {
+            val db = DatabaseHelper(this@BleOperationsActivity) //making reference to database
+            //Adding to data33 table
+            var time_limit = 300.0 // 2400sec for 40mins     300.0sec for 5mins
+            var past_time33 = 0.0
+            var past_time35 = 0.0
+            while (globalTime33 > time_limit || globalTime33 > time_limit) {
+                // adding to data33 Table
+                var current_time33 = globalTime33
+                  if (past_time33 < current_time33) {
+                      var realdata33 = data33(
+                          globalTime33,
+                          globalIntCnt,
+                          globalAvgPwr33,
+                          globalTotCal33,
+                          globalSpltIntAvgPace33,
+                          globalSpltIntAvgPwr33,
+                          globalSpltIntAvgCal33.toDouble(),
+                          globalLstSpltTime33,
+                          globalLstSpltDist33.toDouble()
+                      )
+                      var success = db.add_dataframe33(realdata33)
+                      if (success == true) {
+                          Toast.makeText(
+                              this@BleOperationsActivity,
+                              "Successfully entered table",
+                              Toast.LENGTH_SHORT
+                          ).show() //Testing
+                      } else {
+                          Toast.makeText(
+                              this@BleOperationsActivity,
+                              "Did not enter table",
+                              Toast.LENGTH_SHORT
+                          ).show() //Testing
+                      }
+                  } else {
+                      continue
+                  }
+                  past_time33 = current_time33
+
+
+/*                // adding to data35 Table
+                var current_time35 = time.ble
+                if (past_time35 < current_time35) {
+                    var realdata35 = data35(
+                        time_35.ble,
+                        dist.ble,
+                        drive_len.ble,
+                        drive_time.ble,
+                        stroke_rec_time.ble,
+                        stroke_dist.ble,
+                        peak_drive_force.ble,
+                        avg_drive_force.ble,
+                        work_per_stroke.ble,
+                        stroke_count.ble
+                    )
+                    var success35 = db.add_dataframe35(realdata35)
+                    if (success35 == true) {
+                        Toast.makeText(
+                            this@BleOperationsActivity,
+                            "Successfully entered table",
+                            Toast.LENGTH_SHORT
+                        ).show() //Testing
+                    } else {
+                        Toast.makeText(
+                            this@BleOperationsActivity,
+                            "Did not enter table",
+                            Toast.LENGTH_SHORT
+                        ).show() //Testing
+                    }
+                } else {
+                    continue
+                }
+                past_time35 = current_time35 */
+
+
+            }
+        }
+
     }
 
     override fun onDestroy() {

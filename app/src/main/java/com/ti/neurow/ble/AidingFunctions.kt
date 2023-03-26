@@ -6,6 +6,24 @@ val dataFrame35Queue: Queue<DataFrame35> = LinkedList<DataFrame35>()
 val dataFrame3DQueue: Queue<DataFrame3D> = LinkedList<DataFrame3D>()
 val queSize: Int = 10 // Our example target size can be made arbitrarily
 
+// Value are negative to denote that there isn't anything valid in the variables as of yet
+var globalTime33 : Double = -1.0 // In Seconds
+
+var globalIntCnt : Int = -1 // Unitless
+
+var globalAvgPwr33 : Int = -1 // Assumption in Watts
+
+var globalTotCal33 : Int = -1 // In calories
+
+var globalSpltIntAvgPace33 : Double = -1.0 // In Seconds
+
+var globalSpltIntAvgCal33 : Int = -1 // In Calories/hr
+
+var globalSpltIntAvgPwr33 : Int = -1 //  In Watts
+
+var globalLstSpltTime33 :  Double = -1.0 // In Seconds
+
+var globalLstSpltDist33 : Int = -1 // In Meters
 
 fun uuidParsing(uuidString: String, df: UByteArray, onToggle: Boolean): Unit {
     if(uuidString == "ce060032-43e5-11e4-916c-0800200c9a66") {
