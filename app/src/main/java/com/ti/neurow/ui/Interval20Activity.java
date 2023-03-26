@@ -65,25 +65,17 @@ public class Interval20Activity extends AppCompatActivity {
             }
         });
 
-
-//        gifRipple = (GifImageView) findViewById(R.id.gifRippleRed);
-        btnStartChron = (Button) findViewById(R.id.btnBegin);
-        btnStartChron.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gifRipple.setVisibility(View.INVISIBLE);
-            }
-        });
-
         // [TEST] Alyson button listener
         btnAlyson = (Button) findViewById(R.id.btnAlyson);
         btnAlyson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // Prepare database, workout, and dynammic variable objects
                 DatabaseHelper db = new DatabaseHelper(Interval20Activity.this);
                 workouts workouts = new workouts();
-
                 VariableChanges myChanges = new VariableChanges();
+
                 myChanges.setMessageListener(new VariableChanges.MessageListener() {
                     @Override
                     public void onMessageChanged(String newMessage) {
