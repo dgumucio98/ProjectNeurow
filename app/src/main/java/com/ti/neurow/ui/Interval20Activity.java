@@ -66,6 +66,7 @@ public class Interval20Activity extends AppCompatActivity {
         });
 
 
+
 //        gifRipple = (GifImageView) findViewById(R.id.gifRippleRed);
         btnStartChron = (Button) findViewById(R.id.btnBegin);
         btnStartChron.setOnClickListener(new View.OnClickListener() {
