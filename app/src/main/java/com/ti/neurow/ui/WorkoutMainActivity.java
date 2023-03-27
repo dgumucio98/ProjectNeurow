@@ -15,6 +15,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ti.neurow.GlobalVariables;
 import com.ti.neurow.R;
 
 import java.text.DateFormat;
@@ -51,6 +52,9 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         getSupportActionBar().hide();
 
         setContentView(R.layout.activity_workout_main);
+
+        // [TEST] see current value of loggedInUsername
+        Toast.makeText(this,"[TEST 1] loggedInUsername: " + GlobalVariables.loggedInUsername, Toast.LENGTH_LONG).show();
 
 
         // Create date status element

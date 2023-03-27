@@ -1,17 +1,11 @@
 package com.ti.neurow.wkt
 
 
-import android.content.Intent
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.ti.neurow.GlobalVariables
-import kotlinx.android.synthetic.main.activity_db_main.*
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import com.ti.neurow.R
-import com.ti.neurow.ui.Interval20Activity
-import com.ti.neurow.db.DatabaseHelper
 import com.ti.neurow.VariableChanges
+import com.ti.neurow.db.DatabaseHelper
 
 class workouts : AppCompatActivity() {
     private var ftp = 45
@@ -109,7 +103,17 @@ class workouts : AppCompatActivity() {
         powtimearray.add(4.0)
         powtimearray.add(4.0)
 
-        db.updateuserFTP(GlobalVariables.loggedInUsername, this.ftp, this.pz_1, this.pz_2, this.pz_3, this.pz_4, this.pz_5, this.pz_6, this.pz_7);
+        // [TEST] see current value of loggedInUsername
+        //Toast.makeText(this@workouts, "hi", Toast.LENGTH_SHORT).show()
+
+        // [TEST] see current value of loggedInUsername
+/*        Toast.makeText(
+            this,
+            "[TEST 3] loggedInUsername: " + GlobalVariables.loggedInUsername,
+            Toast.LENGTH_LONG
+        ).show()*/
+
+        //db.updateuserFTP(GlobalVariables.loggedInUsername, this.ftp, this.pz_1, this.pz_2, this.pz_3, this.pz_4, this.pz_5, this.pz_6, this.pz_7);
 
         //return arraylist of time and power
         return powtimearray
