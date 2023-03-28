@@ -52,14 +52,8 @@ class workouts : AppCompatActivity() {
     }
 
     // ftp calculator workout method
-    // TODO changed from ftp_calc to ftpCalc
-    // TODO In main activity change db constructor
-
     fun ftpCalc(myChanges: VariableChanges , db: DatabaseHelper): ArrayList<Double> {
         //ftp calculator code that calculates ftp and defines power zones
-        //method returns integer ftp value
-        //System.out.println("You are now in the ftp workout!");
-        //System.out.println("Please row for 20 minutes at a pace that is challenging but sustainable");
         //var sum = 0 //uncomment
         //var length = 0 //uncomment
         //define one arraylist to return from function
@@ -1309,6 +1303,8 @@ class workouts : AppCompatActivity() {
     // Returns value of predicted power
     fun powerPredictor(power: ArrayList<Double>): Double {
         println("in predictor")
+        //TODO clean up code
+        //TODO integrate UI into it
 
         //TODO CHECK INT TO DOUBLE CONVERSION
         //TODO add statements about if list is empty or what to do if just one element
@@ -1364,24 +1360,13 @@ class workouts : AppCompatActivity() {
         // y = mx + b
         val predic = (slope * (length + 4)) + y_int // TODO is that length + 4 correct?
         // TODO does the predicted power need to be an integer or not
+        // TODO what if prediction is negative? how to handle
         println("In 5 more workouts your power could be " + predic + " watts")
         println("end predictor")
 
         return predic
     }
 
-    //static void power_predictor() {
-    //database returns array of power of one workout type for one user
-    //calls this function with that array as a parameter
-    //
-    //if the history table has more than 1 entry
-    // if (len(data_table) > 1) {
-    //     linear regression of watts with sequence of 1 2 3 ... for x coordinate
-    //     if slope is positive make prediction of how many more workouts to do to get x watts of output
-    //     if slope is negative, make prediction of which workouts to work on? which workout is causing the decrease in power output
-    //      }
-    // }
-    //
 
     companion object {
         /*    static void two_predictor() {
