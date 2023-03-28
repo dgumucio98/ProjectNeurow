@@ -2,10 +2,16 @@ package com.ti.neurow;
 
 public class VariableChanges {
 
+    // Step 1: Add variables here:
+    //EXAMPLE: private [variable type] [variable name];
     private String message; // the message that may change
+
+    // Step 2: Establish listeners here:
+    //EXAMPLE: private [listener name] listener;
     private MessageListener listener; // listener that for changes
+
     
-    // 1. Sets a new message and notifies the listener if one has been set.
+    // Step 3: Write method to update variable
     public void setMessage(String newMessage) {
         message = newMessage;
         
@@ -15,7 +21,8 @@ public class VariableChanges {
         }
     }
     
-    // 2. Sets a new listener to receive message change updates.
+    // Step 4: Sets a new listener to receive message change updates.
+    // EXAMPLE: private [listener name] listener;
     public void setMessageListener(MessageListener newListener) {
         listener = newListener;
     }
