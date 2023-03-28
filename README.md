@@ -1,4 +1,4 @@
-TI Project #3 Source Code for "Neurow", a rowing fitness application.
+TI Project #3 source code for "Neurow", a rowing fitness application.
 by Alyson, Meredith, Nick, and Diego
 
 Subsystems
