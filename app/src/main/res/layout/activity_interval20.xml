@@ -32,7 +32,7 @@
         android:layout_marginStart="550dp"
         android:layout_marginTop="100dp"
         android:backgroundTint="#FFA091"
-        android:text="[TEST] Begin FTP Workout"
+        android:text="[TEST] Run ftpCalc"
         android:textColor="@color/white"
         android:textSize="30sp" />
 

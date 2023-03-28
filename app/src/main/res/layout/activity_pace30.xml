@@ -1,12 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.Pace30Activity"
-    >
+    android:background="@drawable/dark_grey_background"
+    tools:context=".ui.Pace30Activity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/btnBegin"
+        android:layout_width="1225dp"
+        android:layout_height="425dp"
+        android:layout_below="@id/simpleChronometer"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="50dp"
+        android:backgroundTint="#489C52"
+        android:fontFamily="sans-serif-black"
+        android:text="START"
+        android:textColor="@color/white"
+        android:textSize="175sp" />
+
+    <TextView
+        android:id="@+id/txtWorkoutName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="PACE WORKOUT"
+        android:layout_below="@id/txtWorkoutAttribute"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="80sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/txtWorkoutAttribute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="20-MINUTE"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="#569A5B"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtUserID"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="#802D7B"
+        android:text="[UserID]"
+        android:textColor="@color/white"
+        android:textSize="25sp" />
+
+    <Chronometer
+        android:id="@+id/simpleChronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtWorkoutName"
+        android:layout_centerHorizontal="true"
+        android:textColor="#D3D3D3"
+        android:textSize="60sp" />
+
+</RelativeLayout>

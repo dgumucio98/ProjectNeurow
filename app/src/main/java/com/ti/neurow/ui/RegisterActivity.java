@@ -49,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 // Get username and password from fields
                 String Username = usernameEditText.getText().toString(); // extract username from EditText
-                String Password = usernameEditText.getText().toString(); // extract password from EditText
+                String Password = passwordEditText.getText().toString(); // extract password from EditText
 
                 if (TextUtils.isEmpty(Username)) { // if username EditText is empty
                     Toast.makeText(RegisterActivity.this, "Please enter a username", Toast.LENGTH_SHORT).show();

@@ -28,14 +28,14 @@
         android:versionName="1.0.0"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".PostInterval20Activity"
+            android:name=".ui.PostWorkoutActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".UserBTConfig"
+            android:name=".ble.UserBTConfig"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

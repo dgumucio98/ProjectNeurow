@@ -1,17 +1,11 @@
 package com.ti.neurow.wkt
 
 
-import android.content.Intent
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.ti.neurow.GlobalVariables
-import kotlinx.android.synthetic.main.activity_db_main.*
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import com.ti.neurow.R
-import com.ti.neurow.ui.Interval20Activity
-import com.ti.neurow.db.DatabaseHelper
 import com.ti.neurow.VariableChanges
+import com.ti.neurow.db.DatabaseHelper
 
 class workouts : AppCompatActivity() {
     private var ftp = 45
@@ -60,7 +54,7 @@ class workouts : AppCompatActivity() {
         //holds time in odd indices and power in even indices
         val powtimearray = arrayListOf<Double>()
 
-        //testing UI integration
+        // [TEST] Testing UI Integration
         val message = "You aren't in power zone 2!"
         myChanges.setMessage(message)
 

@@ -10,7 +10,6 @@
     android:orientation="vertical"
     tools:context=".ui.PostWorkoutActivity">
 
-    <!--text view for displaying heading-->
     <TextView
         android:id="@+id/idTVHead"
         android:layout_width="match_parent"
@@ -21,14 +20,12 @@
         android:layout_marginBottom="4dp"
         android:gravity="center"
         android:padding="4dp"
-        android:text="Post Workout Results"
+        android:text="[TEST] Post Workout Results"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <!--line graph view where we will
-        be displaying our data-->
     <com.jjoe64.graphview.GraphView
         android:id="@+id/Power_vs_Time"
         android:layout_width="500dp"
