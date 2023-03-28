@@ -1,7 +1,5 @@
 package com.ti.neurow.wkt
 
-
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.ti.neurow.GlobalVariables
 import com.ti.neurow.VariableChanges
@@ -33,6 +31,7 @@ class workouts : AppCompatActivity() {
         //ftp calculator code that calculates ftp and defines power zones
         //var sum = 0 //uncomment
         //var length = 0 //uncomment
+
         //define one arraylist to return from function
         //holds time in odd indices and power in even indices
         val powtimearray = arrayListOf<Double>()
@@ -41,14 +40,17 @@ class workouts : AppCompatActivity() {
         val message = "You aren't in power zone 2!"
         myChanges.setMessage(message)
 
+        //uncomment
 /*        while (db.time_33 < 1200) { //uncomment
             sum += db.power
             length += 1
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
         }*/
+
         //val avgPow = sum.toDouble() / length //uncomment
-        val avgPow = 50
+        val avgPow = 50 // [TEST]
+
         //define ftp = 95% of average power
         ftp = (0.95 * avgPow).toInt() //uncomment
 
@@ -61,7 +63,7 @@ class workouts : AppCompatActivity() {
         pz_6 = (1.21 * ftp).toInt() //Very Hard: 121%-150% of FTP
         pz_7 = (1.51 * ftp).toInt() //Max Effort: >151% of FTP
 
-        //this is just for testing, delete
+        //[TEST] this is just for testing, delete
         pz_1 = 1
         pz_2 = 1
         pz_3 = 1
@@ -71,6 +73,7 @@ class workouts : AppCompatActivity() {
         pz_7 = 1
         ftp = 45;
 
+        // [TEST]
         powtimearray.add(1.0)
         powtimearray.add(1.0)
         powtimearray.add(2.0)
@@ -86,10 +89,9 @@ class workouts : AppCompatActivity() {
         return powtimearray
     }
 
-    // interval_1 workout method, 20 min
+    // interval1 workout method, 20 min
     fun interval_1(pzSetChanges: VariableChanges, pzFixChanges: VariableChanges, db: DatabaseHelper): ArrayList<Double> {
-        //interval_1 code
-        var count = 0
+        //interval1 (20 min) method code
         var k1 = 0
         var k2 = 0
         var k3 = 0
@@ -112,13 +114,15 @@ class workouts : AppCompatActivity() {
         var k20 = 0
         var k21 = 0
         var k22 = 0
-        var failCount = 0
-        var sum = 0
-        var length = 0
-        val powtimearray = arrayListOf<Double>()
 
-        var pzMessage = ""
-        var fixMessage = ""
+        var count = 0 //count subsequent errors
+        var failCount = 0 //actual fail count
+        var sum = 0 //summing up power
+        var length = 0 //number of power entries to calc average
+        val powtimearray = arrayListOf<Double>() //arraylist to hold time and power
+
+        var pzMessage = "" //declaring power zone message
+        var fixMessage = "" //delcaring power zone error message
 
         // 5 min at zone 2
         while (db.time_33 <= 300) {
@@ -672,34 +676,30 @@ class workouts : AppCompatActivity() {
             }
         }
         val avgPow = sum.toDouble() / length //uncomment
-        // TODO add avg power to database
-        //}
         //interval_suggestor("1", failCount)
-        //TODO add line to add failcount to database
         failCount = 25 // for  integration testing
         db.add_history(GlobalVariables.loggedInUsername, "interval1", failCount, avgPow)
         return powtimearray
     }
 
-    // interval_2 workout method, 30 min
-    fun interval_2(pzSetChanges: VariableChanges, pzFixChanges: VariableChanges, db: DatabaseHelper): ArrayList<Double> {
-        //interval_2 code
-        println("You are now in the interval_2 workout!")
-        var count = 0
+    // interval2 workout method, 30 min
+    fun interval2(pzSetChanges: VariableChanges, pzFixChanges: VariableChanges, db: DatabaseHelper): ArrayList<Double> {
+        //interval2 (30 min) method code
         var k1 = 0
         var k2 = 0
         var k3 = 0
         var k4 = 0
         var k5 = 0
         var k6 = 0
-        var sum = 0
-        var length = 0
-        val powtimearray = arrayListOf<Double>()
 
-        var failCount = 0
+        var count = 0 //count subsequent errors
+        var failCount = 0 //actual fail count
+        var sum = 0 //summing up power
+        var length = 0 //number of power entries to calc average
+        val powtimearray = arrayListOf<Double>() //arraylist to hold time and power
 
-        var pzMessage = ""
-        var fixMessage = ""
+        var pzMessage = "" //declaring power zone message
+        var fixMessage = "" //declaring power zone error message
 
         // 6 min at zone 3
         while (db.time_33 <= 360) {
@@ -855,18 +855,15 @@ class workouts : AppCompatActivity() {
             }
         }
         val avgPow = sum.toDouble() / length //uncomment
-        // TODO add avg power to database
-        //}
         //interval_suggestor("2", failCount)
-        //TODO add fail count to database
         failCount = 25 //for database integration testing
         db.add_history(GlobalVariables.loggedInUsername, "interval2", failCount, avgPow)
         return powtimearray
     }
 
-    // interval_3 workout method, 40 min
-    fun interval_3(pzSetChanges: VariableChanges, pzFixChanges: VariableChanges, db: DatabaseHelper): ArrayList<Double> {
-        var count = 0
+    // interval3 workout method, 40 min
+    fun interval3(pzSetChanges: VariableChanges, pzFixChanges: VariableChanges, db: DatabaseHelper): ArrayList<Double> {
+        //interval 3 (40 min) method code
         var k1 = 0
         var k2 = 0
         var k3 = 0
@@ -878,13 +875,16 @@ class workouts : AppCompatActivity() {
         var k9 = 0
         var k10 = 0
         var k11 = 0
-        var sum = 0
-        var length = 0
-        var failCount = 0
-        val powtimearray = arrayListOf<Double>()
 
-        var pzMessage = ""
-        var fixMessage = ""
+        var count = 0 //count subsequent errors
+        var failCount = 0 //actual fail count
+        var sum = 0 //summing up power
+        var length = 0 //number of power entries to calc average
+        val powtimearray = arrayListOf<Double>() //arraylist to hold time and power
+
+        var pzMessage = "" //declaring power zone message
+        var fixMessage = "" //delcaring power zone error message
+
 
         // 2 min at zone 2
         while (db.time_33 <= 120) {
@@ -1282,6 +1282,7 @@ class workouts : AppCompatActivity() {
         println("in predictor")
         //TODO clean up code
         //TODO integrate UI into it
+        //TODO don't need to integrate? bc he can just print the returned value??
 
         //TODO CHECK INT TO DOUBLE CONVERSION
         //TODO add statements about if list is empty or what to do if just one element
@@ -1344,117 +1345,68 @@ class workouts : AppCompatActivity() {
         return predic
     }
 
-    companion object {
-        /*    static void two_predictor() {
-        // TODO wait until later to work with UI on this
-        //2k predictor code
-        System.out.println("You are now in the 2k predictor workout!");
-        //
-    }*/
-        // TODO finish both graphing functions once diego knows how he wants packaged
-        /*    public ArrayList<DataPoint> power_pull() {
-        //power of pull graph for all workouts
-        // had to have sequence be Doubles bc DataPoint class uses double
-        System.out.println("You are in power of pull graph method!");
-
-        String file = "C:/Users/alyso/TAMU/2022Fall/ECEN_403_907/Psuedo_Data/pow_pull.csv";
-        CSVReaderTest.read_pow_pull(file, pow_pull);
-        ArrayList<DataPoint> data = new ArrayList<DataPoint>();
-        Double k = 0.0;
-        // TODO need to know how many entries in table?
-        // TODO does this need to be a new function
-        // TODO but the table will have multiple graphs and we are averaging?
-        // TODO or is this one graph at a time
-        for (int j = 0; j < pow_pull.size(); j++) {
-            data.add(new DataPoint(k, pow_pull.get(j)));
-            k++;
-        }
-       return data;
-    }*/
-        /*    public ArrayList<DataPoint> power_vs_time() {
-        // TODO wait until later to work with UI on this
-        //power vs time graph for pace workout
-        //time_33 and power
-        System.out.println("You are in power vs time graph method!");
-        DatabaseHelper db = new DatabaseHelper(workouts.this);
-
-        ArrayList<DataPoint> data = new ArrayList<DataPoint>();
-        // TODO need to know length of table of times?
-        for (int j = 0; j < time_33.size(); j++) {
-            double time = (double) db.getTime_33();
-            data.add(new DataPoint(time, db.getPower()));
-        }
-        return data;
-    }*/
-
-
-        fun interval_suggestor(intSuggestChanges: VariableChanges, interval_num: String, failCount: Int) {
-
-            var intSuggestion = "" //declare string to change and print to screen
-
-            if (interval_num === "1") { //20 min interval
-                if (failCount > 20) {
-                    intSuggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
-                    intSuggestChanges.setMessage(intSuggestion)
-                } else {
-                    intSuggestion = "You did well! Go again or try a longer interval workout!"
-                    intSuggestChanges.setMessage(intSuggestion)
-                }
+    //TODO these also could just return a string for diego to print?
+    //TODO better or worse to use listener object approach?
+    fun intervalSuggestion(intSuggestChanges: VariableChanges, interval_num: String, failCount: Int) {
+        var intSuggestion = "" //declare string to change and print to screen
+        if (interval_num === "1") { //20 min interval
+            if (failCount > 20) {
+                intSuggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
+                intSuggestChanges.setMessage(intSuggestion)
+            } else {
+                intSuggestion = "You did well! Go again or try a longer interval workout!"
+                intSuggestChanges.setMessage(intSuggestion)
             }
-            else if (interval_num === "2") { //30 min interval
-                if (failCount > 20 && failCount < 50) {
-                    intSuggestion = "You left your power zone often. Try doing the Interval 1 workout"
-                    intSuggestChanges.setMessage(intSuggestion)
-                } else if (failCount >= 50) {
-                    intSuggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
-                    intSuggestChanges.setMessage(intSuggestion)
-                } else {
-                    intSuggestion = "You did well! Go again or try a longer interval workout!"
-                    intSuggestChanges.setMessage(intSuggestion)
-                }
+        } else if (interval_num === "2") { //30 min interval
+            if (failCount > 20 && failCount < 50) {
+                intSuggestion = "You left your power zone often. Try doing the Interval 1 workout"
+                intSuggestChanges.setMessage(intSuggestion)
+            } else if (failCount >= 50) {
+                intSuggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
+                intSuggestChanges.setMessage(intSuggestion)
+            } else {
+                intSuggestion = "You did well! Go again or try a longer interval workout!"
+                intSuggestChanges.setMessage(intSuggestion)
             }
-            else if (interval_num === "3") { //40 min interval
-                if (failCount > 20 && failCount < 50) {
-                    intSuggestion = "You left your power zone often. Try doing the Interval 2 workout"
-                    intSuggestChanges.setMessage(intSuggestion)
-                } else if (failCount >= 50) {
-                    intSuggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
-                    intSuggestChanges.setMessage(intSuggestion)
-                } else {
-                    intSuggestion = "You did well! Go again or try redoing your FTP Calculator workout!"
-                    intSuggestChanges.setMessage(intSuggestion)
-                }
+        } else if (interval_num === "3") { //40 min interval
+            if (failCount > 20 && failCount < 50) {
+                intSuggestion = "You left your power zone often. Try doing the Interval 2 workout"
+                intSuggestChanges.setMessage(intSuggestion)
+            } else if (failCount >= 50) {
+                intSuggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
+                intSuggestChanges.setMessage(intSuggestion)
+            } else {
+                intSuggestion = "You did well! Go again or try redoing your FTP Calculator workout!"
+                intSuggestChanges.setMessage(intSuggestion)
             }
         }
+    }
 
-        fun pace_suggestor(paceSuggestChanges: VariableChanges, pace_num: String, failCount: Int) {
-
-            var paceSuggestion = "" //declare string to change and print to screen
-
-            if (pace_num === "20") {
-                if (failCount > 14) {
-                    paceSuggestion = "Your pace was very inconsistent. Try again or do an interval workout to work on fitness"
-                    paceSuggestChanges.setMessage(paceSuggestion)
-                } else {
-                    paceSuggestion = "You did well! Go again or try a longer pace workout!"
-                    paceSuggestChanges.setMessage(paceSuggestion)
-                }
-            } else if (pace_num === "30") {
-                if (failCount > 14) {
-                    paceSuggestion = "Your pace was very inconsistent. Try doing the 20 min pace workout instead"
-                    paceSuggestChanges.setMessage(paceSuggestion)
-                } else {
-                    paceSuggestion = "You did well! Go again or try a longer pace workout!"
-                    paceSuggestChanges.setMessage(paceSuggestion)
-                }
-            } else if (pace_num === "40") {
-                if (failCount > 14) {
-                    paceSuggestion = "Your pace was very inconsistent. Try doing the 30 min pace workout instead"
-                    paceSuggestChanges.setMessage(paceSuggestion)
-                } else {
-                    paceSuggestion = "You did well! Nice work!"
-                    paceSuggestChanges.setMessage(paceSuggestion)
-                }
+    fun paceSuggestion(paceSuggestChanges: VariableChanges, pace_num: String, failCount: Int) {
+        var paceSuggestion = "" //declare string to change and print to screen
+        if (pace_num === "20") {
+            if (failCount > 14) {
+                paceSuggestion = "Your pace was very inconsistent. Try again or do an interval workout to work on fitness"
+                paceSuggestChanges.setMessage(paceSuggestion)
+            } else {
+                paceSuggestion = "You did well! Go again or try a longer pace workout!"
+                paceSuggestChanges.setMessage(paceSuggestion)
+            }
+        } else if (pace_num === "30") {
+            if (failCount > 14) {
+                paceSuggestion = "Your pace was very inconsistent. Try doing the 20 min pace workout instead"
+                paceSuggestChanges.setMessage(paceSuggestion)
+            } else {
+                paceSuggestion = "You did well! Go again or try a longer pace workout!"
+                paceSuggestChanges.setMessage(paceSuggestion)
+            }
+        } else if (pace_num === "40") {
+            if (failCount > 14) {
+                paceSuggestion = "Your pace was very inconsistent. Try doing the 30 min pace workout instead"
+                paceSuggestChanges.setMessage(paceSuggestion)
+            } else {
+                paceSuggestion = "You did well! Nice work!"
+                paceSuggestChanges.setMessage(paceSuggestion)
             }
         }
     }
