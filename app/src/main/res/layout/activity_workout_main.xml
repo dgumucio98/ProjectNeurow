@@ -78,7 +78,7 @@
         android:backgroundTint="#802D7B"
         android:fontFamily="sans-serif-black"
         android:text="[UserID]"
-        android:textColor="@color/white"
+        android:textColor="#D3D3D3"
         android:textSize="35sp" />
 
     <TextView
@@ -88,7 +88,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="25dp"
         android:fontFamily="sans-serif-black"
-        android:textColor="@color/white"
+        android:textColor="#D3D3D3"
         android:textSize="35sp" />
 
     <Button

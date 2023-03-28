@@ -14,11 +14,25 @@
         android:layout_below="@id/simpleChronometer"
         android:layout_marginTop="50dp"
         android:layout_marginLeft="50dp"
-        android:backgroundTint="#489C52"
+        android:backgroundTint="#CD7F32"
         android:fontFamily="sans-serif-black"
         android:text="START"
         android:textColor="@color/white"
         android:textSize="175sp" />
+
+    <TextView
+        android:id="@+id/txtUserID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="25dp"
+        android:backgroundTint="#802D7B"
+        android:fontFamily="sans-serif-black"
+        android:text="[UserID]"
+        android:textColor="#D3D3D3"
+        android:textSize="35sp" />
 
     <TextView
         android:id="@+id/txtWorkoutName"
@@ -37,25 +51,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
-        android:text="20-MINUTE"
+        android:text="30-MINUTE"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
-        android:textColor="#569A5B"
+        android:textColor="#CD7F32"
         android:textSize="50sp"
         android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/txtUserID"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="30dp"
-        android:backgroundTint="#802D7B"
-        android:text="[UserID]"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
 
     <Chronometer
         android:id="@+id/simpleChronometer"

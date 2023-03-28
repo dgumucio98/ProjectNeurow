@@ -28,8 +28,6 @@ public class PostWorkoutActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Toast.makeText(PostWorkoutActivity.this,"[TEST] Reached beginning of PostWorkoutActivity".toString(),Toast.LENGTH_SHORT).show();
-
         // Tweak visible elements
         super.onCreate(savedInstanceState);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); // Hide Action bar and Status bar

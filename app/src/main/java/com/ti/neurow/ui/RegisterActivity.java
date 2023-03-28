@@ -72,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 // Check if user exists in database
                 if (userExists) { // prompt that username is taken with toast
-                    Toast.makeText(RegisterActivity.this, "[TEST] Username is taken!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Sorry, that username is taken!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else { // add user to database
