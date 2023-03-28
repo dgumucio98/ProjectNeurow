@@ -45,7 +45,7 @@ public class Interval20Activity extends AppCompatActivity {
         setContentView(R.layout.activity_interval20);
 
         // [TEST] see current value of loggedInUsername
-        Toast.makeText(this,"[TEST 2] loggedInUsername: " + GlobalVariables.loggedInUsername, Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"[TEST] @Interval20Activity, loggedInUsername = " + GlobalVariables.loggedInUsername, Toast.LENGTH_LONG).show();
 
 
         // Chronometer Functionality
@@ -94,14 +94,14 @@ public class Interval20Activity extends AppCompatActivity {
                 GlobalVariables.finalListTimePower = pow;
 
                 // [TEST] view list
-                Toast.makeText(Interval20Activity.this,pow.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(Interval20Activity.this,"Resulting list: " + pow.toString(),Toast.LENGTH_LONG).show();
 
                 // Start PostWorkoutActivity
                 Intent i = new Intent(Interval20Activity.this, PostWorkoutActivity.class);
                 startActivity(i); // Launch BLE Data View
                 finish(); // can't go back
 
-                Toast.makeText(Interval20Activity.this,"toast".toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(Interval20Activity.this,"[TEST] Reached end of button listener",Toast.LENGTH_SHORT).show();
 
             }
         });

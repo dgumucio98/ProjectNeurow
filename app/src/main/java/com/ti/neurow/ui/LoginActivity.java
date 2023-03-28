@@ -49,45 +49,41 @@ public class LoginActivity extends AppCompatActivity {
 
                 // Get username and password from fields
                 String Username = usernameEditText.getText().toString(); // extract username from EditText
-                String Password = usernameEditText.getText().toString(); // extract password from EditText
+                String Password = passwordEditText.getText().toString(); // extract password from EditText
 
-                if (TextUtils.isEmpty(Username)) { // if username EditText is empty
-                    Toast.makeText(LoginActivity.this, "Please enter a username", Toast.LENGTH_SHORT).show();
-                    return;
+                if (TextUtils.isEmpty(Username) || !isValidUsername(Username)) { // if username EditText is empty
+                    Toast.makeText(LoginActivity.this, "Please enter a valid username", Toast.LENGTH_SHORT).show();
+                    return; // exit listener
                 }
-                if (!isValidUsername(Username)) { // if username EditText is not valid
-                    Toast.makeText(LoginActivity.this, "Username can only contain letters and numbers", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (TextUtils.isEmpty(Password)) { // if password EditText is empty
-                    Toast.makeText(LoginActivity.this, "Please enter a password", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!isValidPassword(Password)) { // if password EditText is not valid
-                    Toast.makeText(LoginActivity.this, "Password can only contain the following special characters: !@#$%^&*()-_+=", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(Password) || !isValidPassword(Password)) { // if password EditText is empty
+                    Toast.makeText(LoginActivity.this, "Please enter a valid password", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 boolean userExists = db.user_exists(Username); // boolean used to check existence of user in DB
 
-                // Check if user exists in database
-                if (!userExists || !db.getPassword(Username).equals(Password)) { // if user doesn't exist or passwords don't match
-                    Toast.makeText(LoginActivity.this, "Invalid User ID or password", Toast.LENGTH_SHORT).show();
-                }
+                // If all above conditions are met, check if username & password pair matches database record
+                if (!TextUtils.isEmpty(Username) && isValidUsername(Username) && !TextUtils.isEmpty(Password) && isValidPassword(Password)) {
 
-                // TODO: below comparison doesn't seem to be case-sensitive, meaning it will accept "foobar123" and "Foobar123"
-                else if (userExists && db.getPassword(Username).equals(Password)) { // if user exists and passwords match
+                    // Username or Password DNE Case
+                    if (!userExists || !db.getPassword(Username).equals(Password)) { // if user doesn't exist or passwords don't match
+                        Toast.makeText(LoginActivity.this, "Invalid User ID or password", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                    GlobalVariables.loggedInUsername = Username; // update universal loggedinUsername value
+                    // Username exists and Password matches Case
+                    else if (userExists && db.getPassword(Username).equals(Password)) { // if user exists and passwords match
 
-                    Toast.makeText(LoginActivity.this, "[TEST] User " + Username + " has been logged in!", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(LoginActivity.this, "[TEST] loggedInUsername: " + GlobalVariables.loggedInUsername, Toast.LENGTH_SHORT).show();
+                        GlobalVariables.loggedInUsername = Username; // update universal loggedinUsername value
 
-                    // Logged in, now launch PromptRotateActivity
-                    Intent i = new Intent(LoginActivity.this, PromptRotateActivity.class);
-                    startActivity(i); // launches PromptRotateActivity
-                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                    return; // exit method
+                        // [TEST] Toast.makeText(LoginActivity.this, "[TEST] User " + Username + " has been logged in!", Toast.LENGTH_SHORT).show();
+
+                        // Logged in, now launch PromptRotateActivity
+                        Intent i = new Intent(LoginActivity.this, PromptRotateActivity.class);
+                        startActivity(i); // launches PromptRotateActivity
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        return;
+                    }
                 }
             }
         });
@@ -97,13 +93,12 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         // Check if the user is coming from the LoginActivity
         if (isTaskRoot()) { // if user just logged in/registered
-
             Intent intent = new Intent(this, MainUIActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
-
-        } else {
+        }
+        else {
             // If the user is not coming from LoginActivity, continue with the default behavior
             super.onBackPressed();
 
@@ -127,11 +122,13 @@ public class LoginActivity extends AppCompatActivity {
         String Password = usernameEditText.getText().toString();
 
 
-
     }
 
     // DEV BYPASS: Launch PromptRotateActivity when login button is pressed (bypasses actual user authentication)
     public void launchPromptRotate(View v) {
+
+        GlobalVariables.loggedInUsername = "MrBypass"; // set as Mr. Bypass
+
         // Launch Log-in activity
         Intent i = new Intent(this, PromptRotateActivity.class);
         startActivity(i);

@@ -60,7 +60,7 @@ class workouts : AppCompatActivity() {
         //holds time in odd indices and power in even indices
         val powtimearray = arrayListOf<Double>()
 
-        //testing UI integration
+        // [TEST] Testing UI Integration
         val message = "You aren't in power zone 2!"
         myChanges.setMessage(message)
 
@@ -103,17 +103,7 @@ class workouts : AppCompatActivity() {
         powtimearray.add(4.0)
         powtimearray.add(4.0)
 
-        // [TEST] see current value of loggedInUsername
-        //Toast.makeText(this@workouts, "hi", Toast.LENGTH_SHORT).show()
-
-        // [TEST] see current value of loggedInUsername
-/*        Toast.makeText(
-            this,
-            "[TEST 3] loggedInUsername: " + GlobalVariables.loggedInUsername,
-            Toast.LENGTH_LONG
-        ).show()*/
-
-        //db.updateuserFTP(GlobalVariables.loggedInUsername, this.ftp, this.pz_1, this.pz_2, this.pz_3, this.pz_4, this.pz_5, this.pz_6, this.pz_7);
+        db.updateuserFTP(GlobalVariables.loggedInUsername, this.ftp, this.pz_1, this.pz_2, this.pz_3, this.pz_4, this.pz_5, this.pz_6, this.pz_7);
 
         //return arraylist of time and power
         return powtimearray

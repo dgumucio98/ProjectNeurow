@@ -26,6 +26,7 @@ import java.util.Date;
 public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener, View.OnLongClickListener {
 
     TextView MDY; // declare month-day-year text view
+    TextView txtUserID; // declare username displayer
 
     @Override // Handles when workout buttons are long-clicked
     public boolean onLongClick(View v) {
@@ -53,8 +54,11 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
 
         setContentView(R.layout.activity_workout_main);
 
+        TextView txtUserID = findViewById(R.id.txtUserID);
+        txtUserID.setText(GlobalVariables.loggedInUsername);
+
         // [TEST] see current value of loggedInUsername
-        Toast.makeText(this,"[TEST 1] loggedInUsername: " + GlobalVariables.loggedInUsername, Toast.LENGTH_LONG).show();
+        // Toast.makeText(this,"[TEST 1] loggedInUsername: " + GlobalVariables.loggedInUsername, Toast.LENGTH_LONG).show();
 
 
         // Create date status element
@@ -107,21 +111,19 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         } else if (itemId == R.id.pace_interval2) {
             Intent intent5 = new Intent(this, Pace30Activity.class);
             startActivity(intent5);
+            overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             return true;
         } else return itemId == R.id.pace_interval3;
     }
 
-    // Launch LoginActivity when Log Out button is pressed
+    // Log Out button: Launch LoginActivity
     public void launchMain (View v) {
-        // Launch Log-in activity
-        Intent i = new Intent(this, MainUIActivity.class);
-        startActivity(i);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        finish(); // Can't go back
+        onBackPressed(); // call onBackPressed() method to display the confirmation dialog
     }
 
-    // Launch Interval20Activity when FTP Calculator button is pressed
-    public void launchWorkout1 (View v) {
+    // FTP Calculator button:  Launch Interval20Activity
+    public void launchFTPCalc (View v) {
+
         // Launch Workout1 activity
         Intent i = new Intent(this, Interval20Activity.class);
         startActivity(i);
@@ -131,21 +133,27 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
     @Override // Handle back button press
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Exit");
-        builder.setMessage("To exit the dashboard, you must log out first.");
+        builder.setTitle("Log Out?");
+        builder.setMessage("Exiting the dashboard will log you out.");
 
-
-        builder.setPositiveButton("LOG OUT", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Log Out", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
+
+                GlobalVariables.loggedInUsername = "NULL"; // clear logged in user
+
+                Intent intent = new Intent(WorkoutMainActivity.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                startActivity(intent);
+                finish(); // Can't go back
             }
         });
 
-        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Stay", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                dialogInterface.dismiss(); // close the dialog
             }
         });
         AlertDialog dialog = builder.show();

@@ -14,21 +14,19 @@ import com.jjoe64.graphview.GraphView; // for graphs
 import com.ti.neurow.GlobalVariables; // for access to finalListTimePower
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-import java.util.ArrayList;
 
 import com.ti.neurow.R;
 
-import pl.droidsonroids.gif.GifImageView;
 
 public class PostWorkoutActivity extends AppCompatActivity {
 
-    // Define some el private GraphView lineGraphView;ements
     GraphView Power_vs_Time; // declare left graph
+    GraphView Power_vs_Pull; // declare right graph
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Toast.makeText(PostWorkoutActivity.this,"TOAST".toString(),Toast.LENGTH_LONG).show();
+        Toast.makeText(PostWorkoutActivity.this,"[TEST] Reached beginning of PostWorkoutActivity".toString(),Toast.LENGTH_SHORT).show();
 
         // Tweak visible elements
         super.onCreate(savedInstanceState);
@@ -38,9 +36,11 @@ public class PostWorkoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post_workout);
 
         Power_vs_Time = findViewById(R.id.Power_vs_Time);
+        Power_vs_Pull = findViewById(R.id.Power_vs_Pull);
 
-        int length = GlobalVariables.finalListTimePower.size();
-        int j = 0;
+        // [TEST] Populate list before graphing
+        int length = GlobalVariables.finalListTimePower.size(); // length of list
+        int j = 0; // double-time iterator
         DataPoint[] dp = new DataPoint[length];
         for (int i = 0; i < length-1; i += 2) {
             dp[j] = new DataPoint(GlobalVariables.finalListTimePower.get(i), GlobalVariables.finalListTimePower.get(i + 1));
