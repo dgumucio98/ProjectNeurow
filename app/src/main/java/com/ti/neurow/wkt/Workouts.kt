@@ -8,17 +8,7 @@ import com.ti.neurow.VariableChanges
 import com.ti.neurow.db.DatabaseHelper
 
 class workouts : AppCompatActivity() {
-    private var ftp = 45
-    private var fail_count_1 = 0
-    private var fail_count_2 = 0
-    private var fail_count_3 = 0
-    private var pace_fail_20 = 0
-    private var pace_fail_30 = 0
-    private var pace_fail_40 = 0
-
-    //private var pow_pull = ArrayList<Int>()
-
-    //TODO update naming convention?
+    private var ftp: Int
     private var pz_1: Int
     private var pz_2: Int
     private var pz_3: Int
@@ -28,14 +18,7 @@ class workouts : AppCompatActivity() {
     private var pz_7: Int
 
     init {
-        //default ftp value for all new users
-        // fail count interval 1 workout
-        // fail count interval 1 workout
-        // fail count interval 1 workout
-        // fail count 20-min pace workout
-        // fail count 30-min pace workout
-        // fail count 40-min pace workout
-        //pow_pull = ArrayList()
+        ftp = 45
         pz_1 = 0
         pz_2 = 25
         pz_3 = 34
@@ -129,7 +112,7 @@ class workouts : AppCompatActivity() {
         var k20 = 0
         var k21 = 0
         var k22 = 0
-
+        var failCount = 0
         var sum = 0
         var length = 0
         val powtimearray = arrayListOf<Double>()
@@ -154,7 +137,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 2!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {    // only consecutive power zone exits increment count
@@ -179,7 +162,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 5!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -204,7 +187,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 2!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -229,7 +212,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 5!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -254,7 +237,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 2!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -279,7 +262,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 5!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -304,7 +287,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 2!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -329,7 +312,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 5!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -354,7 +337,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 2!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -379,7 +362,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 5!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -404,7 +387,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 2!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -429,7 +412,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 5!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -454,7 +437,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 2!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -479,7 +462,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 5!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -504,7 +487,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 2!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -529,7 +512,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 5!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -554,7 +537,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 2!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -579,7 +562,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 5!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -604,7 +587,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 2!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -629,7 +612,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 5!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -654,7 +637,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 2!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -679,7 +662,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 1!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_1++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -691,11 +674,10 @@ class workouts : AppCompatActivity() {
         val avgPow = sum.toDouble() / length //uncomment
         // TODO add avg power to database
         //}
-        //println("fail count: $fail_count_1")
-        //interval_predictor("1", fail_count_1)
+        //interval_suggestor("1", failCount)
         //TODO add line to add failcount to database
-        fail_count_1 = 25 // for  integration testing
-        db.add_history(GlobalVariables.loggedInUsername, "interval1", fail_count_1, avgPow)
+        failCount = 25 // for  integration testing
+        db.add_history(GlobalVariables.loggedInUsername, "interval1", failCount, avgPow)
         return powtimearray
     }
 
@@ -713,6 +695,8 @@ class workouts : AppCompatActivity() {
         var sum = 0
         var length = 0
         val powtimearray = arrayListOf<Double>()
+
+        var failCount = 0
 
         var pzMessage = ""
         var fixMessage = ""
@@ -733,7 +717,7 @@ class workouts : AppCompatActivity() {
                 if (count > 2) {
                     fixMessage = "You aren't in power zone 3!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_2++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -758,7 +742,7 @@ class workouts : AppCompatActivity() {
                 if (count > 2) {
                     fixMessage = "You aren't in power zone 1!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_2++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -784,7 +768,7 @@ class workouts : AppCompatActivity() {
                 if (count > 2) {
                     fixMessage = "You aren't in power zone 4!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_2++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -809,7 +793,7 @@ class workouts : AppCompatActivity() {
                 if (count > 2) {
                     fixMessage = "You aren't in power zone 1!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_2++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -835,7 +819,7 @@ class workouts : AppCompatActivity() {
                 if (count > 2) {
                     fixMessage = "You aren't in power zone 5!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_2++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -861,7 +845,7 @@ class workouts : AppCompatActivity() {
                 if (count > 2) {
                     fixMessage = "You aren't in power zone 1!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_2++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -873,11 +857,10 @@ class workouts : AppCompatActivity() {
         val avgPow = sum.toDouble() / length //uncomment
         // TODO add avg power to database
         //}
-        //println("fail count: $fail_count_2")
-        //interval_predictor("2", fail_count_2)
+        //interval_suggestor("2", failCount)
         //TODO add fail count to database
-        fail_count_2 = 25 //for database integration testing
-        db.add_history(GlobalVariables.loggedInUsername, "interval2", fail_count_2, avgPow)
+        failCount = 25 //for database integration testing
+        db.add_history(GlobalVariables.loggedInUsername, "interval2", failCount, avgPow)
         return powtimearray
     }
 
@@ -897,6 +880,7 @@ class workouts : AppCompatActivity() {
         var k11 = 0
         var sum = 0
         var length = 0
+        var failCount = 0
         val powtimearray = arrayListOf<Double>()
 
         var pzMessage = ""
@@ -919,7 +903,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 2!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_3++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -945,7 +929,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 5!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_3++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -971,7 +955,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 2!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_3++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -997,7 +981,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 5!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_3++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -1023,7 +1007,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 2!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_3++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -1049,7 +1033,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 5!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_3++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -1075,7 +1059,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 2!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_3++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -1101,7 +1085,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 4!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_3++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -1127,7 +1111,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 1!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_3++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -1153,7 +1137,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 4!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_3++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -1179,7 +1163,7 @@ class workouts : AppCompatActivity() {
                 if (count > 4) {
                     fixMessage = "You aren't in power zone 1!!!!"
                     pzFixChanges.setMessage(fixMessage)
-                    fail_count_3++
+                    failCount++
                     count = 0
                 }
             } else {
@@ -1190,16 +1174,16 @@ class workouts : AppCompatActivity() {
         }
         val avgPow = sum.toDouble() / length //uncomment
 
-        //interval_predictor("2", fail_count_2)
-        fail_count_3 = 66 //for database integration testing
-        db.add_history(GlobalVariables.loggedInUsername, "interval3", fail_count_3, avgPow)
+        //interval_suggestor("2", failCount)
+        failCount = 66 //for database integration testing
+        db.add_history(GlobalVariables.loggedInUsername, "interval3", failCount, avgPow)
         return powtimearray
     }
 
-    fun pace(pzSetChanges: VariableChanges, pzFixChanges: VariableChanges, length: Int, db: DatabaseHelper): ArrayList<Double> {
+    fun pace(pzSetChanges: VariableChanges, pzFixChanges: VariableChanges, wkrtLength: Int, db: DatabaseHelper): ArrayList<Double> {
         //pace code
+        var failCount = 0
         var count = 0
-        val j = 0
         var sum = 0
         var length = 0
         val powtimearray = arrayListOf<Double>()
@@ -1207,7 +1191,7 @@ class workouts : AppCompatActivity() {
         var pzMessage = ""
         var fixMessage = ""
 
-        if (length == 20) {
+        if (wkrtLength == 20) {
             pzMessage = "Begin Rowing!"
             pzSetChanges.setMessage(pzMessage)
             while (db.time_33 <= 1200) { // less than 20-min
@@ -1221,7 +1205,7 @@ class workouts : AppCompatActivity() {
                     if (count > 2) {
                         fixMessage = "Your power output is inconsistent! Try to improve pacing!"
                         pzFixChanges.setMessage(fixMessage)
-                        pace_fail_20++
+                        failCount++
                         count = 0
                     }
                 } else {
@@ -1230,12 +1214,11 @@ class workouts : AppCompatActivity() {
                     count = 0
                 }
             }
-            //}
-            pace_fail_20 = 202020 //for integration testing
-            //pace_predictor("20", pace_fail_20)
+            failCount = 202020 //for integration testing
+            //pace_suggestor("20", failCount)
             val avgPow = sum.toDouble() / length //uncomment
-            db.add_history(GlobalVariables.loggedInUsername, "pace20", pace_fail_20, avgPow)
-        } else if (length == 30) {
+            db.add_history(GlobalVariables.loggedInUsername, "pace20", failCount, avgPow)
+        } else if (wkrtLength == 30) {
             pzMessage = "Begin Rowing!"
             pzSetChanges.setMessage(pzMessage)
             while (db.time_33 <= 1800) { // less than 30-min
@@ -1249,7 +1232,7 @@ class workouts : AppCompatActivity() {
                     if (count > 2) {
                         fixMessage = "Your power output is inconsistent! Try to improve pacing!"
                         pzFixChanges.setMessage(fixMessage)
-                        pace_fail_30++
+                        failCount++
                         count = 0
                     }
                 } else {
@@ -1259,11 +1242,11 @@ class workouts : AppCompatActivity() {
                 }
             }
             //}
-            pace_fail_30 = 303030 // for integration testing
-            //pace_predictor("30", pace_fail_30)
+            failCount = 303030 // for integration testing
+            //pace_suggestor("30", failCount)
             val avgPow = sum.toDouble() / length //uncomment
-            db.add_history(GlobalVariables.loggedInUsername, "pace30", pace_fail_30, avgPow)
-        } else if (length == 40) {
+            db.add_history(GlobalVariables.loggedInUsername, "pace30", failCount, avgPow)
+        } else if (wkrtLength == 40) {
             pzMessage = "Begin Rowing!"
             pzSetChanges.setMessage(pzMessage)
             while (db.time_33 <= 2400) { // less than 40-min
@@ -1277,7 +1260,7 @@ class workouts : AppCompatActivity() {
                     if (count > 2) {
                         fixMessage = "Your power output is inconsistent! Try to improve pacing!"
                         pzFixChanges.setMessage(fixMessage)
-                        pace_fail_40++
+                        failCount++
                         count = 0
                     }
                 } else {
@@ -1286,10 +1269,10 @@ class workouts : AppCompatActivity() {
                     count = 0
                 }
             }
-            pace_fail_40 = 404040 //for integration testing
-            //pace_predictor("40", pace_fail_40)
+            failCount = 404040 //for integration testing
+            //pace_suggestor("40", failCount)
             val avgPow = sum.toDouble() / length //uncomment
-            db.add_history(GlobalVariables.loggedInUsername, "pace40", pace_fail_40, avgPow)
+            db.add_history(GlobalVariables.loggedInUsername, "pace40", failCount, avgPow)
         }
         return powtimearray
     }
@@ -1361,7 +1344,6 @@ class workouts : AppCompatActivity() {
         return predic
     }
 
-
     companion object {
         /*    static void two_predictor() {
         // TODO wait until later to work with UI on this
@@ -1406,62 +1388,72 @@ class workouts : AppCompatActivity() {
     }*/
 
 
-        fun interval_predictor(interval_num: String, fail_count: Int) {
-            println()
-            println("You are in interval predictor method!")
-            // TODO incorporate UI
-            // TODO toast or println function
-            //finish, did i finish?
-            //interval method 1 predictions
-            if (interval_num === "1") {
-                if (fail_count > 20) {
-                    println("You left your power zone a lot! Try redoing your FTP Calculator workout")
+        fun interval_suggestor(intSuggestChanges: VariableChanges, interval_num: String, failCount: Int) {
+
+            var intSuggestion = "" //declare string to change and print to screen
+
+            if (interval_num === "1") { //20 min interval
+                if (failCount > 20) {
+                    intSuggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
+                    intSuggestChanges.setMessage(intSuggestion)
                 } else {
-                    println("You did well! Go again or try a longer interval workout!")
+                    intSuggestion = "You did well! Go again or try a longer interval workout!"
+                    intSuggestChanges.setMessage(intSuggestion)
                 }
-            } else if (interval_num === "2") {
-                if (fail_count > 20 && fail_count < 50) {
-                    println("You left your power zone often. Try doing the Interval 1 workout")
-                } else if (fail_count >= 50) {
-                    println("You left your power zone a lot! Try redoing your FTP Calculator workout")
+            }
+            else if (interval_num === "2") { //30 min interval
+                if (failCount > 20 && failCount < 50) {
+                    intSuggestion = "You left your power zone often. Try doing the Interval 1 workout"
+                    intSuggestChanges.setMessage(intSuggestion)
+                } else if (failCount >= 50) {
+                    intSuggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
+                    intSuggestChanges.setMessage(intSuggestion)
                 } else {
-                    println("You did well! Go again or try a longer interval workout!")
+                    intSuggestion = "You did well! Go again or try a longer interval workout!"
+                    intSuggestChanges.setMessage(intSuggestion)
                 }
-            } else if (interval_num === "3") {
-                if (fail_count > 20 && fail_count < 50) {
-                    println("You left your power zone often. Try doing the Interval 2 workout")
-                } else if (fail_count >= 50) {
-                    println("You left your power zone a lot! Try redoing your FTP Calculator workout")
+            }
+            else if (interval_num === "3") { //40 min interval
+                if (failCount > 20 && failCount < 50) {
+                    intSuggestion = "You left your power zone often. Try doing the Interval 2 workout"
+                    intSuggestChanges.setMessage(intSuggestion)
+                } else if (failCount >= 50) {
+                    intSuggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
+                    intSuggestChanges.setMessage(intSuggestion)
                 } else {
-                    println("You did well! Go again or try redoing your FTP Calculator workout!")
+                    intSuggestion = "You did well! Go again or try redoing your FTP Calculator workout!"
+                    intSuggestChanges.setMessage(intSuggestion)
                 }
             }
         }
 
-        fun pace_predictor(pace_num: String, fail_count: Int) {
-            println()
-            println("You are in pace predictor method!")
-            // TODO integrate UI
-            // TODO toast or println functions
-            //interval method 1 predictions
-            //finish, did i finish?
+        fun pace_suggestor(paceSuggestChanges: VariableChanges, pace_num: String, failCount: Int) {
+
+            var paceSuggestion = "" //declare string to change and print to screen
+
             if (pace_num === "20") {
-                if (fail_count > 14) {
-                    println("Your pace was very inconsistent. Try again or do an interval workout to work on fitness")
+                if (failCount > 14) {
+                    paceSuggestion = "Your pace was very inconsistent. Try again or do an interval workout to work on fitness"
+                    paceSuggestChanges.setMessage(paceSuggestion)
                 } else {
-                    println("You did well! Go again or try a longer pace workout!")
+                    paceSuggestion = "You did well! Go again or try a longer pace workout!"
+                    paceSuggestChanges.setMessage(paceSuggestion)
                 }
             } else if (pace_num === "30") {
-                if (fail_count > 14) {
-                    println("Your pace was very inconsistent. Try doing the 20 min pace workout instead")
+                if (failCount > 14) {
+                    paceSuggestion = "Your pace was very inconsistent. Try doing the 20 min pace workout instead"
+                    paceSuggestChanges.setMessage(paceSuggestion)
                 } else {
-                    println("You did well! Go again or try a longer pace workout!")
+                    paceSuggestion = "You did well! Go again or try a longer pace workout!"
+                    paceSuggestChanges.setMessage(paceSuggestion)
                 }
             } else if (pace_num === "40") {
-                if (fail_count > 14) {
-                    println("Your pace was very inconsistent. Try doing the 30 min pace workout instead")
+                if (failCount > 14) {
+                    paceSuggestion = "Your pace was very inconsistent. Try doing the 30 min pace workout instead"
+                    paceSuggestChanges.setMessage(paceSuggestion)
                 } else {
-                    println("You did well! Nice work!")
+                    paceSuggestion = "You did well! Nice work!"
+                    paceSuggestChanges.setMessage(paceSuggestion)
                 }
             }
         }
