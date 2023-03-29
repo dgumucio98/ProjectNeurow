@@ -347,12 +347,18 @@ object ConnectionManager {
             }
         }
 
+        /* This function is responsible for the sending the success signal that transfers
+        us over to the new activity
+         */
         override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
             with(gatt) {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
                     Timber.w("Discovered ${services.size} services for ${device.address}.")
                     printGattTable()
                     requestMtu(device, GATT_MAX_MTU_SIZE)
+                    // The code below says for each of the listeners, take the onConn callback
+                    // with the invoke(this), this being the bluetooth gatt object
+                    // which then runs that code which starts the second activity
                     listeners.forEach { it.get()?.onConnectionSetupComplete?.invoke(this) }
                 } else {
                     Timber.e("Service discovery failed due to status $status")
