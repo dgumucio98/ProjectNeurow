@@ -1294,7 +1294,8 @@ class workouts : AppCompatActivity() {
 
         //TODO CHECK INT TO DOUBLE CONVERSION
         //TODO add statements about if list is empty or what to do if just one element
-        //TODO two elements is ok?
+        //TODO two elements is ok
+        //TODO double check two elements is fine
         println("power array " + power)
         // declare empty x arraylist
         val x = ArrayList<Int>()
