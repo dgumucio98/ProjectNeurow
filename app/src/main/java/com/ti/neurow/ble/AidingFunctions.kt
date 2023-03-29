@@ -60,19 +60,20 @@ fun uuidParsing(uuidString: String, df: UByteArray, onToggle: Boolean): Unit {
         val DF35: DataFrame35 = DataFrame35(df)
         //DF35.printAllAtt()
         if(onToggle) {
-            if(dataFrame35Queue.size < queSize) {
-                if(dataFrame35Queue.offer(DF35) != null) {
-                    println("An item has been placed in the 35 Queue.")
-                } else {
-                    println("An item failed to be placed in the 35 Queue.")
-                }
-            } else {
-                println("The queue full: ${dataFrame35Queue.size} items")
-                println("Popping the most recent dataframe.")
-                dataFrame35Queue.poll().printAllAtt()
-                println("The queue will now clear.")
-                dataFrame35Queue.clear()
-            }
+//            dataFrame35Queue.offer(DF35)
+//            if(dataFrame35Queue.size < queSize) {
+//                if(dataFrame35Queue.offer(DF35) != null) {
+//                    println("An item has been placed in the 35 Queue.")
+//                } else {
+//                    println("An item failed to be placed in the 35 Queue.")
+//                }
+//            } else {
+//                println("The queue full: ${dataFrame35Queue.size} items")
+//                println("Popping the most recent dataframe.")
+//                dataFrame35Queue.poll().printAllAtt()
+//                println("The queue will now clear.")
+//                dataFrame35Queue.clear()
+//            }
         } else { DF35.printAllAtt() }
     } else if (uuidString == "ce06003d-43e5-11e4-916c-0800200c9a66") {
         //println("This is where it should read the first message compile the data")

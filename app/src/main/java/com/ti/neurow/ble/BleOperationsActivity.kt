@@ -129,19 +129,26 @@ class BleOperationsActivity : AppCompatActivity() {
 
                     df = dataFrame33Queue.poll()
                 }
-//                if(df != null) {
-//                    val inputDB = data33(
-//                        df.elapsedTime, df.intervalCount, df.averagePower,
-//                        df.totalCalories, df.splitIntAvgPace, df.splitIntAvgPwr,
-//                        df.splitIntAvgCal.toDouble(), df.lastSplitTime, df.lastSplitDist.toDouble()
-//                    )
-//                    var success = db.add_dataframe33(inputDB)
-//                    if (success) {
-//                        Timber.d("The dataframe33 was added to the Database.\n")
-//                    } else {
-//                        Timber.d("The datafailed to add to the Database.\n")
-//                    }
-//                }
+            }
+            //For 35
+            if(dataFrame35Queue.isEmpty()) {
+                Timber.d("The data 35 Queue is empty\n")
+            } else {
+                Timber.d("The data 35 Queue has item(s) in it.\n")
+                //It's not empty let's add to the databasea
+                //Most recent DF from stack
+                var df = dataFrame35Queue.poll()
+                while(df != null) {
+                    val inputDB = data35(
+                        df.elapsedTime, df.distance, df.driveLength,
+                        df.driveTime, df.strokeRecTime, df.strokeDistance,
+                        df.peakDriveForce, df.averageDriveForce,
+                        df.workPerStroke, df.strokeCount
+                    )
+                    var success = db.add_dataframe35(inputDB)
+
+                    df = dataFrame35Queue.poll()
+                }
             }
         }
     }
