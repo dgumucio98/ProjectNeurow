@@ -44,30 +44,26 @@ public class Interval20Activity extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); // Lock orientation to landscape
         setContentView(R.layout.activity_interval20);
 
-        // [TEST] see current value of loggedInUsername
-        Toast.makeText(this,"[TEST] @Interval20Activity, loggedInUsername = " + GlobalVariables.loggedInUsername, Toast.LENGTH_LONG).show();
-
-
-        // Chronometer Functionality
-        chron = (Chronometer) findViewById(R.id.simpleChronometer);
-        btnStartChron = (Button) findViewById(R.id.btnBegin);
-
-        btnStartChron.setOnClickListener(new View.OnClickListener() { // start/stop button listener
-            @Override
-            public void onClick(View v) {
-                if (!isChronRunning) { // if NOT running
-                    chron.setBase(SystemClock.elapsedRealtime()); // start counting from current time
-                    chron.start(); // start the chronometer
-                    btnStartChron.setText("Stop");
-                    isChronRunning = true; // set status to true
-                }
-                else {
-                    chron.stop();
-                    isChronRunning = false; // set status to false
-                    btnStartChron.setText("Start");
-                }
-            }
-        });
+//        // Chronometer Functionality
+//        chron = (Chronometer) findViewById(R.id.simpleChronometer);
+//        btnStartChron = (Button) findViewById(R.id.btnBegin);
+//
+//        btnStartChron.setOnClickListener(new View.OnClickListener() { // start/stop button listener
+//            @Override
+//            public void onClick(View v) {
+//                if (!isChronRunning) { // if NOT running
+//                    chron.setBase(SystemClock.elapsedRealtime()); // start counting from current time
+//                    chron.start(); // start the chronometer
+//                    btnStartChron.setText("Stop");
+//                    isChronRunning = true; // set status to true
+//                }
+//                else {
+//                    chron.stop();
+//                    isChronRunning = false; // set status to false
+//                    btnStartChron.setText("Start");
+//                }
+//            }
+//        });
 
         // [TEST] Alyson button listener
         btnAlyson = (Button) findViewById(R.id.btnAlyson);
@@ -80,43 +76,36 @@ public class Interval20Activity extends AppCompatActivity {
                 workouts workouts = new workouts();
                 VariableChanges myChanges = new VariableChanges();
 
+                // [TEST] Test variable change happening within ftpCalc method
                 myChanges.setMessageListener(new VariableChanges.MessageListener() {
                     @Override
                     public void onMessageChanged(String newMessage) {
-                        Toast.makeText(Interval20Activity.this,newMessage,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Interval20Activity.this,"[TEST] " + newMessage,Toast.LENGTH_SHORT).show();
                     }
                 });
 
-                // Run ftpCalc workout method
+                // [TEST] Run ftpCalc workout method
                 ArrayList pow = workouts.ftpCalc(myChanges,db);
 
-                // Set global list to workout result list
+                // [TEST] Set global list to workout result list
                 GlobalVariables.finalListTimePower = pow;
 
                 // [TEST] view list
-                Toast.makeText(Interval20Activity.this,"Resulting list: " + pow.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(Interval20Activity.this,"[TEST] Resulting ArrayList: " + pow.toString(),Toast.LENGTH_SHORT).show();
 
-                // Start PostWorkoutActivity
+                // [TEST] Start PostWorkoutActivity
                 Intent i = new Intent(Interval20Activity.this, PostWorkoutActivity.class);
                 startActivity(i); // Launch BLE Data View
                 finish(); // can't go back
-
-                Toast.makeText(Interval20Activity.this,"[TEST] Reached end of button listener",Toast.LENGTH_SHORT).show();
-
             }
         });
-
-        TextView txtMessage = findViewById(R.id.txtTest);
-        String message = getIntent().getStringExtra("message");
-        txtMessage.setText(message);
-
     }
 
     @Override // Handle back button press during workout
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Exit Current Workout");
-        builder.setMessage("Are you sure you want to exit your current workout? Any unsaved progress will be lost.");
+        builder.setTitle("Exit current workout?");
+        builder.setMessage("Your workout is currently running. Any unsaved progress will be lost.");
 
         builder.setPositiveButton("EXIT", new DialogInterface.OnClickListener() {
             @Override

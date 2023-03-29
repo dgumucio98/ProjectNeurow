@@ -76,8 +76,6 @@ public class LoginActivity extends AppCompatActivity {
 
                         GlobalVariables.loggedInUsername = Username; // update universal loggedinUsername value
 
-                        // [TEST] Toast.makeText(LoginActivity.this, "[TEST] User " + Username + " has been logged in!", Toast.LENGTH_SHORT).show();
-
                         // Logged in, now launch PromptRotateActivity
                         Intent i = new Intent(LoginActivity.this, PromptRotateActivity.class);
                         startActivity(i); // launches PromptRotateActivity

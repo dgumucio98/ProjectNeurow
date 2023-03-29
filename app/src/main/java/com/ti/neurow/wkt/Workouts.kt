@@ -75,12 +75,20 @@ class workouts : AppCompatActivity() {
 
         // [TEST]
         powtimearray.add(1.0)
-        powtimearray.add(1.0)
+        powtimearray.add(2.0)
         powtimearray.add(2.0)
         powtimearray.add(2.0)
         powtimearray.add(3.0)
         powtimearray.add(3.0)
         powtimearray.add(4.0)
+        powtimearray.add(4.0)
+        powtimearray.add(5.0)
+        powtimearray.add(2.0)
+        powtimearray.add(6.0)
+        powtimearray.add(2.0)
+        powtimearray.add(7.0)
+        powtimearray.add(4.0)
+        powtimearray.add(8.0)
         powtimearray.add(4.0)
 
         db.updateuserFTP(GlobalVariables.loggedInUsername, this.ftp, this.pz_1, this.pz_2, this.pz_3, this.pz_4, this.pz_5, this.pz_6, this.pz_7);

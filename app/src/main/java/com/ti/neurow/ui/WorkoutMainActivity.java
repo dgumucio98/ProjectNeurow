@@ -57,10 +57,6 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         TextView txtUserID = findViewById(R.id.txtUserID);
         txtUserID.setText(GlobalVariables.loggedInUsername);
 
-        // [TEST] see current value of loggedInUsername
-        // Toast.makeText(this,"[TEST 1] loggedInUsername: " + GlobalVariables.loggedInUsername, Toast.LENGTH_LONG).show();
-
-
         // Create date status element
         MDY = findViewById(R.id.txtDate);
         Date currentTime = Calendar.getInstance().getTime();
@@ -101,6 +97,7 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         if (itemId == R.id.interval1) {
             Intent intent1 = new Intent(this, Interval20Activity.class);
             startActivity(intent1);
+            overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             return true;
         } else if (itemId == R.id.interval2) {
             return true;
