@@ -1,5 +1,6 @@
 package com.ti.neurow.ble
 import java.util.*
+import com.ti.neurow.VariableChanges
 
 val dataFrame33Queue: Queue<DataFrame33> = LinkedList<DataFrame33>()
 val dataFrame35Queue: Queue<DataFrame35> = LinkedList<DataFrame35>()
@@ -25,12 +26,14 @@ var globalLstSpltTime33 :  Double = -1.0 // In Seconds
 
 var globalLstSpltDist33 : Int = -1 // In Meters
 
-fun uuidParsing(uuidString: String, df: UByteArray, onToggle: Boolean): Unit {
+fun uuidParsing(myTime : VariableChanges, uuidString: String, df: UByteArray, onToggle: Boolean): Unit {
     if(uuidString == "ce060032-43e5-11e4-916c-0800200c9a66") {
         //Timber.i("You are reading 0x0032")
         //Timber.i("Your heart rate is is ${df[6].toUByte()} BPM")
     } else if (uuidString == "ce060033-43e5-11e4-916c-0800200c9a66") {
         val DF33: DataFrame33 = DataFrame33(df)
+        val newTime = DF33.elapsedTime
+        myTime.setTime(newTime)
         DF33.printAllAtt()
         /*
         if(onToggle) { //onCharacter change
