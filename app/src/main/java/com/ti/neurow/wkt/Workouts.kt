@@ -45,6 +45,7 @@ class workouts : AppCompatActivity() {
         time = 7.7
         myDouble.setTime(time)
         println(time)
+        //hi
         //uncomment
 /*        while (db.time_33 < 1200) { //uncomment
             sum += db.power
