@@ -15,7 +15,8 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.ti.neurow.db.data33;
+import com.ti.neurow.db.data35;
 
 import com.ti.neurow.GlobalVariables; // for access to finalListTimePower
 import com.ti.neurow.VariableChanges; // for message listener
@@ -76,7 +77,39 @@ public class Interval20Activity extends AppCompatActivity {
                 workouts workouts = new workouts();
                 VariableChanges myMessage = new VariableChanges();
                 VariableChanges myDouble = new VariableChanges();
-
+                VariableChanges myGlobalTime = new VariableChanges();
+                GlobalVariables.globalTimeInstance = myGlobalTime;
+                // [TEST] Test global time variable change happening
+                myGlobalTime.setTimeListener(new VariableChanges.TimeListener() {
+                    @Override
+                    public void onTimeChanged(double newTime) {
+                        data33 realdata33 = new data33(
+                                GlobalVariables.elapsedTime,
+                                GlobalVariables.intervalCount,
+                                GlobalVariables.averagePower,
+                                GlobalVariables.totalCalories,
+                                GlobalVariables.splitIntAvgPace,
+                                GlobalVariables.splitIntAvgPwr,
+                                GlobalVariables.splitIntAvgCal,
+                                GlobalVariables.lastSplitTime,
+                                GlobalVariables.lastSplitDist
+                        );
+                        boolean success = db.add_dataframe33(realdata33);
+                        if (success == true) {
+                            Toast.makeText(
+                                    Interval20Activity.this,
+                                    "Successfully entered table",
+                                    Toast.LENGTH_SHORT
+                            ).show(); //Testing
+                        } else {
+                            Toast.makeText(
+                                    Interval20Activity.this,
+                                    "Did not enter table",
+                                    Toast.LENGTH_SHORT
+                            ).show(); //Testing
+                        }
+                    }
+                });
 
                 // [TEST] Test variable change happening within ftpCalc method with string message
                 myMessage.setMessageListener(new VariableChanges.MessageListener() {
@@ -113,7 +146,7 @@ public class Interval20Activity extends AppCompatActivity {
 
     @Override // Handle back button press during workout
     public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Interval20Activity.this);
         builder.setTitle("Exit current workout?");
         builder.setMessage("Your workout is currently running. Any unsaved progress will be lost.");
 

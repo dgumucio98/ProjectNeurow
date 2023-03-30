@@ -40,6 +40,37 @@ class BleOperationsActivity : AppCompatActivity() {
 
     private lateinit var device: BluetoothDevice
     private val dateFormatter = SimpleDateFormat("MMM d, HH:mm:ss", Locale.US)
+
+/*    fun writeDB33(elapsedTime: Double, intervalCount: Int, averagePower: Int, totalCalories: Int, splitIntAvgPace: Double, splitIntAvgPwr: Int, splitIntAvgCal: Int, lastSplitTime: Double, lastSplitDist: Int) {
+        val db = DatabaseHelper(this@BleOperationsActivity) //making reference to database
+        var realdata33 = data33(
+            globalTime33,
+            globalIntCnt,
+            globalAvgPwr33,
+            globalTotCal33,
+            globalSpltIntAvgPace33,
+            globalSpltIntAvgPwr33,
+            globalSpltIntAvgCal33.toDouble(),
+            globalLstSpltTime33,
+            globalLstSpltDist33.toDouble()
+        )
+        var success = db.add_dataframe33(realdata33)
+        if (success == true) {
+            Toast.makeText(
+                this@BleOperationsActivity,
+                "Successfully entered table",
+                Toast.LENGTH_SHORT
+            ).show() //Testing
+        } else {
+            Toast.makeText(
+                this@BleOperationsActivity,
+                "Did not enter table",
+                Toast.LENGTH_SHORT
+            ).show() //Testing
+        }
+    }*/
+
+
     private val characteristics by lazy {
         ConnectionManager.servicesOnDevice(device)?.flatMap { service ->
             service.characteristics ?: listOf()

@@ -1,7 +1,7 @@
 package com.ti.neurow.ble
 
 //Importing the aiding functions
-
+import androidx.core.content.ContextCompat
 import android.bluetooth.*
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -10,6 +10,7 @@ import android.content.IntentFilter
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
+import com.ti.neurow.GlobalVariables
 import com.ti.neurow.VariableChanges
 import com.ti.neurow.db.DatabaseHelper
 import com.ti.neurow.db.data33
@@ -19,6 +20,8 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
+import com.ti.neurow.ble.BleOperationsActivity
+
 // For the test code to write to the file
 
 private const val GATT_MIN_MTU_SIZE = 23
@@ -26,7 +29,7 @@ private const val GATT_MIN_MTU_SIZE = 23
 private const val GATT_MAX_MTU_SIZE = 517
 
 object ConnectionManager {
-
+    //lateinit var context: Context // declare a property
     private var listeners: MutableSet<WeakReference<ConnectionEventListener>> = mutableSetOf()
 
     private val deviceGattMap = ConcurrentHashMap<BluetoothDevice, BluetoothGatt>()
@@ -533,18 +536,20 @@ object ConnectionManager {
             with(characteristic) {
                 // The value when subscribed to a characteristic
                 Timber.i("Characteristic $uuid changed | value: ${value.toHexString()}")
-
+                val context = this
                 val myTime33 = VariableChanges()
                 val myTime35 = VariableChanges()
                 val myTime3D = VariableChanges()
+                //val db = DatabaseHelper(context = this@ConnectionManager) //making reference to database
+                //val appContext = ContextCompat.getApplicationContext(context)
 
-
-
+                //val db = DatabaseHelper.getInstance(getApplicationContext())
                 // [TEST] Test variable change with BLE time33
                 myTime33.setTimeListener(object : VariableChanges.TimeListener {
                     override fun onTimeChanged(newTime: Double) {
                         //finish implementing
                         Timber.i("[TEST] onCharacteristicChanged time33: %s", newTime.toString())
+
                     }
                 })
 
@@ -563,6 +568,18 @@ object ConnectionManager {
                 } else if (uuid.toString() == "ce060033-43e5-11e4-916c-0800200c9a66") {
                     val DF33: DataFrame33 = DataFrame33(value.toUByteArray())
                     val newTime = DF33.elapsedTime
+                    //TODO set all global varibales ot responective DF33 variables
+                    GlobalVariables.elapsedTime = DF33.elapsedTime
+                    GlobalVariables.intervalCount= DF33.intervalCount
+                    GlobalVariables.averagePower= DF33.averagePower
+                    GlobalVariables.totalCalories= DF33.totalCalories
+                    GlobalVariables.splitIntAvgPace= DF33.splitIntAvgPace
+                    GlobalVariables.splitIntAvgPwr = DF33.splitIntAvgPwr
+                    GlobalVariables.splitIntAvgCal = DF33.splitIntAvgCal
+                    GlobalVariables.lastSplitTime = DF33.lastSplitTime
+                    GlobalVariables.lastSplitDist = DF33.lastSplitDist
+                    GlobalVariables.globalTimeInstance.setTime(DF33.elapsedTime)
+                    //TODO dont need below listener??
                     myTime33.setTime(newTime)
                     DF33.printAllAtt()
                     /*
