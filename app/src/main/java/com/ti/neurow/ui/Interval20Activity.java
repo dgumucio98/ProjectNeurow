@@ -77,10 +77,14 @@ public class Interval20Activity extends AppCompatActivity {
                 workouts workouts = new workouts();
                 VariableChanges myMessage = new VariableChanges();
                 VariableChanges myDouble = new VariableChanges();
-                VariableChanges myGlobalTime = new VariableChanges();
-                GlobalVariables.globalTimeInstance = myGlobalTime;
+
+                //[TEST] testing how to populate database with realtime BLE data changes
+                VariableChanges myGlobalTime = new VariableChanges(); // declare instance of VariableChanges
+                GlobalVariables.globalTimeInstance = myGlobalTime; //set the GlobalVaribale variable globalTimeInstance to instance
                 // [TEST] Test global time variable change happening
-                myGlobalTime.setTimeListener(new VariableChanges.TimeListener() {
+                //the listener populates data33 table with the global variables of each variable
+                //whether the load is successful gets toasted
+                GlobalVariables.globalTimeInstance.setTimeListener(new VariableChanges.TimeListener() {
                     @Override
                     public void onTimeChanged(double newTime) {
                         data33 realdata33 = new data33(

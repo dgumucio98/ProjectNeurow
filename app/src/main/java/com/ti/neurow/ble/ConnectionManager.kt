@@ -544,6 +544,7 @@ object ConnectionManager {
                 //val appContext = ContextCompat.getApplicationContext(context)
 
                 //val db = DatabaseHelper.getInstance(getApplicationContext())
+
                 // [TEST] Test variable change with BLE time33
                 myTime33.setTimeListener(object : VariableChanges.TimeListener {
                     override fun onTimeChanged(newTime: Double) {
@@ -568,7 +569,7 @@ object ConnectionManager {
                 } else if (uuid.toString() == "ce060033-43e5-11e4-916c-0800200c9a66") {
                     val DF33: DataFrame33 = DataFrame33(value.toUByteArray())
                     val newTime = DF33.elapsedTime
-                    //TODO set all global varibales ot responective DF33 variables
+                    //Set's all df33 global variables to respective DF33 variables
                     GlobalVariables.elapsedTime = DF33.elapsedTime
                     GlobalVariables.intervalCount= DF33.intervalCount
                     GlobalVariables.averagePower= DF33.averagePower
@@ -579,7 +580,8 @@ object ConnectionManager {
                     GlobalVariables.lastSplitTime = DF33.lastSplitTime
                     GlobalVariables.lastSplitDist = DF33.lastSplitDist
                     GlobalVariables.globalTimeInstance.setTime(DF33.elapsedTime)
-                    //TODO dont need below listener??
+                    //sets time listener with newTime
+                    //lets Interval20Activity know global variables have changed
                     myTime33.setTime(newTime)
                     DF33.printAllAtt()
                     /*
