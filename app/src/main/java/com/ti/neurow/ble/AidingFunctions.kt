@@ -34,6 +34,8 @@ fun uuidParsing(uuidString: String, df: UByteArray, onToggle: Boolean): Unit {
         //Timber.i("Your heart rate is is ${df[6].toUByte()} BPM")
     } else if (uuidString == "ce060033-43e5-11e4-916c-0800200c9a66") {
         val DF33: DataFrame33 = DataFrame33(df)
+        //message = DF33.elapsedTime
+        //setmesage(message)
         //DF33.printAllAtt()
         //globalTime33 = DF33.elapsedTime
         // code toggling if we add to the que or not
