@@ -27,10 +27,12 @@ class workouts : AppCompatActivity() {
     }
 
     // ftp calculator workout method
-    fun ftpCalc(myChanges: VariableChanges , db: DatabaseHelper): ArrayList<Double> {
+    fun ftpCalc(myDouble: VariableChanges, myMessage: VariableChanges, db: DatabaseHelper): ArrayList<Double> {
         //ftp calculator code that calculates ftp and defines power zones
         //var sum = 0 //uncomment
         //var length = 0 //uncomment
+        var time = 4.0
+        println(time)
 
         //define one arraylist to return from function
         //holds time in odd indices and power in even indices
@@ -38,8 +40,11 @@ class workouts : AppCompatActivity() {
 
         // [TEST] Testing UI Integration
         val message = "You aren't in power zone 2!"
-        myChanges.setMessage(message)
+        myMessage.setMessage(message)
 
+        time = 7.7
+        myDouble.setTime(time)
+        println(time)
         //uncomment
 /*        while (db.time_33 < 1200) { //uncomment
             sum += db.power
@@ -1285,7 +1290,7 @@ class workouts : AppCompatActivity() {
         return powtimearray
     }
 
-    // Returns value of predicted power
+    // Returns value of users predicted power in five more workouts
     fun powerPredictor(power: ArrayList<Double>): Double {
         println("in predictor")
         //TODO clean up code

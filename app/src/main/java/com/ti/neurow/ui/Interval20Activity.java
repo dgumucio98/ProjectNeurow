@@ -74,18 +74,28 @@ public class Interval20Activity extends AppCompatActivity {
                 // Prepare database, workout, and dynamic variable objects
                 DatabaseHelper db = new DatabaseHelper(Interval20Activity.this);
                 workouts workouts = new workouts();
-                VariableChanges myChanges = new VariableChanges();
+                VariableChanges myMessage = new VariableChanges();
+                VariableChanges myDouble = new VariableChanges();
 
-                // [TEST] Test variable change happening within ftpCalc method
-                myChanges.setMessageListener(new VariableChanges.MessageListener() {
+
+                // [TEST] Test variable change happening within ftpCalc method with string message
+                myMessage.setMessageListener(new VariableChanges.MessageListener() {
                     @Override
                     public void onMessageChanged(String newMessage) {
                         Toast.makeText(Interval20Activity.this,"[TEST] " + newMessage,Toast.LENGTH_SHORT).show();
                     }
                 });
 
+                // [TEST] Test variable change happening within ftpCalc method with double time
+                myDouble.setTimeListener(new VariableChanges.TimeListener() {
+                    @Override
+                    public void onTimeChanged(double newTime) {
+                        Toast.makeText(Interval20Activity.this,"[TEST] " + newTime,Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 // [TEST] Run ftpCalc workout method
-                ArrayList pow = workouts.ftpCalc(myChanges,db);
+                ArrayList pow = workouts.ftpCalc(myDouble, myMessage,db);
 
                 // [TEST] Set global list to workout result list
                 GlobalVariables.finalListTimePower = pow;
