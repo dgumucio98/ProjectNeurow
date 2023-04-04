@@ -467,6 +467,7 @@ object ConnectionManager {
                         } else if (uuid.toString() == "ce06003d-43e5-11e4-916c-0800200c9a66") {
                             //println("This is where it should read the first message compile the data")
                             val DF3D: DataFrame3D = DataFrame3D(value.toUByteArray())
+                            println(DF3D)
                             //val newTime = DF3D.elapsedTime
                             //myTime3D.setTime(newTime)
                             DF3D.printAllAtt()
@@ -537,15 +538,15 @@ object ConnectionManager {
                 // The value when subscribed to a characteristic
                 Timber.i("Characteristic $uuid changed | value: ${value.toHexString()}")
                 val context = this
-                val myTime33 = VariableChanges()
-                val myTime35 = VariableChanges()
+                //val myTime33 = VariableChanges()
+                //val myTime35 = VariableChanges()
                 val myTime3D = VariableChanges()
                 //val db = DatabaseHelper(context = this@ConnectionManager) //making reference to database
                 //val appContext = ContextCompat.getApplicationContext(context)
 
                 //val db = DatabaseHelper.getInstance(getApplicationContext())
 
-                // [TEST] Test variable change with BLE time33
+/*                // [TEST] Test variable change with BLE time33
                 myTime33.setTimeListener(object : VariableChanges.TimeListener {
                     override fun onTimeChanged(newTime: Double) {
                         //finish implementing
@@ -560,7 +561,7 @@ object ConnectionManager {
                         //finish implementing
                         Timber.i("[TEST] onCharacteristicChanged time35: %s", newTime.toString())
                     }
-                })
+                })*/
 
                 //uuidParsing function code
                 if(uuid.toString() == "ce060032-43e5-11e4-916c-0800200c9a66") {
@@ -568,47 +569,40 @@ object ConnectionManager {
                     //Timber.i("Your heart rate is is ${df[6].toUByte()} BPM")
                 } else if (uuid.toString() == "ce060033-43e5-11e4-916c-0800200c9a66") {
                     val DF33: DataFrame33 = DataFrame33(value.toUByteArray())
-                    val newTime = DF33.elapsedTime
                     //Set's all df33 global variables to respective DF33 variables
-                    GlobalVariables.elapsedTime = DF33.elapsedTime
-                    GlobalVariables.intervalCount= DF33.intervalCount
-                    GlobalVariables.averagePower= DF33.averagePower
-                    GlobalVariables.totalCalories= DF33.totalCalories
-                    GlobalVariables.splitIntAvgPace= DF33.splitIntAvgPace
-                    GlobalVariables.splitIntAvgPwr = DF33.splitIntAvgPwr
-                    GlobalVariables.splitIntAvgCal = DF33.splitIntAvgCal
-                    GlobalVariables.lastSplitTime = DF33.lastSplitTime
-                    GlobalVariables.lastSplitDist = DF33.lastSplitDist
-                    GlobalVariables.globalTimeInstance.setTime(DF33.elapsedTime)
+                    GlobalVariables.elapsedTime33 = DF33.elapsedTime
+                    GlobalVariables.intervalCount33 = DF33.intervalCount
+                    GlobalVariables.averagePower33 = DF33.averagePower
+                    GlobalVariables.totalCalories33 = DF33.totalCalories
+                    GlobalVariables.splitIntAvgPace33 = DF33.splitIntAvgPace
+                    GlobalVariables.splitIntAvgPwr33 = DF33.splitIntAvgPwr
+                    GlobalVariables.splitIntAvgCal33 = DF33.splitIntAvgCal
+                    GlobalVariables.lastSplitTime33 = DF33.lastSplitTime
+                    GlobalVariables.lastSplitDist33 = DF33.lastSplitDist
                     //sets time listener with newTime
                     //lets Interval20Activity know global variables have changed
-                    myTime33.setTime(newTime)
+                    GlobalVariables.globalTimeInstance33.setTime(DF33.elapsedTime)
+
                     DF33.printAllAtt()
-                    /*
-                    if(onToggle) { //onCharacter change
-                        if(dataFrame33Queue.size < queSize) {
-                            if(dataFrame33Queue.offer(DF33) != null) {
-                                println("An item has been placed in the 33 Queue.")
-                            } else {
-                                println("An item failed to be placed in the 33 Queue.")
-                            }
-                        } else {
-                            println("The queue full: ${dataFrame33Queue.size} items")
-                            println("Poping the most recent dataframe.")
-                            dataFrame33Queue.poll().printAllAtt()
-                            println("The queue will now clear.")
-                            dataFrame33Queue.clear()
-                        }
-                    }
-                    else //meaning it's onRead
-                        DF33.printAllAtt()
-                    */
                 } else if (uuid.toString() == "ce060035-43e5-11e4-916c-0800200c9a66") {
                     val DF35: DataFrame35 = DataFrame35(value.toUByteArray())
-                    val newTime = DF35.elapsedTime
-                    myTime35.setTime(newTime)
-                    //DF35.printAllAtt()
-                    if(false) {
+                    //Set's all df35 global variables to respective DF35 variables
+                    GlobalVariables.elapsedTime35 = DF35.elapsedTime
+                    GlobalVariables.distance35 = DF35.distance
+                    GlobalVariables.driveLength35 = DF35.driveLength
+                    GlobalVariables.driveTime35 = DF35.driveTime
+                    GlobalVariables.strokeRecTime35 = DF35.strokeRecTime
+                    GlobalVariables.strokeDistance35 = DF35.strokeDistance
+                    GlobalVariables.peakDriveForce35 = DF35.peakDriveForce
+                    GlobalVariables.averageDriveForce35 = DF35.averageDriveForce
+                    GlobalVariables.workPerStroke35 = DF35.workPerStroke
+                    GlobalVariables.strokeCount35 = DF35.strokeCount
+                    //sets time listener with newTime
+                    //lets Interval20Activity know global variables have changed
+                    GlobalVariables.globalTimeInstance35.setTime(DF35.elapsedTime)
+
+                    DF35.printAllAtt()
+/*                    if(false) {
                         if(dataFrame35Queue.size < queSize) {
                             if(dataFrame35Queue.offer(DF35) != null) {
                                 println("An item has been placed in the 35 Queue.")
@@ -622,7 +616,7 @@ object ConnectionManager {
                             println("The queue will now clear.")
                             dataFrame35Queue.clear()
                         }
-                    } else { DF35.printAllAtt() }
+                    } else { DF35.printAllAtt() }*/
                 } else if (uuid.toString() == "ce06003d-43e5-11e4-916c-0800200c9a66") {
                     //println("This is where it should read the first message compile the data")
                     val DF3D: DataFrame3D = DataFrame3D(value.toUByteArray())

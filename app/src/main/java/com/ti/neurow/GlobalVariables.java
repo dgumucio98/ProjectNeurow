@@ -5,14 +5,29 @@ import java.util.ArrayList;
 public class GlobalVariables {
     public static String loggedInUsername; // keeps track of what user is "logged in"
     public static ArrayList<Double> finalListTimePower; // populated once a workout activity concludes
-    public static Double elapsedTime; // populated once a workout activity concludes
-    public static Integer intervalCount; // populated once a workout activity concludes
-    public static Integer averagePower; // populated once a workout activity concludes
-    public static Integer totalCalories; // populated once a workout activity concludes
-    public static Double splitIntAvgPace; // populated once a workout activity concludes
-    public static Integer splitIntAvgPwr; // populated once a workout activity concludes
-    public static Integer splitIntAvgCal; // populated once a workout activity concludes
-    public static Double lastSplitTime; // populated once a workout activity concludes
-    public static Integer lastSplitDist; // populated once a workout activity concludes
-    public static VariableChanges globalTimeInstance;
+
+
+    public static Double elapsedTime33;
+    public static Integer intervalCount33;
+    public static Integer averagePower33;
+    public static Integer totalCalories33;
+    public static Double splitIntAvgPace33;
+    public static Integer splitIntAvgPwr33;
+    public static Integer splitIntAvgCal33; //TODO discrepancy between int and double? between ble and db
+    public static Double lastSplitTime33;
+    public static Integer lastSplitDist33; //TODO discrepancy between int and double? between ble and db
+    public static VariableChanges globalTimeInstance33;
+
+
+    public static Double elapsedTime35;
+    public static Double distance35;
+    public static Double driveLength35;
+    public static Double driveTime35;
+    public static Double strokeRecTime35;
+    public static Double strokeDistance35;
+    public static Double peakDriveForce35;
+    public static Double averageDriveForce35;
+    public static Double workPerStroke35;
+    public static Integer strokeCount35;
+    public static VariableChanges globalTimeInstance35;
 }

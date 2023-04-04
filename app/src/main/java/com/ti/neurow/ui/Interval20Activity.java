@@ -45,6 +45,85 @@ public class Interval20Activity extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); // Lock orientation to landscape
         setContentView(R.layout.activity_interval20);
 
+        //[TEST] testing how to populate database with realtime BLE data changes
+        DatabaseHelper db = new DatabaseHelper(Interval20Activity.this);
+        //TODO should begin populating just as workout screen is entered?
+        //TODO maybe it should be in a button instead?
+        //THIS IS FOR DATAFRAME33
+        VariableChanges myGlobalTime33 = new VariableChanges(); // declare instance of VariableChanges
+        GlobalVariables.globalTimeInstance33 = myGlobalTime33; //set the GlobalVaribale variable globalTimeInstance to instance
+        // [TEST] Test global time variable change happening
+        //the listener populates data33 table with the global variables of each variable
+        //whether the load is successful gets toasted
+        GlobalVariables.globalTimeInstance33.setTimeListener(new VariableChanges.TimeListener() {
+            @Override
+            public void onTimeChanged(double newTime) {
+                data33 realdata33 = new data33(
+                        GlobalVariables.elapsedTime33,
+                        GlobalVariables.intervalCount33,
+                        GlobalVariables.averagePower33,
+                        GlobalVariables.totalCalories33,
+                        GlobalVariables.splitIntAvgPace33,
+                        GlobalVariables.splitIntAvgPwr33,
+                        GlobalVariables.splitIntAvgCal33,
+                        GlobalVariables.lastSplitTime33,
+                        GlobalVariables.lastSplitDist33
+                );
+                boolean success = db.add_dataframe33(realdata33);
+                if (success == true) {
+                    Toast.makeText(
+                            Interval20Activity.this,
+                            "Successfully entered table",
+                            Toast.LENGTH_SHORT
+                    ).show(); //Testing
+                } else {
+                    Toast.makeText(
+                            Interval20Activity.this,
+                            "Did not enter table",
+                            Toast.LENGTH_SHORT
+                    ).show(); //Testing
+                }
+            }
+        });
+
+        //THIS IS FOR DATAFRAME35
+        VariableChanges myGlobalTime35 = new VariableChanges(); // declare instance of VariableChanges
+        GlobalVariables.globalTimeInstance35 = myGlobalTime35; //set the GlobalVaribale variable globalTimeInstance to instance
+        // [TEST] Test global time variable change happening
+        //the listener populates data35 table with the global variables of each variable
+        //whether the load is successful gets toasted
+        GlobalVariables.globalTimeInstance35.setTimeListener(new VariableChanges.TimeListener() {
+            @Override
+            public void onTimeChanged(double newTime) {
+                data35 realdata35 = new data35(
+                        GlobalVariables.elapsedTime35,
+                        GlobalVariables.distance35,
+                        GlobalVariables.driveLength35,
+                        GlobalVariables.driveTime35,
+                        GlobalVariables.strokeRecTime35,
+                        GlobalVariables.strokeDistance35,
+                        GlobalVariables.peakDriveForce35,
+                        GlobalVariables.averageDriveForce35,
+                        GlobalVariables.workPerStroke35,
+                        GlobalVariables.strokeCount35
+                );
+                boolean success = db.add_dataframe35(realdata35);
+                if (success == true) {
+                    Toast.makeText(
+                            Interval20Activity.this,
+                            "Successfully entered table",
+                            Toast.LENGTH_SHORT
+                    ).show(); //Testing
+                } else {
+                    Toast.makeText(
+                            Interval20Activity.this,
+                            "Did not enter table",
+                            Toast.LENGTH_SHORT
+                    ).show(); //Testing
+                }
+            }
+        });
+
 //        // Chronometer Functionality
 //        chron = (Chronometer) findViewById(R.id.simpleChronometer);
 //        btnStartChron = (Button) findViewById(R.id.btnBegin);
@@ -77,43 +156,6 @@ public class Interval20Activity extends AppCompatActivity {
                 workouts workouts = new workouts();
                 VariableChanges myMessage = new VariableChanges();
                 VariableChanges myDouble = new VariableChanges();
-
-                //[TEST] testing how to populate database with realtime BLE data changes
-                VariableChanges myGlobalTime = new VariableChanges(); // declare instance of VariableChanges
-                GlobalVariables.globalTimeInstance = myGlobalTime; //set the GlobalVaribale variable globalTimeInstance to instance
-                // [TEST] Test global time variable change happening
-                //the listener populates data33 table with the global variables of each variable
-                //whether the load is successful gets toasted
-                GlobalVariables.globalTimeInstance.setTimeListener(new VariableChanges.TimeListener() {
-                    @Override
-                    public void onTimeChanged(double newTime) {
-                        data33 realdata33 = new data33(
-                                GlobalVariables.elapsedTime,
-                                GlobalVariables.intervalCount,
-                                GlobalVariables.averagePower,
-                                GlobalVariables.totalCalories,
-                                GlobalVariables.splitIntAvgPace,
-                                GlobalVariables.splitIntAvgPwr,
-                                GlobalVariables.splitIntAvgCal,
-                                GlobalVariables.lastSplitTime,
-                                GlobalVariables.lastSplitDist
-                        );
-                        boolean success = db.add_dataframe33(realdata33);
-                        if (success == true) {
-                            Toast.makeText(
-                                    Interval20Activity.this,
-                                    "Successfully entered table",
-                                    Toast.LENGTH_SHORT
-                            ).show(); //Testing
-                        } else {
-                            Toast.makeText(
-                                    Interval20Activity.this,
-                                    "Did not enter table",
-                                    Toast.LENGTH_SHORT
-                            ).show(); //Testing
-                        }
-                    }
-                });
 
                 // [TEST] Test variable change happening within ftpCalc method with string message
                 myMessage.setMessageListener(new VariableChanges.MessageListener() {

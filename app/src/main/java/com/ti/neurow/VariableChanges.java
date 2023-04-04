@@ -4,6 +4,8 @@ import com.ti.neurow.db.DatabaseHelper;
 
 public class VariableChanges {
 
+    //TODO we can delete the listener with db as parameter??
+
     // Step 1: Add variables here:
     private String message; // the message that may change
     private double time; // the time that may change

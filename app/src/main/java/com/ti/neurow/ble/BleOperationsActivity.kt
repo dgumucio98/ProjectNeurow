@@ -206,12 +206,12 @@ class BleOperationsActivity : AppCompatActivity() {
         }
 
     }
-
-    override fun onDestroy() {
+//commented out so that you can leave BLE screen without disconnecting
+/*    override fun onDestroy() {
         ConnectionManager.unregisterListener(connectionEventListener)
         ConnectionManager.teardownConnection(device)
         super.onDestroy()
-    }
+    }*/
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
