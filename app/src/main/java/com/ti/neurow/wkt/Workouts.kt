@@ -70,13 +70,13 @@ class workouts : AppCompatActivity() {
         pz_7 = (1.51 * ftp).toInt() //Max Effort: >151% of FTP
 
         //[TEST] this is just for testing, delete
-        pz_1 = 1
-        pz_2 = 1
-        pz_3 = 1
-        pz_4 = 1
-        pz_5 = 1
-        pz_6 = 1
-        pz_7 = 1
+        pz_1 = 7
+        pz_2 = 5
+        pz_3 = 7
+        pz_4 = 5
+        pz_5 = 7
+        pz_6 = 5
+        pz_7 = 7
         ftp = 45;
 
         // [TEST]

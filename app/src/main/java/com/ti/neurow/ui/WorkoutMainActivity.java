@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,14 @@ import java.util.Date;
 
 // Strictly-Landscape activity
 public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener, View.OnLongClickListener {
+
+    // Color values for setting WorkoutActivity TextViews
+    String hexLightBlue = "#7A9CCC"; // light blue
+    String hexLightOrange = "#FA9939"; // light orange
+    String hexMediumBlue = "#6082B6 "; // medium blue
+    String hexMediumOrange = "#CD7F32"; // medium orange
+    String hexDarkBlue = "#3C5A8C "; // dark blue
+    String hexDarkOrange = "#CC7723"; // dark orange
 
     TextView MDY; // declare month-day-year text view
     TextView txtUserID; // declare username displayer
@@ -74,7 +83,7 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         btnWorkout3.setOnLongClickListener(this);
     }
 
-    // Show interval workout popup menu
+    // Show interval workout drop-down menu
     public void showPopup1(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         popup.setOnMenuItemClickListener(this);
@@ -82,7 +91,7 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         popup.show();
     }
 
-    // Show pace workout popup menu
+    // Show pace workout drop-down menu
     public void showPopup2(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         popup.setOnMenuItemClickListener(this);
@@ -93,24 +102,38 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
     // Handle when menu items are clicked
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
+
         int itemId = menuItem.getItemId();
+        Intent launchWorkoutActivity = new Intent(this, WorkoutActivity.class); // define intent for launching activity
+
         if (itemId == R.id.interval1) {
-            Intent intent1 = new Intent(this, Interval20Activity.class);
-            startActivity(intent1);
-            overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
-            return true;
+            int color = Color.parseColor(hexLightBlue); // parse custom color
+            launchWorkoutActivity.putExtra("attributeColor", color); // pass color data
+            launchWorkoutActivity.putExtra("attributeText", "20-MINUTE"); // pass text data
         } else if (itemId == R.id.interval2) {
-            return true;
+            int color = Color.parseColor(hexMediumBlue);
+            launchWorkoutActivity.putExtra("attributeColor", color);
+            launchWorkoutActivity.putExtra("attributeText", "30-MINUTE");
         } else if (itemId == R.id.interval3) {
-            return true;
+            int color = Color.parseColor(hexDarkBlue);
+            launchWorkoutActivity.putExtra("attributeColor", color);
+            launchWorkoutActivity.putExtra("attributeText", "40-MINUTE");
         } else if (itemId == R.id.pace_interval1) {
-            return true;
+            int color = Color.parseColor(hexLightOrange);
+            launchWorkoutActivity.putExtra("attributeColor", color);
+            launchWorkoutActivity.putExtra("attributeText", "20-MINUTE");
         } else if (itemId == R.id.pace_interval2) {
-            Intent intent5 = new Intent(this, Pace30Activity.class);
-            startActivity(intent5);
-            overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
-            return true;
-        } else return itemId == R.id.pace_interval3;
+            int color = Color.parseColor(hexMediumOrange);
+            launchWorkoutActivity.putExtra("attributeColor", color);
+            launchWorkoutActivity.putExtra("attributeText", "30-MINUTE");
+        } else if (itemId == R.id.pace_interval3) {
+            int color = Color.parseColor(hexDarkOrange);
+            launchWorkoutActivity.putExtra("attributeColor", color);
+            launchWorkoutActivity.putExtra("attributeText", "40-MINUTE");
+        }
+        startActivity(launchWorkoutActivity); // start workout activity
+        overridePendingTransition(R.anim.slide_up, R.anim.slide_down); // animate
+        return false;
     }
 
     // Log Out button: Launch LoginActivity
@@ -118,11 +141,11 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         onBackPressed(); // call onBackPressed() method to display the confirmation dialog
     }
 
-    // FTP Calculator button:  Launch Interval20Activity
+    // FTP Calculator button:  Launch WorkoutActivity
     public void launchFTPCalc (View v) {
 
         // Launch Workout1 activity
-        Intent i = new Intent(this, Interval20Activity.class);
+        Intent i = new Intent(this, WorkoutActivity.class);
         startActivity(i);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
