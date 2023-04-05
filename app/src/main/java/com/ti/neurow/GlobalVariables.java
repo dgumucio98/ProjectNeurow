@@ -13,9 +13,9 @@ public class GlobalVariables {
     public static Integer totalCalories33;
     public static Double splitIntAvgPace33;
     public static Integer splitIntAvgPwr33;
-    public static Integer splitIntAvgCal33; //TODO discrepancy between int and double? between ble and db
+    public static Double splitIntAvgCal33; //TODO discrepancy between int and double? between ble and db
     public static Double lastSplitTime33;
-    public static Integer lastSplitDist33; //TODO discrepancy between int and double? between ble and db
+    public static Double lastSplitDist33; //TODO discrepancy between int and double? between ble and db
     public static VariableChanges globalTimeInstance33;
 
 

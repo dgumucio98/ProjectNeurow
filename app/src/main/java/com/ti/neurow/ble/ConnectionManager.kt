@@ -383,6 +383,7 @@ object ConnectionManager {
         }
 
         override fun onCharacteristicRead(
+            //TODO add listener things to this too?
             gatt: BluetoothGatt,
             characteristic: BluetoothGattCharacteristic,
             status: Int
@@ -618,6 +619,7 @@ object ConnectionManager {
                         }
                     } else { DF35.printAllAtt() }*/
                 } else if (uuid.toString() == "ce06003d-43e5-11e4-916c-0800200c9a66") {
+                    //TODO add listener when 3D table is completed
                     //println("This is where it should read the first message compile the data")
                     val DF3D: DataFrame3D = DataFrame3D(value.toUByteArray())
                     //val newTime = DF3D.elapsedTime
