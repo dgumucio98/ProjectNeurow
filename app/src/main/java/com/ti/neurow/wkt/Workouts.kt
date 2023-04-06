@@ -28,7 +28,7 @@ class workouts : AppCompatActivity() {
     }
 
     // ftp calculator workout method
-    fun ftpCalc(myDouble: VariableChanges, myMessage: VariableChanges, db: DatabaseHelper): ArrayList<Double> {
+    fun ftpCalc(db: DatabaseHelper): ArrayList<Double> {
         //ftp calculator code that calculates ftp and defines power zones
         var sum = 0 //uncomment
         var length = 0 //uncomment
@@ -37,13 +37,9 @@ class workouts : AppCompatActivity() {
         //holds time in odd indices and power in even indices
         val powtimearray = arrayListOf<Double>()
 
-        // [TEST] Testing UI Integration
-        var message = "You aren't in power zone 2!"
-        myMessage.setMessage(message)
         var pastTime = 0.0
         var infiniteCount = 0
-        time = 7.7
-        myDouble.setTime(time)
+
         var i = 0
         while (db.time_33 < 180.0) { //for testing, 3 minutes
             sum += db.power
@@ -72,6 +68,7 @@ class workouts : AppCompatActivity() {
 
         //define ftp = 95% of average power
         ftp = (0.95 * avgPow).toInt() //uncomment
+        GlobalVariables.ftp = ftp
         // Load power zones
         pz_1 = 0 //Very Easy: <55% of FTP
         pz_2 = (0.56 * ftp).toInt() //Moderate: 56%-75% of FTP

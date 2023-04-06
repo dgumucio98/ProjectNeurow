@@ -185,29 +185,56 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
                 });
 
+                //THIS IS FOR DATAFRAME3D
+                VariableChanges myGlobalTime3D = new VariableChanges(); // declare instance of VariableChanges
+                GlobalVariables.globalTimeInstance3D = myGlobalTime3D; //set the GlobalVaribale variable globalTimeInstance to instance
+                // [TEST] Test global time variable change happening
+                //the listener populates data3D table with the global variables of each variable
+                //whether the load is successful gets toasted
+                GlobalVariables.globalTimeInstance3D.setMessageListener(new VariableChanges.MessageListener() {
+                    @Override
+                    public void onMessageChanged(String newMessage) {
+                        boolean success = db.add_3Dmessage(GlobalVariables.pol3D, GlobalVariables.message3D);
+                        if (success == true) {
+                            Toast.makeText(
+                                    WorkoutActivity.this,
+                                    "Successfully entered table",
+                                    Toast.LENGTH_SHORT
+                            ).show(); //Testing
+                        } else {
+                            Toast.makeText(
+                                    WorkoutActivity.this,
+                                    "Did not enter table",
+                                    Toast.LENGTH_SHORT
+                            ).show(); //Testing
+                        }
+                    }
+                });
+
                 // Prepare workout, and dynamic variable objects
                 workouts workouts = new workouts();
-                VariableChanges myMessage = new VariableChanges();
-                VariableChanges myDouble = new VariableChanges();
+                VariableChanges pzSetChanges = new VariableChanges(); //Listener for which pz to be in
+                VariableChanges pzFixChanges = new VariableChanges(); //Listener for pz user feedback
 
-                // [TEST] Test variable change happening within ftpCalc method with string message
-                myMessage.setMessageListener(new VariableChanges.MessageListener() {
+                // Listen for command of which pz to be in
+                pzSetChanges.setMessageListener(new VariableChanges.MessageListener() {
                     @Override
                     public void onMessageChanged(String newMessage) {
                         Timber.d(newMessage);
                     }
                 });
 
-                // [TEST] Test variable change happening within ftpCalc method with double time
-                myDouble.setTimeListener(new VariableChanges.TimeListener() {
+                // Listen for user feedback of power zone leaves
+                pzFixChanges.setMessageListener(new VariableChanges.MessageListener() {
                     @Override
-                    public void onTimeChanged(double newTime) {
-                        Toast.makeText(WorkoutActivity.this, "[TEST] " + newTime, Toast.LENGTH_SHORT).show();
+                    public void onMessageChanged(String newMessage) {
+                        Timber.d(newMessage);
                     }
                 });
 
+
                 // [TEST] Run ftpCalc workout method
-                ArrayList pow = workouts.ftpCalc(myDouble, myMessage, db);
+                ArrayList pow = workouts.ftpCalc(db);
 
                 // [TEST] Set global list to workout result list
                 GlobalVariables.finalListTimePower = pow;
