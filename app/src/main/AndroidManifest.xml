@@ -108,6 +108,9 @@
             android:name=".ble.BleOperationsActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ble.TestingActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ble.MainActivity"
             android:exported="true" />
     </application>

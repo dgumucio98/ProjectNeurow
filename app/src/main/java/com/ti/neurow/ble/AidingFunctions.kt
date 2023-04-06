@@ -62,7 +62,7 @@ fun uuidParsing(uuidString: String, df: UByteArray, onToggle: Boolean): Unit {
         val DF35: DataFrame35 = DataFrame35(df)
         //DF35.printAllAtt()
         if(onToggle) {
-//            dataFrame35Queue.offer(DF35)
+            dataFrame35Queue.offer(DF35)
 //            if(dataFrame35Queue.size < queSize) {
 //                if(dataFrame35Queue.offer(DF35) != null) {
 //                    println("An item has been placed in the 35 Queue.")

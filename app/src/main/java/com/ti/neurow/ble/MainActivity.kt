@@ -27,6 +27,7 @@ import org.jetbrains.anko.alert
 import timber.log.Timber
 // For uuid parsing
 import android.os.ParcelUuid
+import android.view.WindowManager
 import com.ti.neurow.BuildConfig
 import com.ti.neurow.R
 
@@ -111,6 +112,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //Remove the bars at the top of the scan
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        supportActionBar?.hide()
+
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
@@ -283,7 +289,8 @@ class MainActivity : AppCompatActivity() {
             * activity, BleOperationsActivity
              */
             onConnectionSetupComplete = { gatt ->
-                Intent(this@MainActivity, BleOperationsActivity::class.java).also {
+                //Intent(this@MainActivity, BleOperationsActivity::class.java).also {
+                Intent(this@MainActivity, TestingActivity::class.java).also {
                     it.putExtra(BluetoothDevice.EXTRA_DEVICE, gatt.device)
                     startActivity(it)
                 }
