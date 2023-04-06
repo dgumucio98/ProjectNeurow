@@ -9,16 +9,30 @@
 
     <Button
         android:id="@+id/btnAlyson"
-        android:layout_width="1225dp"
+        android:layout_width="900dp"
         android:layout_height="425dp"
         android:layout_below="@id/simpleChronometer"
         android:layout_marginTop="50dp"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="350dp"
         android:backgroundTint="#6082B6"
         android:fontFamily="sans-serif-black"
         android:text="[TEST] Run ftpCalc"
         android:textColor="@color/white"
         android:textSize="80sp" />
+
+    <Button
+        android:id="@+id/btnBegin"
+        android:layout_width="250dp"
+        android:layout_height="425dp"
+        android:layout_below="@id/simpleChronometer"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="50dp"
+        android:backgroundTint="#50C878"
+        android:fontFamily="sans-serif-black"
+        android:text="Start"
+        android:textColor="@color/white"
+        android:textSize="40sp" />
+
     <TextView
         android:id="@+id/txtUserID"
         android:layout_width="wrap_content"
