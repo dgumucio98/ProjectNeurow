@@ -6,9 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -28,13 +27,14 @@ import java.util.ArrayList;
 
 import pl.droidsonroids.gif.GifImageView;
 
-public class Interval20Activity extends AppCompatActivity {
+public class WorkoutActivity extends AppCompatActivity {
 
     // Define some elements
+    TextView txtWorkoutAttribute;
     Chronometer chron; // declare chronometer (count-up timer)
-    Button btnAlyson, btnStartChron; // declare timer button
+    Button btnAlyson, btnStartChron;
     boolean isChronRunning = false; // define boolean state of the timer
-    GifImageView gifRipple; // define ripple gif
+    GifImageView gifRipple;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,10 @@ public class Interval20Activity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); // Hide Action bar and Status bar
         getSupportActionBar().hide();
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); // Lock orientation to landscape
-        setContentView(R.layout.activity_interval20);
+        setContentView(R.layout.activity_workout);
+
+        // Define elements
+        txtWorkoutAttribute = (TextView) findViewById(R.id.txtWorkoutAttribute);
 
 
 //        // Chronometer Functionality
@@ -67,6 +70,14 @@ public class Interval20Activity extends AppCompatActivity {
 //            }
 //        });
 
+        // Get data from WorkoutMainActivity
+        int colorToSet = getIntent().getIntExtra("attributeColor", Color.WHITE); // default is white (means problem)
+        String textToSet = getIntent().getStringExtra("attributeText");
+
+        // Set txtWorkoutAttribute text and color
+        txtWorkoutAttribute.setText(textToSet);
+        txtWorkoutAttribute.setTextColor(colorToSet);
+
         // [TEST] Alyson button listener
         btnAlyson = (Button) findViewById(R.id.btnAlyson);
         btnAlyson.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +86,7 @@ public class Interval20Activity extends AppCompatActivity {
 
                 //[TEST] testing how to populate database with realtime BLE data changes
                 // Prepare database
-                DatabaseHelper db = new DatabaseHelper(Interval20Activity.this);
+                DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
                 //Database population begins on button click
                 //THIS IS FOR DATAFRAME33
                 VariableChanges myGlobalTime33 = new VariableChanges(); // declare instance of VariableChanges
@@ -100,13 +111,13 @@ public class Interval20Activity extends AppCompatActivity {
                         boolean success = db.add_dataframe33(realdata33);
                         if (success == true) {
                             Toast.makeText(
-                                    Interval20Activity.this,
+                                    WorkoutActivity.this,
                                     "Successfully entered table",
                                     Toast.LENGTH_SHORT
                             ).show(); //Testing
                         } else {
                             Toast.makeText(
-                                    Interval20Activity.this,
+                                    WorkoutActivity.this,
                                     "Did not enter table",
                                     Toast.LENGTH_SHORT
                             ).show(); //Testing
@@ -138,13 +149,13 @@ public class Interval20Activity extends AppCompatActivity {
                         boolean success = db.add_dataframe35(realdata35);
                         if (success == true) {
                             Toast.makeText(
-                                    Interval20Activity.this,
+                                    WorkoutActivity.this,
                                     "Successfully entered table",
                                     Toast.LENGTH_SHORT
                             ).show(); //Testing
                         } else {
                             Toast.makeText(
-                                    Interval20Activity.this,
+                                    WorkoutActivity.this,
                                     "Did not enter table",
                                     Toast.LENGTH_SHORT
                             ).show(); //Testing
@@ -162,7 +173,7 @@ public class Interval20Activity extends AppCompatActivity {
                 myMessage.setMessageListener(new VariableChanges.MessageListener() {
                     @Override
                     public void onMessageChanged(String newMessage) {
-                        Toast.makeText(Interval20Activity.this,"[TEST] " + newMessage,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WorkoutActivity.this, "[TEST] " + newMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -170,21 +181,21 @@ public class Interval20Activity extends AppCompatActivity {
                 myDouble.setTimeListener(new VariableChanges.TimeListener() {
                     @Override
                     public void onTimeChanged(double newTime) {
-                        Toast.makeText(Interval20Activity.this,"[TEST] " + newTime,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WorkoutActivity.this, "[TEST] " + newTime, Toast.LENGTH_SHORT).show();
                     }
                 });
 
                 // [TEST] Run ftpCalc workout method
-                ArrayList pow = workouts.ftpCalc(myDouble, myMessage,db);
+                ArrayList pow = workouts.ftpCalc(myDouble, myMessage, db);
 
                 // [TEST] Set global list to workout result list
                 GlobalVariables.finalListTimePower = pow;
 
                 // [TEST] view list
-                Toast.makeText(Interval20Activity.this,"[TEST] Resulting ArrayList: " + pow.toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(WorkoutActivity.this, "[TEST] Resulting ArrayList: " + pow.toString(), Toast.LENGTH_SHORT).show();
 
                 // [TEST] Start PostWorkoutActivity
-                Intent i = new Intent(Interval20Activity.this, PostWorkoutActivity.class);
+                Intent i = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
                 startActivity(i); // Launch BLE Data View
                 finish(); // can't go back
             }
@@ -193,7 +204,7 @@ public class Interval20Activity extends AppCompatActivity {
 
     @Override // Handle back button press during workout
     public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Interval20Activity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(WorkoutActivity.this);
         builder.setTitle("Exit current workout?");
         builder.setMessage("Your workout is currently running. Any unsaved progress will be lost.");
 
@@ -212,4 +223,5 @@ public class Interval20Activity extends AppCompatActivity {
         });
         AlertDialog dialog = builder.show();
     }
+
 }

@@ -63,7 +63,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.Interval20Activity"
+            android:name=".ui.WorkoutActivity"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
