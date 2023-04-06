@@ -10,14 +10,11 @@ import android.database.sqlite.SQLiteOpenHelper
 //import android.util.Log;
 //import java.text.SimpleDateFormat;
 //import java.util.Date;
-class DatabaseHelper  //Constructor
-//changed
+class DatabaseHelper //Constructor
     (context: Context?) :
-    SQLiteOpenHelper(context, "Smart_Rower_Tables.db", null, 2) {
+    SQLiteOpenHelper(context, "Smart_Rower_Tables.db", null, 18) {
     //methods that must be implemented
     //this is called the first time a database is accessed. There should be code in here to create a new database
-
-
     override fun onCreate(db: SQLiteDatabase) {
         val user_table =
             "Create TABLE " + USER_INFO + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USER_NAME + " TEXT, " + COLUMN_PASSWORD + " TEXT, " + COLUMN_FTP + " INT, " + COLUMN_PZ_1 + " INT, " + COLUMN_PZ_2 + " INT, " + COLUMN_PZ_3 + " INT, " + COLUMN_PZ_4 + " INT, " + COLUMN_PZ_5 + " INT, " + COLUMN_PZ_6 + " INT, " + COLUMN_PZ_7 + " INT)"
@@ -26,13 +23,15 @@ class DatabaseHelper  //Constructor
         val dataframe35_table =
             "Create TABLE " + DATAFRAME35_INFO + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_TIME_35 + " DOUB, " + COLUMN_DIST + " DOUB, " + COLUMN_DRIVE_LEN + " DOUB, " + COLUMN_DRIVE_TIME + " DOUB, " + COLUMN_STROKE_REC_TIME + " DOUB, " + COLUMN_STROKE_DIST + " DOUB, " + COLUMN_PEAK_DRIVE_FORCE + " DOUB, " + COLUMN_AVG_DRIVE_FORCE + " DOUB, " + COLUMN_WORK_PER_STROKE + " DOUB, " + COLUMN_STROKE_COUNT + " INT)"
         val history_table =
-            "Create TABLE $HISTORY_INFO ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_USER TEXT, $COLUMN_TIMESTAMP TEXT default (datetime('now','localtime')), $COLUMN_WORKOUT TEXT, $COLUMN_ERROR INT, $COLUMN_AVGPOWER DOUB)"
-
-        //String error_table = "Create TABLE " + ERROR_INFO + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USER + " TEXT, " + COLUMN_TIMESTAMP + " TEXT default (datetime('now','localtime')), " + COLUMN_ERROR + " INT)";
+            "Create TABLE " + HISTORY_INFO + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USER + " TEXT, " + COLUMN_TIMESTAMP + " TEXT default (datetime('now','localtime')), " + COLUMN_WORKOUT + " TEXT, " + COLUMN_ERROR + " INT, " + COLUMN_AVGPOWER + " DOUB)"
+        val emptyList = ArrayList<Int>()
+        val table3D =
+            "Create TABLE " + INFO3D + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_MESSAGE + " INT, " + COLUMN_FORCEVALS1 + " TEXT, " + COLUMN_FORCEVALS2 + " TEXT, " + COLUMN_FORCEVALS3 + " TEXT, " + COLUMN_FORCEVALS4 + " TEXT, " + COLUMN_FORCEVALS5 + " TEXT, " + COLUMN_FORCEVALS6 + " TEXT, " + COLUMN_FORCEVALS7 + " TEXT, " + COLUMN_FORCEVALS8 + " TEXT, " + COLUMN_FORCEVALS9 + " TEXT, " + COLUMN_FORCEVALS10 + " TEXT)"
         db.execSQL(user_table)
         db.execSQL(dataframe33_table)
         db.execSQL(dataframe35_table)
         db.execSQL(history_table)
+        db.execSQL(table3D)
         //db.execSQL(error_table);
     }
 
@@ -42,12 +41,59 @@ class DatabaseHelper  //Constructor
         db.execSQL("Drop Table IF EXISTS DATAFRAME33_INFO")
         db.execSQL("Drop Table IF EXISTS DATAFRAME35_INFO")
         db.execSQL("Drop Table IF EXISTS HISTORY_INFO")
+        db.execSQL("Drop Table IF EXISTS INFO3D")
         //db.execSQL("Drop Table IF EXISTS ERROR_INFO");
         onCreate(db)
     }
 
     //Methods!!!
     //add to tables
+    fun add_3Dmessage(message: Int, forceVals: String?): Boolean {
+        val db = this.writableDatabase
+        //If username exists return false
+        val cursor = db.rawQuery(
+            "Select * from info3D where COLUMN_MESSAGE = ?",
+            arrayOf(message.toString())
+        ) //Find sequenceNumber in info3D
+        return if (cursor.count > 0) {
+            cursor.moveToFirst()
+            val cv = ContentValues()
+            var columnIndex = -1
+            // loop through the columns in the row and find the next null column
+            for (i in 2..cursor.columnCount) {
+                if (i >= 12) {
+                    break
+                }
+                if (cursor.getString(i) == null) {
+                    columnIndex = i
+                    break
+                }
+            }
+            if (columnIndex != -1) {
+                // update the null column with new force values
+                cv.put(cursor.getColumnName(columnIndex), forceVals)
+                val result =
+                    db.update(INFO3D, cv, "COLUMN_MESSAGE = ?", arrayOf(message.toString()))
+                        .toLong()
+                cursor.close()
+                result != -1L
+            } else {
+                // no null column found, cannot update the row
+                cursor.close()
+                false
+            }
+        } else {
+            val cv = ContentValues()
+            cv.put(COLUMN_MESSAGE, message)
+            cv.put(COLUMN_FORCEVALS1, forceVals)
+
+            //ID is a auto increment in the database
+            val insert = db.insert(INFO3D, null, cv)
+            cursor.close()
+            insert != -1L
+        }
+    }
+
     fun add_account(user: User): Boolean {
         val db = this.writableDatabase
         //If username exists return false
@@ -180,6 +226,12 @@ class DatabaseHelper  //Constructor
     fun delete_dataframe35_table(): Boolean {
         val db = this.writableDatabase
         db.execSQL("delete from " + DATAFRAME35_INFO)
+        return true
+    }
+
+    fun delete_table3D(): Boolean? {
+        val db = this.writableDatabase
+        db.execSQL("delete from " + INFO3D)
         return true
     }
 
@@ -1356,16 +1408,17 @@ class DatabaseHelper  //Constructor
         //public static final String ERROR_INFO = "error_info";
         const val COLUMN_ERROR = "COLUMN_ERROR"
         const val COLUMN_AVGPOWER = "COLUMN_AVGPOWER"
-
-
-        private lateinit var instance: DatabaseHelper
-
-        @Synchronized
-        fun getInstance(context: Context): DatabaseHelper {
-            if (!::instance.isInitialized) {
-                instance = DatabaseHelper(context.applicationContext)
-            }
-            return instance
-        }
+        const val INFO3D = "info3D"
+        const val COLUMN_MESSAGE = "COLUMN_MESSAGE"
+        const val COLUMN_FORCEVALS1 = "COLUMN_FORCEVALS1"
+        const val COLUMN_FORCEVALS2 = "COLUMN_FORCEVALS2"
+        const val COLUMN_FORCEVALS3 = "COLUMN_FORCEVALS3"
+        const val COLUMN_FORCEVALS4 = "COLUMN_FORCEVALS4"
+        const val COLUMN_FORCEVALS5 = "COLUMN_FORCEVALS5"
+        const val COLUMN_FORCEVALS6 = "COLUMN_FORCEVALS6"
+        const val COLUMN_FORCEVALS7 = "COLUMN_FORCEVALS7"
+        const val COLUMN_FORCEVALS8 = "COLUMN_FORCEVALS8"
+        const val COLUMN_FORCEVALS9 = "COLUMN_FORCEVALS9"
+        const val COLUMN_FORCEVALS10 = "COLUMN_FORCEVALS10"
     }
 }
