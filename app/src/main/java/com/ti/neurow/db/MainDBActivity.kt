@@ -318,6 +318,9 @@ class MainDBActivity : AppCompatActivity() {
             val success2 = db.delete_dataframe35_table()
             Toast.makeText(this@MainDBActivity, "dataframe35 table Deleted", Toast.LENGTH_SHORT)
                 .show()
+            val success3 = db.delete_table3D()!!
+            Toast.makeText(this@MainDBActivity, "table3D table Deleted", Toast.LENGTH_SHORT).show()
+
         })
         btn_history_error_tables.setOnClickListener(View.OnClickListener {
             val db = DatabaseHelper(this@MainDBActivity) //making reference to database
@@ -420,6 +423,27 @@ class MainDBActivity : AppCompatActivity() {
                     builder.setTitle(usernameTXT + "Past Power")
                     builder.setMessage(buffer.toString())
                     builder.show()
+
+
+
+                    //Adding to 3D table
+                    val pol = 6
+                    val message = "123456"
+
+                    val success = db.add_3Dmessage(pol, message)
+                    if (success == true) {
+                        Toast.makeText(
+                            this@MainDBActivity,
+                            "message added to 3D table",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            this@MainDBActivity,
+                            "message not added to 3D table",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             })
 
