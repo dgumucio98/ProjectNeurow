@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -30,9 +31,9 @@ import pl.droidsonroids.gif.GifImageView;
 public class WorkoutActivity extends AppCompatActivity {
 
     // Define some elements
-    TextView txtWorkoutAttribute;
+    TextView txtWorkoutAttribute, txtWorkoutName;
     Chronometer chron; // declare chronometer (count-up timer)
-    Button btnAlyson, btnStartChron;
+    Button btnAlyson, btnBegin;
     boolean isChronRunning = false; // define boolean state of the timer
     GifImageView gifRipple;
 
@@ -46,37 +47,57 @@ public class WorkoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_workout);
 
         // Define elements
-        txtWorkoutAttribute = (TextView) findViewById(R.id.txtWorkoutAttribute);
+        txtWorkoutAttribute = (TextView) findViewById(R.id.txtWorkoutAttribute); // workout "subtitle"
+        txtWorkoutName = (TextView) findViewById(R.id.txtWorkoutName); // workout name (interval/pace)
+        chron = (Chronometer) findViewById(R.id.simpleChronometer); // chronometer
+        btnBegin = (Button) findViewById(R.id.btnBegin); // button that starts workouts
+
+        // ***** This is where the workout gets called and begins *****
+        btnBegin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { // when btnBegin is clicked
+
+                // 1. Set up for workout call
+                // TODO: Outermost if-statement which reads type of workout from string passed to differentiate ftpCalc from pace/interval workouts
+                // TODO: Middle level if-statements to determine interval/pace workout choice
+                // TODO: Innermost level if-statement for workouts' individual preparation code
+
+                // 2. Call workout
+                // TODO: if-statement for what workout function to call
+
+                // 3. Begin on-screen chronometer
+                // TODO: Paste existing chronometer functionality code block
+
+                // Chronometer Functionality
+                if (!isChronRunning) { // if NOT running
+                    chron.setBase(SystemClock.elapsedRealtime()); // start counting from current time
+                    chron.start(); // start the chronometer
+                    btnBegin.setText("Stop");
+                    isChronRunning = true; // set status to true
+                }
+                else {
+                    chron.stop();
+                    isChronRunning = false; // set status to false
+                    btnBegin.setText("Start");
+                }
 
 
-//        // Chronometer Functionality
-//        chron = (Chronometer) findViewById(R.id.simpleChronometer);
-//        btnStartChron = (Button) findViewById(R.id.btnBegin);
-//
-//        btnStartChron.setOnClickListener(new View.OnClickListener() { // start/stop button listener
-//            @Override
-//            public void onClick(View v) {
-//                if (!isChronRunning) { // if NOT running
-//                    chron.setBase(SystemClock.elapsedRealtime()); // start counting from current time
-//                    chron.start(); // start the chronometer
-//                    btnStartChron.setText("Stop");
-//                    isChronRunning = true; // set status to true
-//                }
-//                else {
-//                    chron.stop();
-//                    isChronRunning = false; // set status to false
-//                    btnStartChron.setText("Start");
-//                }
-//            }
-//        });
+
+
+
+            }
+
+        });
 
         // Get data from WorkoutMainActivity
         int colorToSet = getIntent().getIntExtra("attributeColor", Color.WHITE); // default is white (means problem)
         String textToSet = getIntent().getStringExtra("attributeText");
+        String titleToSet = getIntent().getStringExtra("attributeName");
 
         // Set txtWorkoutAttribute text and color
         txtWorkoutAttribute.setText(textToSet);
         txtWorkoutAttribute.setTextColor(colorToSet);
+        txtWorkoutName.setText(titleToSet);
 
         // [TEST] Alyson button listener
         btnAlyson = (Button) findViewById(R.id.btnAlyson);
@@ -84,7 +105,7 @@ public class WorkoutActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                //[TEST] testing how to populate database with realtime BLE data changes
+                // Testing how to populate database with realtime BLE data changes
                 // Prepare database
                 DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
                 //Database population begins on button click
@@ -223,5 +244,4 @@ public class WorkoutActivity extends AppCompatActivity {
         });
         AlertDialog dialog = builder.show();
     }
-
 }

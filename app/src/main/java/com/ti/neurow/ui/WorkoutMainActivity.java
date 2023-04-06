@@ -29,9 +29,9 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
     // Color values for setting WorkoutActivity TextViews
     String hexLightBlue = "#7A9CCC"; // light blue
     String hexLightOrange = "#FA9939"; // light orange
-    String hexMediumBlue = "#6082B6 "; // medium blue
+    String hexMediumBlue = "#6082B6"; // medium blue
     String hexMediumOrange = "#CD7F32"; // medium orange
-    String hexDarkBlue = "#3C5A8C "; // dark blue
+    String hexDarkBlue = "#3C5A8C"; // dark blue
     String hexDarkOrange = "#CC7723"; // dark orange
 
     TextView MDY; // declare month-day-year text view
@@ -110,26 +110,33 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
             int color = Color.parseColor(hexLightBlue); // parse custom color
             launchWorkoutActivity.putExtra("attributeColor", color); // pass color data
             launchWorkoutActivity.putExtra("attributeText", "20-MINUTE"); // pass text data
+            launchWorkoutActivity.putExtra("attributeName", "INTERVAL WORKOUT"); // pass titles text data
         } else if (itemId == R.id.interval2) {
             int color = Color.parseColor(hexMediumBlue);
             launchWorkoutActivity.putExtra("attributeColor", color);
             launchWorkoutActivity.putExtra("attributeText", "30-MINUTE");
+            launchWorkoutActivity.putExtra("attributeName", "INTERVAL WORKOUT"); // pass titles text data
         } else if (itemId == R.id.interval3) {
             int color = Color.parseColor(hexDarkBlue);
             launchWorkoutActivity.putExtra("attributeColor", color);
             launchWorkoutActivity.putExtra("attributeText", "40-MINUTE");
+            launchWorkoutActivity.putExtra("attributeName", "INTERVAL WORKOUT"); // pass titles text data
+
         } else if (itemId == R.id.pace_interval1) {
             int color = Color.parseColor(hexLightOrange);
             launchWorkoutActivity.putExtra("attributeColor", color);
             launchWorkoutActivity.putExtra("attributeText", "20-MINUTE");
+            launchWorkoutActivity.putExtra("attributeName", "PACE WORKOUT"); // pass titles text data
         } else if (itemId == R.id.pace_interval2) {
             int color = Color.parseColor(hexMediumOrange);
             launchWorkoutActivity.putExtra("attributeColor", color);
             launchWorkoutActivity.putExtra("attributeText", "30-MINUTE");
+            launchWorkoutActivity.putExtra("attributeName", "PACE WORKOUT"); // pass titles text data
         } else if (itemId == R.id.pace_interval3) {
             int color = Color.parseColor(hexDarkOrange);
             launchWorkoutActivity.putExtra("attributeColor", color);
             launchWorkoutActivity.putExtra("attributeText", "40-MINUTE");
+            launchWorkoutActivity.putExtra("attributeName", "PACE WORKOUT"); // pass titles text data
         }
         startActivity(launchWorkoutActivity); // start workout activity
         overridePendingTransition(R.anim.slide_up, R.anim.slide_down); // animate
