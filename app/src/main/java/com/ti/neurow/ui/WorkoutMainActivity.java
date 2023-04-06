@@ -76,11 +76,29 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         Button btnWorkout1 = findViewById(R.id.btnWorkout1);
         Button btnWorkout2 = findViewById(R.id.btnWorkout2);
         Button btnWorkout3 = findViewById(R.id.btnWorkout3);
+        // TODO: define new Power Predictions button with popup menu and add functionality to each choice
 
         // Set listeners for buttons
         btnWorkout1.setOnLongClickListener(this);
         btnWorkout2.setOnLongClickListener(this);
         btnWorkout3.setOnLongClickListener(this);
+
+        // Handle when ftpCalc button is clicked
+        btnWorkout1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent launchWorkoutActivity = new Intent(WorkoutMainActivity.this, WorkoutActivity.class); // define intent for launching activity
+
+                int color = Color.parseColor(hexLightBlue); // parse custom color
+                launchWorkoutActivity.putExtra("attributeColor", color); // pass color data
+                launchWorkoutActivity.putExtra("attributeText", "BASELINE-MINUTE"); // pass text data
+                launchWorkoutActivity.putExtra("attributeName", "FTP CALCULATOR"); // pass titles text data
+                launchWorkoutActivity.putExtra("methodName", "ftpCalc"); // pass target workout name data
+
+                startActivity(launchWorkoutActivity); // start workout activity
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down); // animate
+            }
+        });
     }
 
     // Show interval workout drop-down menu
@@ -106,38 +124,50 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         int itemId = menuItem.getItemId();
         Intent launchWorkoutActivity = new Intent(this, WorkoutActivity.class); // define intent for launching activity
 
+        // Prepare data to be sent via putExtra
         if (itemId == R.id.interval1) {
             int color = Color.parseColor(hexLightBlue); // parse custom color
             launchWorkoutActivity.putExtra("attributeColor", color); // pass color data
             launchWorkoutActivity.putExtra("attributeText", "20-MINUTE"); // pass text data
             launchWorkoutActivity.putExtra("attributeName", "INTERVAL WORKOUT"); // pass titles text data
+            launchWorkoutActivity.putExtra("methodName", "interval1"); // pass target workout name data
+
         } else if (itemId == R.id.interval2) {
             int color = Color.parseColor(hexMediumBlue);
             launchWorkoutActivity.putExtra("attributeColor", color);
             launchWorkoutActivity.putExtra("attributeText", "30-MINUTE");
             launchWorkoutActivity.putExtra("attributeName", "INTERVAL WORKOUT"); // pass titles text data
+            launchWorkoutActivity.putExtra("methodName", "interval2"); // pass target workout name data
         } else if (itemId == R.id.interval3) {
             int color = Color.parseColor(hexDarkBlue);
             launchWorkoutActivity.putExtra("attributeColor", color);
             launchWorkoutActivity.putExtra("attributeText", "40-MINUTE");
             launchWorkoutActivity.putExtra("attributeName", "INTERVAL WORKOUT"); // pass titles text data
+            launchWorkoutActivity.putExtra("methodName", "interval3"); // pass target workout name data
 
         } else if (itemId == R.id.pace_interval1) {
             int color = Color.parseColor(hexLightOrange);
             launchWorkoutActivity.putExtra("attributeColor", color);
             launchWorkoutActivity.putExtra("attributeText", "20-MINUTE");
             launchWorkoutActivity.putExtra("attributeName", "PACE WORKOUT"); // pass titles text data
+            launchWorkoutActivity.putExtra("methodName", "pace20"); // pass target workout name data
+
         } else if (itemId == R.id.pace_interval2) {
             int color = Color.parseColor(hexMediumOrange);
             launchWorkoutActivity.putExtra("attributeColor", color);
             launchWorkoutActivity.putExtra("attributeText", "30-MINUTE");
             launchWorkoutActivity.putExtra("attributeName", "PACE WORKOUT"); // pass titles text data
+            launchWorkoutActivity.putExtra("methodName", "pace30"); // pass target workout name data
+
         } else if (itemId == R.id.pace_interval3) {
             int color = Color.parseColor(hexDarkOrange);
             launchWorkoutActivity.putExtra("attributeColor", color);
             launchWorkoutActivity.putExtra("attributeText", "40-MINUTE");
             launchWorkoutActivity.putExtra("attributeName", "PACE WORKOUT"); // pass titles text data
+            launchWorkoutActivity.putExtra("methodName", "pace40"); // pass target workout name data
         }
+
+        // Start next workout activity
         startActivity(launchWorkoutActivity); // start workout activity
         overridePendingTransition(R.anim.slide_up, R.anim.slide_down); // animate
         return false;
@@ -148,17 +178,8 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         onBackPressed(); // call onBackPressed() method to display the confirmation dialog
     }
 
-    // FTP Calculator button:  Launch WorkoutActivity
-    public void launchFTPCalc (View v) {
-
-        // Launch Workout1 activity
-        Intent i = new Intent(this, WorkoutActivity.class);
-        startActivity(i);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-    }
-
-    @Override // Handle back button press
-    public void onBackPressed() {
+    @Override
+    public void onBackPressed() { // handle back button press
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Log Out?");
         builder.setMessage("Exiting the dashboard will log you out.");

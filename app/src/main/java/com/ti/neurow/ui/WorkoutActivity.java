@@ -27,6 +27,7 @@ import com.ti.neurow.R;
 import java.util.ArrayList;
 
 import pl.droidsonroids.gif.GifImageView;
+import timber.log.Timber;
 
 public class WorkoutActivity extends AppCompatActivity {
 
@@ -57,65 +58,25 @@ public class WorkoutActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) { // when btnBegin is clicked
 
-                // 1. Set up for workout call
-                // TODO: Outermost if-statement which reads type of workout from string passed to differentiate ftpCalc from pace/interval workouts
-                // TODO: Middle level if-statements to determine interval/pace workout choice
-                // TODO: Innermost level if-statement for workouts' individual preparation code
+                // 1. Declare/Initialize instances, set listeners
 
-                // 2. Call workout
-                // TODO: if-statement for what workout function to call
+                DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this); // prepare database
+                workouts workouts = new workouts(); // construct workouts instance
 
-                // 3. Begin on-screen chronometer
-                // TODO: Paste existing chronometer functionality code block
-
-                // Chronometer Functionality
-                if (!isChronRunning) { // if NOT running
-                    chron.setBase(SystemClock.elapsedRealtime()); // start counting from current time
-                    chron.start(); // start the chronometer
-                    btnBegin.setText("Stop");
-                    isChronRunning = true; // set status to true
-                }
-                else {
-                    chron.stop();
-                    isChronRunning = false; // set status to false
-                    btnBegin.setText("Start");
-                }
-
-
-
-
-
-            }
-
-        });
-
-        // Get data from WorkoutMainActivity
-        int colorToSet = getIntent().getIntExtra("attributeColor", Color.WHITE); // default is white (means problem)
-        String textToSet = getIntent().getStringExtra("attributeText");
-        String titleToSet = getIntent().getStringExtra("attributeName");
-
-        // Set txtWorkoutAttribute text and color
-        txtWorkoutAttribute.setText(textToSet);
-        txtWorkoutAttribute.setTextColor(colorToSet);
-        txtWorkoutName.setText(titleToSet);
-
-        // [TEST] Alyson button listener
-        btnAlyson = (Button) findViewById(R.id.btnAlyson);
-        btnAlyson.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                // Testing how to populate database with realtime BLE data changes
-                // Prepare database
-                DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
-                //Database population begins on button click
-                //THIS IS FOR DATAFRAME33
+                // Dataframe 33
                 VariableChanges myGlobalTime33 = new VariableChanges(); // declare instance of VariableChanges
-                GlobalVariables.globalTimeInstance33 = myGlobalTime33; //set the GlobalVaribale variable globalTimeInstance to instance
-                // [TEST] Test global time variable change happening
-                //the listener populates data33 table with the global variables of each variable
-                //whether the load is successful gets toasted
-                GlobalVariables.globalTimeInstance33.setTimeListener(new VariableChanges.TimeListener() {
+                GlobalVariables.globalTimeInstance33 = myGlobalTime33; // set the GlobalVariable variable globalTimeInstance33 to instance
+
+                // Dataframe 35
+                VariableChanges myGlobalTime35 = new VariableChanges(); // declare instance of VariableChanges
+                GlobalVariables.globalTimeInstance35 = myGlobalTime35; //set the GlobalVariable variable globalTimeInstance35 to instance
+
+                // Dataframe 3D
+                VariableChanges myGlobalTime3D = new VariableChanges(); // declare instance of VariableChanges
+                GlobalVariables.globalTimeInstance3D = myGlobalTime3D; //set the GlobalVariable variable globalTimeInstance3D to
+
+                // Dataframe 33 Change Listener
+                GlobalVariables.globalTimeInstance33.setTimeListener(new VariableChanges.TimeListener() { // populates data33 table with the global variables of each variable
                     @Override
                     public void onTimeChanged(double newTime) {
                         data33 realdata33 = new data33(
@@ -133,26 +94,21 @@ public class WorkoutActivity extends AppCompatActivity {
                         if (success == true) {
                             Toast.makeText(
                                     WorkoutActivity.this,
-                                    "Successfully entered table",
+                                    "[TEST] Successfully entered table",
                                     Toast.LENGTH_SHORT
                             ).show(); //Testing
                         } else {
                             Toast.makeText(
                                     WorkoutActivity.this,
-                                    "Did not enter table",
+                                    "[TEST] Did not enter table",
                                     Toast.LENGTH_SHORT
                             ).show(); //Testing
                         }
                     }
                 });
 
-                //THIS IS FOR DATAFRAME35
-                VariableChanges myGlobalTime35 = new VariableChanges(); // declare instance of VariableChanges
-                GlobalVariables.globalTimeInstance35 = myGlobalTime35; //set the GlobalVaribale variable globalTimeInstance to instance
-                // [TEST] Test global time variable change happening
-                //the listener populates data35 table with the global variables of each variable
-                //whether the load is successful gets toasted
-                GlobalVariables.globalTimeInstance35.setTimeListener(new VariableChanges.TimeListener() {
+                // Dataframe 35 Change Listener
+                GlobalVariables.globalTimeInstance35.setTimeListener(new VariableChanges.TimeListener() { // populates data35 table with the global variables of each variable
                     @Override
                     public void onTimeChanged(double newTime) {
                         data35 realdata35 = new data35(
@@ -171,51 +127,145 @@ public class WorkoutActivity extends AppCompatActivity {
                         if (success == true) {
                             Toast.makeText(
                                     WorkoutActivity.this,
-                                    "Successfully entered table",
+                                    "[TEST] Successfully entered table",
                                     Toast.LENGTH_SHORT
                             ).show(); //Testing
                         } else {
                             Toast.makeText(
                                     WorkoutActivity.this,
-                                    "Did not enter table",
+                                    "[TEST] Did not enter table",
                                     Toast.LENGTH_SHORT
                             ).show(); //Testing
                         }
                     }
                 });
 
-
-                // Prepare workout, and dynamic variable objects
-                workouts workouts = new workouts();
-                VariableChanges myMessage = new VariableChanges();
-                VariableChanges myDouble = new VariableChanges();
-
-                // [TEST] Test variable change happening within ftpCalc method with string message
-                myMessage.setMessageListener(new VariableChanges.MessageListener() {
+                // Dataframe 3D Change Listener
+                GlobalVariables.globalTimeInstance3D.setMessageListener(new VariableChanges.MessageListener() { // populates data3D table with the global variables of each variable
                     @Override
                     public void onMessageChanged(String newMessage) {
-                        Toast.makeText(WorkoutActivity.this, "[TEST] " + newMessage, Toast.LENGTH_SHORT).show();
+                        boolean success = db.add_3Dmessage(GlobalVariables.pol3D, GlobalVariables.message3D);
+                        if (success == true) {
+                            Toast.makeText(
+                                    WorkoutActivity.this,
+                                    "[TEST] Successfully entered table",
+                                    Toast.LENGTH_SHORT
+                            ).show(); //Testing
+                        } else {
+                            Toast.makeText(
+                                    WorkoutActivity.this,
+                                    "[TEST] Did not enter table",
+                                    Toast.LENGTH_SHORT
+                            ).show(); //Testing
+                        }
                     }
                 });
 
-                // [TEST] Test variable change happening within ftpCalc method with double time
-                myDouble.setTimeListener(new VariableChanges.TimeListener() {
+                // 2. Receive workout choice data from WorkoutMainActivity
+
+                int colorToSet = getIntent().getIntExtra("attributeColor", Color.WHITE); // default is white (means problem)
+                String textToSet = getIntent().getStringExtra("attributeText");
+                String titleToSet = getIntent().getStringExtra("attributeName");
+                String methodName = getIntent().getStringExtra("methodName");
+
+                // 3. Change Workout UI elements
+
+                // Set txtWorkoutAttribute text and color
+                txtWorkoutAttribute.setText(textToSet);
+                txtWorkoutAttribute.setTextColor(colorToSet);
+                txtWorkoutName.setText(titleToSet);
+
+                // 4. Setup for workout calls
+
+                // Listeners
+                VariableChanges pzSetChanges = new VariableChanges(); // listener for which pz to be in
+                VariableChanges pzFixChanges = new VariableChanges(); // listener for pz user feedback
+                VariableChanges suggestionChanges = new VariableChanges(); // listener for suggestion
+
+                // Listen for command of which pz to be in
+                pzSetChanges.setMessageListener(new VariableChanges.MessageListener() {
                     @Override
-                    public void onTimeChanged(double newTime) {
-                        Toast.makeText(WorkoutActivity.this, "[TEST] " + newTime, Toast.LENGTH_SHORT).show();
+                    public void onMessageChanged(String newMessage) {
+                        Timber.d(newMessage);
                     }
                 });
 
-                // [TEST] Run ftpCalc workout method
-                ArrayList pow = workouts.ftpCalc(myDouble, myMessage, db);
+                // Listen for user feedback of power zone leaves
+                pzFixChanges.setMessageListener(new VariableChanges.MessageListener() {
+                    @Override
+                    public void onMessageChanged(String newMessage) {
+                        Timber.d(newMessage);
+                    }
+                });
 
-                // [TEST] Set global list to workout result list
-                GlobalVariables.finalListTimePower = pow;
+                // Listen for post-workout suggestions
+                suggestionChanges.setMessageListener(new VariableChanges.MessageListener() {
+                    @Override
+                    public void onMessageChanged(String newMessage) {
+                        // TODO: Display visual UI element for suggestion given
+                        Timber.d(newMessage);
+                    }
+                });
 
-                // [TEST] view list
-                Toast.makeText(WorkoutActivity.this, "[TEST] Resulting ArrayList: " + pow.toString(), Toast.LENGTH_SHORT).show();
+                // 5. Start on-screen Chronometer
 
-                // [TEST] Start PostWorkoutActivity
+                // Chronometer Functionality
+                if (!isChronRunning) { // if NOT running
+                    chron.setBase(SystemClock.elapsedRealtime()); // start counting from current time
+                    chron.start(); // start the chronometer
+                    btnBegin.setText("Stop");
+                    isChronRunning = true; // set status to true
+                }
+                else {
+                    chron.stop();
+                    isChronRunning = false; // set status to false
+                    btnBegin.setText("Start");
+                }
+
+                // 6. Call workout methods
+
+                // Conditions to call specific workout
+                if (methodName == "ftpCalc") { // CALL FTPCALC
+                    ArrayList pow = workouts.ftpCalc(db); // call, set global list to workout result list
+                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
+                    // TODO: Read ftp global variable
+                    // TODO: Make text box appear with feedback
+                }
+                else if (methodName == "interval1") { // CALL INTERVAL1
+                    ArrayList pow = workouts.interval1(pzSetChanges, pzFixChanges, db);
+                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
+                    workouts.intervalSuggestion(suggestionChanges, "1", GlobalVariables.failCount);
+                }
+                else if (methodName == "interval2") { // CALL INTERVAL2
+                    ArrayList pow = workouts.interval2(pzSetChanges, pzFixChanges, db);
+                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
+                    workouts.intervalSuggestion(suggestionChanges, "2", GlobalVariables.failCount);
+                }
+                else if (methodName == "interval3") { // CALL INTERVAL3
+                    ArrayList pow = workouts.interval1(pzSetChanges, pzFixChanges, db);
+                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
+                    workouts.intervalSuggestion(suggestionChanges, "3", GlobalVariables.failCount);
+                }
+                else if (methodName == "pace20") { // CALL PACE20
+                    ArrayList pow = workouts.pace(pzSetChanges, pzFixChanges, 20,db);
+                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
+                    workouts.paceSuggestion(suggestionChanges, "20", GlobalVariables.failCount);
+
+                }
+                else if (methodName == "pace30") { // CALL PACE30
+                    ArrayList pow = workouts.pace(pzSetChanges, pzFixChanges, 30,db);
+                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
+                    workouts.paceSuggestion(suggestionChanges, "30", GlobalVariables.failCount);
+                }
+                else if (methodName == "pace40") { // CALL PACE40
+                    ArrayList pow = workouts.pace(pzSetChanges, pzFixChanges, 40,db);
+                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
+                    workouts.paceSuggestion(suggestionChanges, "30", GlobalVariables.failCount);
+                }
+
+                // 7. Prepare to leave screen
+
+                // Exit WorkoutActivity, launch PostWorkoutActivity
                 Intent i = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
                 startActivity(i); // Launch BLE Data View
                 finish(); // can't go back
@@ -223,8 +273,8 @@ public class WorkoutActivity extends AppCompatActivity {
         });
     }
 
-    @Override // Handle back button press during workout
-    public void onBackPressed() {
+    @Override
+    public void onBackPressed() { // handle back button press during workout
         AlertDialog.Builder builder = new AlertDialog.Builder(WorkoutActivity.this);
         builder.setTitle("Exit current workout?");
         builder.setMessage("Your workout is currently running. Any unsaved progress will be lost.");

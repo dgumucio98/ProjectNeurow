@@ -6,7 +6,7 @@ public class GlobalVariables {
     public static String loggedInUsername; // keeps track of what user is "logged in"
     public static ArrayList<Double> finalListTimePower; // populated once a workout activity concludes
 
-
+    // Dataframe 33 stuff
     public static Double elapsedTime33;
     public static Integer intervalCount33;
     public static Integer averagePower33;
@@ -18,7 +18,7 @@ public class GlobalVariables {
     public static Double lastSplitDist33; //TODO discrepancy between int and double? between ble and db
     public static VariableChanges globalTimeInstance33;
 
-
+    // Dataframe 35 stuff
     public static Double elapsedTime35;
     public static Double distance35;
     public static Double driveLength35;
@@ -30,4 +30,14 @@ public class GlobalVariables {
     public static Double workPerStroke35;
     public static Integer strokeCount35;
     public static VariableChanges globalTimeInstance35;
+
+    // Dataframe 3D stuff
+    public static Integer pol3D;
+    public static String message3D;
+    public static VariableChanges globalTimeInstance3D;
+
+    // Others
+    public static Integer failCount;
+    public static Integer ftp;
+
 }
