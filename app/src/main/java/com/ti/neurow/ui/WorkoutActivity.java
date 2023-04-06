@@ -14,7 +14,8 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.ti.neurow.db.data33;
+import com.ti.neurow.db.data35;
 
 import com.ti.neurow.GlobalVariables; // for access to finalListTimePower
 import com.ti.neurow.VariableChanges; // for message listener
@@ -46,6 +47,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
         // Define elements
         txtWorkoutAttribute = (TextView) findViewById(R.id.txtWorkoutAttribute);
+
 
 //        // Chronometer Functionality
 //        chron = (Chronometer) findViewById(R.id.simpleChronometer);
@@ -82,12 +84,90 @@ public class WorkoutActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                // Prepare database, workout, and dynamic variable objects
+                //[TEST] testing how to populate database with realtime BLE data changes
+                // Prepare database
                 DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
+                //Database population begins on button click
+                //THIS IS FOR DATAFRAME33
+                VariableChanges myGlobalTime33 = new VariableChanges(); // declare instance of VariableChanges
+                GlobalVariables.globalTimeInstance33 = myGlobalTime33; //set the GlobalVaribale variable globalTimeInstance to instance
+                // [TEST] Test global time variable change happening
+                //the listener populates data33 table with the global variables of each variable
+                //whether the load is successful gets toasted
+                GlobalVariables.globalTimeInstance33.setTimeListener(new VariableChanges.TimeListener() {
+                    @Override
+                    public void onTimeChanged(double newTime) {
+                        data33 realdata33 = new data33(
+                                GlobalVariables.elapsedTime33,
+                                GlobalVariables.intervalCount33,
+                                GlobalVariables.averagePower33,
+                                GlobalVariables.totalCalories33,
+                                GlobalVariables.splitIntAvgPace33,
+                                GlobalVariables.splitIntAvgPwr33,
+                                GlobalVariables.splitIntAvgCal33,
+                                GlobalVariables.lastSplitTime33,
+                                GlobalVariables.lastSplitDist33
+                        );
+                        boolean success = db.add_dataframe33(realdata33);
+                        if (success == true) {
+                            Toast.makeText(
+                                    WorkoutActivity.this,
+                                    "Successfully entered table",
+                                    Toast.LENGTH_SHORT
+                            ).show(); //Testing
+                        } else {
+                            Toast.makeText(
+                                    WorkoutActivity.this,
+                                    "Did not enter table",
+                                    Toast.LENGTH_SHORT
+                            ).show(); //Testing
+                        }
+                    }
+                });
+
+                //THIS IS FOR DATAFRAME35
+                VariableChanges myGlobalTime35 = new VariableChanges(); // declare instance of VariableChanges
+                GlobalVariables.globalTimeInstance35 = myGlobalTime35; //set the GlobalVaribale variable globalTimeInstance to instance
+                // [TEST] Test global time variable change happening
+                //the listener populates data35 table with the global variables of each variable
+                //whether the load is successful gets toasted
+                GlobalVariables.globalTimeInstance35.setTimeListener(new VariableChanges.TimeListener() {
+                    @Override
+                    public void onTimeChanged(double newTime) {
+                        data35 realdata35 = new data35(
+                                GlobalVariables.elapsedTime35,
+                                GlobalVariables.distance35,
+                                GlobalVariables.driveLength35,
+                                GlobalVariables.driveTime35,
+                                GlobalVariables.strokeRecTime35,
+                                GlobalVariables.strokeDistance35,
+                                GlobalVariables.peakDriveForce35,
+                                GlobalVariables.averageDriveForce35,
+                                GlobalVariables.workPerStroke35,
+                                GlobalVariables.strokeCount35
+                        );
+                        boolean success = db.add_dataframe35(realdata35);
+                        if (success == true) {
+                            Toast.makeText(
+                                    WorkoutActivity.this,
+                                    "Successfully entered table",
+                                    Toast.LENGTH_SHORT
+                            ).show(); //Testing
+                        } else {
+                            Toast.makeText(
+                                    WorkoutActivity.this,
+                                    "Did not enter table",
+                                    Toast.LENGTH_SHORT
+                            ).show(); //Testing
+                        }
+                    }
+                });
+
+
+                // Prepare workout, and dynamic variable objects
                 workouts workouts = new workouts();
                 VariableChanges myMessage = new VariableChanges();
                 VariableChanges myDouble = new VariableChanges();
-
 
                 // [TEST] Test variable change happening within ftpCalc method with string message
                 myMessage.setMessageListener(new VariableChanges.MessageListener() {
@@ -124,7 +204,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
     @Override // Handle back button press during workout
     public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(WorkoutActivity.this);
         builder.setTitle("Exit current workout?");
         builder.setMessage("Your workout is currently running. Any unsaved progress will be lost.");
 

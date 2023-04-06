@@ -16,6 +16,8 @@ class DatabaseHelper  //Constructor
     SQLiteOpenHelper(context, "Smart_Rower_Tables.db", null, 2) {
     //methods that must be implemented
     //this is called the first time a database is accessed. There should be code in here to create a new database
+
+
     override fun onCreate(db: SQLiteDatabase) {
         val user_table =
             "Create TABLE " + USER_INFO + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USER_NAME + " TEXT, " + COLUMN_PASSWORD + " TEXT, " + COLUMN_FTP + " INT, " + COLUMN_PZ_1 + " INT, " + COLUMN_PZ_2 + " INT, " + COLUMN_PZ_3 + " INT, " + COLUMN_PZ_4 + " INT, " + COLUMN_PZ_5 + " INT, " + COLUMN_PZ_6 + " INT, " + COLUMN_PZ_7 + " INT)"
@@ -1354,5 +1356,16 @@ class DatabaseHelper  //Constructor
         //public static final String ERROR_INFO = "error_info";
         const val COLUMN_ERROR = "COLUMN_ERROR"
         const val COLUMN_AVGPOWER = "COLUMN_AVGPOWER"
+
+
+        private lateinit var instance: DatabaseHelper
+
+        @Synchronized
+        fun getInstance(context: Context): DatabaseHelper {
+            if (!::instance.isInitialized) {
+                instance = DatabaseHelper(context.applicationContext)
+            }
+            return instance
+        }
     }
 }

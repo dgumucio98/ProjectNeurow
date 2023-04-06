@@ -40,7 +40,7 @@ class DataFrame33(data: UByteArray) {
 
     //Split/Interval Avg Calories Unit: cals/hr
     //Position: 12, 13 Bytes
-    val splitIntAvgCal: Int = byteToDec(12, 13, data).toInt()
+    val splitIntAvgCal: Double = byteToDec(12, 13, data).toDouble() //TODO will this mess things up i changed to double
 
     //Last Split Time Unit: 0.1 sec
     //Position: 14, 16 Bytes
@@ -48,7 +48,7 @@ class DataFrame33(data: UByteArray) {
 
     //Last Split Distance Unit: 1 meters
     //Position: 17, 19 Bytes
-    val lastSplitDist: Int = byteToDec(17, 19, data).toInt()
+    val lastSplitDist: Double = byteToDec(17, 19, data).toDouble() //TODO this one too
 
     fun printAllAtt(): Unit {
         println("Elapsed time: %.2f seconds(s)".format(this.elapsedTime))

@@ -1,5 +1,7 @@
 package com.ti.neurow;
 
+import com.ti.neurow.db.DatabaseHelper;
+
 public class VariableChanges {
 
     // Step 1: Add variables here:
@@ -9,7 +11,6 @@ public class VariableChanges {
     // Step 2: Establish listeners here:
     private MessageListener messageListener; // listener for message changes
     private TimeListener timeListener; // listener for time changes
-
 
     // Step 3: Write method to update message variable
     public void setMessage(String newMessage) {
@@ -40,6 +41,7 @@ public class VariableChanges {
     public void setTimeListener(TimeListener newListener) {
         timeListener = newListener;
     }
+
 
     // An interface representing the message change listener. Any class implementing this interface can receive updates when a message changes.
     public interface MessageListener {
