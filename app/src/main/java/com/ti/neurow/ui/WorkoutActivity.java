@@ -26,6 +26,7 @@ import com.ti.neurow.R;
 import java.util.ArrayList;
 
 import pl.droidsonroids.gif.GifImageView;
+import timber.log.Timber;
 
 public class WorkoutActivity extends AppCompatActivity {
 
@@ -163,7 +164,6 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
                 });
 
-
                 // Prepare workout, and dynamic variable objects
                 workouts workouts = new workouts();
                 VariableChanges myMessage = new VariableChanges();
@@ -173,7 +173,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 myMessage.setMessageListener(new VariableChanges.MessageListener() {
                     @Override
                     public void onMessageChanged(String newMessage) {
-                        Toast.makeText(WorkoutActivity.this, "[TEST] " + newMessage, Toast.LENGTH_SHORT).show();
+                        Timber.d(newMessage);
                     }
                 });
 
@@ -223,5 +223,4 @@ public class WorkoutActivity extends AppCompatActivity {
         });
         AlertDialog dialog = builder.show();
     }
-
 }

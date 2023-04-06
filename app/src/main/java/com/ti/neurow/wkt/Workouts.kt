@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.ti.neurow.GlobalVariables
 import com.ti.neurow.VariableChanges
 import com.ti.neurow.db.DatabaseHelper
+import timber.log.Timber;
 
 class workouts : AppCompatActivity() {
     private var ftp: Int
@@ -29,37 +30,48 @@ class workouts : AppCompatActivity() {
     // ftp calculator workout method
     fun ftpCalc(myDouble: VariableChanges, myMessage: VariableChanges, db: DatabaseHelper): ArrayList<Double> {
         //ftp calculator code that calculates ftp and defines power zones
-        //var sum = 0 //uncomment
-        //var length = 0 //uncomment
+        var sum = 0 //uncomment
+        var length = 0 //uncomment
         var time = 4.0
-        println(time)
-
         //define one arraylist to return from function
         //holds time in odd indices and power in even indices
         val powtimearray = arrayListOf<Double>()
 
         // [TEST] Testing UI Integration
-        val message = "You aren't in power zone 2!"
+        var message = "You aren't in power zone 2!"
         myMessage.setMessage(message)
-
+        var pastTime = 0.0
+        var infiniteCount = 0
         time = 7.7
         myDouble.setTime(time)
-        println(time)
-        //hi
-        //uncomment
-/*        while (db.time_33 < 1200) { //uncomment
+        var i = 0
+        while (db.time_33 < 180.0) { //for testing, 3 minutes
             sum += db.power
             length += 1
             powtimearray.add(db.time_33)
             powtimearray.add(db.power.toDouble())
+            pastTime = db.time_33
+        }
+        //uncomment
+/*        while (db.time_33 < 1200) { //uncomment
+            //adding break case so no infinite loop
+            if (pastTime == db.time_33){
+                infiniteCount++
+            }
+            if (infiniteCount > 5) //how to do a catch for workout infinite loop, have a count if it is above 10 jump?
+
+            sum += db.power
+            length += 1
+            powtimearray.add(db.time_33)
+            powtimearray.add(db.power.toDouble())
+            pastTime = db.time_33
         }*/
 
-        //val avgPow = sum.toDouble() / length //uncomment
-        val avgPow = 50 // [TEST]
+        val avgPow = sum.toDouble() / length //uncomment
+        //val avgPow = 50 // [TEST]
 
         //define ftp = 95% of average power
         ftp = (0.95 * avgPow).toInt() //uncomment
-
         // Load power zones
         pz_1 = 0 //Very Easy: <55% of FTP
         pz_2 = (0.56 * ftp).toInt() //Moderate: 56%-75% of FTP
@@ -69,7 +81,7 @@ class workouts : AppCompatActivity() {
         pz_6 = (1.21 * ftp).toInt() //Very Hard: 121%-150% of FTP
         pz_7 = (1.51 * ftp).toInt() //Max Effort: >151% of FTP
 
-        //[TEST] this is just for testing, delete
+/*        //[TEST] this is just for testing, delete
         pz_1 = 7
         pz_2 = 5
         pz_3 = 7
@@ -77,9 +89,9 @@ class workouts : AppCompatActivity() {
         pz_5 = 7
         pz_6 = 5
         pz_7 = 7
-        ftp = 45;
+        ftp = 45;*/
 
-        // [TEST]
+/*        // [TEST]
         powtimearray.add(1.0)
         powtimearray.add(2.0)
         powtimearray.add(2.0)
@@ -95,7 +107,7 @@ class workouts : AppCompatActivity() {
         powtimearray.add(7.0)
         powtimearray.add(4.0)
         powtimearray.add(8.0)
-        powtimearray.add(4.0)
+        powtimearray.add(4.0)*/
 
         db.updateuserFTP(GlobalVariables.loggedInUsername, this.ftp, this.pz_1, this.pz_2, this.pz_3, this.pz_4, this.pz_5, this.pz_6, this.pz_7);
 
@@ -692,6 +704,7 @@ class workouts : AppCompatActivity() {
         val avgPow = sum.toDouble() / length //uncomment
         //interval_suggestor("1", failCount)
         failCount = 25 // for  integration testing
+        GlobalVariables.failCount = failCount
         db.add_history(GlobalVariables.loggedInUsername, "interval1", failCount, avgPow)
         return powtimearray
     }
@@ -871,6 +884,7 @@ class workouts : AppCompatActivity() {
         val avgPow = sum.toDouble() / length //uncomment
         //interval_suggestor("2", failCount)
         failCount = 25 //for database integration testing
+        GlobalVariables.failCount = failCount
         db.add_history(GlobalVariables.loggedInUsername, "interval2", failCount, avgPow)
         return powtimearray
     }
@@ -1190,6 +1204,7 @@ class workouts : AppCompatActivity() {
 
         //interval_suggestor("2", failCount)
         failCount = 66 //for database integration testing
+        GlobalVariables.failCount = failCount
         db.add_history(GlobalVariables.loggedInUsername, "interval3", failCount, avgPow)
         return powtimearray
     }
@@ -1229,6 +1244,7 @@ class workouts : AppCompatActivity() {
                 }
             }
             failCount = 202020 //for integration testing
+            GlobalVariables.failCount = failCount
             //pace_suggestor("20", failCount)
             val avgPow = sum.toDouble() / length //uncomment
             db.add_history(GlobalVariables.loggedInUsername, "pace20", failCount, avgPow)
@@ -1257,6 +1273,7 @@ class workouts : AppCompatActivity() {
             }
             //}
             failCount = 303030 // for integration testing
+            GlobalVariables.failCount = failCount
             //pace_suggestor("30", failCount)
             val avgPow = sum.toDouble() / length //uncomment
             db.add_history(GlobalVariables.loggedInUsername, "pace30", failCount, avgPow)
@@ -1284,6 +1301,7 @@ class workouts : AppCompatActivity() {
                 }
             }
             failCount = 404040 //for integration testing
+            GlobalVariables.failCount = failCount
             //pace_suggestor("40", failCount)
             val avgPow = sum.toDouble() / length //uncomment
             db.add_history(GlobalVariables.loggedInUsername, "pace40", failCount, avgPow)

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class GlobalVariables {
     public static String loggedInUsername; // keeps track of what user is "logged in"
     public static ArrayList<Double> finalListTimePower; // populated once a workout activity concludes
-
+    public static Integer failCount;
 
     public static Double elapsedTime33;
     public static Integer intervalCount33;
@@ -30,4 +30,9 @@ public class GlobalVariables {
     public static Double workPerStroke35;
     public static Integer strokeCount35;
     public static VariableChanges globalTimeInstance35;
+
+    // 3D dataframe variables
+    public static Integer pol3D;
+    public static String message3D;
+    public static VariableChanges globalTimeInstance3D;
 }
