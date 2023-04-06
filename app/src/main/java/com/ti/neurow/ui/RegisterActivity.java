@@ -49,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 // Get username and password from fields
                 String Username = usernameEditText.getText().toString(); // extract username from EditText
-                String Password = usernameEditText.getText().toString(); // extract password from EditText
+                String Password = passwordEditText.getText().toString(); // extract password from EditText
 
                 if (TextUtils.isEmpty(Username)) { // if username EditText is empty
                     Toast.makeText(RegisterActivity.this, "Please enter a username", Toast.LENGTH_SHORT).show();
@@ -72,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 // Check if user exists in database
                 if (userExists) { // prompt that username is taken with toast
-                    Toast.makeText(RegisterActivity.this, "[TEST] Username is taken!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Sorry, that username is taken!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else { // add user to database

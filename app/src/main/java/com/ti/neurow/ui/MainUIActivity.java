@@ -19,7 +19,6 @@ import com.ti.neurow.R;
 import com.ti.neurow.ble.MainActivity;
 import com.ti.neurow.ble.UserBTConfig;
 import com.ti.neurow.db.MainDBActivity;
-import com.ti.neurow.db.User;
 
 public class MainUIActivity extends AppCompatActivity {
 
@@ -72,29 +71,27 @@ public class MainUIActivity extends AppCompatActivity {
             public void run() {
                 welcomeText.setVisibility(View.VISIBLE);
                 welcomeText.setAlpha(0f);
-                welcomeText.animate().alpha(1f).setDuration(700).start();
+                welcomeText.animate().alpha(1f).setDuration(500).start();
 
                 existingUser.setVisibility(View.VISIBLE);
                 existingUser.setAlpha(0f);
-                existingUser.animate().alpha(1f).setDuration(700).start();
+                existingUser.animate().alpha(1f).setDuration(500).start();
 
                 newUser.setVisibility(View.VISIBLE);
                 newUser.setAlpha(0f);
-                newUser.animate().alpha(1f).setDuration(700).start();
+                newUser.animate().alpha(1f).setDuration(500).start();
 
                 BLEData.setVisibility(View.VISIBLE);
                 BLEData.setAlpha(0f);
-                BLEData.animate().alpha(1f).setDuration(700).start();
+                BLEData.animate().alpha(1f).setDuration(500).start();
 
                 DBdata.setVisibility(View.VISIBLE);
                 DBdata.setAlpha(0f);
-                DBdata.animate().alpha(1f).setDuration(700).start();
+                DBdata.animate().alpha(1f).setDuration(500).start();
 
                 Config.setVisibility(View.VISIBLE);
                 Config.setAlpha(0f);
-                Config.animate().alpha(1f).setDuration(700).start();
-
-
+                Config.animate().alpha(1f).setDuration(500).start();
             }
         }, 3500);
 

@@ -5,21 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dark_grey_background"
-    tools:context=".ui.Pace30Activity">
+    tools:context=".ui.WorkoutActivity">
 
     <Button
-        android:id="@+id/btnBegin"
+        android:id="@+id/btnAlyson"
         android:layout_width="1225dp"
         android:layout_height="425dp"
         android:layout_below="@id/simpleChronometer"
         android:layout_marginTop="50dp"
         android:layout_marginLeft="50dp"
-        android:backgroundTint="#CD7F32"
+        android:backgroundTint="#6082B6"
         android:fontFamily="sans-serif-black"
-        android:text="START"
+        android:text="[TEST] Run ftpCalc"
         android:textColor="@color/white"
-        android:textSize="175sp" />
-
+        android:textSize="80sp" />
     <TextView
         android:id="@+id/txtUserID"
         android:layout_width="wrap_content"
@@ -28,7 +27,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="25dp"
         android:layout_marginRight="25dp"
-        android:backgroundTint="#802D7B"
+        android:backgroundTint="#E5E4E2"
         android:fontFamily="sans-serif-black"
         android:text="[UserID]"
         android:textColor="#D3D3D3"
@@ -39,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:text="PACE WORKOUT"
+        android:text="INTERVAL WORKOUT"
         android:layout_below="@id/txtWorkoutAttribute"
         android:layout_centerHorizontal="true"
         android:textColor="@color/white"
@@ -51,10 +50,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
-        android:text="30-MINUTE"
+        android:text="20-MINUTE"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
-        android:textColor="#CD7F32"
+        android:textColor="#6082B6"
         android:textSize="50sp"
         android:textStyle="bold" />
 
