@@ -10,9 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper
 //import android.util.Log;
 //import java.text.SimpleDateFormat;
 //import java.util.Date;
-class DatabaseHelper  //val 3D_table =
-//        "Create TABLE $3D_INFO ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_SEQUENCENUMBER INT, $COLUMN_1_FORCEVALS TEXT, $COLUMN_2_FORCEVALS TEXT, $COLUMN_3_FORCEVALS TEXT, $COLUMN_4_FORCEVALS TEXT, $COLUMN_5_FORCEVALS TEXT, $COLUMN_6_FORCEVALS TEXT, $COLUMN_7_FORCEVALS TEXT, $COLUMN_8_FORCEVALS TEXT, $COLUMN_9_FORCEVALS TEXT, $COLUMN_10_FORCEVALS TEXT)"
-//Constructor
+class DatabaseHelper //Constructor
     (context: Context?) :
     SQLiteOpenHelper(context, "Smart_Rower_Tables.db", null, 18) {
     //methods that must be implemented

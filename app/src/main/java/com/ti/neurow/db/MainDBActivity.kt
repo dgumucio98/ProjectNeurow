@@ -13,7 +13,6 @@ import com.ti.neurow.R
 //import kotlinx.coroutines
 
 class MainDBActivity : AppCompatActivity() {
-    //changed
     // references of buttons and other controls on the layout
 
     lateinit var et_username: EditText
