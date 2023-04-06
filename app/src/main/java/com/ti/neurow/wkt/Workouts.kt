@@ -26,7 +26,7 @@ class workouts : AppCompatActivity() {
         pz_6 = 54
         pz_7 = 67
     }
-
+    
     // ftp calculator workout method
     fun ftpCalc(db: DatabaseHelper): ArrayList<Double> {
         //ftp calculator code that calculates ftp and defines power zones
@@ -113,7 +113,7 @@ class workouts : AppCompatActivity() {
     }
 
     // interval1 workout method, 20 min
-    fun interval_1(pzSetChanges: VariableChanges, pzFixChanges: VariableChanges, db: DatabaseHelper): ArrayList<Double> {
+    fun interval1(pzSetChanges: VariableChanges, pzFixChanges: VariableChanges, db: DatabaseHelper): ArrayList<Double> {
         //interval1 (20 min) method code
         var k1 = 0
         var k2 = 0
