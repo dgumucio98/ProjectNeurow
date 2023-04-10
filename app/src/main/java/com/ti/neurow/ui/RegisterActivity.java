@@ -76,7 +76,6 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
                 else { // add user to database
-                    // TODO: (Future functionality) Ask for password confirmation
                     User newUser = new User(Username, Password, 0, 0, 0, 0, 0, 0, 0,0);
                     boolean success = db.add_account(newUser);
                     if (success == true) { // if successful

@@ -53,6 +53,17 @@ public class WorkoutActivity extends AppCompatActivity {
         chron = (Chronometer) findViewById(R.id.simpleChronometer); // chronometer
         btnBegin = (Button) findViewById(R.id.btnBegin); // button that starts workouts
 
+        // Receive workout choice data from WorkoutMainActivity
+        int colorToSet = getIntent().getIntExtra("attributeColor", Color.WHITE); // default is white (means problem)
+        String textToSet = getIntent().getStringExtra("attributeText");
+        String titleToSet = getIntent().getStringExtra("attributeName");
+        String methodName = getIntent().getStringExtra("methodName");
+
+        // Change Workout UI elements
+        txtWorkoutAttribute.setText(textToSet);
+        txtWorkoutAttribute.setTextColor(colorToSet);
+        txtWorkoutName.setText(titleToSet);
+
         // ***** This is where the workout gets called and begins *****
         btnBegin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,21 +172,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
                 });
 
-                // 2. Receive workout choice data from WorkoutMainActivity
-
-                int colorToSet = getIntent().getIntExtra("attributeColor", Color.WHITE); // default is white (means problem)
-                String textToSet = getIntent().getStringExtra("attributeText");
-                String titleToSet = getIntent().getStringExtra("attributeName");
-                String methodName = getIntent().getStringExtra("methodName");
-
-                // 3. Change Workout UI elements
-
-                // Set txtWorkoutAttribute text and color
-                txtWorkoutAttribute.setText(textToSet);
-                txtWorkoutAttribute.setTextColor(colorToSet);
-                txtWorkoutName.setText(titleToSet);
-
-                // 4. Setup for workout calls
+                // 2. Setup for workout calls
 
                 // Listeners
                 VariableChanges pzSetChanges = new VariableChanges(); // listener for which pz to be in
@@ -207,7 +204,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
                 });
 
-                // 5. Start on-screen Chronometer
+                // 3. Start on-screen Chronometer
 
                 // Chronometer Functionality
                 if (!isChronRunning) { // if NOT running
@@ -222,7 +219,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     btnBegin.setText("Start");
                 }
 
-                // 6. Call workout methods
+                // 4. Call workout methods
 
                 // Conditions to call specific workout
                 if (methodName == "ftpCalc") { // CALL FTPCALC
@@ -263,7 +260,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     workouts.paceSuggestion(suggestionChanges, "30", GlobalVariables.failCount);
                 }
 
-                // 7. Prepare to leave screen
+                // 5. Prepare to leave screen
 
                 // Exit WorkoutActivity, launch PostWorkoutActivity
                 Intent i = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
