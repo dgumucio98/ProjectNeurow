@@ -187,7 +187,6 @@ class BleOperationsActivity : AppCompatActivity() {
 /*    override fun onDestroy() {
         ConnectionManager.unregisterListener(connectionEventListener)
         ConnectionManager.teardownConnection(device)
->>>>>>> origin/alyson
         super.onDestroy()
     }*/
 
