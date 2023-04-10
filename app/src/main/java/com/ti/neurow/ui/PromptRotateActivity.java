@@ -7,12 +7,17 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ti.neurow.GlobalVariables;
 import com.ti.neurow.R;
 
 public class PromptRotateActivity extends AppCompatActivity {
+
+    // Declare views
+    TextView WelcomeMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +28,11 @@ public class PromptRotateActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         setContentView(R.layout.activity_prompt_rotate);
+
+        // Define elements
+        WelcomeMessage = (TextView) findViewById(R.id.txtWelcome);
+        WelcomeMessage.setText("Welcome, " + GlobalVariables.loggedInUsername);
+
 
         // Toast if user clicks the gif
         pl.droidsonroids.gif.GifImageView gifRotate = findViewById(R.id.gifRotate);

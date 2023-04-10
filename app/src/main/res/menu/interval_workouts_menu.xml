@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/interval1"
+        android:id="@+id/interval20"
         android:title="20-minute interval" />
-    <item android:id="@+id/interval2"
+    <item android:id="@+id/interval30"
         android:title="30-minute interval"/>
-    <item android:id="@+id/interval3"
+    <item android:id="@+id/interval40"
         android:title="40-minute interval"/>
 </menu>

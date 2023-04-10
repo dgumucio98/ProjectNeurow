@@ -2,12 +2,13 @@ package com.ti.neurow.ui;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,22 +21,19 @@ import com.ti.neurow.GlobalVariables;
 import com.ti.neurow.R;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 // Strictly-Landscape activity
 public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener, View.OnLongClickListener {
 
-    // Color values for setting WorkoutActivity TextViews
-    String hexLightBlue = "#7A9CCC"; // light blue
-    String hexLightOrange = "#FA9939"; // light orange
-    String hexMediumBlue = "#6082B6 "; // medium blue
-    String hexMediumOrange = "#CD7F32"; // medium orange
-    String hexDarkBlue = "#3C5A8C "; // dark blue
-    String hexDarkOrange = "#CC7723"; // dark orange
-
     TextView MDY; // declare month-day-year text view
     TextView txtUserID; // declare username displayer
+
+    private Handler handler = new Handler(); // handler to update status time live
+
 
     @Override // Handles when workout buttons are long-clicked
     public boolean onLongClick(View v) {
@@ -61,27 +59,59 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
 
+
         setContentView(R.layout.activity_workout_main);
 
         TextView txtUserID = findViewById(R.id.txtUserID);
         txtUserID.setText(GlobalVariables.loggedInUsername);
+        MDY  = findViewById(R.id.txtDate);
 
-        // Create date status element
-        MDY = findViewById(R.id.txtDate);
-        Date currentTime = Calendar.getInstance().getTime();
-        String formatDate = DateFormat.getDateInstance().format(currentTime);
-        MDY.setText(formatDate);
+        handler.post(updateTime); // start  handler to update time every second
 
         // Define buttons used for on-long-click
         Button btnWorkout1 = findViewById(R.id.btnWorkout1);
         Button btnWorkout2 = findViewById(R.id.btnWorkout2);
         Button btnWorkout3 = findViewById(R.id.btnWorkout3);
+        // TODO: define new Power Predictions button with popup menu and add functionality to each choice
 
         // Set listeners for buttons
         btnWorkout1.setOnLongClickListener(this);
         btnWorkout2.setOnLongClickListener(this);
         btnWorkout3.setOnLongClickListener(this);
+
+        // Handle when ftpCalc button is clicked
+        btnWorkout1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent launchWorkoutActivity = new Intent(WorkoutMainActivity.this, WorkoutActivity.class); // define intent for launching activity
+
+                int color = ContextCompat.getColor(getApplicationContext(), R.color.medium_gray); // parse custom color
+                launchWorkoutActivity.putExtra("attributeColor", color); // pass color data
+                launchWorkoutActivity.putExtra("attributeText", "20-MINUTE"); // pass text data
+                launchWorkoutActivity.putExtra("attributeName", "FTP CALCULATOR"); // pass titles text data
+                launchWorkoutActivity.putExtra("methodName", "ftpCalc"); // pass target workout name data
+
+                startActivity(launchWorkoutActivity); // start workout activity
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down); // animate
+            }
+        });
     }
+
+    // Define a runnable to update time status every second
+    private Runnable updateTime = new Runnable() {
+        public void run() {
+            // Get the current time
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat mdFormat = new SimpleDateFormat("MMMM dd, yyyy\nh:mm a", Locale.getDefault());
+            String strDate = mdFormat.format(calendar.getTime());
+
+            // Update the TextView with the current time
+            MDY.setText(strDate);
+
+            // Schedule the next update in 1 second
+            handler.postDelayed(this, 1000);
+        }
+    };
 
     // Show interval workout drop-down menu
     public void showPopup1(View v) {
@@ -106,31 +136,50 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         int itemId = menuItem.getItemId();
         Intent launchWorkoutActivity = new Intent(this, WorkoutActivity.class); // define intent for launching activity
 
-        if (itemId == R.id.interval1) {
-            int color = Color.parseColor(hexLightBlue); // parse custom color
+        // Prepare data to be sent via putExtra
+        if (itemId == R.id.interval20) {
+            int color = ContextCompat.getColor(this, R.color.light_blue); // parse custom color
             launchWorkoutActivity.putExtra("attributeColor", color); // pass color data
             launchWorkoutActivity.putExtra("attributeText", "20-MINUTE"); // pass text data
-        } else if (itemId == R.id.interval2) {
-            int color = Color.parseColor(hexMediumBlue);
+            launchWorkoutActivity.putExtra("attributeName", "INTERVAL WORKOUT"); // pass titles text data
+            launchWorkoutActivity.putExtra("methodName", "interval1"); // pass target workout name data
+
+        } else if (itemId == R.id.interval30) {
+            int color = ContextCompat.getColor(this, R.color.medium_blue);
             launchWorkoutActivity.putExtra("attributeColor", color);
             launchWorkoutActivity.putExtra("attributeText", "30-MINUTE");
-        } else if (itemId == R.id.interval3) {
-            int color = Color.parseColor(hexDarkBlue);
+            launchWorkoutActivity.putExtra("attributeName", "INTERVAL WORKOUT"); // pass titles text data
+            launchWorkoutActivity.putExtra("methodName", "interval2"); // pass target workout name data
+        } else if (itemId == R.id.interval40) {
+            int color = ContextCompat.getColor(this, R.color.dark_blue);
             launchWorkoutActivity.putExtra("attributeColor", color);
             launchWorkoutActivity.putExtra("attributeText", "40-MINUTE");
-        } else if (itemId == R.id.pace_interval1) {
-            int color = Color.parseColor(hexLightOrange);
+            launchWorkoutActivity.putExtra("attributeName", "INTERVAL WORKOUT"); // pass titles text data
+            launchWorkoutActivity.putExtra("methodName", "interval3"); // pass target workout name data
+
+        } else if (itemId == R.id.pace20) {
+            int color = ContextCompat.getColor(this, R.color.light_orange);
             launchWorkoutActivity.putExtra("attributeColor", color);
             launchWorkoutActivity.putExtra("attributeText", "20-MINUTE");
-        } else if (itemId == R.id.pace_interval2) {
-            int color = Color.parseColor(hexMediumOrange);
+            launchWorkoutActivity.putExtra("attributeName", "PACE WORKOUT"); // pass titles text data
+            launchWorkoutActivity.putExtra("methodName", "pace20"); // pass target workout name data
+
+        } else if (itemId == R.id.pace30) {
+            int color = ContextCompat.getColor(this, R.color.medium_orange);
             launchWorkoutActivity.putExtra("attributeColor", color);
             launchWorkoutActivity.putExtra("attributeText", "30-MINUTE");
-        } else if (itemId == R.id.pace_interval3) {
-            int color = Color.parseColor(hexDarkOrange);
+            launchWorkoutActivity.putExtra("attributeName", "PACE WORKOUT"); // pass titles text data
+            launchWorkoutActivity.putExtra("methodName", "pace30"); // pass target workout name data
+
+        } else if (itemId == R.id.pace40) {
+            int color = ContextCompat.getColor(this, R.color.dark_orange);
             launchWorkoutActivity.putExtra("attributeColor", color);
             launchWorkoutActivity.putExtra("attributeText", "40-MINUTE");
+            launchWorkoutActivity.putExtra("attributeName", "PACE WORKOUT"); // pass titles text data
+            launchWorkoutActivity.putExtra("methodName", "pace40"); // pass target workout name data
         }
+
+        // Start next workout activity
         startActivity(launchWorkoutActivity); // start workout activity
         overridePendingTransition(R.anim.slide_up, R.anim.slide_down); // animate
         return false;
@@ -141,17 +190,8 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         onBackPressed(); // call onBackPressed() method to display the confirmation dialog
     }
 
-    // FTP Calculator button:  Launch WorkoutActivity
-    public void launchFTPCalc (View v) {
-
-        // Launch Workout1 activity
-        Intent i = new Intent(this, WorkoutActivity.class);
-        startActivity(i);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-    }
-
-    @Override // Handle back button press
-    public void onBackPressed() {
+    @Override
+    public void onBackPressed() { // handle back button press
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Log Out?");
         builder.setMessage("Exiting the dashboard will log you out.");

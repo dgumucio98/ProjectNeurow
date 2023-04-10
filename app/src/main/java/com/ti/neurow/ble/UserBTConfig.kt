@@ -26,6 +26,10 @@ import org.jetbrains.anko.alert
 
 import timber.log.Timber
 import android.os.ParcelUuid
+import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import android.widget.TextView
 import com.ti.neurow.BuildConfig
 import com.ti.neurow.R
 
@@ -39,6 +43,7 @@ class UserBTConfig : AppCompatActivity() {
     /*******************************************
      * Properties
      *******************************************/
+
 
     private val bluetoothAdapter: BluetoothAdapter by lazy {
         // This casts whatever is returned by getSystemService as type BluetoothManager
@@ -67,7 +72,7 @@ class UserBTConfig : AppCompatActivity() {
     private var isScanning = false
         set(value) {
             field = value
-            runOnUiThread { scan_button.text = if (value) "Stop Scan" else "Start Scan" }
+            runOnUiThread { scan_button.text = if (value) "Stop Scan" else "Find Devices" }
         }
 
     // This is an empty list of objects ScanResult objects
@@ -109,6 +114,11 @@ class UserBTConfig : AppCompatActivity() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+
+        // Hide the status and action bar
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        supportActionBar?.hide()
+
         // Works fine for now, but there may be some issues where the scope of these permissions are set.
         val permissions = arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT)
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN)
@@ -290,6 +300,11 @@ class UserBTConfig : AppCompatActivity() {
         val animator = scan_results_recycler_view.itemAnimator
         if (animator is SimpleItemAnimator) {
             animator.supportsChangeAnimations = false
+        }
+
+        // If the adapter has data, hide the TextView inside the RecyclerView
+        if (scanResultAdapter.itemCount > 0) {
+            findViewById<TextView>(R.id.txtLoading).visibility = View.GONE
         }
     }
 
