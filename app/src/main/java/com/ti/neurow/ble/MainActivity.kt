@@ -27,9 +27,12 @@ import org.jetbrains.anko.alert
 import timber.log.Timber
 // For uuid parsing
 import android.os.ParcelUuid
+import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 import com.ti.neurow.BuildConfig
 import com.ti.neurow.R
+import com.ti.neurow.ui.MainUIActivity
 
 private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1
 private const val LOCATION_PERMISSION_REQUEST_CODE = 2
@@ -111,11 +114,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_config)
+        //setContentView(R.layout.activity_main)
 
         //Remove the bars at the top of the scan
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         supportActionBar?.hide()
+
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
@@ -246,6 +251,12 @@ class MainActivity : AppCompatActivity() {
         if (animator is SimpleItemAnimator) {
             animator.supportsChangeAnimations = false
         }
+
+        // If the adapter has data, hide the TextView inside the RecyclerView
+        // An addition to make the new screen work
+        if (scanResultAdapter.itemCount > 0) {
+            findViewById<TextView>(R.id.txtLoading).visibility = View.GONE
+        }
     }
 
     /*******************************************
@@ -291,6 +302,7 @@ class MainActivity : AppCompatActivity() {
             onConnectionSetupComplete = { gatt ->
                 //Intent(this@MainActivity, BleOperationsActivity::class.java).also {
                 Intent(this@MainActivity, TestingActivity::class.java).also {
+                //Intent(this@MainActivity, MainUIActivity::class.java).also {
                     it.putExtra(BluetoothDevice.EXTRA_DEVICE, gatt.device)
                     startActivity(it)
                 }

@@ -2,6 +2,7 @@ package com.ti.neurow.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -38,6 +39,21 @@ public class MainUIActivity extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // Lock orientation to portrait
 
         setContentView(R.layout.activity_ui_main);
+
+        /* Additions to pass the BLE device */
+        Intent intent = getIntent();
+        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+        boolean isDeviceReceived = false;
+        if (device != null) {
+            //throw new RuntimeException("Missing BluetoothDevice from MainActivity!");
+            isDeviceReceived = true;
+        }
+        if(isDeviceReceived == true) {
+            Toast.makeText(this, "The BLE device was successfully passed.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
+        }
+        /* End addition */
 
         // Animate rower icon and "Neurow" text
         rower = (ImageView)findViewById(R.id.rower_icon);
@@ -101,6 +117,10 @@ public class MainUIActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainUIActivity.this, LoginActivity.class);
+                //Needed to pass BLE device
+                if(device != null) {
+                    i.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
+                }
                 startActivity(i); // Launch Login
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
@@ -122,7 +142,8 @@ public class MainUIActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Create intent to launch next activity (RawDataActivity)
-                Intent i = new Intent(MainUIActivity.this, UserBTConfig.class);
+                //Intent i = new Intent(MainUIActivity.this, UserBTConfig.class);
+                Intent i = new Intent(MainUIActivity.this, MainActivity.class);
                 startActivity(i); // Launch BLE Data View
             }
         });

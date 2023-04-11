@@ -432,25 +432,6 @@ object ConnectionManager {
                             val newTime = DF33.elapsedTime
                             myTime33.setTime(newTime)
                             DF33.printAllAtt()
-                            /*
-                            if(onToggle) { //onCharacter change
-                                if(dataFrame33Queue.size < queSize) {
-                                    if(dataFrame33Queue.offer(DF33) != null) {
-                                        println("An item has been placed in the 33 Queue.")
-                                    } else {
-                                        println("An item failed to be placed in the 33 Queue.")
-                                    }
-                                } else {
-                                    println("The queue full: ${dataFrame33Queue.size} items")
-                                    println("Poping the most recent dataframe.")
-                                    dataFrame33Queue.poll().printAllAtt()
-                                    println("The queue will now clear.")
-                                    dataFrame33Queue.clear()
-                                }
-                            }
-                            else //meaning it's onRead
-                                DF33.printAllAtt()
-                            */
                         } else if (uuid.toString() == "ce060035-43e5-11e4-916c-0800200c9a66") {
                             val DF35: DataFrame35 = DataFrame35(value.toUByteArray())
                             val newTime = DF35.elapsedTime
@@ -474,26 +455,7 @@ object ConnectionManager {
                         } else if (uuid.toString() == "ce06003d-43e5-11e4-916c-0800200c9a66") {
                             //println("This is where it should read the first message compile the data")
                             val DF3D: DataFrame3D = DataFrame3D(value.toUByteArray())
-                            println(DF3D)
-                            //val newTime = DF3D.elapsedTime
-                            //myTime3D.setTime(newTime)
                             DF3D.printAllAtt()
-                            /*
-                            if(onToggle) {
-                                if(dataFrame3DQueue.size < queSize) {
-                                    if(dataFrame3DQueue.offer(DF3D) != null) {
-                                        println("An item has been placed in the 3D Queue.")
-                                    } else {
-                                        println("An item failed to be placed in the 3D Queue.")
-                                    }
-                                } else {
-                                    println("The queue full: ${dataFrame3DQueue.size} items")
-                                    println("Poping the most recent dataframe.")
-                                    dataFrame3DQueue.poll().printAllAtt()
-                                    println("The queue will now clear.")
-                                }
-                            } else { DF3D.printAllAtt() }
-                             */
                         }
                         //uuidParsing(myTime1, uuid.toString(), value.toUByteArray(), false)
                         listeners.forEach { it.get()?.onCharacteristicRead?.invoke(gatt.device, this) }
@@ -577,6 +539,7 @@ object ConnectionManager {
                 } else if (uuid.toString() == "ce060033-43e5-11e4-916c-0800200c9a66") {
                     val DF33: DataFrame33 = DataFrame33(value.toUByteArray())
                     //Set's all df33 global variables to respective DF33 variables
+                    /*
                     GlobalVariables.elapsedTime33 = DF33.elapsedTime
                     GlobalVariables.intervalCount33 = DF33.intervalCount
                     GlobalVariables.averagePower33 = DF33.averagePower
@@ -586,14 +549,16 @@ object ConnectionManager {
                     GlobalVariables.splitIntAvgCal33 = DF33.splitIntAvgCal
                     GlobalVariables.lastSplitTime33 = DF33.lastSplitTime
                     GlobalVariables.lastSplitDist33 = DF33.lastSplitDist
+                     */
                     //sets time listener with newTime
                     //lets Interval20Activity know global variables have changed
-                    GlobalVariables.globalTimeInstance33.setTime(DF33.elapsedTime)
+                    //GlobalVariables.globalTimeInstance33.setTime(DF33.elapsedTime)
 
                     DF33.printAllAtt()
                 } else if (uuid.toString() == "ce060035-43e5-11e4-916c-0800200c9a66") {
                     val DF35: DataFrame35 = DataFrame35(value.toUByteArray())
                     //Set's all df35 global variables to respective DF35 variables
+                    /*
                     GlobalVariables.elapsedTime35 = DF35.elapsedTime
                     GlobalVariables.distance35 = DF35.distance
                     GlobalVariables.driveLength35 = DF35.driveLength
@@ -607,23 +572,9 @@ object ConnectionManager {
                     //sets time listener with newTime
                     //lets Interval20Activity know global variables have changed
                     GlobalVariables.globalTimeInstance35.setTime(DF35.elapsedTime)
+                     */
 
                     DF35.printAllAtt()
-/*                    if(false) {
-                        if(dataFrame35Queue.size < queSize) {
-                            if(dataFrame35Queue.offer(DF35) != null) {
-                                println("An item has been placed in the 35 Queue.")
-                            } else {
-                                println("An item failed to be placed in the 35 Queue.")
-                            }
-                        } else {
-                            println("The queue full: ${dataFrame35Queue.size} items")
-                            println("Popping the most recent dataframe.")
-                            dataFrame35Queue.poll().printAllAtt()
-                            println("The queue will now clear.")
-                            dataFrame35Queue.clear()
-                        }
-                    } else { DF35.printAllAtt() }*/
                 } else if (uuid.toString() == "ce06003d-43e5-11e4-916c-0800200c9a66") {
                     //TODO add listener when 3D table is completed
                     //println("This is where it should read the first message compile the data")
@@ -631,25 +582,11 @@ object ConnectionManager {
                     //val newTime = DF3D.elapsedTime
                     //myTime3D.setTime(newTime)
                     DF3D.printAllAtt()
-                    /*
-                    if(onToggle) {
-                        if(dataFrame3DQueue.size < queSize) {
-                            if(dataFrame3DQueue.offer(DF3D) != null) {
-                                println("An item has been placed in the 3D Queue.")
-                            } else {
-                                println("An item failed to be placed in the 3D Queue.")
-                            }
-                        } else {
-                            println("The queue full: ${dataFrame3DQueue.size} items")
-                            println("Poping the most recent dataframe.")
-                            dataFrame3DQueue.poll().printAllAtt()
-                            println("The queue will now clear.")
-                        }
-                    } else { DF3D.printAllAtt() }
-                     */
                 }
 
                 //uuidParsing(myTime2, uuid.toString(), value.toUByteArray(), true)
+                // Basically for each listener registered in a given activity with it's
+                // respective callback
                 listeners.forEach { it.get()?.onCharacteristicChanged?.invoke(gatt.device, this) }
             }
         }

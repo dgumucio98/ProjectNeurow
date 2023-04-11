@@ -46,7 +46,7 @@ class TestingActivity: AppCompatActivity() {
         val PM5 = pm5Utility(device)
         setContentView(R.layout.testing_activity)
 
-        /*Setting the buttons */
+        /*Setting the buttons & Their listeners */
         val btn33start = findViewById(R.id.button33Start) as Button
         btn33start.setOnClickListener({ PM5.start33()})
 
@@ -64,6 +64,9 @@ class TestingActivity: AppCompatActivity() {
 
         val btn3DEnd = findViewById(R.id.button3DEnd) as Button
         btn3DEnd.setOnClickListener({PM5.end33()})
+
+        val btn22 = findViewById(R.id.buttonRead22) as Button
+        btn22.setOnClickListener({PM5.read22()})
     }
     /* TODO: Implement an eventlistener for the ConnectionManager for callbacks */
 }
