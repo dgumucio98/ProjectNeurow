@@ -1282,7 +1282,7 @@ class workouts : AppCompatActivity() {
 
     // Returns value of users predicted power in five more workouts
     fun powerPredictor(power: ArrayList<Double>): Double {
-        println("in predictor")
+        //if (length(power))
         //TODO clean up code
         //TODO integrate UI into it
         //TODO don't need to integrate? bc he can just print the returned value??
