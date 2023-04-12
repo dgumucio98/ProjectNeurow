@@ -8,19 +8,6 @@
     tools:context=".ui.WorkoutActivity">
 
     <Button
-        android:id="@+id/btnAlyson"
-        android:layout_width="900dp"
-        android:layout_height="425dp"
-        android:layout_below="@id/simpleChronometer"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="350dp"
-        android:backgroundTint="#6082B6"
-        android:fontFamily="sans-serif-black"
-        android:text="[TEST] Run ftpCalc"
-        android:textColor="@color/white"
-        android:textSize="80sp" />
-
-    <Button
         android:id="@+id/btnBegin"
         android:layout_width="250dp"
         android:layout_height="425dp"
@@ -56,6 +43,32 @@
         android:layout_below="@id/txtWorkoutAttribute"
         android:layout_centerHorizontal="true"
         android:textColor="@color/white"
+        android:textSize="80sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/txtDistanceMetric"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="[Distance]"
+        android:layout_below="@id/simpleChronometer"
+        android:textColor="@color/white"
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="400dp"
+        android:textSize="80sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/txtCaloriesMetric"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="[Calories]"
+        android:layout_below="@id/simpleChronometer"
+        android:textColor="@color/white"
+        android:layout_marginTop="240dp"
+        android:layout_marginLeft="400dp"
         android:textSize="80sp"
         android:textStyle="normal" />
 
