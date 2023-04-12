@@ -622,8 +622,9 @@ object ConnectionManager {
                     //TODO add listener when 3D table is completed
                     //println("This is where it should read the first message compile the data")
                     val DF3D: DataFrame3D = DataFrame3D(value.toUByteArray())
-                    //val newTime = DF3D.elapsedTime
-                    //myTime3D.setTime(newTime)
+                    GlobalVariables.pol3D = DF3D.messages
+                    GlobalVariables.message3D = DF3D.forceVals.toString()
+                    GlobalVariables.globalTimeInstance3D.setMessage(DF3D.forceVals.toString())
                     DF3D.printAllAtt()
                     /*
                     if(onToggle) {

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.ti.neurow.GlobalVariables
 import com.ti.neurow.VariableChanges
 import com.ti.neurow.db.DatabaseHelper
+import timber.log.Timber;
 
 class workouts : AppCompatActivity() {
     private var ftp: Int
@@ -27,12 +28,10 @@ class workouts : AppCompatActivity() {
     }
 
     // ftp calculator workout method
-    // ftp calculator workout method
     fun ftpCalc(db: DatabaseHelper): ArrayList<Double> {
         //ftp calculator code that calculates ftp and defines power zones
-        var sum = 0 //uncomment
-        var length = 0 //uncomment
-        var time = 4.0
+        var sum = 0
+        var length = 0
         //define one arraylist to return from function
         //holds time in odd indices and power in even indices
         val powtimearray = arrayListOf<Double>()
@@ -41,6 +40,7 @@ class workouts : AppCompatActivity() {
         var infiniteCount = 0
 
         var i = 0
+        // [TEST] loop
         while (db.time_33 < 180.0) { //for testing, 3 minutes
             sum += db.power
             length += 1
@@ -48,6 +48,7 @@ class workouts : AppCompatActivity() {
             powtimearray.add(db.power.toDouble())
             pastTime = db.time_33
         }
+
         //uncomment
 /*        while (db.time_33 < 1200) { //uncomment
             //adding break case so no infinite loop
@@ -64,11 +65,11 @@ class workouts : AppCompatActivity() {
         }*/
 
         val avgPow = sum.toDouble() / length //uncomment
-        //val avgPow = 50 // [TEST]
 
         //define ftp = 95% of average power
-        ftp = (0.95 * avgPow).toInt() //uncomment
-        GlobalVariables.ftp = ftp
+        ftp = (0.95 * avgPow).toInt() // calculate ftp
+        GlobalVariables.ftp = ftp //set ftp as global so UI can display it
+
         // Load power zones
         pz_1 = 0 //Very Easy: <55% of FTP
         pz_2 = (0.56 * ftp).toInt() //Moderate: 56%-75% of FTP
@@ -78,34 +79,7 @@ class workouts : AppCompatActivity() {
         pz_6 = (1.21 * ftp).toInt() //Very Hard: 121%-150% of FTP
         pz_7 = (1.51 * ftp).toInt() //Max Effort: >151% of FTP
 
-/*        //[TEST] this is just for testing, delete
-        pz_1 = 7
-        pz_2 = 5
-        pz_3 = 7
-        pz_4 = 5
-        pz_5 = 7
-        pz_6 = 5
-        pz_7 = 7
-        ftp = 45;*/
-
-/*        // [TEST]
-        powtimearray.add(1.0)
-        powtimearray.add(2.0)
-        powtimearray.add(2.0)
-        powtimearray.add(2.0)
-        powtimearray.add(3.0)
-        powtimearray.add(3.0)
-        powtimearray.add(4.0)
-        powtimearray.add(4.0)
-        powtimearray.add(5.0)
-        powtimearray.add(2.0)
-        powtimearray.add(6.0)
-        powtimearray.add(2.0)
-        powtimearray.add(7.0)
-        powtimearray.add(4.0)
-        powtimearray.add(8.0)
-        powtimearray.add(4.0)*/
-
+        // populate database User table
         db.updateuserFTP(GlobalVariables.loggedInUsername, this.ftp, this.pz_1, this.pz_2, this.pz_3, this.pz_4, this.pz_5, this.pz_6, this.pz_7);
 
         //return arraylist of time and power
@@ -701,6 +675,7 @@ class workouts : AppCompatActivity() {
         val avgPow = sum.toDouble() / length //uncomment
         //interval_suggestor("1", failCount)
         failCount = 25 // for  integration testing
+        GlobalVariables.failCount = failCount
         db.add_history(GlobalVariables.loggedInUsername, "interval1", failCount, avgPow)
         return powtimearray
     }
@@ -880,6 +855,7 @@ class workouts : AppCompatActivity() {
         val avgPow = sum.toDouble() / length //uncomment
         //interval_suggestor("2", failCount)
         failCount = 25 //for database integration testing
+        GlobalVariables.failCount = failCount
         db.add_history(GlobalVariables.loggedInUsername, "interval2", failCount, avgPow)
         return powtimearray
     }
@@ -1199,6 +1175,7 @@ class workouts : AppCompatActivity() {
 
         //interval_suggestor("2", failCount)
         failCount = 66 //for database integration testing
+        GlobalVariables.failCount = failCount
         db.add_history(GlobalVariables.loggedInUsername, "interval3", failCount, avgPow)
         return powtimearray
     }
@@ -1238,6 +1215,7 @@ class workouts : AppCompatActivity() {
                 }
             }
             failCount = 202020 //for integration testing
+            GlobalVariables.failCount = failCount
             //pace_suggestor("20", failCount)
             val avgPow = sum.toDouble() / length //uncomment
             db.add_history(GlobalVariables.loggedInUsername, "pace20", failCount, avgPow)
@@ -1266,6 +1244,7 @@ class workouts : AppCompatActivity() {
             }
             //}
             failCount = 303030 // for integration testing
+            GlobalVariables.failCount = failCount
             //pace_suggestor("30", failCount)
             val avgPow = sum.toDouble() / length //uncomment
             db.add_history(GlobalVariables.loggedInUsername, "pace30", failCount, avgPow)
@@ -1293,6 +1272,7 @@ class workouts : AppCompatActivity() {
                 }
             }
             failCount = 404040 //for integration testing
+            GlobalVariables.failCount = failCount
             //pace_suggestor("40", failCount)
             val avgPow = sum.toDouble() / length //uncomment
             db.add_history(GlobalVariables.loggedInUsername, "pace40", failCount, avgPow)
@@ -1354,6 +1334,9 @@ class workouts : AppCompatActivity() {
 
         //compute slope of line of best fit
         val slope = num_sum / den_sum
+        //TODO: if slope is negative have a different return message?
+        // if slope <= 0, return -1. in ui, if preditedpower=-1, display other message
+        // if slope positive, return normal powerpredicted, proceed with message
         println("slope " + slope)
         //compute y intercept of line of best fit
         val y_int = y_mean - slope * x_mean
@@ -1364,13 +1347,10 @@ class workouts : AppCompatActivity() {
         // TODO does the predicted power need to be an integer or not
         // TODO what if prediction is negative? how to handle
         println("In 5 more workouts your power could be " + predic + " watts")
-        println("end predictor")
 
         return predic
     }
 
-    //TODO these also could just return a string for diego to print?
-    //TODO better or worse to use listener object approach?
     fun intervalSuggestion(intSuggestChanges: VariableChanges, interval_num: String, failCount: Int) {
         var intSuggestion = "" //declare string to change and print to screen
         if (interval_num === "1") { //20 min interval
