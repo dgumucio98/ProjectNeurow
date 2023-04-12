@@ -239,7 +239,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     workouts.intervalSuggestion(suggestionChanges, "2", GlobalVariables.failCount);
                 }
                 else if (methodName == "interval3") { // CALL INTERVAL3
-                    ArrayList pow = workouts.interval1(pzSetChanges, pzFixChanges, db);
+                    ArrayList pow = workouts.interval3(pzSetChanges, pzFixChanges, db);
                     GlobalVariables.finalListTimePower = pow; // set global graphing variable
                     workouts.intervalSuggestion(suggestionChanges, "3", GlobalVariables.failCount);
                 }

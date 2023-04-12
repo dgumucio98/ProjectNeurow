@@ -38,6 +38,6 @@ public class GlobalVariables {
 
     // Others
     public static Integer failCount;
-    public static Integer ftp;
+    public static Integer ftp = 45; // default FTP value
 
 }

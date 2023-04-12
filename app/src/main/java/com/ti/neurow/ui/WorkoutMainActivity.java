@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -29,11 +30,13 @@ import java.util.Locale;
 // Strictly-Landscape activity
 public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener, View.OnLongClickListener {
 
+    private static final String[] PREDICTION_CHOICES = {"Pace (20-minute)", "Pace (30-minute)", "Pace (40-minute)",
+            "Interval (20-minute)", "Interval (30-minute)", "Interval (40-minute)"}; // stores prediction choice
     TextView MDY; // declare month-day-year text view
     TextView txtUserID; // declare username displayer
+    TextView txtUserFtp; // declare user FTP displayer
 
     private Handler handler = new Handler(); // handler to update status time live
-
 
     @Override // Handles when workout buttons are long-clicked
     public boolean onLongClick(View v) {
@@ -44,7 +47,10 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
             Toast.makeText(WorkoutMainActivity.this, "Pace yourself with live feedback on your row's power output.", Toast.LENGTH_LONG).show();
         } else if (id == R.id.btnWorkout3) {
             Toast.makeText(WorkoutMainActivity.this, "High-intensity workout based on your personal Power Zones.", Toast.LENGTH_LONG).show();
+        } else if (id == R.id.btnPredictor) {
+            Toast.makeText(WorkoutMainActivity.this, "Predict your next five rows for a specific workout.", Toast.LENGTH_LONG).show();
         }
+
         return true;
     }
 
@@ -52,19 +58,20 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Lock orientation to landscape (for this activity)
+        // Lock orientation to landscape and hide Action bar and Status bar (for this activity)
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-        // Hide Action bar and Status bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
 
-
         setContentView(R.layout.activity_workout_main);
 
+        // Initialize UI elements
         TextView txtUserID = findViewById(R.id.txtUserID);
+        TextView txtUserFtp = findViewById(R.id.txtUserFtp);
         txtUserID.setText(GlobalVariables.loggedInUsername);
-        MDY  = findViewById(R.id.txtDate);
+        TextView txtPrediction = findViewById(R.id.txtPrediction);
+        Button btnPredictor = findViewById(R.id.btnPredictor);
+        MDY = findViewById(R.id.txtDate);
 
         handler.post(updateTime); // start  handler to update time every second
 
@@ -72,14 +79,18 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         Button btnWorkout1 = findViewById(R.id.btnWorkout1);
         Button btnWorkout2 = findViewById(R.id.btnWorkout2);
         Button btnWorkout3 = findViewById(R.id.btnWorkout3);
-        // TODO: define new Power Predictions button with popup menu and add functionality to each choice
 
         // Set listeners for buttons
         btnWorkout1.setOnLongClickListener(this);
         btnWorkout2.setOnLongClickListener(this);
         btnWorkout3.setOnLongClickListener(this);
+        btnPredictor.setOnLongClickListener(this);
 
-        // Handle when ftpCalc button is clicked
+        // Display user's FTP
+        txtUserFtp.setTextColor(getResources().getColor(R.color.medium_orange));
+        txtUserFtp.setText(Html.fromHtml("<b>FTP:</b> " + GlobalVariables.ftp + "W"));
+
+        // Handle when ftpCalc button is clicked (standalone case)
         btnWorkout1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +104,14 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
 
                 startActivity(launchWorkoutActivity); // start workout activity
                 overridePendingTransition(R.anim.slide_up, R.anim.slide_down); // animate
+            }
+        });
+
+        // Listener for predictor button
+        btnPredictor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPredictionOptionsDialog(); // launch dialog box
             }
         });
     }
@@ -183,6 +202,47 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         startActivity(launchWorkoutActivity); // start workout activity
         overridePendingTransition(R.anim.slide_up, R.anim.slide_down); // animate
         return false;
+    }
+
+    // Prepares and shows dialog box for the Workout Prediction function
+    private void showPredictionOptionsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Predict which workout?")
+                .setItems(PREDICTION_CHOICES, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        TextView txtPrediction = findViewById(R.id.txtPrediction); // create local instance of txtPrediction
+
+                        switch (which) {
+                            case 0:
+                                // "Pace-20 Prediction" selected
+                                txtPrediction.setText("[Pace-20] Your expected power output is: 302W");
+                                break;
+                            case 1:
+                                // "Pace-30 Prediction" selected
+                                txtPrediction.setText("[Pace-30] Your expected power output is: 122W");
+                                break;
+                            case 2:
+                                // "Pace-40 Prediction" selected
+                                txtPrediction.setText("[Pace-40] Your expected power output is: 95W");
+                                break;
+                            case 3:
+                                // "Interval-20 Prediction" selected
+                                txtPrediction.setText("[Interval-20] Your expected power output is: 489W");
+                                break;
+                            case 4:
+                                // "Interval-30 Prediction" selected
+                                txtPrediction.setText("[Interval-30] Your expected power output is: 221W");
+                                break;
+                            case 5:
+                                // "Interval-40 Prediction" selected
+                                txtPrediction.setText("[Interval-40] Your expected power output is: 109W");
+                                break;
+                        }
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     // Log Out button: Launch LoginActivity
