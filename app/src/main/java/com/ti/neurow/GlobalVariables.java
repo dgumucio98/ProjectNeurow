@@ -6,6 +6,7 @@ public class GlobalVariables {
     public static String loggedInUsername; // keeps track of what user is "logged in"
     public static ArrayList<Double> finalListTimePower; // populated once a workout activity concludes
 
+
     // Dataframe 33 stuff
     public static Double elapsedTime33;
     public static Integer intervalCount33;

@@ -210,11 +210,13 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 // Listen for command of which pz to be in
                 pzSetChanges.setMessageListener(new VariableChanges.MessageListener() {
+
                     @Override
                     public void onMessageChanged(String newMessage) {
                         Timber.d(newMessage);
                     }
                 });
+
 
                 // Listen for user feedback of power zone leaves
                 pzFixChanges.setMessageListener(new VariableChanges.MessageListener() {
@@ -229,6 +231,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     @Override
                     public void onMessageChanged(String newMessage) {
                         // TODO: Display visual UI element for suggestion given
+                        // suggestion given will just be one string message
                         Timber.d(newMessage);
                     }
                 });
