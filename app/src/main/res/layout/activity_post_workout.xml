@@ -39,6 +39,35 @@
         android:textSize="75sp"
         android:textStyle="normal" />
 
+    <TextView
+        android:id="@+id/txtFtp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="[FTP]"
+        android:layout_below="@id/idTVHead"
+        android:layout_marginTop="600dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFFF00"
+        android:textSize="50sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/txtMaintenance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="[Under Construction]"
+        android:layout_alignParentTop="true"
+        android:textColor="#FF0000"
+        android:textSize="50sp"
+        android:layout_marginLeft="800dp"
+        android:layout_marginTop="375dp"
+        android:textStyle="normal"
+        android:rotation="-10"/>
+
+
+
     <com.jjoe64.graphview.GraphView
         android:id="@+id/Power_vs_Time"
         android:layout_width="500dp"

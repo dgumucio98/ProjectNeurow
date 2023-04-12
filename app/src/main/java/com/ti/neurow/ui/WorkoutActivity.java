@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -32,11 +34,12 @@ import timber.log.Timber;
 public class WorkoutActivity extends AppCompatActivity {
 
     // Define some elements
-    TextView txtWorkoutAttribute, txtWorkoutName;
+    TextView txtWorkoutAttribute, txtWorkoutName, txtDistanceMetric, txtCaloriesMetric;
     Chronometer chron; // declare chronometer (count-up timer)
     Button btnAlyson, btnBegin;
     boolean isChronRunning = false; // define boolean state of the timer
     GifImageView gifRipple;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +60,32 @@ public class WorkoutActivity extends AppCompatActivity {
         int colorToSet = getIntent().getIntExtra("attributeColor", Color.WHITE); // default is white (means problem)
         String textToSet = getIntent().getStringExtra("attributeText");
         String titleToSet = getIntent().getStringExtra("attributeName");
+
+        Toast.makeText(WorkoutActivity.this, "[TEST] Getting method name!", Toast.LENGTH_SHORT).show();
         String methodName = getIntent().getStringExtra("methodName");
+        Toast.makeText(WorkoutActivity.this, "[TEST] Got method name! methodName: " + methodName, Toast.LENGTH_SHORT).show();
+
 
         // Change Workout UI elements
         txtWorkoutAttribute.setText(textToSet);
         txtWorkoutAttribute.setTextColor(colorToSet);
         txtWorkoutName.setText(titleToSet);
+
+
+        // Update on-screen Metrics using handler
+//        Handler handler = new Handler();
+//        Runnable runnableCode = new Runnable() {
+//            @Override
+//            public void run() {
+//                // Update the text of the metric TextViews
+//                txtDistanceMetric.setText(GlobalVariables.distance35.toString());
+//                txtCaloriesMetric.setText(GlobalVariables.totalCalories33.toString());
+//
+//                // Polling rate (good range ~400-800ms)
+//                handler.postDelayed(this, 500);
+//            }
+//        };
+
 
         // ***** This is where the workout gets called and begins *****
         btnBegin.setOnClickListener(new View.OnClickListener() {
@@ -71,8 +94,13 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 // 1. Declare/Initialize instances, set listeners
 
+                Toast.makeText(WorkoutActivity.this, "[TEST] (Inside green button) method name: " + methodName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(WorkoutActivity.this, "[TEST] Green button clicked!", Toast.LENGTH_SHORT).show();
+
                 DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this); // prepare database
                 workouts workouts = new workouts(); // construct workouts instance
+                Toast.makeText(WorkoutActivity.this, "[TEST] Database created!", Toast.LENGTH_SHORT).show();
+
 
                 // Dataframe 33
                 VariableChanges myGlobalTime33 = new VariableChanges(); // declare instance of VariableChanges
@@ -134,6 +162,7 @@ public class WorkoutActivity extends AppCompatActivity {
                                 GlobalVariables.workPerStroke35,
                                 GlobalVariables.strokeCount35
                         );
+
                         boolean success = db.add_dataframe35(realdata35);
                         if (success == true) {
                             Toast.makeText(
@@ -221,44 +250,56 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 // 4. Call workout methods
 
-                // Conditions to call specific workout
-                if (methodName == "ftpCalc") { // CALL FTPCALC
-                    ArrayList pow = workouts.ftpCalc(db); // call, set global list to workout result list
-                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
-                    // TODO: Read ftp global variable
-                    // TODO: Make text box appear with feedback
-                }
-                else if (methodName == "interval1") { // CALL INTERVAL1
-                    ArrayList pow = workouts.interval1(pzSetChanges, pzFixChanges, db);
-                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
-                    workouts.intervalSuggestion(suggestionChanges, "1", GlobalVariables.failCount);
-                }
-                else if (methodName == "interval2") { // CALL INTERVAL2
-                    ArrayList pow = workouts.interval2(pzSetChanges, pzFixChanges, db);
-                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
-                    workouts.intervalSuggestion(suggestionChanges, "2", GlobalVariables.failCount);
-                }
-                else if (methodName == "interval3") { // CALL INTERVAL3
-                    ArrayList pow = workouts.interval3(pzSetChanges, pzFixChanges, db);
-                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
-                    workouts.intervalSuggestion(suggestionChanges, "3", GlobalVariables.failCount);
-                }
-                else if (methodName == "pace20") { // CALL PACE20
-                    ArrayList pow = workouts.pace(pzSetChanges, pzFixChanges, 20,db);
-                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
-                    workouts.paceSuggestion(suggestionChanges, "20", GlobalVariables.failCount);
+                Toast.makeText(WorkoutActivity.this, "[TEST] Made it before workout if statement", Toast.LENGTH_SHORT).show();
 
-                }
-                else if (methodName == "pace30") { // CALL PACE30
-                    ArrayList pow = workouts.pace(pzSetChanges, pzFixChanges, 30,db);
-                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
-                    workouts.paceSuggestion(suggestionChanges, "30", GlobalVariables.failCount);
-                }
-                else if (methodName == "pace40") { // CALL PACE40
-                    ArrayList pow = workouts.pace(pzSetChanges, pzFixChanges, 40,db);
-                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
-                    workouts.paceSuggestion(suggestionChanges, "30", GlobalVariables.failCount);
-                }
+
+                Toast.makeText(WorkoutActivity.this, "[TEST] Called ftpCalc", Toast.LENGTH_SHORT).show();
+                ArrayList pow = workouts.ftpCalc(db); // call, set global list to workout result list
+                Toast.makeText(WorkoutActivity.this, "[TEST] Workout finished", Toast.LENGTH_SHORT).show();
+                GlobalVariables.finalListTimePower = pow; // set global graphing variable
+                Toast.makeText(WorkoutActivity.this, "[TEST] Pow has been set after workout", Toast.LENGTH_SHORT).show();
+
+
+                // Conditions to call specific workout (UNCOMMENT)
+//                if (methodName == "ftpCalc") { // CALL FTPCALC
+//                    Toast.makeText(WorkoutActivity.this, "[TEST] Called ftpCalc", Toast.LENGTH_SHORT).show();
+//                    ArrayList pow = workouts.ftpCalc(db); // call, set global list to workout result list
+//                    Toast.makeText(WorkoutActivity.this, "Workout finished", Toast.LENGTH_SHORT).show();
+//                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
+//                    // TODO: Read ftp global variable
+//                    // TODO: Make text box appear with feedback
+//                }
+//                else if (methodName == "interval1") { // CALL INTERVAL1
+//                    ArrayList pow = workouts.interval1(pzSetChanges, pzFixChanges, db);
+//                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
+//                    workouts.intervalSuggestion(suggestionChanges, "1", GlobalVariables.failCount);
+//                }
+//                else if (methodName == "interval2") { // CALL INTERVAL2
+//                    ArrayList pow = workouts.interval2(pzSetChanges, pzFixChanges, db);
+//                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
+//                    workouts.intervalSuggestion(suggestionChanges, "2", GlobalVariables.failCount);
+//                }
+//                else if (methodName == "interval3") { // CALL INTERVAL3
+//                    ArrayList pow = workouts.interval3(pzSetChanges, pzFixChanges, db);
+//                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
+//                    workouts.intervalSuggestion(suggestionChanges, "3", GlobalVariables.failCount);
+//                }
+//                else if (methodName == "pace20") { // CALL PACE20
+//                    ArrayList pow = workouts.pace(pzSetChanges, pzFixChanges, 20,db);
+//                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
+//                    workouts.paceSuggestion(suggestionChanges, "20", GlobalVariables.failCount);
+//
+//                }
+//                else if (methodName == "pace30") { // CALL PACE30
+//                    ArrayList pow = workouts.pace(pzSetChanges, pzFixChanges, 30,db);
+//                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
+//                    workouts.paceSuggestion(suggestionChanges, "30", GlobalVariables.failCount);
+//                }
+//                else if (methodName == "pace40") { // CALL PACE40
+//                    ArrayList pow = workouts.pace(pzSetChanges, pzFixChanges, 40,db);
+//                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
+//                    workouts.paceSuggestion(suggestionChanges, "30", GlobalVariables.failCount);
+//                }
 
                 // 5. Prepare to leave screen
 
