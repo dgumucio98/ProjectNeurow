@@ -205,6 +205,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     @Override
                     public void onMessageChanged(String newMessage) {
                         // TODO: Display visual UI element for suggestion given
+                        // suggestion given will just be one string message
                         Timber.d(newMessage);
                     }
                 });
