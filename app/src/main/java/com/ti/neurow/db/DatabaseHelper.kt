@@ -48,43 +48,44 @@ class DatabaseHelper //Constructor
 
     //Methods!!!
     //add to tables
+
     fun add_3Dmessage(message: Int, forceVals: String?): Boolean {
+        //This is the correct code
         val db = this.writableDatabase
-        //If username exists return false
-        val cursor = db.rawQuery(
-            "SELECT * FROM info3D ORDER BY COLUMN_ID DESC LIMIT 1", null
-        )
-/*        val cursor = db.rawQuery(
-            "Select * from info3D where COLUMN_MESSAGE = ?",
-            arrayOf(message.toString())
-        ) */
-        //Find sequenceNumber in info3D
-        return if (cursor.count > 0) {
+        //finding past message
+        val lastMessageCursor = db.rawQuery("SELECT * FROM INFO3D ORDER BY COLUMN_ID DESC LIMIT 1", null)
+        var past_message = 0
+        if (lastMessageCursor.moveToFirst()) {
+            val messageIndex = lastMessageCursor.getColumnIndex("COLUMN_MESSAGE")
+            past_message = lastMessageCursor.getInt(messageIndex)
+        }
+        lastMessageCursor.close()
+
+
+        //cursor for updating
+        val cursor = db.rawQuery("SELECT * FROM INFO3D ORDER BY COLUMN_ID DESC LIMIT 1", null)
+
+        //finding all number on enteries on last row
+        var numNonNullValues = 0;
+        if (cursor.moveToFirst()) {
+            numNonNullValues = (0 until cursor.columnCount).count { columnIndex ->
+                !cursor.isNull(columnIndex)
+            }
+        }
+
+
+        return if ((cursor.count > 0) && (numNonNullValues < (past_message + 2)) && (past_message == message)) {
             cursor.moveToFirst()
             val cv = ContentValues()
             var columnIndex = -1
             // loop through the columns in the row and find the next null column
             for (i in 2..cursor.columnCount) {
-                if (i >= (message + 2)) {
-                    //add to new row
-                    val cv = ContentValues()
-                    cv.put(COLUMN_MESSAGE, message)
-                    cv.put(COLUMN_FORCEVALS1, forceVals)
-
-                    //ID is a auto increment in the database
-                    val insert = db.insert(INFO3D, null, cv)
-                    //cursor.close()
-                    insert != -1L
-                }
-
                 if (i >= 12) {
                     break
                 }
 
                 if (cursor.getString(i) == null) {
-                    if (i < (message + 2)) {
-                        columnIndex = i
-                    }
+                    columnIndex = i
                     break
                 }
             }
@@ -92,15 +93,8 @@ class DatabaseHelper //Constructor
                 // update the null column with new force values
                 cv.put(cursor.getColumnName(columnIndex), forceVals)
                 val id = "(SELECT MAX(COLUMN_ID) FROM INFO3D)"
-                //val result = db.update("INFO3D", cv, "COLUMN_ID = $id", null)
                 val result = db.update("INFO3D", cv, "COLUMN_ID = $id", null).toLong()
                 cursor.close()
-                //val result = db.update("INFO3D", cv, "COLUMN_ID = $id", arrayOf(message.toString())).toLong()
-                //val result =
-                //    db.update(INFO3D, cv, "COLUMN_MESSAGE = ?", arrayOf(message.toString()))
-                //        .toLong()
-                //cursor.close()
-
                 result != -1L
             } else {
                 // no null column found, cannot update the row
@@ -359,7 +353,7 @@ class DatabaseHelper //Constructor
         return cursor;
     }*/
 
-    fun get3D_avg_y(): List<Double> {
+    /*fun get3D_avg_y(): List<Double> {
         val DB = this.readableDatabase
         val concatenatedList = ArrayList<MutableList<Long>>()
         val cursor = DB.rawQuery("SELECT COLUMN_FORCEVALS1, COLUMN_FORCEVALS2, COLUMN_FORCEVALS3, COLUMN_FORCEVALS4, COLUMN_FORCEVALS5, COLUMN_FORCEVALS6, COLUMN_FORCEVALS7, COLUMN_FORCEVALS8, COLUMN_FORCEVALS9, COLUMN_FORCEVALS10  FROM INFO3D", null) //EXCEPT (COLUMN_ID, COLUMN_MESSAGE)
@@ -379,7 +373,7 @@ class DatabaseHelper //Constructor
                 }
             }
         }
-/*        val avgList = ArrayList<Double>()
+*//*        val avgList = ArrayList<Double>()
         for (i in concatenatedList[0].indices) {
             if (i >= concatenatedList.size ){
                 continue
@@ -387,7 +381,7 @@ class DatabaseHelper //Constructor
             val columnValues = concatenatedList.map { it[i] }
             val columnAverage = columnValues.average()
             avgList.add(columnAverage)
-        }*/
+        }*//*
 
         val maxListSize = concatenatedList.map { it.size }.maxOrNull() ?: return emptyList()
         val avgList = ArrayList<Double>(maxListSize)
@@ -411,7 +405,7 @@ class DatabaseHelper //Constructor
 
 
         return avgList
-    }
+    }*/
 
 /*    fun get3D_avg_y(): List<Double> {
         val DB = this.readableDatabase

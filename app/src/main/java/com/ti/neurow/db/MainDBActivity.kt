@@ -489,8 +489,8 @@ class MainDBActivity : AppCompatActivity() {
 
             //Adding to 3D table
 
-            val pol = 10
-            val message: ArrayList<Int> = arrayListOf(3, 3, 3, 9, 9, 9)
+            val pol = 1
+            val message: ArrayList<Int> = arrayListOf(1,1)
 
             val message_string = message.joinToString(separator = " ")
             //val message = "123456"
