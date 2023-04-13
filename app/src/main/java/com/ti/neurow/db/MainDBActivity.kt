@@ -83,12 +83,17 @@ class MainDBActivity : AppCompatActivity() {
         val avg_power = 2.3
 
         //testing
+        //testing
 
         //button listeners for the add and view all buttons
-        btn_login.setOnClickListener(View.OnClickListener {
+
+        //testing
+
+        //button listeners for the add and view all buttons
+        btn_login.setOnClickListener {
             val db = DatabaseHelper(this@MainDBActivity) //making reference to database
-            val usernameTXT = et_username.getText().toString()
-            val passwordTXT = et_password.getText().toString()
+            val usernameTXT = et_username.text.toString()
+            val passwordTXT = et_password.text.toString()
             val user_exists = db.user_exists(usernameTXT)
             if (user_exists == true) {
                 Toast.makeText(this@MainDBActivity, "Username in System", Toast.LENGTH_SHORT).show()
@@ -100,19 +105,21 @@ class MainDBActivity : AppCompatActivity() {
                         this@MainDBActivity,
                         "Password Does Not Matched",
                         Toast.LENGTH_SHORT
-                    ).show()
+                    )
+                        .show()
                 }
             } else {
                 Toast.makeText(this@MainDBActivity, "Username not in System", Toast.LENGTH_SHORT)
                     .show()
             }
-        })
-        btn_create_account.setOnClickListener(View.OnClickListener {
+        }
+
+        btn_create_account.setOnClickListener {
             val user: User
             user = try {
                 User(
-                    et_username.getText().toString(),
-                    et_password.getText().toString(),
+                    et_username.text.toString(),
+                    et_password.text.toString(),
                     FTP,
                     pz_1,
                     pz_2,
@@ -131,18 +138,19 @@ class MainDBActivity : AppCompatActivity() {
 
             //add User information in table "User_Info"
             val databaseHelper = DatabaseHelper(this@MainDBActivity) //making reference to database
-            val success = databaseHelper.add_account(user)
+            val success = databaseHelper.add_account(user!!)
             if (success == true) {
                 Toast.makeText(this@MainDBActivity, "Account Created", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this@MainDBActivity, "Account is not Created", Toast.LENGTH_SHORT)
                     .show()
             }
-        })
-        btn_delete_account.setOnClickListener(View.OnClickListener {
+        }
+
+        btn_delete_account.setOnClickListener {
             val db = DatabaseHelper(this@MainDBActivity) //making reference to database
-            val usernameTXT = et_username.getText().toString()
-            val passwordTXT = et_password.getText().toString()
+            val usernameTXT = et_username.text.toString()
+            val passwordTXT = et_password.text.toString()
             val checkdeletedata = db.delete_account(usernameTXT, passwordTXT)
             if (checkdeletedata == true) Toast.makeText(
                 this@MainDBActivity,
@@ -153,71 +161,71 @@ class MainDBActivity : AppCompatActivity() {
                 "Account not Deleted ",
                 Toast.LENGTH_SHORT
             ).show()
-        })
-        btn_user_info.setOnClickListener(
-            View.OnClickListener
-            //Display Information
-            {
-                val db = DatabaseHelper(this@MainDBActivity) //making reference to database
-                val usernameTXT = et_username.getText().toString()
-                val passwordTXT = et_password.getText().toString()
+        }
 
-                //Testing db's go getters
-                val FTP = db.getFTP(usernameTXT)
-                Toast.makeText(this@MainDBActivity, "FTP: $FTP", Toast.LENGTH_SHORT).show()
+        btn_user_info.setOnClickListener {
+            val db = DatabaseHelper(this@MainDBActivity) //making reference to database
+            val usernameTXT = et_username.text.toString()
+            val passwordTXT = et_password.text.toString()
 
-                //testing user_info table go getters
-                val pz1 = db.getPZ_1(usernameTXT)
-                val pz2 = db.getPZ_2(usernameTXT)
-                val pz3 = db.getPZ_3(usernameTXT)
-                val pz4 = db.getPZ_4(usernameTXT)
-                val pz5 = db.getPZ_5(usernameTXT)
-                val pz6 = db.getPZ_6(usernameTXT)
-                val pz7 = db.getPZ_7(usernameTXT)
-                Toast.makeText(
-                    this@MainDBActivity,
-                    "pz: $pz1 $pz2 $pz3 $pz4 $pz5 $pz6 $pz7",
-                    Toast.LENGTH_SHORT
-                ).show()
+            //Testing db's go getters
+            val FTP = db.getFTP(usernameTXT)
+            Toast.makeText(this@MainDBActivity, "FTP: $FTP", Toast.LENGTH_SHORT).show()
 
-                //testing dataframe33_info table go getters
-                //int interval = db.getInterval();
-                val time33 = db.time_33
-                val interval = db.interval
-                val power = db.power
-                val total_cal = db.total_cal
-                val split_pace = db.split_pace
-                val split_power = db.split_power
-                val split_cal = db.split_cal
-                val last_split_time = db.last_split_time
-                val last_split_dist = db.last_split_dist
-                Toast.makeText(
-                    this@MainDBActivity,
-                    "dataframe33: $time33 $interval $power $total_cal $split_pace $split_power $split_cal $last_split_time $last_split_dist",
-                    Toast.LENGTH_SHORT
-                ).show()
+            //testing user_info table go getters
+            val pz1 = db.getPZ_1(usernameTXT)
+            val pz2 = db.getPZ_2(usernameTXT)
+            val pz3 = db.getPZ_3(usernameTXT)
+            val pz4 = db.getPZ_4(usernameTXT)
+            val pz5 = db.getPZ_5(usernameTXT)
+            val pz6 = db.getPZ_6(usernameTXT)
+            val pz7 = db.getPZ_7(usernameTXT)
+            Toast.makeText(
+                this@MainDBActivity,
+                "pz: $pz1 $pz2 $pz3 $pz4 $pz5 $pz6 $pz7",
+                Toast.LENGTH_SHORT
+            ).show()
 
-                //testing dataframe35_info table go getters
-                val time35 = db.time_35
-                val dist = db.dist
-                val drive_len = db.drive_len
-                val drive_time = db.drive_time
-                val stroke_dist = db.stroke_dist
-                val peak_drive_force = db.peak_drive_force
-                val avg_drive_force = db.avg_drive_force
-                val work_per_stroke = db.work_per_stroke
-                val stroke_count = db.stroke_count
-                Toast.makeText(
-                    this@MainDBActivity,
-                    "dataframe35: $time35 $dist $drive_len $drive_time $stroke_dist $peak_drive_force $avg_drive_force $work_per_stroke $stroke_count",
-                    Toast.LENGTH_SHORT
-                ).show()
-            })
-        btn_class_testing.setOnClickListener(View.OnClickListener {
+            //testing dataframe33_info table go getters
+            //int interval = db.getInterval();
+            val time33 = db.time_33
+            val interval = db.interval
+            val power = db.power
+            val total_cal = db.total_cal
+            val split_pace = db.split_pace
+            val split_power = db.split_power
+            val split_cal = db.split_cal
+            val last_split_time = db.last_split_time
+            val last_split_dist = db.last_split_dist
+            Toast.makeText(
+                this@MainDBActivity,
+                "dataframe33: $time33 $interval $power $total_cal $split_pace $split_power $split_cal $last_split_time $last_split_dist",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            //testing dataframe35_info table go getters
+            val time35 = db.time_35
+            val dist = db.dist
+            val drive_len = db.drive_len
+            val drive_time = db.drive_time
+            val stroke_dist = db.stroke_dist
+            val peak_drive_force = db.peak_drive_force
+            val avg_drive_force = db.avg_drive_force
+            val work_per_stroke = db.work_per_stroke
+            val stroke_count = db.stroke_count
+            Toast.makeText(
+                this@MainDBActivity,
+                "dataframe35: $time35 $dist $drive_len $drive_time $stroke_dist $peak_drive_force $avg_drive_force $work_per_stroke $stroke_count",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+
+        btn_class_testing.setOnClickListener {
             //Testing User class
             val user = User(
-                et_username.getText().toString(),
-                et_password.getText().toString(),
+                et_username.text.toString(),
+                et_password.text.toString(),
                 FTP,
                 pz_1,
                 pz_2,
@@ -280,36 +288,40 @@ class MainDBActivity : AppCompatActivity() {
                 Toast.makeText(this@MainDBActivity, "Did not enter table", Toast.LENGTH_SHORT)
                     .show() //Testing
             }
-        })
-        btn_update_password.setOnClickListener(View.OnClickListener {
+        }
+
+        btn_update_password.setOnClickListener {
             val db = DatabaseHelper(this@MainDBActivity) //making reference to database
-            val usernameTXT = et_username.getText().toString()
-            val passwordTXT = et_password.getText().toString()
+            val usernameTXT = et_username.text.toString()
+            val passwordTXT = et_password.text.toString()
 
             //Testing update password
-            val success = db.updateuserPassword(et_username.getText().toString(), passwordTXT)
+            val success = db.updateuserPassword(et_username.text.toString(), passwordTXT)
             if (success == true) {
                 Toast.makeText(this@MainDBActivity, "Password Updated", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this@MainDBActivity, "Password is not Updated", Toast.LENGTH_SHORT)
                     .show()
             }
-        })
-        btn_update_FTP.setOnClickListener(View.OnClickListener {
+        }
+
+        btn_update_FTP.setOnClickListener {
             val db = DatabaseHelper(this@MainDBActivity) //making reference to database
-            val usernameTXT = et_username.getText().toString()
-            val passwordTXT = et_password.getText().toString()
+            val usernameTXT = et_username.text.toString()
+            val passwordTXT = et_password.text.toString()
 
             //Testing Updating FTP
             val success2 =
-                db.updateuserFTP(et_username.getText().toString(), 8, 9, 10, 11, 12, 13, 14, 15)
+                db.updateuserFTP(et_username.text.toString(), 8, 9, 10, 11, 12, 13, 14, 15)
             if (success2 == true) {
                 Toast.makeText(this@MainDBActivity, "FTP Updated", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this@MainDBActivity, "FTP is not Updated", Toast.LENGTH_SHORT).show()
             }
-        })
-        btn_delete_tables.setOnClickListener(View.OnClickListener {
+        }
+
+
+        btn_delete_tables.setOnClickListener {
             val db = DatabaseHelper(this@MainDBActivity) //making reference to database
             val success1 = db.delete_dataframe33_table()
             Toast.makeText(this@MainDBActivity, "dataframe33 table Deleted", Toast.LENGTH_SHORT)
@@ -319,16 +331,66 @@ class MainDBActivity : AppCompatActivity() {
                 .show()
             val success3 = db.delete_table3D()!!
             Toast.makeText(this@MainDBActivity, "table3D table Deleted", Toast.LENGTH_SHORT).show()
+        }
 
-        })
-        btn_history_error_tables.setOnClickListener(View.OnClickListener {
+        btn_history_error_tables.setOnClickListener {
             val db = DatabaseHelper(this@MainDBActivity) //making reference to database
-            val usernameTXT = et_username.getText().toString()
-            val passwordTXT = et_password.getText().toString()
+            val usernameTXT = et_username.text.toString()
+            val passwordTXT = et_password.text.toString()
 
             //Testing adding to history table
             val success1 = db.add_history(usernameTXT, workout_num, error, avg_power)
             if (success1 == true) {
+                Toast.makeText(
+                    this@MainDBActivity,
+                    "workout added to history table",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    this@MainDBActivity,
+                    "workout not added to history table",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            //Adding multiple workouts at once
+
+            //Testing adding to history table
+            val success2 = db.add_history(usernameTXT, "workout_1", error, avg_power)
+            if (success2 == true) {
+                Toast.makeText(
+                    this@MainDBActivity,
+                    "workout added to history table",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    this@MainDBActivity,
+                    "workout not added to history table",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            //Testing adding to history table
+            val success3 = db.add_history(usernameTXT, "workout_2", error, avg_power)
+            if (success3 == true) {
+                Toast.makeText(
+                    this@MainDBActivity,
+                    "workout added to history table",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    this@MainDBActivity,
+                    "workout not added to history table",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            //Testing adding to history table
+            val success4 = db.add_history(usernameTXT, "workout_1", error, avg_power)
+            if (success4 == true) {
                 Toast.makeText(
                     this@MainDBActivity,
                     "workout added to history table",
@@ -352,11 +414,12 @@ class MainDBActivity : AppCompatActivity() {
                             else {
                                 Toast.makeText(MainActivity.this, "error not added to history table", Toast.LENGTH_SHORT).show();
                             }*/
-        })
+        }
+
         btn_view_history_error_tables.setOnClickListener(View.OnClickListener {
             val db = DatabaseHelper(this@MainDBActivity) //making reference to database
-            val usernameTXT = et_username.getText().toString()
-            val passwordTXT = et_password.getText().toString()
+            val usernameTXT = et_username.text.toString()
+            val passwordTXT = et_password.text.toString()
 
             //display history table user specific
             val res = db.get_history(usernameTXT)
@@ -405,47 +468,60 @@ class MainDBActivity : AppCompatActivity() {
                             res2.close();*/
         })
 
-        btn_prediction.setOnClickListener(
-            object : View.OnClickListener {
-                override fun onClick(view: View) {
-                    val db = DatabaseHelper(this@MainDBActivity) //making reference to database
-                    val usernameTXT: String = et_username.getText().toString()
-                    val workout_type = "workout_1"
-                    val allPower: ArrayList<String> = db.getAllPower(usernameTXT, workout_type) as ArrayList<String>
-                    //Toast.makeText(MainActivity.this, allPower, Toast.LENGTH_SHORT).show();
-                    val buffer = StringBuffer()
-                    for (i in allPower.indices) {
-                        buffer.append(allPower[i] + ' ')
-                    }
-                    val builder = AlertDialog.Builder(this@MainDBActivity)
-                    builder.setCancelable(true)
-                    builder.setTitle(usernameTXT + "Past Power")
-                    builder.setMessage(buffer.toString())
-                    builder.show()
+
+        btn_prediction.setOnClickListener(View.OnClickListener {
+
+            val db = DatabaseHelper(this@MainDBActivity) //making reference to database
+            val usernameTXT: String = et_username.getText().toString()
+            val workout_type = "workout_1"
+            val allPower: ArrayList<Double> = db.getAllPower(usernameTXT, workout_type) as ArrayList<Double>
+            //Toast.makeText(MainActivity.this, allPower, Toast.LENGTH_SHORT).show();
+            val buffer = StringBuffer()
+            for (i in allPower.indices) {
+                buffer.append(allPower[i].toString() + ' ')
+            }
+            val builder = AlertDialog.Builder(this@MainDBActivity)
+            builder.setCancelable(true)
+            builder.setTitle(usernameTXT + "Past Power")
+            builder.setMessage(buffer.toString())
+            builder.show()
 
 
+            //Adding to 3D table
 
-                    //Adding to 3D table
-                    val pol = 6
-                    val message = "123456"
+            val pol = 10
+            val message: ArrayList<Int> = arrayListOf(3, 3, 3, 9, 9, 9)
 
-                    val success = db.add_3Dmessage(pol, message)
-                    if (success == true) {
-                        Toast.makeText(
-                            this@MainDBActivity,
-                            "message added to 3D table",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        Toast.makeText(
-                            this@MainDBActivity,
-                            "message not added to 3D table",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            })
+            val message_string = message.joinToString(separator = " ")
+            //val message = "123456"
+            val success = db.add_3Dmessage(pol, message_string)
+            if (success == true) {
+                Toast.makeText(this@MainDBActivity, "message added to 3D table", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                Toast.makeText(
+                    this@MainDBActivity,
+                    "message not added to 3D table",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
 
+/*            val avg_y_string: ArrayList<Double>  = db.get3D_avg_y()
+            val buffer2 = StringBuffer()
+            for (i in avg_y_string.indices) {
+                buffer.append(avg_y_string.get(i).toString()+ "----")
+            val avg_y_string: List<Double> = db.get3D_avg_y()
+            val buffer2 = StringBuffer()
+            for (i in avg_y_string.indices) {
+                buffer.append(avg_y_string.get(i).toString()+ ' ')
+            }
+            val builder2 = AlertDialog.Builder(this@MainDBActivity)
+            builder.setCancelable(true)
+            builder.setTitle(usernameTXT + "Avg Y Values")
+            builder.setMessage(buffer.toString())
+            builder.show()*/
+
+        })
 
 
     }
