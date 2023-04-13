@@ -488,8 +488,10 @@ class MainDBActivity : AppCompatActivity() {
 
 
             //Adding to 3D table
-            val pol = 3
-            val message: ArrayList<Int> = arrayListOf(5, 5, 5)
+
+            val pol = 10
+            val message: ArrayList<Int> = arrayListOf(3, 3, 3, 9, 9, 9)
+
             val message_string = message.joinToString(separator = " ")
             //val message = "123456"
             val success = db.add_3Dmessage(pol, message_string)
@@ -508,6 +510,10 @@ class MainDBActivity : AppCompatActivity() {
             val buffer2 = StringBuffer()
             for (i in avg_y_string.indices) {
                 buffer.append(avg_y_string.get(i).toString()+ "----")
+            val avg_y_string: List<Double> = db.get3D_avg_y()
+            val buffer2 = StringBuffer()
+            for (i in avg_y_string.indices) {
+                buffer.append(avg_y_string.get(i).toString()+ ' ')
             }
             val builder2 = AlertDialog.Builder(this@MainDBActivity)
             builder.setCancelable(true)
