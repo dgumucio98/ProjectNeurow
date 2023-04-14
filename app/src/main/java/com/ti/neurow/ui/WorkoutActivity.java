@@ -50,10 +50,6 @@ public class WorkoutActivity extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); // Lock orientation to landscape
         setContentView(R.layout.activity_workout);
 
-        // TODO: Get this to work...
-        // Set username text box [NOT WORKING]
-        // txtUserID.setText(GlobalVariables.loggedInUsername);
-
         // Define elements
         txtWorkoutAttribute = (TextView) findViewById(R.id.txtWorkoutAttribute); // workout "subtitle"
         txtWorkoutName = (TextView) findViewById(R.id.txtWorkoutName); // workout name (interval/pace)
@@ -76,11 +72,7 @@ public class WorkoutActivity extends AppCompatActivity {
         txtWorkoutAttribute.setTextColor(colorToSet);
         txtWorkoutName.setText(titleToSet);
 
-        // These set the UI elements to current metric data
-        // txtDistanceMetric.setText(GlobalVariables.distance35.toString());
-        // txtCaloriesMetric.setText(GlobalVariables.totalCalories33.toString());
-
-        // ***** This is where the workout gets called and begins *****
+        // ***** This is where the workout call procedure begins *****
         btnBegin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // when btnBegin is clicked
@@ -211,7 +203,6 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
                 });
 
-
                 // Listen for user feedback of power zone leaves
                 pzFixChanges.setMessageListener(new VariableChanges.MessageListener() {
                     @Override
@@ -247,52 +238,35 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 // 4. Call workout methods
 
-//                // [TEMP] Temporary fix, no ifs, just calling ftpCalc
-//                ArrayList pow = workouts.ftpCalc(db); // call, set global list to workout result list
-//                GlobalVariables.finalListTimePower = pow; // set global graphing variable
-
                 // Conditions to call specific workout
                 if (methodName.equals("ftpCalc")) { // CALL FTPCALC
-                    FtpCalcTask ftpCalcTask = new FtpCalcTask();
+                    ftpCalcTask ftpCalcTask = new ftpCalcTask();
                     ftpCalcTask.execute();
                 }
-//                else if (methodName.equals("interval1")) { // CALL INTERVAL1
-//                    ArrayList pow = workouts.interval1(pzSetChanges, pzFixChanges, db);
-//                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
-//                    workouts.intervalSuggestion(suggestionChanges, "1", GlobalVariables.failCount);
-//                }
-//                else if (methodName.equals("interval2")) { // CALL INTERVAL2
-//                    ArrayList pow = workouts.interval2(pzSetChanges, pzFixChanges, db);
-//                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
-//                    workouts.intervalSuggestion(suggestionChanges, "2", GlobalVariables.failCount);
-//                }
-//                else if (methodName == "interval3") { // CALL INTERVAL3
-//                    ArrayList pow = workouts.interval3(pzSetChanges, pzFixChanges, db);
-//                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
-//                    workouts.intervalSuggestion(suggestionChanges, "3", GlobalVariables.failCount);
-//                }
-//                else if (methodName == "pace20") { // CALL PACE20
-//                    ArrayList pow = workouts.pace(pzSetChanges, pzFixChanges, 20,db);
-//                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
-//                    workouts.paceSuggestion(suggestionChanges, "20", GlobalVariables.failCount);
-//
-//                }
-//                else if (methodName == "pace30") { // CALL PACE30
-//                    ArrayList pow = workouts.pace(pzSetChanges, pzFixChanges, 30,db);
-//                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
-//                    workouts.paceSuggestion(suggestionChanges, "30", GlobalVariables.failCount);
-//                }
-//                else if (methodName == "pace40") { // CALL PACE40
-//                    ArrayList pow = workouts.pace(pzSetChanges, pzFixChanges, 40,db);
-//                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
-//                    workouts.paceSuggestion(suggestionChanges, "30", GlobalVariables.failCount);
-//                }
+                else if (methodName.equals("interval1")) { // CALL INTERVAL1
+                    // Create workout's background task and execute
+                }
+                else if (methodName.equals("interval2")) { // CALL INTERVAL2
+                    // Create workout's background task and execute
+                }
+                else if (methodName.equals("interval3")) { // CALL INTERVAL3
+                    // Create workout's background task and execute
+                }
+                else if (methodName.equals("pace20")) { // CALL PACE20
+                    // Create workout's background task and execute
+                }
+                else if (methodName.equals("pace30")) { // CALL PACE30
+                    // Create workout's background task and execute
+                }
+                else if (methodName.equals("pace40")) { // CALL PACE40
+                    // Create workout's background task and execute
+                }
             }
         });
     }
 
-    // Background functionality class definition
-    private class FtpCalcTask extends AsyncTask<Void, Integer, Integer> {
+    // ftpCalc Background functionality class: defines background task
+    private class ftpCalcTask extends AsyncTask<Void, Integer, Integer> {
 
         @Override // 1st function for background task
         protected Integer doInBackground(Void... voids) {
@@ -300,18 +274,17 @@ public class WorkoutActivity extends AppCompatActivity {
             // Create database instance
             DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
 
-            // Function beginning
+            // Function algorithm beginning
             int sum = 0;
             int length = 0;
-            ArrayList<Double> powtimearray = new ArrayList<Double>();
+            ArrayList<Double> powtimearray = new ArrayList<Double>(); // create new arraylist
 
             double pastTime = 0.0;
             int infiniteCount = 0;
-
             int i = 0;
-
-            // [TEST] loop
-            while (db.getTime_33() < 180.0) { //for testing, 3 minutes
+            
+            // main loop
+            while (db.getTime_33() < 180.0) { // [TEST] 3 minutes
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -328,20 +301,19 @@ public class WorkoutActivity extends AppCompatActivity {
                 i++;
             }
 
-            double avgPow = (double) sum / length; //uncomment
-
-            //define ftp = 95% of average power
-            int ftp = (int) (0.95 * avgPow); // calculate ftp
-            GlobalVariables.ftp = ftp; //set ftp as global so UI can display it
+            double avgPow = (double) sum / length; // calculate average power
+            
+            int ftp = (int) (0.95 * avgPow); // calculate ftp (95% of average power)
+            GlobalVariables.ftp = ftp; // set ftp as global so UI can display it
 
             // Load power zones
             int pz_1 = 0; //Very Easy: <55% of FTP
-            int pz_2 = (int) (0.56 * ftp); //Moderate: 56%-75% of FTP
-            int pz_3 = (int) (0.76 * ftp); //Sustainable: 76%-90% of FTP
-            int pz_4 = (int) (0.91 * ftp); //Challenging: 91%-105% of FTP
-            int pz_5 = (int) (1.06 * ftp); //Hard: 106%-120% of FTP
-            int pz_6 = (int) (1.21 * ftp); //Very Hard: 121%-150% of FTP
-            int pz_7 = (int) (1.51 * ftp); //Max Effort: >151% of FTP
+            int pz_2 = (int) (0.56 * ftp); // Moderate: 56%-75% of FTP
+            int pz_3 = (int) (0.76 * ftp); // Sustainable: 76%-90% of FTP
+            int pz_4 = (int) (0.91 * ftp); // Challenging: 91%-105% of FTP
+            int pz_5 = (int) (1.06 * ftp); // Hard: 106%-120% of FTP
+            int pz_6 = (int) (1.21 * ftp); // Very Hard: 121%-150% of FTP
+            int pz_7 = (int) (1.51 * ftp); // Max Effort: >151% of FTP
 
             // populate database User table
             db.updateuserFTP(GlobalVariables.loggedInUsername, ftp, pz_1, pz_2, pz_3, pz_4, pz_5, pz_6, pz_7);
@@ -351,7 +323,7 @@ public class WorkoutActivity extends AppCompatActivity {
             return 0;
         }
 
-        @Override // 2nd function for background task
+        @Override // 2nd function for background task: updates UI
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
 
@@ -364,7 +336,7 @@ public class WorkoutActivity extends AppCompatActivity {
             txtCaloriesMetric.setText("Calories: " + cal);
         }
 
-        @Override // 3rd function for background task (might not be needed)
+        @Override // 3rd function for background task: follows background task after completion
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
             // This is called when the background task is finished
@@ -376,6 +348,161 @@ public class WorkoutActivity extends AppCompatActivity {
         }
     }
 
+    // interval1 background functionality class
+    private class interval1Task extends AsyncTask<Void, Integer, Integer> {
+
+        @Override // 1st function for background task: defines background task
+        protected Integer doInBackground(Void... voids) {
+
+            // Create database instance
+            DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
+
+            // [PASTE WORKOUT HERE]
+            return 0;
+        }
+
+        @Override // 2nd function for background task: updates UI
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            // Extract (using values array), Update UI elements here
+        }
+
+        @Override // 3rd function for background task: follows background task after completion
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            // Define intent and launch next activity
+        }
+    }
+
+    // interval2 background functionality class
+    private class interval2Task extends AsyncTask<Void, Integer, Integer> {
+
+        @Override // 1st function for background task: defines background task
+        protected Integer doInBackground(Void... voids) {
+
+            // Create database instance
+            DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
+
+            // [PASTE WORKOUT HERE]
+            return 0;
+        }
+
+        @Override // 2nd function for background task: updates UI
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            // Extract (using values array), Update UI elements here
+        }
+
+        @Override // 3rd function for background task: follows background task after completion
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            // Define intent and launch next activity
+        }
+    }
+
+    // interval3 background functionality class
+    private class interval3Task extends AsyncTask<Void, Integer, Integer> {
+
+        @Override // 1st function for background task: defines background task
+        protected Integer doInBackground(Void... voids) {
+
+            // Create database instance
+            DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
+
+            // [PASTE WORKOUT HERE]
+            return 0;
+        }
+
+        @Override // 2nd function for background task: updates UI
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            // Extract (using values array), Update UI elements here
+        }
+
+        @Override // 3rd function for background task: follows background task after completion
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            // Define intent and launch next activity
+        }
+    }
+
+    // pace20 background functionality class
+    private class pace20Task extends AsyncTask<Void, Integer, Integer> {
+
+        @Override // 1st function for background task: defines background task
+        protected Integer doInBackground(Void... voids) {
+
+            // Create database instance
+            DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
+
+            // [PASTE WORKOUT HERE]
+            return 0;
+        }
+
+        @Override // 2nd function for background task: updates UI
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            // Extract (using values array), Update UI elements here
+        }
+
+        @Override // 3rd function for background task: follows background task after completion
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            // Define intent and launch next activity
+        }
+    }
+
+    // pace30 background functionality class
+    private class pace30Task extends AsyncTask<Void, Integer, Integer> {
+
+        @Override // 1st function for background task: defines background task
+        protected Integer doInBackground(Void... voids) {
+
+            // Create database instance
+            DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
+
+            // [PASTE WORKOUT HERE]
+            return 0;
+        }
+
+        @Override // 2nd function for background task: updates UI
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            // Extract (using values array), Update UI elements here
+        }
+
+        @Override // 3rd function for background task: follows background task after completion
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            // Define intent and launch next activity
+        }
+    }
+
+    // pace40 background functionality class
+    private class pace40Task extends AsyncTask<Void, Integer, Integer> {
+
+        @Override // 1st function for background task: defines background task
+        protected Integer doInBackground(Void... voids) {
+
+            // Create database instance
+            DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
+
+            // [PASTE WORKOUT HERE]
+            return 0;
+        }
+
+        @Override // 2nd function for background task: updates UI
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            // Extract (using values array), Update UI elements here
+        }
+
+        @Override // 3rd function for background task: follows background task after completion
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            // Define intent and launch next activity
+        }
+    }
 
     @Override
     public void onBackPressed() { // handle back button press during workout
