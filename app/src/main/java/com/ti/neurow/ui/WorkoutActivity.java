@@ -98,7 +98,6 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this); // prepare database
 
-                workouts workouts = new workouts(); // construct workouts instance
                 Toast.makeText(WorkoutActivity.this, "[TEST] Database created!", Toast.LENGTH_SHORT).show();
 
                 // Dataframe 33
@@ -129,7 +128,7 @@ public class WorkoutActivity extends AppCompatActivity {
                                 GlobalVariables.lastSplitDist33
                         );
                         boolean success = db.add_dataframe33(realdata33);
-                        if (success == true) {
+                        if (success) {
                             Toast.makeText(
                                     WorkoutActivity.this,
                                     "[TEST] Successfully entered table",
@@ -163,7 +162,7 @@ public class WorkoutActivity extends AppCompatActivity {
                         );
 
                         boolean success = db.add_dataframe35(realdata35);
-                        if (success == true) {
+                        if (success) {
                             Toast.makeText(
                                     WorkoutActivity.this,
                                     "[TEST] Successfully entered table",
@@ -184,7 +183,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     @Override
                     public void onMessageChanged(String newMessage) {
                         boolean success = db.add_3Dmessage(GlobalVariables.pol3D, GlobalVariables.message3D);
-                        if (success == true) {
+                        if (success) {
                             Toast.makeText(
                                     WorkoutActivity.this,
                                     "[TEST] Successfully entered table",
@@ -298,7 +297,7 @@ public class WorkoutActivity extends AppCompatActivity {
             // Function algorithm beginning
             int sum = 0;
             int length = 0;
-            ArrayList<Double> powtimearray = new ArrayList<Double>(); // create new arraylist
+            ArrayList<Double> powtimearray = new ArrayList<>(); // create new arraylist
 
             double pastTime = 0.0;
             int infiniteCount = 0;
@@ -412,7 +411,7 @@ public class WorkoutActivity extends AppCompatActivity {
             ArrayList<Double> powtimearray = new ArrayList<>(); //arraylist to hold time and power
 
             String pzMessage = ""; //declaring power zone message
-            String fixMessage = ""; //delcaring power zone error message
+            String fixMessage = ""; //declaring power zone error message
 
             // 5 min at zone 2
             while (db.getTime_33() <= 300) {
@@ -436,7 +435,18 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
-                //TODO: at end of while loop publish variables we want, pzMessage, fixMessage
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 340 && db.getTime_33() > 300) {
@@ -446,528 +456,716 @@ public class WorkoutActivity extends AppCompatActivity {
                 powtimearray.add((double)db.getPower());
                 if (k2 == 0) {
                     pzMessage = "Row in power zone 5";
-                    k2 = 100
+                    k2 = 100;
                 }
-                if (db.power < GlobalVariables.pz_5 || db.power >= GlobalVariables.pz_6) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 5!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 5!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 20 sec at zone 2
-            while (db.time_33 <= 360 && db.time_33 > 340) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 360 && db.getTime_33() > 340) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k3 == 0) {
-                    pzMessage = "Row in power zone 2"
-                    pzSetChanges.setMessage(pzMessage)
-                    k3 = 100
+                    pzMessage = "Row in power zone 2";
+                    k3 = 100;
                 }
-                if (db.power < GlobalVariables.pz_2 || db.power >= GlobalVariables.pz_3) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 2!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 2!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 40 sec at zone 5
-            while (db.time_33 <= 400 && db.time_33 > 360) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 400 && db.getTime_33() > 360) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k4 == 0) {
-                    pzMessage = "Row in power zone 5"
-                    pzSetChanges.setMessage(pzMessage)
-                    k4 = 100
+                    pzMessage = "Row in power zone 5";
+                    k4 = 100;
                 }
-                if (db.power < GlobalVariables.pz_5 || db.power >= GlobalVariables.pz_6) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 5!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 5!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 20 sec at zone 2
-            while (db.time_33 <= 420 && db.time_33 > 400) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 420 && db.getTime_33() > 400) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k5 == 0) {
-                    pzMessage = "Row in power zone 2"
-                    pzSetChanges.setMessage(pzMessage)
-                    k5 = 100
+                    pzMessage = "Row in power zone 2";
+                    k5 = 100;
                 }
-                if (db.power < GlobalVariables.pz_2 || db.power >= GlobalVariables.pz_3) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 2!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 2!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 40 sec at zone 5
-            while (db.time_33 <= 460 && db.time_33 > 420) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 460 && db.getTime_33() > 420) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k6 == 0) {
-                    pzMessage = "Row in power zone 5"
-                    pzSetChanges.setMessage(pzMessage)
-                    k6 = 100
+                    pzMessage = "Row in power zone 5";
+                    k6 = 100;
                 }
-                if (db.power < GlobalVariables.pz_5 || db.power >= GlobalVariables.pz_6) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 5!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 5!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 20 sec at zone 2
-            while (db.time_33 <= 480 && db.time_33 > 460) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 480 && db.getTime_33() > 460) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k7 == 0) {
-                    pzMessage = "Row in power zone 2"
-                    pzSetChanges.setMessage(pzMessage)
-                    k7 = 100
+                    pzMessage = "Row in power zone 2";
+                    k7 = 100;
                 }
-                if (db.power < GlobalVariables.pz_2 || db.power >= GlobalVariables.pz_3) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 2!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 2!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 40 sec at zone 5
-            while (db.time_33 <= 520 && db.time_33 > 480) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 520 && db.getTime_33() > 480) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k8 == 0) {
-                    pzMessage = "Row in power zone 5"
-                    pzSetChanges.setMessage(pzMessage)
-                    k8 = 100
+                    pzMessage = "Row in power zone 5";
+                    k8 = 100;
                 }
-                if (db.power < GlobalVariables.pz_5 || db.power >= GlobalVariables.pz_6) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 5!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 5!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 20 sec at zone 2
-            while (db.time_33 <= 540 && db.time_33 > 520) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 540 && db.getTime_33() > 520) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k9 == 0) {
-                    pzMessage = "Row in power zone 2"
-                    pzSetChanges.setMessage(pzMessage)
-                    k9 = 100
+                    pzMessage = "Row in power zone 2";
+                    k9 = 100;
                 }
-                if (db.power < GlobalVariables.pz_2 || db.power >= GlobalVariables.pz_3) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 2!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 2!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 40 sec at zone 5
-            while (db.time_33 <= 580 && db.time_33 > 540) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 580 && db.getTime_33() > 540) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k10 == 0) {
-                    pzMessage = "Row in power zone 5"
-                    pzSetChanges.setMessage(pzMessage)
-                    k10 = 100
+                    pzMessage = "Row in power zone 5";
+                    k10 = 100;
                 }
-                if (db.power < GlobalVariables.pz_5 || db.power >= GlobalVariables.pz_6) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 5!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 5!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 20 sec at zone 2
-            while (db.time_33 <= 600 && db.time_33 > 580) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 600 && db.getTime_33() > 580) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k11 == 0) {
-                    pzMessage = "Row in power zone 2"
-                    pzSetChanges.setMessage(pzMessage)
-                    k11 = 100
+                    pzMessage = "Row in power zone 2";
+                    k11 = 100;
                 }
-                if (db.power < GlobalVariables.pz_2 || db.power >= GlobalVariables.pz_3) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 2!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 2!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 40 sec at zone 5
-            while (db.time_33 <= 640 && db.time_33 > 600) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 640 && db.getTime_33() > 600) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k12 == 0) {
-                    pzMessage = "Row in power zone 5"
-                    pzSetChanges.setMessage(pzMessage)
-                    k12 = 100
+                    pzMessage = "Row in power zone 5";
+                    k12 = 100;
                 }
-                if (db.power < GlobalVariables.pz_5 || db.power >= GlobalVariables.pz_6) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 5!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 5!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 20 sec at zone 2
-            while (db.time_33 <= 660 && db.time_33 > 640) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 660 && db.getTime_33() > 640) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k13 == 0) {
-                    pzMessage = "Row in power zone 2"
-                    pzSetChanges.setMessage(pzMessage)
-                    k13 = 100
+                    pzMessage = "Row in power zone 2";
+                    k13 = 100;
                 }
-                if (db.power < GlobalVariables.pz_2 || db.power >= GlobalVariables.pz_3) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 2!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 2!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 40 sec at zone 5
-            while (db.time_33 <= 700 && db.time_33 > 660) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 700 && db.getTime_33() > 660) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k14 == 0) {
-                    pzMessage = "Row in power zone 5"
-                    pzSetChanges.setMessage(pzMessage)
-                    k14 = 100
+                    pzMessage = "Row in power zone 5";
+                    k14 = 100;
                 }
-                if (db.power < GlobalVariables.pz_5 || db.power >= GlobalVariables.pz_6) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 5!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 5!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 20 sec at zone 2
-            while (db.time_33 <= 720 && db.time_33 > 700) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 720 && db.getTime_33() > 700) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k15 == 0) {
-                    pzMessage = "Row in power zone 2"
-                    pzSetChanges.setMessage(pzMessage)
-                    k15 = 100
+                    pzMessage = "Row in power zone 2";
+                    k15 = 100;
                 }
-                if (db.power < GlobalVariables.pz_2 || db.power >= GlobalVariables.pz_3) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 2!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 2!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 40 sec at zone 5
-            while (db.time_33 <= 760 && db.time_33 > 720) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 760 && db.getTime_33() > 720) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k16 == 0) {
-                    pzMessage = "Row in power zone 5"
-                    pzSetChanges.setMessage(pzMessage)
-                    k16 = 100
+                    pzMessage = "Row in power zone 5";
+                    k16 = 100;
                 }
-                if (db.power < GlobalVariables.pz_5 || db.power >= GlobalVariables.pz_6) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 5!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 5!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 20 sec at zone 2
-            while (db.time_33 <= 780 && db.time_33 > 760) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 780 && db.getTime_33() > 760) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k17 == 0) {
-                    pzMessage = "Row in power zone 2"
-                    pzSetChanges.setMessage(pzMessage)
-                    k17 = 100
+                    pzMessage = "Row in power zone 2";
+                    k17 = 100;
                 }
-                if (db.power < GlobalVariables.pz_2 || db.power >= GlobalVariables.pz_3) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 2!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 2!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 40 sec at zone 5
-            while (db.time_33 <= 820 && db.time_33 > 780) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 820 && db.getTime_33() > 780) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k18 == 0) {
-                    pzMessage = "Row in power zone 5"
-                    pzSetChanges.setMessage(pzMessage)
-                    k18 = 100
+                    pzMessage = "Row in power zone 5";
+                    k18 = 100;
                 }
-                if (db.power < GlobalVariables.pz_5 || db.power >= GlobalVariables.pz_6) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 5!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 5!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 20 sec at zone 2
-            while (db.time_33 <= 840 && db.time_33 > 820) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 840 && db.getTime_33() > 820) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k19 == 0) {
-                    pzMessage = "Row in power zone 2"
-                    pzSetChanges.setMessage(pzMessage)
-                    k19 = 100
+                    pzMessage = "Row in power zone 2";
+                    k19 = 100;
                 }
-                if (db.power < GlobalVariables.pz_2 || db.power >= GlobalVariables.pz_3) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 2!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 2!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 40 sec at zone 5
-            while (db.time_33 <= 880 && db.time_33 > 840) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 880 && db.getTime_33() > 840) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k20 == 0) {
-                    pzMessage = "Row in power zone 5"
-                    pzSetChanges.setMessage(pzMessage)
-                    k20 = 100
+                    pzMessage = "Row in power zone 5";
+                    k20 = 100;
                 }
-                if (db.power < GlobalVariables.pz_5 || db.power >= GlobalVariables.pz_6) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 5!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 5!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 20 sec at zone 2
-            while (db.time_33 <= 900 && db.time_33 > 880) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 900 && db.getTime_33() > 880) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k21 == 0) {
-                    pzMessage = "Row in power zone 2"
-                    pzSetChanges.setMessage(pzMessage)
-                    k21 = 100
+                    pzMessage = "Row in power zone 2";
+                    k21 = 100;
                 }
-                if (db.power < GlobalVariables.pz_2 || db.power >= GlobalVariables.pz_3) {
-                    count++
+                if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 2!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 2!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 5 min at zone 1
-            while (db.time_33 <= 1200 && db.time_33 > 900) {
-                sum += db.power
-                length += 1
-                powtimearray.add(db.time_33)
-                powtimearray.add(db.power.toDouble())
+            while (db.getTime_33() <= 1200 && db.getTime_33() > 900) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
                 if (k22 == 0) {
-                    pzMessage = "Row in power zone 1"
-                    pzSetChanges.setMessage(pzMessage)
-                    k22 = 100
+                    pzMessage = "Row in power zone 1";
+                    k22 = 100;
                 }
-                if (db.power >= GlobalVariables.pz_2) {
-                    count++
+                if (db.getPower() >= GlobalVariables.pz_2) {
+                    count++;
                     if (count > 4) {
-                        fixMessage = "You aren't in power zone 1!!!!"
-                        pzFixChanges.setMessage(fixMessage)
-                        failCount++
-                        count = 0
+                        fixMessage = "You aren't in power zone 1!!!!";
+                        failCount++;
+                        count = 0;
                     }
                 } else {
-                    fixMessage = "You are in zone!! Keep it up!!"
-                    pzFixChanges.setMessage(fixMessage)
-                    count = 0
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
                 }
-            }
-            val avgPow = sum.toDouble() / length //uncomment
-            //interval_suggestor("1", failCount)
-            failCount = 25 // for  integration testing
-            GlobalVariables.failCount = failCount
-            db.add_history(GlobalVariables.loggedInUsername, "interval1", failCount, avgPow)
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+            }
+            double avgPow = (double) sum / (double) length; //uncomment
+            GlobalVariables.failCount = failCount;
+            db.add_history(GlobalVariables.loggedInUsername, "interval1", failCount, avgPow);
+            GlobalVariables.finalListTimePower = powtimearray;
             return 0;
         }
 
@@ -1283,6 +1481,418 @@ public class WorkoutActivity extends AppCompatActivity {
             DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
 
             // [PASTE WORKOUT HERE]
+            //interval 3 (40 min) method code
+            int k1 = 0;
+            int k2 = 0;
+            int k3 = 0;
+            int k4 = 0;
+            int k5 = 0;
+            int k6 = 0;
+            int k7 = 0;
+            int k8 = 0;
+            int k9 = 0;
+            int k10 = 0;
+            int k11 = 0;
+
+            int count = 0; //count subsequent errors
+            int failCount = 0; //actual fail count
+            int sum = 0; //summing up power
+            int length = 0; //number of power entries to calc average
+            ArrayList<Double> powtimearray = new ArrayList<>(); //arraylist to hold time and power
+
+            String pzMessage = ""; //declaring power zone message
+            String fixMessage = ""; //declaring power zone error message
+
+
+            // 2 min at zone 2
+            while (db.getTime_33() <= 120) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
+                if (k1 == 0) {
+                    pzMessage = "Row in power zone 2";
+                    k1 = 100;
+                }
+                //System.out.println("Row in power zone 2");
+                if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
+                    count++;
+                    if (count > 4) {
+                        fixMessage = "You aren't in power zone 2!!!!";
+                        failCount++;
+                        count = 0;
+                    }
+                } else {
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
+                }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+            }
+            // 1 min at zone 5
+            while (db.getTime_33() <= 180 && db.getTime_33() > 120) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
+                if (k2 == 0) {
+                    pzMessage = "Row in power zone 5";
+                    k2 = 100;
+                }
+                //System.out.println("Row at a fast pace!!");
+                if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
+                    count++;
+                    if (count > 4) {
+                        fixMessage = "You aren't in power zone 5!!!!";
+                        failCount++;
+                        count = 0;
+                    }
+                } else {
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
+                }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+            }
+            // 2 min at zone 2
+            while (db.getTime_33() <= 300 && db.getTime_33() > 180) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
+                if (k3 == 0) {
+                    pzMessage = "Row in power zone 2";
+                    k3 = 100;
+                }
+                //System.out.println("Row in power zone 2");
+                if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
+                    count++;
+                    if (count > 4) {
+                        fixMessage = "You aren't in power zone 2!!!!";
+                        failCount++;
+                        count = 0;
+                    }
+                } else {
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
+                }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+            }
+            // 1 min at zone 5
+            while (db.getTime_33() <= 360 && db.getTime_33() > 300) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
+                if (k4 == 0) {
+                    pzMessage = "Row in power zone 5";
+                    k4 = 100;
+                }
+                //System.out.println("Row at a fast pace!!");
+                if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
+                    count++;
+                    if (count > 4) {
+                        fixMessage = "You aren't in power zone 5!!!!";
+                        failCount++;
+                        count = 0;
+                    }
+                } else {
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
+                }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+            }
+            // 2 min at zone 2
+            while (db.getTime_33() <= 480 && db.getTime_33() > 360) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
+                if (k5 == 0) {
+                    pzMessage = "Row in power zone 2";
+                    k5 = 100;
+                }
+                //System.out.println("Row in power zone 2");
+                if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
+                    count++;
+                    if (count > 4) {
+                        fixMessage = "You aren't in power zone 2!!!!";
+                        failCount++;
+                        count = 0;
+                    }
+                } else {
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
+                }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+            }
+            // 1 min at zone 5
+            while (db.getTime_33() <= 540 && db.getTime_33() > 480) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
+                if (k6 == 0) {
+                    pzMessage = "Row in power zone 5";
+                    k6 = 100;
+                }
+                //System.out.println("Row at a fast pace!!");
+                if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
+                    count++;
+                    if (count > 4) {
+                        fixMessage = "You aren't in power zone 5!!!!";
+                        failCount++;
+                        count = 0;
+                    }
+                } else {
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
+                }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+            }
+            // 2 min at zone 2
+            while (db.getTime_33() <= 660 && db.getTime_33() > 540) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
+                if (k7 == 0) {
+                    pzMessage = "Row in power zone 2";
+                    k7 = 100;
+                }
+                //System.out.println("Row in power zone 2");
+                if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
+                    count++;
+                    if (count > 4) {
+                        fixMessage = "You aren't in power zone 2!!!!";
+                        failCount++;
+                        count = 0;
+                    }
+                } else {
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
+                }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+            }
+            // 10 min at zone 4
+            while (db.getTime_33() <= 1260 && db.getTime_33() > 660) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
+                if (k8 == 0) {
+                    pzMessage = "Row in power zone 4";
+                    k8 = 100;
+                }
+                //System.out.println("Row in power zone 4");
+                if (db.getPower() < GlobalVariables.pz_4 || db.getPower() >= GlobalVariables.pz_5) {
+                    count++;
+                    if (count > 4) {
+                        fixMessage = "You aren't in power zone 4!!!!";
+                        failCount++;
+                        count = 0;
+                    }
+                } else {
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
+                }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+            }
+            // 5 min at zone 1
+            while (db.getTime_33() <= 1560 && db.getTime_33() > 1260) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
+                if (k9 == 0) {
+                    pzMessage = "Row in power zone 1";
+                    k9 = 100;
+                }
+                //System.out.println("Row in power zone 1");
+                if (db.getPower() >= GlobalVariables.pz_2) {
+                    count++;
+                    if (count > 4) {
+                        fixMessage = "You aren't in power zone 1!!!!";
+                        failCount++;
+                        count = 0;
+                    }
+                } else {
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
+                }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+            }
+            // 10 min at zone 4
+            while (db.getTime_33() <= 2160 && db.getTime_33() > 1560) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
+                if (k10 == 0) {
+                    pzMessage = "Row in power zone 4";
+                    k10 = 100;
+                }
+                //System.out.println("Row in power zone 4");
+                if (db.getPower() < GlobalVariables.pz_4 || db.getPower() >= GlobalVariables.pz_5) {
+                    count++;
+                    if (count > 4) {
+                        fixMessage = "You aren't in power zone 4!!!!";
+                        failCount++;
+                        count = 0;
+                    }
+                } else {
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
+                }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+            }
+            // 5 min at zone 1
+            while (db.getTime_33() <= 2460 && db.getTime_33() > 2160) {
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double)db.getPower());
+                if (k11 == 0) {
+                    pzMessage = "Row in power zone 1";
+                    k11 = 666;
+                }
+                //System.out.println("Row in power zone 1");
+                if (db.getPower() >= GlobalVariables.pz_2) {
+                    count++;
+                    if (count > 4) {
+                        fixMessage = "You aren't in power zone 1!!!!";
+                        failCount++;
+                        count = 0;
+                    }
+                } else {
+                    fixMessage = "You are in zone!! Keep it up!!";
+                    count = 0;
+                }
+                // Update UI elements
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+
+                // Send data to main UI thread
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+            }
+            double avgPow = (double) sum / (double) length; //uncomment
+            GlobalVariables.failCount = failCount;
+            db.add_history(GlobalVariables.loggedInUsername, "interval3", failCount, avgPow);
+            GlobalVariables.finalListTimePower = powtimearray;
             return 0;
         }
 
