@@ -28,11 +28,11 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="25dp"
         android:layout_marginRight="25dp"
-        android:backgroundTint="#E5E4E2"
+        android:backgroundTint="#802D7B"
         android:fontFamily="sans-serif-black"
         android:text="[UserID]"
         android:textColor="#D3D3D3"
-        android:textSize="35sp" />
+        android:textSize="40sp" />
 
     <TextView
         android:id="@+id/txtWorkoutName"
