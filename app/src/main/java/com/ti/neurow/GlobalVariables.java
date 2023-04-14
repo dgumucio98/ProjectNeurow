@@ -8,10 +8,10 @@ public class GlobalVariables {
 
 
     // Dataframe 33 stuff
-    public static Double elapsedTime33;
+    public static Double elapsedTime33 = 0.0;
     public static Integer intervalCount33;
-    public static Integer averagePower33;
-    public static Integer totalCalories33;
+    public static Integer averagePower33 = 0;
+    public static Integer totalCalories33 = 0;
     public static Double splitIntAvgPace33;
     public static Integer splitIntAvgPwr33;
     public static Double splitIntAvgCal33; //TODO discrepancy between int and double? between ble and db
@@ -21,7 +21,7 @@ public class GlobalVariables {
 
     // Dataframe 35 stuff
     public static Double elapsedTime35;
-    public static Double distance35;
+    public static Double distance35 = 0.0;
     public static Double driveLength35;
     public static Double driveTime35;
     public static Double strokeRecTime35;

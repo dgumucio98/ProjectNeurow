@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -33,16 +34,15 @@ import timber.log.Timber;
 
 public class WorkoutActivity extends AppCompatActivity {
 
-    // Define some elements
-    TextView txtWorkoutAttribute, txtWorkoutName, txtDistanceMetric, txtCaloriesMetric;
-    Chronometer chron; // declare chronometer (count-up timer)
-    Button btnAlyson, btnBegin;
+    // Define UI elements
+    TextView txtWorkoutAttribute, txtWorkoutName, txtDistanceMetric, txtCaloriesMetric, txtUserID; // text views
+    Chronometer chron; // chronometer (count-up timer)
+    Button btnBegin; // green begin button
     boolean isChronRunning = false; // define boolean state of the timer
-    GifImageView gifRipple;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         // Tweak visible elements
         super.onCreate(savedInstanceState);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); // Hide Action bar and Status bar
@@ -50,11 +50,17 @@ public class WorkoutActivity extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); // Lock orientation to landscape
         setContentView(R.layout.activity_workout);
 
+        // TODO: Get this to work...
+        // Set username text box [NOT WORKING]
+        // txtUserID.setText(GlobalVariables.loggedInUsername);
+
         // Define elements
         txtWorkoutAttribute = (TextView) findViewById(R.id.txtWorkoutAttribute); // workout "subtitle"
         txtWorkoutName = (TextView) findViewById(R.id.txtWorkoutName); // workout name (interval/pace)
         chron = (Chronometer) findViewById(R.id.simpleChronometer); // chronometer
         btnBegin = (Button) findViewById(R.id.btnBegin); // button that starts workouts
+        txtDistanceMetric = (TextView) findViewById(R.id.txtDistanceMetric); // distance text box
+        txtCaloriesMetric = (TextView) findViewById(R.id.txtCaloriesMetric); // calories text box
 
         // Receive workout choice data from WorkoutMainActivity
         int colorToSet = getIntent().getIntExtra("attributeColor", Color.WHITE); // default is white (means problem)
@@ -65,27 +71,14 @@ public class WorkoutActivity extends AppCompatActivity {
         String methodName = getIntent().getStringExtra("methodName");
         Toast.makeText(WorkoutActivity.this, "[TEST] Got method name! methodName: " + methodName, Toast.LENGTH_SHORT).show();
 
-
         // Change Workout UI elements
         txtWorkoutAttribute.setText(textToSet);
         txtWorkoutAttribute.setTextColor(colorToSet);
         txtWorkoutName.setText(titleToSet);
 
-
-        // Update on-screen Metrics using handler
-//        Handler handler = new Handler();
-//        Runnable runnableCode = new Runnable() {
-//            @Override
-//            public void run() {
-//                // Update the text of the metric TextViews
-//                txtDistanceMetric.setText(GlobalVariables.distance35.toString());
-//                txtCaloriesMetric.setText(GlobalVariables.totalCalories33.toString());
-//
-//                // Polling rate (good range ~400-800ms)
-//                handler.postDelayed(this, 500);
-//            }
-//        };
-
+        // These set the UI elements to current metric data
+        // txtDistanceMetric.setText(GlobalVariables.distance35.toString());
+        // txtCaloriesMetric.setText(GlobalVariables.totalCalories33.toString());
 
         // ***** This is where the workout gets called and begins *****
         btnBegin.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +91,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 Toast.makeText(WorkoutActivity.this, "[TEST] Green button clicked!", Toast.LENGTH_SHORT).show();
 
                 DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this); // prepare database
+
                 workouts workouts = new workouts(); // construct workouts instance
                 Toast.makeText(WorkoutActivity.this, "[TEST] Database created!", Toast.LENGTH_SHORT).show();
 
@@ -236,48 +230,38 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
                 });
 
-                // 3. Start on-screen Chronometer
-
-                // Chronometer Functionality
-                if (!isChronRunning) { // if NOT running
-                    chron.setBase(SystemClock.elapsedRealtime()); // start counting from current time
-                    chron.start(); // start the chronometer
-                    btnBegin.setText("Stop");
-                    isChronRunning = true; // set status to true
-                }
-                else {
-                    chron.stop();
-                    isChronRunning = false; // set status to false
-                    btnBegin.setText("Start");
-                }
+//                // 3. Start on-screen Chronometer
+//
+//                // Chronometer Functionality
+//                if (!isChronRunning) { // if NOT running
+//                    chron.setBase(SystemClock.elapsedRealtime()); // start counting from current time
+//                    chron.start(); // start the chronometer
+//                    btnBegin.setText("Stop");
+//                    isChronRunning = true; // set status to true
+//                }
+//                else {
+//                    chron.stop();
+//                    isChronRunning = false; // set status to false
+//                    btnBegin.setText("Start");
+//                }
 
                 // 4. Call workout methods
 
-                Toast.makeText(WorkoutActivity.this, "[TEST] Made it before workout if statement", Toast.LENGTH_SHORT).show();
+//                // [TEMP] Temporary fix, no ifs, just calling ftpCalc
+//                ArrayList pow = workouts.ftpCalc(db); // call, set global list to workout result list
+//                GlobalVariables.finalListTimePower = pow; // set global graphing variable
 
-
-                Toast.makeText(WorkoutActivity.this, "[TEST] Called ftpCalc", Toast.LENGTH_SHORT).show();
-                ArrayList pow = workouts.ftpCalc(db); // call, set global list to workout result list
-                Toast.makeText(WorkoutActivity.this, "[TEST] Workout finished", Toast.LENGTH_SHORT).show();
-                GlobalVariables.finalListTimePower = pow; // set global graphing variable
-                Toast.makeText(WorkoutActivity.this, "[TEST] Pow has been set after workout", Toast.LENGTH_SHORT).show();
-
-
-                // Conditions to call specific workout (UNCOMMENT)
-//                if (methodName == "ftpCalc") { // CALL FTPCALC
-//                    Toast.makeText(WorkoutActivity.this, "[TEST] Called ftpCalc", Toast.LENGTH_SHORT).show();
-//                    ArrayList pow = workouts.ftpCalc(db); // call, set global list to workout result list
-//                    Toast.makeText(WorkoutActivity.this, "Workout finished", Toast.LENGTH_SHORT).show();
-//                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
-//                    // TODO: Read ftp global variable
-//                    // TODO: Make text box appear with feedback
-//                }
-//                else if (methodName == "interval1") { // CALL INTERVAL1
+                // Conditions to call specific workout
+                if (methodName.equals("ftpCalc")) { // CALL FTPCALC
+                    FtpCalcTask ftpCalcTask = new FtpCalcTask();
+                    ftpCalcTask.execute();
+                }
+//                else if (methodName.equals("interval1")) { // CALL INTERVAL1
 //                    ArrayList pow = workouts.interval1(pzSetChanges, pzFixChanges, db);
 //                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
 //                    workouts.intervalSuggestion(suggestionChanges, "1", GlobalVariables.failCount);
 //                }
-//                else if (methodName == "interval2") { // CALL INTERVAL2
+//                else if (methodName.equals("interval2")) { // CALL INTERVAL2
 //                    ArrayList pow = workouts.interval2(pzSetChanges, pzFixChanges, db);
 //                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
 //                    workouts.intervalSuggestion(suggestionChanges, "2", GlobalVariables.failCount);
@@ -303,16 +287,95 @@ public class WorkoutActivity extends AppCompatActivity {
 //                    GlobalVariables.finalListTimePower = pow; // set global graphing variable
 //                    workouts.paceSuggestion(suggestionChanges, "30", GlobalVariables.failCount);
 //                }
-
-                // 5. Prepare to leave screen
-
-                // Exit WorkoutActivity, launch PostWorkoutActivity
-                Intent i = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
-                startActivity(i); // Launch BLE Data View
-                finish(); // can't go back
             }
         });
     }
+
+    // Background functionality class definition
+    private class FtpCalcTask extends AsyncTask<Void, Integer, Integer> {
+
+        @Override // 1st function for background task
+        protected Integer doInBackground(Void... voids) {
+
+            // Create database instance
+            DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
+
+            // Function beginning
+            int sum = 0;
+            int length = 0;
+            ArrayList<Double> powtimearray = new ArrayList<Double>();
+
+            double pastTime = 0.0;
+            int infiniteCount = 0;
+
+            int i = 0;
+
+            // [TEST] loop
+            while (db.getTime_33() < 180.0) { //for testing, 3 minutes
+                sum += db.getPower();
+                length += 1;
+                powtimearray.add(db.getTime_33());
+                powtimearray.add((double) db.getPower());
+
+                // Update UI elements
+                int distance = GlobalVariables.distance35.intValue();
+                int calories = GlobalVariables.totalCalories33;
+
+                // Send data to main UI thread
+                publishProgress(distance, calories); // Update the UI with the current counter value
+
+                pastTime = db.getTime_33();
+                i++;
+            }
+
+            double avgPow = (double) sum / length; //uncomment
+
+            //define ftp = 95% of average power
+            int ftp = (int) (0.95 * avgPow); // calculate ftp
+            GlobalVariables.ftp = ftp; //set ftp as global so UI can display it
+
+            // Load power zones
+            int pz_1 = 0; //Very Easy: <55% of FTP
+            int pz_2 = (int) (0.56 * ftp); //Moderate: 56%-75% of FTP
+            int pz_3 = (int) (0.76 * ftp); //Sustainable: 76%-90% of FTP
+            int pz_4 = (int) (0.91 * ftp); //Challenging: 91%-105% of FTP
+            int pz_5 = (int) (1.06 * ftp); //Hard: 106%-120% of FTP
+            int pz_6 = (int) (1.21 * ftp); //Very Hard: 121%-150% of FTP
+            int pz_7 = (int) (1.51 * ftp); //Max Effort: >151% of FTP
+
+            // populate database User table
+            db.updateuserFTP(GlobalVariables.loggedInUsername, ftp, pz_1, pz_2, pz_3, pz_4, pz_5, pz_6, pz_7);
+
+            // Set global arraylist of time and power
+            GlobalVariables.finalListTimePower = powtimearray;
+            return 0;
+        }
+
+        @Override // 2nd function for background task
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+
+            int dist = values[0]; // extract distance value passed
+            int cal = values[1]; // extract calories value passed
+
+            // Update the UI with the current counter value
+            txtDistanceMetric.setText("Distance: " + dist);
+            // Update other UI elements as needed
+            txtCaloriesMetric.setText("Calories: " + cal);
+        }
+
+        @Override // 3rd function for background task (might not be needed)
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            // This is called when the background task is finished
+
+            // Exit WorkoutActivity, launch PostWorkoutActivity
+            Intent i = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+            startActivity(i); // Launch BLE Data View
+            finish(); // can't go back
+        }
+    }
+
 
     @Override
     public void onBackPressed() { // handle back button press during workout
