@@ -72,6 +72,46 @@
         android:textSize="80sp"
         android:textStyle="normal" />
 
+
+    <TextView
+        android:id="@+id/txtInstructionMetric"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="[Instruction]"
+        android:layout_toRightOf="@id/txtDistanceMetric"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="345dp"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="normal" />
+
+    <TextView
+    android:id="@+id/txtFeedbackMetric"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:fontFamily="sans-serif-condensed"
+    android:text="[Feedback]"
+    android:layout_toRightOf="@id/txtDistanceMetric"
+    android:layout_marginLeft="100dp"
+    android:layout_marginTop="445dp"
+    android:textColor="@color/white"
+    android:textSize="30sp"
+    android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/txtAvgPowerMetric"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="[Average Power]"
+        android:layout_toRightOf="@id/txtDistanceMetric"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="550dp"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="normal" />
+
     <TextView
         android:id="@+id/txtWorkoutAttribute"
         android:layout_width="wrap_content"
