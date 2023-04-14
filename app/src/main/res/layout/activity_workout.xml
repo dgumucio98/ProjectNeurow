@@ -9,9 +9,10 @@
 
     <Button
         android:id="@+id/btnBegin"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="425dp"
         android:layout_below="@id/simpleChronometer"
+        android:background="@drawable/rounded_button_background"
         android:layout_marginTop="50dp"
         android:layout_marginLeft="50dp"
         android:backgroundTint="#50C878"
@@ -55,7 +56,7 @@
         android:layout_below="@id/simpleChronometer"
         android:textColor="@color/white"
         android:layout_marginTop="70dp"
-        android:layout_marginLeft="400dp"
+        android:layout_marginLeft="350dp"
         android:textSize="80sp"
         android:textStyle="normal" />
 
@@ -65,10 +66,9 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
         android:text="[Calories]"
-        android:layout_below="@id/simpleChronometer"
+        android:layout_below="@id/txtDistanceMetric"
         android:textColor="@color/white"
-        android:layout_marginTop="240dp"
-        android:layout_marginLeft="400dp"
+        android:layout_marginLeft="350dp"
         android:textSize="80sp"
         android:textStyle="normal" />
 

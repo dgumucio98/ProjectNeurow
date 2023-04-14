@@ -73,47 +73,61 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         Button btnPredictor = findViewById(R.id.btnPredictor);
         MDY = findViewById(R.id.txtDate);
 
-        handler.post(updateTime); // start  handler to update time every second
-
         // Define buttons used for on-long-click
         Button btnWorkout1 = findViewById(R.id.btnWorkout1);
         Button btnWorkout2 = findViewById(R.id.btnWorkout2);
         Button btnWorkout3 = findViewById(R.id.btnWorkout3);
+        Button btnDemo = findViewById(R.id.btnDemo);
 
         // Set listeners for buttons
         btnWorkout1.setOnLongClickListener(this);
         btnWorkout2.setOnLongClickListener(this);
         btnWorkout3.setOnLongClickListener(this);
         btnPredictor.setOnLongClickListener(this);
+        btnDemo.setOnLongClickListener(this);
 
         // Display user's FTP
-        txtUserFtp.setTextColor(getResources().getColor(R.color.medium_orange));
+        txtUserFtp.setTextColor(getResources().getColor(R.color.mint_green));
         txtUserFtp.setText(Html.fromHtml("<b>FTP:</b> " + GlobalVariables.ftp + "W"));
 
-        // Handle when ftpCalc button is clicked (standalone case)
-        btnWorkout1.setOnClickListener(new View.OnClickListener() {
+        // Handle when ftpCalc button is clicked (standalone case from other workout click listeners)
+        // Handle when demo button is clicked
+        // Handle when predictor button is clicked
+        View.OnClickListener workoutClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent launchWorkoutActivity = new Intent(WorkoutMainActivity.this, WorkoutActivity.class); // define intent for launching activity
 
-                int color = ContextCompat.getColor(getApplicationContext(), R.color.medium_gray); // parse custom color
-                launchWorkoutActivity.putExtra("attributeColor", color); // pass color data
-                launchWorkoutActivity.putExtra("attributeText", "20-MINUTE"); // pass text data
-                launchWorkoutActivity.putExtra("attributeName", "FTP CALCULATOR"); // pass titles text data
-                launchWorkoutActivity.putExtra("methodName", "ftpCalc"); // pass target workout name data
+                switch (v.getId()) {
+                    case R.id.btnWorkout1: // ftpCalc button is clicked
+                        int color1 = ContextCompat.getColor(getApplicationContext(), R.color.medium_gray); // parse custom color
+                        launchWorkoutActivity.putExtra("attributeColor", color1); // pass color data
+                        launchWorkoutActivity.putExtra("attributeText", "20-MINUTE"); // pass text data
+                        launchWorkoutActivity.putExtra("attributeName", "FTP CALCULATOR"); // pass titles text data
+                        launchWorkoutActivity.putExtra("methodName", "ftpCalc"); // pass target workout name data
+                        break;
+                    case R.id.btnDemo: // demo button is clicked
+                        int color2 = ContextCompat.getColor(getApplicationContext(), R.color.brick_red); // parse custom color
+                        launchWorkoutActivity.putExtra("attributeColor", color2); // pass color data
+                        launchWorkoutActivity.putExtra("attributeText", "404 Demo"); // pass text data
+                        launchWorkoutActivity.putExtra("attributeName", "DEMO WORKOUT"); // pass titles text data
+                        launchWorkoutActivity.putExtra("methodName", "demoWorkout"); // pass target workout name data
+                        break;
+                    case R.id.btnPredictor: // predictor button is clicked
+                        showPredictionOptionsDialog(); // launch dialog box
+                        return; // return to avoid starting activity or animating
+                }
 
                 startActivity(launchWorkoutActivity); // start workout activity
                 overridePendingTransition(R.anim.slide_up, R.anim.slide_down); // animate
             }
-        });
+        };
 
-        // Listener for predictor button
-        btnPredictor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPredictionOptionsDialog(); // launch dialog box
-            }
-        });
+        // Set button listeners
+        btnWorkout1.setOnClickListener(workoutClickListener);
+        btnDemo.setOnClickListener(workoutClickListener);
+        btnPredictor.setOnClickListener(workoutClickListener);
+
     }
 
     // Define a runnable to update time status every second
