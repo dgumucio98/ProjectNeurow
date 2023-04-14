@@ -311,15 +311,17 @@ public class WorkoutActivity extends AppCompatActivity {
                 powtimearray.add((double) db.getPower());
 
                 // Update UI elements
-                // TODO: add rest of variables
-                // keep as int not object bc no strings?
+                int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
                 int calories = GlobalVariables.totalCalories33;
+                int driveLength = GlobalVariables.driveLength35.intValue();
+                int driveTime = GlobalVariables.driveTime35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
+                int avgPower = GlobalVariables.averagePower33;
+                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(distance, calories); // Update the UI with the current counter value
-
-                pastTime = db.getTime_33();
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit); // Update the UI with the current counter value
                 i++;
             }
 
@@ -348,14 +350,16 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 2nd function for background task: updates UI
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-            //TODO: add rest of variables here
-            int dist = values[0]; // extract distance value passed
-            int cal = values[1]; // extract calories value passed
+            //int time = (int) values[0]; // extract distance value passed
+            int dist = (int) values[1]; // extract distance value passed
+            int cal = (int) values[2]; // extract calories value passed
+            int avgPwr = (int) values[6]; // extract average power
 
             // Update the UI with the current counter value
             txtDistanceMetric.setText("Distance: " + dist);
-            // Update other UI elements as needed
             txtCaloriesMetric.setText("Calories: " + cal);
+            txtAvgPowerMetric.setText("Average Power: " + avgPwr);
+            //TODO: add rest of variables/text boxes
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -381,29 +385,6 @@ public class WorkoutActivity extends AppCompatActivity {
 
             // [PASTE WORKOUT HERE]
             //interval1 (20 min) method code
-            int k1 = 0;
-            int k2 = 0;
-            int k3 = 0;
-            int k4 = 0;
-            int k5 = 0;
-            int k6 = 0;
-            int k7 = 0;
-            int k8 = 0;
-            int k9 = 0;
-            int k10 = 0;
-            int k11 = 0;
-            int k12 = 0;
-            int k13 = 0;
-            int k14 = 0;
-            int k15 = 0;
-            int k16 = 0;
-            int k17 = 0;
-            int k18 = 0;
-            int k19 = 0;
-            int k20 = 0;
-            int k21 = 0;
-            int k22 = 0;
-
             int count = 0; //count subsequent errors
             int failCount = 0; //actual fail count
             int sum = 0; //summing up power
@@ -420,10 +401,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k1 == 0) {
-                    pzMessage = "Row in power zone 2";
-                    k1 = 100;
-                }
+                pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
                     if (count > 4) {
@@ -454,10 +432,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k2 == 0) {
-                    pzMessage = "Row in power zone 5";
-                    k2 = 100;
-                }
+                pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
                     if (count > 4) {
@@ -488,10 +463,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k3 == 0) {
-                    pzMessage = "Row in power zone 2";
-                    k3 = 100;
-                }
+                pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
                     if (count > 4) {
@@ -522,10 +494,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k4 == 0) {
-                    pzMessage = "Row in power zone 5";
-                    k4 = 100;
-                }
+                pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
                     if (count > 4) {
@@ -556,10 +525,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k5 == 0) {
-                    pzMessage = "Row in power zone 2";
-                    k5 = 100;
-                }
+                pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
                     if (count > 4) {
@@ -590,10 +556,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k6 == 0) {
-                    pzMessage = "Row in power zone 5";
-                    k6 = 100;
-                }
+                pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
                     if (count > 4) {
@@ -624,10 +587,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k7 == 0) {
-                    pzMessage = "Row in power zone 2";
-                    k7 = 100;
-                }
+                pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
                     if (count > 4) {
@@ -658,10 +618,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k8 == 0) {
-                    pzMessage = "Row in power zone 5";
-                    k8 = 100;
-                }
+                pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
                     if (count > 4) {
@@ -692,10 +649,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k9 == 0) {
-                    pzMessage = "Row in power zone 2";
-                    k9 = 100;
-                }
+                pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
                     if (count > 4) {
@@ -726,10 +680,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k10 == 0) {
-                    pzMessage = "Row in power zone 5";
-                    k10 = 100;
-                }
+                pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
                     if (count > 4) {
@@ -760,10 +711,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k11 == 0) {
-                    pzMessage = "Row in power zone 2";
-                    k11 = 100;
-                }
+                pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
                     if (count > 4) {
@@ -794,10 +742,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k12 == 0) {
-                    pzMessage = "Row in power zone 5";
-                    k12 = 100;
-                }
+                pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
                     if (count > 4) {
@@ -828,10 +773,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k13 == 0) {
-                    pzMessage = "Row in power zone 2";
-                    k13 = 100;
-                }
+                pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
                     if (count > 4) {
@@ -862,10 +804,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k14 == 0) {
-                    pzMessage = "Row in power zone 5";
-                    k14 = 100;
-                }
+                pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
                     if (count > 4) {
@@ -896,10 +835,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k15 == 0) {
-                    pzMessage = "Row in power zone 2";
-                    k15 = 100;
-                }
+                pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
                     if (count > 4) {
@@ -930,10 +866,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k16 == 0) {
-                    pzMessage = "Row in power zone 5";
-                    k16 = 100;
-                }
+                pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
                     if (count > 4) {
@@ -964,10 +897,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k17 == 0) {
-                    pzMessage = "Row in power zone 2";
-                    k17 = 100;
-                }
+                pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
                     if (count > 4) {
@@ -998,10 +928,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k18 == 0) {
-                    pzMessage = "Row in power zone 5";
-                    k18 = 100;
-                }
+                pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
                     if (count > 4) {
@@ -1032,10 +959,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k19 == 0) {
-                    pzMessage = "Row in power zone 2";
-                    k19 = 100;
-                }
+                pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
                     if (count > 4) {
@@ -1066,10 +990,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k20 == 0) {
-                    pzMessage = "Row in power zone 5";
-                    k20 = 100;
-                }
+                pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
                     if (count > 4) {
@@ -1100,10 +1021,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k21 == 0) {
-                    pzMessage = "Row in power zone 2";
-                    k21 = 100;
-                }
+                pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
                     if (count > 4) {
@@ -1134,10 +1052,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k22 == 0) {
-                    pzMessage = "Row in power zone 1";
-                    k22 = 100;
-                }
+                pzMessage = "Row in power zone 1";
                 if (db.getPower() >= GlobalVariables.pz_2) {
                     count++;
                     if (count > 4) {
@@ -1187,6 +1102,8 @@ public class WorkoutActivity extends AppCompatActivity {
             txtInstructionMetric.setText(instruction);
             txtFeedbackMetric.setText(feedback);
             txtAvgPowerMetric.setText("Average Power: " + avgPwr);
+            //TODO: add rest of variables/text boxes
+
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -1211,13 +1128,6 @@ public class WorkoutActivity extends AppCompatActivity {
 
             // [PASTE WORKOUT HERE]
             //interval2 (30 min) method code
-            int k1 = 0;
-            int k2 = 0;
-            int k3 = 0;
-            int k4 = 0;
-            int k5 = 0;
-            int k6 = 0;
-
             int count = 0; //count subsequent errors
             int failCount = 0; //actual fail count
             int sum = 0; //summing up power
@@ -1233,10 +1143,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k1 == 0) {
-                    pzMessage = "Row in power zone 3";
-                    k1 = 100;
-                }
+                pzMessage = "Row in power zone 3";
                 if (db.getPower() < GlobalVariables.pz_3 || db.getPower() >= GlobalVariables.pz_4) {
                     count++;
                     if (count > 2) {
@@ -1262,16 +1169,13 @@ public class WorkoutActivity extends AppCompatActivity {
                 publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // UNCOMMENT FOR FULL WORKOUT
-/*            // 5 min at zone 1
+            /*// 5 min at zone 1
             while (db.getTime_33() <= 660 && db.getTime_33() > 360) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k2 == 0) {
-                    pzMessage = "Row in power zone 1";
-                    k2 = 100;
-                }
+                pzMessage = "Row in power zone 1";
                 if (db.getPower() >= GlobalVariables.pz_2) {
                     count++;
                     if (count > 2) {
@@ -1302,10 +1206,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k3 == 0) {
-                    pzMessage = "Row in power zone 4";
-                    k3 = 100;
-                }
+                pzMessage = "Row in power zone 4";
                 //System.out.println("Row in power zone 4");
                 if (db.getPower() < GlobalVariables.pz_4 || db.getPower() >= GlobalVariables.pz_5) {
                     count++;
@@ -1337,10 +1238,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k4 == 0) {
-                    pzMessage = "Row in power zone 1";
-                    k4 = 100;
-                }
+                pzMessage = "Row in power zone 1";
                 if (db.getPower() >= GlobalVariables.pz_2) {
                     count++;
                     if (count > 2) {
@@ -1371,10 +1269,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k5 == 0) {
-                    pzMessage = "Row in power zone 5";
-                    k5 = 100;
-                }
+                pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
                     if (count > 2) {
@@ -1405,10 +1300,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k6 == 0) {
-                    pzMessage = "Row in power zone 1";
-                    k6 = 100;
-                }
+                pzMessage = "Row in power zone 1";
                 if (db.getPower() >= GlobalVariables.pz_2) {
                     count++;
                     if (count > 2) {
@@ -1458,6 +1350,8 @@ public class WorkoutActivity extends AppCompatActivity {
             txtInstructionMetric.setText(instruction);
             txtFeedbackMetric.setText(feedback);
             txtAvgPowerMetric.setText("Average Power: " + avgPwr);
+            //TODO: add rest of variables/text boxes
+
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -1482,18 +1376,6 @@ public class WorkoutActivity extends AppCompatActivity {
 
             // [PASTE WORKOUT HERE]
             //interval 3 (40 min) method code
-            int k1 = 0;
-            int k2 = 0;
-            int k3 = 0;
-            int k4 = 0;
-            int k5 = 0;
-            int k6 = 0;
-            int k7 = 0;
-            int k8 = 0;
-            int k9 = 0;
-            int k10 = 0;
-            int k11 = 0;
-
             int count = 0; //count subsequent errors
             int failCount = 0; //actual fail count
             int sum = 0; //summing up power
@@ -1510,10 +1392,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k1 == 0) {
-                    pzMessage = "Row in power zone 2";
-                    k1 = 100;
-                }
+                pzMessage = "Row in power zone 2";
                 //System.out.println("Row in power zone 2");
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
@@ -1545,10 +1424,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k2 == 0) {
-                    pzMessage = "Row in power zone 5";
-                    k2 = 100;
-                }
+                pzMessage = "Row in power zone 5";
                 //System.out.println("Row at a fast pace!!");
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
@@ -1580,10 +1456,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k3 == 0) {
-                    pzMessage = "Row in power zone 2";
-                    k3 = 100;
-                }
+                pzMessage = "Row in power zone 2";
                 //System.out.println("Row in power zone 2");
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
@@ -1615,10 +1488,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k4 == 0) {
-                    pzMessage = "Row in power zone 5";
-                    k4 = 100;
-                }
+                pzMessage = "Row in power zone 5";
                 //System.out.println("Row at a fast pace!!");
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
@@ -1650,10 +1520,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k5 == 0) {
-                    pzMessage = "Row in power zone 2";
-                    k5 = 100;
-                }
+                pzMessage = "Row in power zone 2";
                 //System.out.println("Row in power zone 2");
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
@@ -1685,10 +1552,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k6 == 0) {
-                    pzMessage = "Row in power zone 5";
-                    k6 = 100;
-                }
+                pzMessage = "Row in power zone 5";
                 //System.out.println("Row at a fast pace!!");
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
@@ -1720,10 +1584,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k7 == 0) {
-                    pzMessage = "Row in power zone 2";
-                    k7 = 100;
-                }
+                pzMessage = "Row in power zone 2";
                 //System.out.println("Row in power zone 2");
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
@@ -1755,10 +1616,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k8 == 0) {
-                    pzMessage = "Row in power zone 4";
-                    k8 = 100;
-                }
+                pzMessage = "Row in power zone 4";
                 //System.out.println("Row in power zone 4");
                 if (db.getPower() < GlobalVariables.pz_4 || db.getPower() >= GlobalVariables.pz_5) {
                     count++;
@@ -1790,10 +1648,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k9 == 0) {
-                    pzMessage = "Row in power zone 1";
-                    k9 = 100;
-                }
+                pzMessage = "Row in power zone 1";
                 //System.out.println("Row in power zone 1");
                 if (db.getPower() >= GlobalVariables.pz_2) {
                     count++;
@@ -1825,10 +1680,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k10 == 0) {
-                    pzMessage = "Row in power zone 4";
-                    k10 = 100;
-                }
+                pzMessage = "Row in power zone 4";
                 //System.out.println("Row in power zone 4");
                 if (db.getPower() < GlobalVariables.pz_4 || db.getPower() >= GlobalVariables.pz_5) {
                     count++;
@@ -1860,10 +1712,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
-                if (k11 == 0) {
-                    pzMessage = "Row in power zone 1";
-                    k11 = 666;
-                }
+                pzMessage = "Row in power zone 1";
                 //System.out.println("Row in power zone 1");
                 if (db.getPower() >= GlobalVariables.pz_2) {
                     count++;
@@ -1914,6 +1763,8 @@ public class WorkoutActivity extends AppCompatActivity {
             txtInstructionMetric.setText(instruction);
             txtFeedbackMetric.setText(feedback);
             txtAvgPowerMetric.setText("Average Power: " + avgPwr);
+            //TODO: add rest of variables/text boxes
+
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -2005,6 +1856,8 @@ public class WorkoutActivity extends AppCompatActivity {
             txtInstructionMetric.setText(instruction);
             txtFeedbackMetric.setText(feedback);
             txtAvgPowerMetric.setText("Average Power: " + avgPwr);
+            //TODO: add rest of variables/text boxes
+
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -2095,6 +1948,8 @@ public class WorkoutActivity extends AppCompatActivity {
             txtInstructionMetric.setText(instruction);
             txtFeedbackMetric.setText(feedback);
             txtAvgPowerMetric.setText("Average Power: " + avgPwr);
+            //TODO: add rest of variables/text boxes
+
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -2185,6 +2040,8 @@ public class WorkoutActivity extends AppCompatActivity {
             txtInstructionMetric.setText(instruction);
             txtFeedbackMetric.setText(feedback);
             txtAvgPowerMetric.setText("Average Power: " + avgPwr);
+            //TODO: add rest of variables/text boxes
+
         }
 
         @Override // 3rd function for background task: follows background task after completion
