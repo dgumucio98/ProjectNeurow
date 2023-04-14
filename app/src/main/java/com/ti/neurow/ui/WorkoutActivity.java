@@ -71,6 +71,11 @@ public class WorkoutActivity extends AppCompatActivity {
         txtWorkoutAttribute.setTextColor(colorToSet);
         txtWorkoutName.setText(titleToSet);
 
+        // Delete database tables to make sure it is new data being populated
+        DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this); // prepare database
+        db.delete_dataframe33_table();
+        db.delete_dataframe35_table();
+        db.delete_table3D();
 
         // Update on-screen Metrics using handler
 //        Handler handler = new Handler();
@@ -100,7 +105,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this); // prepare database
                 workouts workouts = new workouts(); // construct workouts instance
                 Toast.makeText(WorkoutActivity.this, "[TEST] Database created!", Toast.LENGTH_SHORT).show();
-
 
                 // Dataframe 33
                 VariableChanges myGlobalTime33 = new VariableChanges(); // declare instance of VariableChanges
@@ -213,7 +217,8 @@ public class WorkoutActivity extends AppCompatActivity {
 
                     @Override
                     public void onMessageChanged(String newMessage) {
-                        Timber.d(newMessage);
+                        Toast.makeText(WorkoutActivity.this, newMessage, Toast.LENGTH_SHORT).show();
+                        //Timber.d(newMessage);
                     }
                 });
 

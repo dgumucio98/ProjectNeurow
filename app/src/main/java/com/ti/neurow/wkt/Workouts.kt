@@ -41,7 +41,7 @@ class workouts : AppCompatActivity() {
 
         var i = 0
         // [TEST] loop
-        while (db.time_33 < 180.0) { //for testing, 3 minutes
+        while (db.time_33 < 30.0) { //for testing, 3 minutes
             sum += db.power
             length += 1
             powtimearray.add(db.time_33)
@@ -146,6 +146,7 @@ class workouts : AppCompatActivity() {
                 pzFixChanges.setMessage(fixMessage)
                 count = 0
             }
+            //TODO: at end of while loop publish variables we want, pzMessage, fixMessage
         }
         // 40 sec at zone 5
         while (db.time_33 <= 340 && db.time_33 > 300) {
@@ -1281,137 +1282,116 @@ class workouts : AppCompatActivity() {
     }
 
     // Returns value of users predicted power in five more workouts
-    fun powerPredictor(power: ArrayList<Double>): Double {
-        //if (length(power))
-        //TODO clean up code
-        //TODO integrate UI into it
-        //TODO don't need to integrate? bc he can just print the returned value??
-
-        //TODO CHECK INT TO DOUBLE CONVERSION
-        //TODO add statements about if list is empty or what to do if just one element
-        //TODO two elements is ok
-        //TODO double check two elements is fine
-        println("power array " + power)
+    fun powerPredictor(power: ArrayList<Double>): String {
         // declare empty x arraylist
         val x = ArrayList<Int>()
         val length = power.size
-        // sum up powers and x sequence
-        var x_sum = 0
-        var y_sum = 0.0
-        for (i in power.indices) {
-            x.add(i) //adding the sequence of x values into arraylist
-            y_sum += power[i]
-            x_sum += i
+        var message = ""
+        if (length <= 0) {
+            message = "Do more workouts and check back for a prediction"
         }
-        println("x sum " + x_sum)
-        println("y sum " + y_sum)
+        else {
+            // sum up powers and x sequence
+            var x_sum = 0
+            var y_sum = 0.0
+            for (i in power.indices) {
+                x.add(i) //adding the sequence of x values into arraylist
+                y_sum += power[i]
+                x_sum += i
+            }
 
-        //calculate mean of x values
-        val x_mean: Double = x_sum.toDouble() / length
-        println("x mean " + x_mean)
-        //calculate mean of y values
-        val y_mean = y_sum / length
-        println("y mean " + y_mean)
+            //calculate mean of x values
+            val x_mean: Double = x_sum.toDouble() / length
+            //calculate mean of y values
+            val y_mean = y_sum / length
 
-        //numerator of slope equation
-        var num_sum = 0.0
-        var x_diff = 0.0
-        var y_diff = 0.0
-        for (i in 0..length-1){
-            x_diff = x[i] - x_mean
-            y_diff = power[i] - y_mean
-            num_sum += x_diff * y_diff
+            //numerator of slope equation
+            var num_sum = 0.0
+            var x_diff = 0.0
+            var y_diff = 0.0
+            for (i in 0..length - 1) {
+                x_diff = x[i] - x_mean
+                y_diff = power[i] - y_mean
+                num_sum += x_diff * y_diff
+            }
+            //denominator of slope equation
+            var den_sum = 0.0
+            var x_diff_den = 0.0
+            for (i in 0..length - 1) {
+                x_diff_den = x[i] - x_mean
+                den_sum += x_diff_den * x_diff_den
+            }
+
+            //compute slope of line of best fit
+            val slope = num_sum / den_sum
+
+            //compute y intercept of line of best fit
+            val y_int = y_mean - slope * x_mean
+
+            // in five more workouts your power output might be...
+            // y = mx + b
+            val predic = (slope * (length + 4)) + y_int // TODO is that length + 4 correct?
+
+            if (slope < 0) {
+                //user is trending backwards
+                message = "You are trending downwards. In 5 more workouts your power could be" + predic + " watts"
+            }
+            else {
+                message = "You are trending upwards. In 5 more workouts your power could be" + predic + " watts"
+            }
         }
-        println("num sum " + num_sum)
-        //denominator of slope equation
-        var den_sum = 0.0
-        var x_diff_den = 0.0
-        for (i in 0..length-1){
-            x_diff_den = x[i] - x_mean
-            den_sum += x_diff_den * x_diff_den
-        }
-        println("den sum " + den_sum)
-
-        //compute slope of line of best fit
-        val slope = num_sum / den_sum
-        //TODO: if slope is negative have a different return message?
-        // if slope <= 0, return -1. in ui, if preditedpower=-1, display other message
-        // if slope positive, return normal powerpredicted, proceed with message
-        println("slope " + slope)
-        //compute y intercept of line of best fit
-        val y_int = y_mean - slope * x_mean
-        println("y int " + y_int)
-        // in five more workouts your power output might be...
-        // y = mx + b
-        val predic = (slope * (length + 4)) + y_int // TODO is that length + 4 correct?
-        // TODO does the predicted power need to be an integer or not
-        // TODO what if prediction is negative? how to handle
-        println("In 5 more workouts your power could be " + predic + " watts")
-
-        return predic
+        return message
     }
 
-    fun intervalSuggestion(intSuggestChanges: VariableChanges, interval_num: String, failCount: Int) {
+    fun intervalSuggestion( interval_num: String, failCount: Int): String {
         var intSuggestion = "" //declare string to change and print to screen
         if (interval_num === "1") { //20 min interval
             if (failCount > 20) {
                 intSuggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
-                intSuggestChanges.setMessage(intSuggestion)
             } else {
                 intSuggestion = "You did well! Go again or try a longer interval workout!"
-                intSuggestChanges.setMessage(intSuggestion)
             }
         } else if (interval_num === "2") { //30 min interval
             if (failCount > 20 && failCount < 50) {
                 intSuggestion = "You left your power zone often. Try doing the Interval 1 workout"
-                intSuggestChanges.setMessage(intSuggestion)
             } else if (failCount >= 50) {
                 intSuggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
-                intSuggestChanges.setMessage(intSuggestion)
             } else {
                 intSuggestion = "You did well! Go again or try a longer interval workout!"
-                intSuggestChanges.setMessage(intSuggestion)
             }
         } else if (interval_num === "3") { //40 min interval
             if (failCount > 20 && failCount < 50) {
                 intSuggestion = "You left your power zone often. Try doing the Interval 2 workout"
-                intSuggestChanges.setMessage(intSuggestion)
             } else if (failCount >= 50) {
                 intSuggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
-                intSuggestChanges.setMessage(intSuggestion)
             } else {
                 intSuggestion = "You did well! Go again or try redoing your FTP Calculator workout!"
-                intSuggestChanges.setMessage(intSuggestion)
             }
         }
+        return intSuggestion
     }
 
-    fun paceSuggestion(paceSuggestChanges: VariableChanges, pace_num: String, failCount: Int) {
+    fun paceSuggestion(pace_num: String, failCount: Int): String {
         var paceSuggestion = "" //declare string to change and print to screen
         if (pace_num === "20") {
             if (failCount > 14) {
                 paceSuggestion = "Your pace was very inconsistent. Try again or do an interval workout to work on fitness"
-                paceSuggestChanges.setMessage(paceSuggestion)
             } else {
                 paceSuggestion = "You did well! Go again or try a longer pace workout!"
-                paceSuggestChanges.setMessage(paceSuggestion)
             }
         } else if (pace_num === "30") {
             if (failCount > 14) {
                 paceSuggestion = "Your pace was very inconsistent. Try doing the 20 min pace workout instead"
-                paceSuggestChanges.setMessage(paceSuggestion)
             } else {
                 paceSuggestion = "You did well! Go again or try a longer pace workout!"
-                paceSuggestChanges.setMessage(paceSuggestion)
             }
         } else if (pace_num === "40") {
             if (failCount > 14) {
                 paceSuggestion = "Your pace was very inconsistent. Try doing the 30 min pace workout instead"
-                paceSuggestChanges.setMessage(paceSuggestion)
             } else {
                 paceSuggestion = "You did well! Nice work!"
-                paceSuggestChanges.setMessage(paceSuggestion)
             }
         }
+        return paceSuggestion
     }
 }

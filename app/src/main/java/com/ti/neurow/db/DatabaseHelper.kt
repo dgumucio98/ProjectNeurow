@@ -359,59 +359,7 @@ class DatabaseHelper //Constructor
         return cursor;
     }*/
 
-    fun get3D_avg_y(): List<Double> {
-        val DB = this.readableDatabase
-        val concatenatedList = ArrayList<MutableList<Long>>()
-        val cursor = DB.rawQuery("SELECT COLUMN_FORCEVALS1, COLUMN_FORCEVALS2, COLUMN_FORCEVALS3, COLUMN_FORCEVALS4, COLUMN_FORCEVALS5, COLUMN_FORCEVALS6, COLUMN_FORCEVALS7, COLUMN_FORCEVALS8, COLUMN_FORCEVALS9, COLUMN_FORCEVALS10  FROM INFO3D", null) //EXCEPT (COLUMN_ID, COLUMN_MESSAGE)
-        //val cursor = DB.rawQuery("SELECT *  FROM INFO3D", null) //EXCEPT (COLUMN_ID, COLUMN_MESSAGE)
-        cursor.use {
-            val columnCount = it.columnCount
-            while (it.moveToNext()) {
-                for (i in 0 until columnCount) {
-                    val columnValues = it.getString(i)?.split(" ")?.map { it.toLong() }
-                    if (columnValues != null) {
-                        if (i < concatenatedList.size) {
-                            concatenatedList[i].addAll(columnValues)
-                        } else {
-                            concatenatedList.add(columnValues.toMutableList())
-                        }
-                    }
-                }
-            }
-        }
-/*        val avgList = ArrayList<Double>()
-        for (i in concatenatedList[0].indices) {
-            if (i >= concatenatedList.size ){
-                continue
-            }
-            val columnValues = concatenatedList.map { it[i] }
-            val columnAverage = columnValues.average()
-            avgList.add(columnAverage)
-        }*/
 
-        val maxListSize = concatenatedList.map { it.size }.maxOrNull() ?: return emptyList()
-        val avgList = ArrayList<Double>(maxListSize)
-        for (i in 0 until maxListSize) {
-            val columnValues = concatenatedList.filter { i < it.size }.map { it[i] }
-            val columnAverage = columnValues.average()
-            avgList.add(columnAverage)
-        }
-
-        //return
-
-
-
-        //val avgList = concatenatedList.map { it.average() }
-
-        //val avgList = MutableList(concatenatedList[0].size) { index ->
-        //    concatenatedList.map { it[index] }.average()
-        //}
-
-        //val avgList = concatenatedList.map { it.first() }.average()
-
-
-        return avgList
-    }
 
 /*    fun get3D_avg_y(): List<Double> {
         val DB = this.readableDatabase
