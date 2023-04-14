@@ -70,10 +70,8 @@ public class WorkoutActivity extends AppCompatActivity {
         int colorToSet = getIntent().getIntExtra("attributeColor", Color.WHITE); // default is white (means problem)
         String textToSet = getIntent().getStringExtra("attributeText");
         String titleToSet = getIntent().getStringExtra("attributeName");
-
-        Toast.makeText(WorkoutActivity.this, "[TEST] Getting method name!", Toast.LENGTH_SHORT).show();
         String methodName = getIntent().getStringExtra("methodName");
-        Toast.makeText(WorkoutActivity.this, "[TEST] Got method name! methodName: " + methodName, Toast.LENGTH_SHORT).show();
+        Toast.makeText(WorkoutActivity.this, "[TEST] Got method name: " + methodName, Toast.LENGTH_SHORT).show();
 
         // Change Workout UI elements
         txtWorkoutAttribute.setText(textToSet);
@@ -91,14 +89,23 @@ public class WorkoutActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) { // when btnBegin is clicked
 
-                // 1. Declare/Initialize instances, set listeners
+                // Task 1: Remove start button once clicked
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Delayed task to remove the button completely
+                        btnBegin.setVisibility(View.GONE); // remove the button completely
+                    }
+                }, 300); // 300 milliseconds delay
 
-                Toast.makeText(WorkoutActivity.this, "[TEST] (Inside green button) method name: " + methodName, Toast.LENGTH_SHORT).show();
-                Toast.makeText(WorkoutActivity.this, "[TEST] Green button clicked!", Toast.LENGTH_SHORT).show();
+                // Task 2: Prepare for workout calls
+                // 1. Declare/Initialize instances, set listeners
 
                 DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this); // prepare database
 
                 Toast.makeText(WorkoutActivity.this, "[TEST] Database created!", Toast.LENGTH_SHORT).show();
+                workouts workouts = new workouts(); // construct workouts instance
+
 
                 // Dataframe 33
                 VariableChanges myGlobalTime33 = new VariableChanges(); // declare instance of VariableChanges
@@ -128,6 +135,7 @@ public class WorkoutActivity extends AppCompatActivity {
                                 GlobalVariables.lastSplitDist33
                         );
                         boolean success = db.add_dataframe33(realdata33);
+
                         if (success) {
                             Toast.makeText(
                                     WorkoutActivity.this,
@@ -234,20 +242,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
                 });
 
-//                // 3. Start on-screen Chronometer
-//
-//                // Chronometer Functionality
-//                if (!isChronRunning) { // if NOT running
-//                    chron.setBase(SystemClock.elapsedRealtime()); // start counting from current time
-//                    chron.start(); // start the chronometer
-//                    btnBegin.setText("Stop");
-//                    isChronRunning = true; // set status to true
-//                }
-//                else {
-//                    chron.stop();
-//                    isChronRunning = false; // set status to false
-//                    btnBegin.setText("Start");
-//                }
+                // 3. Start on-screen Chronometer
+                // (perhaps not)
 
                 // 4. Call workout methods
 

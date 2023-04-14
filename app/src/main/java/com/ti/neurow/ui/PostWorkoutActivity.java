@@ -45,7 +45,7 @@ public class PostWorkoutActivity extends AppCompatActivity {
         Power_vs_Pull = findViewById(R.id.Power_vs_Pull);
         TextView txtFtp = findViewById(R.id.txtFtp);
 
-        txtFtp.setText("FTP: " + GlobalVariables.ftp + "W"); // set FTP textbox to updated FTP value
+        txtFtp.setText("FTP: " + GlobalVariables.ftp + "W"); // set FTP text box to updated FTP value
 
 
         // [TEST] Populate list before graphing
