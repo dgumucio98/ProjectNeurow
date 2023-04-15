@@ -225,7 +225,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 // 4. Call workout methods
 
                 // Conditions to call specific workout
-                if (methodName == "ftpCalc") { // CALL FTPCALC
+                if (methodName.equals("ftpCalc")) { // CALL FTPCALC
                     ArrayList pow = workouts.ftpCalc(db); // call, set global list to workout result list
                     GlobalVariables.finalListTimePower = pow; // set global graphing variable
                     // TODO: Read ftp global variable

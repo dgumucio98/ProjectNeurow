@@ -41,7 +41,7 @@ class workouts : AppCompatActivity() {
 
         var i = 0
         // [TEST] loop
-        while (db.time_33 < 180.0) { //for testing, 3 minutes
+        while (db.time_33 < 30.0) { //for testing, 3 minutes
             sum += db.power
             length += 1
             powtimearray.add(db.time_33)
