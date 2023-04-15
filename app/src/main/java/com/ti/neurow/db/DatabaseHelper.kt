@@ -191,18 +191,8 @@ class DatabaseHelper //Constructor
         return insert != -1L
     }
 
-    /*    public boolean add_error(String User, int error) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(COLUMN_USER, User);
-        cv.put(COLUMN_ERROR, error);
 
-        //ID is a auto increment in the database
-        long insert = db.insert(ERROR_INFO, null, cv);
-        return insert != -1;
-    }*/
     //delete methods
-    //delete one account from table
     fun delete_account(username: String, password: String): Boolean //Username and password entered
     {
         val DB = this.writableDatabase
@@ -347,15 +337,11 @@ class DatabaseHelper //Constructor
         return allPower
     }
 
-    /*    public Cursor get_error(String username) {  //display history table user specific
-        SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from error_info where COLUMN_USER = ?", new String[]{username});//Find the data
-        return cursor;
-    }*/
 
-    fun get3D_avg_y(): java.util.ArrayList<DoubleArray> {
+    fun get3D_avg_y(): java.util.ArrayList<Double> {
         val DB = this.readableDatabase
         val rowList = ArrayList<DoubleArray>()
+        val avgList = ArrayList<Double>()
         val cursor = DB.rawQuery(
             "SELECT COLUMN_FORCEVALS1, COLUMN_FORCEVALS2, COLUMN_FORCEVALS3, COLUMN_FORCEVALS4, COLUMN_FORCEVALS5, COLUMN_FORCEVALS6, COLUMN_FORCEVALS7, COLUMN_FORCEVALS8, COLUMN_FORCEVALS9, COLUMN_FORCEVALS10, COLUMN_FORCEVALS11, COLUMN_FORCEVALS12 FROM INFO3D",
             null
@@ -373,20 +359,28 @@ class DatabaseHelper //Constructor
                     it.getString(i) ?: ""
                 }
                 val rowString = rowValues.joinToString(" ")
-                val rowDouble = rowString.split(" ").map { it.toDoubleOrNull()}.filterNotNull() // ?: Double.NaN }
+                val rowDouble = rowString.split(" ").map { it.toDoubleOrNull()}.filterNotNull()
                 rowList.add(rowDouble.toDoubleArray())
             }
         }
+        cursor.close()
 
-/*        val avgRowList = ArrayList<DoubleArray>()
-        for (rowString in rowList) {
-            val doubleList = rowString.split(" ").map { it.toDoubleOrNull() ?: 0.0 }
-            val doubleArray = doubleList.toDoubleArray()
-            avgRowList.add(doubleArray)
-        }*/
+        //finding the most common list
+        val sizeCounts = rowList.groupingBy { it.size }.eachCount()
+        val maxCount = sizeCounts.values.maxOrNull() ?: 0
+        val mostCommonSizes = sizeCounts.filterValues { it == maxCount }.keys
+        val mostCommonSize = mostCommonSizes.maxOrNull() ?: 0
 
+        //only using the arrays with the mostCommonSize
+        val filteredRowList = rowList.filter { it.size == mostCommonSize }
 
-        return rowList
+        //taking the average
+        for (i in 0 until mostCommonSize) {
+            val columnValues = filteredRowList.map { it[i] }
+            val columnAverage = columnValues.average()
+            avgList.add(columnAverage)
+        }
+        return avgList
     }
 
 

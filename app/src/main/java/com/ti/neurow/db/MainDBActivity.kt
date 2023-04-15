@@ -489,8 +489,8 @@ class MainDBActivity : AppCompatActivity() {
 
             //Adding to 3D table
 
-            val pol = 8
-            val message: ArrayList<Int> = arrayListOf(8,8)
+            val pol = 5
+            val message: ArrayList<Int> = arrayListOf(3,3)
 
             val message_string = message.joinToString(separator = " ")
             //val message = "123456"
@@ -506,20 +506,20 @@ class MainDBActivity : AppCompatActivity() {
                 ).show()
             }
 
-            val avg_y: ArrayList<DoubleArray>  = db.get3D_avg_y()
-            //val avg_y: ArrayList<Double>  = db.get3D_avg_y()
+            //val avg_y: ArrayList<DoubleArray>  = db.get3D_avg_y()
+            val avg_y: ArrayList<Double>  = db.get3D_avg_y()
 
             val buffer2 = StringBuffer()
             for (i in avg_y.indices) {
-                //testing ArrayList<DoubleArray>
+/*                //testing ArrayList<DoubleArray>
                 var row : DoubleArray = avg_y.get(i)
                 for (i in row) {
                         buffer2.append(i.toString() + " ")
                 }
-                buffer2.append("----")
+                buffer2.append("----")*/
 
-                ////testing ArrayList<Double>
-                //buffer2.append(avg_y.get(i).toString() + "----")
+                //testing ArrayList<Double>
+                buffer2.append(avg_y.get(i).toString() + "----")
             }
 
 
