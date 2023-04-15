@@ -8,13 +8,13 @@
     tools:context=".ui.WorkoutActivity">
 
     <Button
-        android:id="@+id/btnBegin"
-        android:layout_width="300dp"
-        android:layout_height="425dp"
-        android:layout_below="@id/simpleChronometer"
-        android:background="@drawable/rounded_button_background"
-        android:layout_marginTop="50dp"
+        android:id="@+id/btnStart"
+        android:layout_width="250dp"
+        android:layout_height="480dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
         android:layout_marginLeft="50dp"
+        android:background="@drawable/rounded_button_background"
         android:backgroundTint="#50C878"
         android:fontFamily="sans-serif-black"
         android:text="Start"
@@ -48,71 +48,6 @@
         android:textStyle="normal" />
 
     <TextView
-        android:id="@+id/txtDistanceMetric"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:text="[Distance]"
-        android:layout_below="@id/simpleChronometer"
-        android:textColor="@color/white"
-        android:layout_marginTop="70dp"
-        android:layout_marginLeft="350dp"
-        android:textSize="80sp"
-        android:textStyle="normal" />
-
-    <TextView
-        android:id="@+id/txtCaloriesMetric"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:text="[Calories]"
-        android:layout_below="@id/txtDistanceMetric"
-        android:textColor="@color/white"
-        android:layout_marginLeft="350dp"
-        android:textSize="80sp"
-        android:textStyle="normal" />
-
-
-    <TextView
-        android:id="@+id/txtInstructionMetric"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:text="[Instruction]"
-        android:layout_toRightOf="@id/txtDistanceMetric"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="345dp"
-        android:textColor="@color/white"
-        android:textSize="30sp"
-        android:textStyle="normal" />
-
-    <TextView
-    android:id="@+id/txtFeedbackMetric"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:fontFamily="sans-serif-condensed"
-    android:text="[Feedback]"
-    android:layout_toRightOf="@id/txtDistanceMetric"
-    android:layout_marginLeft="100dp"
-    android:layout_marginTop="445dp"
-    android:textColor="@color/white"
-    android:textSize="30sp"
-    android:textStyle="normal" />
-
-    <TextView
-        android:id="@+id/txtAvgPowerMetric"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:text="[Average Power]"
-        android:layout_toRightOf="@id/txtDistanceMetric"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="550dp"
-        android:textColor="@color/white"
-        android:textSize="30sp"
-        android:textStyle="normal" />
-
-    <TextView
         android:id="@+id/txtWorkoutAttribute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -124,13 +59,133 @@
         android:textSize="50sp"
         android:textStyle="bold" />
 
-    <Chronometer
-        android:id="@+id/simpleChronometer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtWorkoutName"
-        android:layout_centerHorizontal="true"
-        android:textColor="#D3D3D3"
-        android:textSize="60sp" />
+    <!-- Metrics Layout -->
+    <RelativeLayout
+        android:id="@+id/myNewRelativeLayout"
+        android:layout_width="960dp"
+        android:layout_height="500dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="50dp"
+        android:animateLayoutChanges="true">
+
+        <Button
+            android:id="@+id/btnAdvanced"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="18dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/rounded_button_background"
+            android:backgroundTint="@color/medium_orange"
+            android:fontFamily="sans-serif-black"
+            android:text="Show More"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/txtTimeMetric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:fontFamily="sans-serif"
+            android:text="03:28"
+            android:textColor="#ebe8e8"
+            android:textSize="150sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtDistanceMetric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:fontFamily="sans-serif"
+            android:text="187 m"
+            android:textColor="#04cf9f"
+            android:layout_below="@id/txtTimeMetric"
+            android:textSize="100sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtCaloriesMetric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="623 cal"
+            android:layout_below="@id/txtDistanceMetric"
+            android:textColor="#c2f2ac"
+            android:textSize="70sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtAvgPowerMetric"
+            android:layout_width="wrap_content"
+            android:layout_height="103dp"
+            android:layout_below="@id/txtCaloriesMetric"
+            android:fontFamily="@font/BadBrush"
+            android:includeFontPadding="true"
+            android:text="21 W"
+            android:textColor="#ff696e"
+            android:textSize="90sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/txtFeedbackMetric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Nice pace, keep it up!"
+            android:layout_toRightOf="@id/txtDistanceMetric"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="445dp"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="normal"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/txtInstructionMetric"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Your power output is inconsistent. Try to improve pacing!"
+            android:layout_toRightOf="@id/txtDistanceMetric"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="345dp"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="normal"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/txtDriveLengthMetric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:text="1.2 m"
+            android:textColor="#afc4e0"
+            android:textSize="70sp"
+            android:textStyle="normal" />
+        <TextView
+            android:id="@+id/txtDriveLengthMetricDescriptor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:text="Drive Length"
+            android:textColor="@color/white"
+            android:textSize="70sp"
+            android:textStyle="normal" />
+
+
+
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.ti.neurow.ui;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +15,8 @@ import android.os.SystemClock;
 import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
@@ -35,11 +38,11 @@ import timber.log.Timber;
 public class WorkoutActivity extends AppCompatActivity {
 
     // Define UI elements
+    Button btnStart, btnAdvanced; // buttons
+    boolean buttonPressed = false; // tracks if workout has been started using button already
     TextView txtWorkoutAttribute, txtWorkoutName, txtDistanceMetric, txtCaloriesMetric,
-            txtUserID, txtFeedbackMetric, txtInstructionMetric, txtAvgPowerMetric; // text views
-    Chronometer chron; // chronometer (count-up timer)
-    Button btnBegin; // green begin button
-    boolean isChronRunning = false; // define boolean state of the timer
+            txtUserID, txtFeedbackMetric, txtInstructionMetric, txtAvgPowerMetric; // metrics
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +57,8 @@ public class WorkoutActivity extends AppCompatActivity {
         // Define elements
         txtWorkoutAttribute = (TextView) findViewById(R.id.txtWorkoutAttribute); // workout "subtitle"
         txtWorkoutName = (TextView) findViewById(R.id.txtWorkoutName); // workout name (interval/pace)
-        chron = (Chronometer) findViewById(R.id.simpleChronometer); // chronometer
-        btnBegin = (Button) findViewById(R.id.btnBegin); // button that starts workouts
+        btnStart = (Button) findViewById(R.id.btnStart); // button that starts workouts
+        btnAdvanced = (Button) findViewById(R.id.btnAdvanced); // button that shows more metrics
 
         // Metrics
         txtDistanceMetric = (TextView) findViewById(R.id.txtDistanceMetric); // distance text box
@@ -63,8 +66,6 @@ public class WorkoutActivity extends AppCompatActivity {
         txtFeedbackMetric = (TextView) findViewById(R.id.txtFeedbackMetric); // feedback text box
         txtInstructionMetric = (TextView) findViewById(R.id.txtInstructionMetric); // feedback text box
         txtAvgPowerMetric = (TextView) findViewById(R.id.txtAvgPowerMetric); // feedback text box
-
-
 
         // Receive workout choice data from WorkoutMainActivity
         int colorToSet = getIntent().getIntExtra("attributeColor", Color.WHITE); // default is white (means problem)
@@ -84,199 +85,195 @@ public class WorkoutActivity extends AppCompatActivity {
         db.delete_dataframe35_table();
         db.delete_table3D();
 
-        // ***** This is where the workout call procedure begins *****
-        btnBegin.setOnClickListener(new View.OnClickListener() {
+        // ***** This is when the workout call procedure begins *****
+        btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { // when btnBegin is clicked
+            public void onClick(View v) { // when btnStart is clicked
 
-                // Task 1: Remove start button once clicked
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Delayed task to remove the button completely
-                        btnBegin.setVisibility(View.GONE); // remove the button completely
-                    }
-                }, 300); // 300 milliseconds delay
+                if (!buttonPressed) { // if this is the FIRST time user clicks btnStart
 
-                // Task 2: Prepare for workout calls
-                // 1. Declare/Initialize instances, set listeners
+                    // Task 1: Prepare for workout calls
 
-                DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this); // prepare database
+                    // 1. Declare/Initialize instances, set listeners
+                    DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this); // prepare database
+                    workouts workouts = new workouts(); // construct workouts instance
 
-                Toast.makeText(WorkoutActivity.this, "[TEST] Database created!", Toast.LENGTH_SHORT).show();
-                workouts workouts = new workouts(); // construct workouts instance
+                    // Dataframe 33
+                    VariableChanges myGlobalTime33 = new VariableChanges(); // declare instance of VariableChanges
+                    GlobalVariables.globalTimeInstance33 = myGlobalTime33; // set the GlobalVariable variable globalTimeInstance33 to instance
 
+                    // Dataframe 35
+                    VariableChanges myGlobalTime35 = new VariableChanges(); // declare instance of VariableChanges
+                    GlobalVariables.globalTimeInstance35 = myGlobalTime35; //set the GlobalVariable variable globalTimeInstance35 to instance
 
-                // Dataframe 33
-                VariableChanges myGlobalTime33 = new VariableChanges(); // declare instance of VariableChanges
-                GlobalVariables.globalTimeInstance33 = myGlobalTime33; // set the GlobalVariable variable globalTimeInstance33 to instance
+                    // Dataframe 3D
+                    VariableChanges myGlobalTime3D = new VariableChanges(); // declare instance of VariableChanges
+                    GlobalVariables.globalTimeInstance3D = myGlobalTime3D; //set the GlobalVariable variable globalTimeInstance3D to
 
-                // Dataframe 35
-                VariableChanges myGlobalTime35 = new VariableChanges(); // declare instance of VariableChanges
-                GlobalVariables.globalTimeInstance35 = myGlobalTime35; //set the GlobalVariable variable globalTimeInstance35 to instance
+                    // Dataframe 33 Change Listener
+                    GlobalVariables.globalTimeInstance33.setTimeListener(new VariableChanges.TimeListener() { // populates data33 table with the global variables of each variable
+                        @Override
+                        public void onTimeChanged(double newTime) {
+                            data33 realdata33 = new data33(
+                                    GlobalVariables.elapsedTime33,
+                                    GlobalVariables.intervalCount33,
+                                    GlobalVariables.averagePower33,
+                                    GlobalVariables.totalCalories33,
+                                    GlobalVariables.splitIntAvgPace33,
+                                    GlobalVariables.splitIntAvgPwr33,
+                                    GlobalVariables.splitIntAvgCal33,
+                                    GlobalVariables.lastSplitTime33,
+                                    GlobalVariables.lastSplitDist33
+                            );
+                            boolean success = db.add_dataframe33(realdata33);
 
-                // Dataframe 3D
-                VariableChanges myGlobalTime3D = new VariableChanges(); // declare instance of VariableChanges
-                GlobalVariables.globalTimeInstance3D = myGlobalTime3D; //set the GlobalVariable variable globalTimeInstance3D to
-
-                // Dataframe 33 Change Listener
-                GlobalVariables.globalTimeInstance33.setTimeListener(new VariableChanges.TimeListener() { // populates data33 table with the global variables of each variable
-                    @Override
-                    public void onTimeChanged(double newTime) {
-                        data33 realdata33 = new data33(
-                                GlobalVariables.elapsedTime33,
-                                GlobalVariables.intervalCount33,
-                                GlobalVariables.averagePower33,
-                                GlobalVariables.totalCalories33,
-                                GlobalVariables.splitIntAvgPace33,
-                                GlobalVariables.splitIntAvgPwr33,
-                                GlobalVariables.splitIntAvgCal33,
-                                GlobalVariables.lastSplitTime33,
-                                GlobalVariables.lastSplitDist33
-                        );
-                        boolean success = db.add_dataframe33(realdata33);
-
-                        if (success) {
-                            Toast.makeText(
-                                    WorkoutActivity.this,
-                                    "[TEST] Successfully entered table",
-                                    Toast.LENGTH_SHORT
-                            ).show(); //Testing
-                        } else {
-                            Toast.makeText(
-                                    WorkoutActivity.this,
-                                    "[TEST] Did not enter table",
-                                    Toast.LENGTH_SHORT
-                            ).show(); //Testing
+                            if (success) {
+                                Toast.makeText(
+                                        WorkoutActivity.this,
+                                        "[TEST] Successfully entered table",
+                                        Toast.LENGTH_SHORT
+                                ).show(); //Testing
+                            } else {
+                                Toast.makeText(
+                                        WorkoutActivity.this,
+                                        "[TEST] Did not enter table",
+                                        Toast.LENGTH_SHORT
+                                ).show(); //Testing
+                            }
                         }
-                    }
-                });
+                    });
 
-                // Dataframe 35 Change Listener
-                GlobalVariables.globalTimeInstance35.setTimeListener(new VariableChanges.TimeListener() { // populates data35 table with the global variables of each variable
-                    @Override
-                    public void onTimeChanged(double newTime) {
-                        data35 realdata35 = new data35(
-                                GlobalVariables.elapsedTime35,
-                                GlobalVariables.distance35,
-                                GlobalVariables.driveLength35,
-                                GlobalVariables.driveTime35,
-                                GlobalVariables.strokeRecTime35,
-                                GlobalVariables.strokeDistance35,
-                                GlobalVariables.peakDriveForce35,
-                                GlobalVariables.averageDriveForce35,
-                                GlobalVariables.workPerStroke35,
-                                GlobalVariables.strokeCount35
-                        );
+                    // Dataframe 35 Change Listener
+                    GlobalVariables.globalTimeInstance35.setTimeListener(new VariableChanges.TimeListener() { // populates data35 table with the global variables of each variable
+                        @Override
+                        public void onTimeChanged(double newTime) {
+                            data35 realdata35 = new data35(
+                                    GlobalVariables.elapsedTime35,
+                                    GlobalVariables.distance35,
+                                    GlobalVariables.driveLength35,
+                                    GlobalVariables.driveTime35,
+                                    GlobalVariables.strokeRecTime35,
+                                    GlobalVariables.strokeDistance35,
+                                    GlobalVariables.peakDriveForce35,
+                                    GlobalVariables.averageDriveForce35,
+                                    GlobalVariables.workPerStroke35,
+                                    GlobalVariables.strokeCount35
+                            );
 
-                        boolean success = db.add_dataframe35(realdata35);
-                        if (success) {
-                            Toast.makeText(
-                                    WorkoutActivity.this,
-                                    "[TEST] Successfully entered table",
-                                    Toast.LENGTH_SHORT
-                            ).show(); //Testing
-                        } else {
-                            Toast.makeText(
-                                    WorkoutActivity.this,
-                                    "[TEST] Did not enter table",
-                                    Toast.LENGTH_SHORT
-                            ).show(); //Testing
+                            boolean success = db.add_dataframe35(realdata35);
+                            if (success) {
+                                Toast.makeText(
+                                        WorkoutActivity.this,
+                                        "[TEST] Successfully entered table",
+                                        Toast.LENGTH_SHORT
+                                ).show(); //Testing
+                            } else {
+                                Toast.makeText(
+                                        WorkoutActivity.this,
+                                        "[TEST] Did not enter table",
+                                        Toast.LENGTH_SHORT
+                                ).show(); //Testing
+                            }
                         }
-                    }
-                });
+                    });
 
-                // Dataframe 3D Change Listener
-                GlobalVariables.globalTimeInstance3D.setMessageListener(new VariableChanges.MessageListener() { // populates data3D table with the global variables of each variable
-                    @Override
-                    public void onMessageChanged(String newMessage) {
-                        boolean success = db.add_3Dmessage(GlobalVariables.pol3D, GlobalVariables.message3D);
-                        if (success) {
-                            Toast.makeText(
-                                    WorkoutActivity.this,
-                                    "[TEST] Successfully entered table",
-                                    Toast.LENGTH_SHORT
-                            ).show(); //Testing
-                        } else {
-                            Toast.makeText(
-                                    WorkoutActivity.this,
-                                    "[TEST] Did not enter table",
-                                    Toast.LENGTH_SHORT
-                            ).show(); //Testing
+                    // Dataframe 3D Change Listener
+                    GlobalVariables.globalTimeInstance3D.setMessageListener(new VariableChanges.MessageListener() { // populates data3D table with the global variables of each variable
+                        @Override
+                        public void onMessageChanged(String newMessage) {
+                            boolean success = db.add_3Dmessage(GlobalVariables.pol3D, GlobalVariables.message3D);
+                            if (success) {
+                                Toast.makeText(
+                                        WorkoutActivity.this,
+                                        "[TEST] Successfully entered table",
+                                        Toast.LENGTH_SHORT
+                                ).show(); //Testing
+                            } else {
+                                Toast.makeText(
+                                        WorkoutActivity.this,
+                                        "[TEST] Did not enter table",
+                                        Toast.LENGTH_SHORT
+                                ).show(); //Testing
+                            }
                         }
+                    });
+
+                    // 2. Setup for workout calls
+                    // Listeners
+                    VariableChanges pzSetChanges = new VariableChanges(); // listener for which pz to be in
+                    VariableChanges pzFixChanges = new VariableChanges(); // listener for pz user feedback
+                    VariableChanges suggestionChanges = new VariableChanges(); // listener for suggestion
+
+                    // Listen for command of which pz to be in
+                    pzSetChanges.setMessageListener(new VariableChanges.MessageListener() {
+
+                        @Override
+                        public void onMessageChanged(String newMessage) {
+                            Toast.makeText(WorkoutActivity.this, newMessage, Toast.LENGTH_SHORT).show();
+                            //Timber.d(newMessage);
+                        }
+                    });
+
+                    // Listen for user feedback of power zone leaves
+                    pzFixChanges.setMessageListener(new VariableChanges.MessageListener() {
+                        @Override
+                        public void onMessageChanged(String newMessage) {
+                            Timber.d(newMessage);
+                        }
+                    });
+
+                    // Listen for post-workout suggestions
+                    suggestionChanges.setMessageListener(new VariableChanges.MessageListener() {
+                        @Override
+                        public void onMessageChanged(String newMessage) {
+                            // suggestion given will just be one string message
+                            Timber.d(newMessage);
+                        }
+                    });
+
+                    // 3. Call workout methods
+                    // Conditions to call specific workout
+                    if (methodName.equals("ftpCalc")) { // CALL FTPCALC
+                        ftpCalcTask ftpCalcTask = new ftpCalcTask();
+                        ftpCalcTask.execute();
+                    } else if (methodName.equals("interval1")) { // CALL INTERVAL1
+                        // Create workout's background task and execute
+                        interval1Task interval1Task = new interval1Task();
+                        interval1Task.execute();
+                    } else if (methodName.equals("interval2")) { // CALL INTERVAL2
+                        interval2Task interval2Task = new interval2Task();
+                        interval2Task.execute();
+                    } else if (methodName.equals("interval3")) { // CALL INTERVAL3
+                        interval3Task interval3Task = new interval3Task();
+                        interval3Task.execute();
+                    } else if (methodName.equals("pace20")) { // CALL PACE20
+                        pace20Task pace20Task = new pace20Task();
+                        pace20Task.execute();
+                    } else if (methodName.equals("pace30")) { // CALL PACE30
+                        pace30Task pace30Task = new pace30Task();
+                        pace30Task.execute();
+                    } else if (methodName.equals("pace40")) { // CALL PACE40
+                        pace40Task pace40Task = new pace40Task();
+                        pace40Task.execute();
                     }
-                });
 
-                // 2. Setup for workout calls
-
-                // Listeners
-                VariableChanges pzSetChanges = new VariableChanges(); // listener for which pz to be in
-                VariableChanges pzFixChanges = new VariableChanges(); // listener for pz user feedback
-                VariableChanges suggestionChanges = new VariableChanges(); // listener for suggestion
-
-                // Listen for command of which pz to be in
-                pzSetChanges.setMessageListener(new VariableChanges.MessageListener() {
-
-                    @Override
-                    public void onMessageChanged(String newMessage) {
-                        Toast.makeText(WorkoutActivity.this, newMessage, Toast.LENGTH_SHORT).show();
-                        //Timber.d(newMessage);
-                    }
-                });
-
-                // Listen for user feedback of power zone leaves
-                pzFixChanges.setMessageListener(new VariableChanges.MessageListener() {
-                    @Override
-                    public void onMessageChanged(String newMessage) {
-                        Timber.d(newMessage);
-                    }
-                });
-
-                // Listen for post-workout suggestions
-                suggestionChanges.setMessageListener(new VariableChanges.MessageListener() {
-                    @Override
-                    public void onMessageChanged(String newMessage) {
-                        // TODO: Display visual UI element for suggestion given
-                        // suggestion given will just be one string message
-                        Timber.d(newMessage);
-                    }
-                });
-
-                // 3. Start on-screen Chronometer
-                // (perhaps not)
-
-                // 4. Call workout methods
-
-                // Conditions to call specific workout
-                if (methodName.equals("ftpCalc")) { // CALL FTPCALC
-                    ftpCalcTask ftpCalcTask = new ftpCalcTask();
-                    ftpCalcTask.execute();
+                    // Task 2: Change button color and text to indicate workout has started
+                    btnStart.setBackgroundColor(ContextCompat.getColor(WorkoutActivity.this, R.color.bubblegum_red));
+                    btnStart.setText("STOP");
                 }
-                else if (methodName.equals("interval1")) { // CALL INTERVAL1
-                    // Create workout's background task and execute
-                    interval1Task interval1Task = new interval1Task();
-                    interval1Task.execute();
+                else { // if user wants to END workout, start PostWorkoutActivity
+                    Intent i = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+                    startActivity(i); // Launch BLE Data View
+                    finish(); // can't go back
                 }
-                else if (methodName.equals("interval2")) { // CALL INTERVAL2
-                    interval2Task interval2Task = new interval2Task();
-                    interval2Task.execute();
-                }
-                else if (methodName.equals("interval3")) { // CALL INTERVAL3
-                    interval3Task interval3Task = new interval3Task();
-                    interval3Task.execute();
-                }
-                else if (methodName.equals("pace20")) { // CALL PACE20
-                    pace20Task pace20Task = new pace20Task();
-                    pace20Task.execute();
-                }
-                else if (methodName.equals("pace30")) { // CALL PACE30
-                    pace30Task pace30Task = new pace30Task();
-                    pace30Task.execute();
-                }
-                else if (methodName.equals("pace40")) { // CALL PACE40
-                    pace40Task pace40Task = new pace40Task();
-                    pace40Task.execute();
-                }
+
+            } // end of onClick
+        });
+
+        btnAdvanced.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { // when btnStart is clicked
+
             }
         });
     }
@@ -354,7 +351,13 @@ public class WorkoutActivity extends AppCompatActivity {
             // Update the UI with the current counter value
             txtDistanceMetric.setText("Distance: " + dist);
             txtCaloriesMetric.setText("Calories: " + cal);
-            txtAvgPowerMetric.setText("Average Power: " + avgPwr);
+            txtAvgPowerMetric.setText(avgPwr); // comes with animation
+
+
+            // Animations for metrics
+            Animation pulseAnimation = AnimationUtils.loadAnimation(WorkoutActivity.this, R.anim.pulse);
+            txtAvgPowerMetric.startAnimation(pulseAnimation);
+
             //TODO: add rest of variables/text boxes
         }
 
