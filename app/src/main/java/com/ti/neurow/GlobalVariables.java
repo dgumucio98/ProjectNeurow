@@ -14,8 +14,8 @@ public class GlobalVariables {
     public static Double splitIntAvgPace33 = 0.0;
     public static Integer splitIntAvgPwr33 = 0;
     public static Double splitIntAvgCal33 = 0.0;
-    public static Double lastSplitTime33 = 0.0;
-    public static Double lastSplitDist33; // Metric displayed in UI
+    public static Double lastSplitTime33 = 0.0; // Metric displayed in UI
+    public static Double lastSplitDist33 = 0.0;
     public static VariableChanges globalTimeInstance33;
 
     // Dataframe 35 stuff
@@ -28,7 +28,7 @@ public class GlobalVariables {
     public static Double peakDriveForce35 = 0.0;
     public static Double averageDriveForce35 = 0.0;
     public static Double workPerStroke35 = 0.0;
-    public static Integer strokeCount35 = 0; // Metric displayed in UI
+    public static Integer strokeCount35 = 0;
     public static VariableChanges globalTimeInstance35;
 
     // Dataframe 3D stuff

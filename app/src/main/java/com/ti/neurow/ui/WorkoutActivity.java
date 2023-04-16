@@ -19,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.ti.neurow.db.data33;
@@ -30,6 +31,8 @@ import com.ti.neurow.db.DatabaseHelper;
 import com.ti.neurow.wkt.workouts; // for workout testing
 import com.ti.neurow.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import pl.droidsonroids.gif.GifImageView;
@@ -38,11 +41,11 @@ import timber.log.Timber;
 public class WorkoutActivity extends AppCompatActivity {
 
     // Define UI elements
+    RelativeLayout metricsRelativeLayout; // layout that holds all metrics (TextViews)
     Button btnStart, btnAdvanced; // buttons
     boolean buttonPressed = false; // tracks if workout has been started using button already
-    TextView txtWorkoutAttribute, txtWorkoutName, txtDistanceMetric, txtCaloriesMetric,
-            txtUserID, txtFeedbackMetric, txtInstructionMetric, txtAvgPowerMetric; // metrics
-
+    TextView txtStartPrompt, txtWorkoutAttribute, txtWorkoutName, txtTimeMetric, txtDistanceMetric, txtCaloriesMetric, txtAvgPwrMetric, txtDriveLengthMetric, txtDriveTimeMetric,
+            txtSplitTimeMetric, txtLastSplitTimeMetric, txtIntervalFeedbackMetric, txtPaceFeedbackMetric, txtInstructionMetric; // metrics
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,15 +60,24 @@ public class WorkoutActivity extends AppCompatActivity {
         // Define elements
         txtWorkoutAttribute = (TextView) findViewById(R.id.txtWorkoutAttribute); // workout "subtitle"
         txtWorkoutName = (TextView) findViewById(R.id.txtWorkoutName); // workout name (interval/pace)
+        txtStartPrompt = (TextView) findViewById(R.id.txtStartPrompt); // start workout prompt
         btnStart = (Button) findViewById(R.id.btnStart); // button that starts workouts
         btnAdvanced = (Button) findViewById(R.id.btnAdvanced); // button that shows more metrics
+        RelativeLayout MetricsRelativeLayout = findViewById(R.id.MetricsRelativeLayout); // metrics layout
+
 
         // Metrics
+        txtTimeMetric = (TextView) findViewById(R.id.txtTimeMetric); // distance text box
         txtDistanceMetric = (TextView) findViewById(R.id.txtDistanceMetric); // distance text box
         txtCaloriesMetric = (TextView) findViewById(R.id.txtCaloriesMetric); // calories text box
-        txtFeedbackMetric = (TextView) findViewById(R.id.txtFeedbackMetric); // feedback text box
+        txtDriveLengthMetric = (TextView) findViewById(R.id.txtDriveLengthMetric); // drive length metric
+        txtDriveTimeMetric = (TextView) findViewById(R.id.txtDriveTimeMetric); // drive time metric
+        txtAvgPwrMetric = (TextView) findViewById(R.id.txtAvgPwrMetric); // average power text box
+        txtSplitTimeMetric = (TextView) findViewById(R.id.txtSplitTimeMetric); // split time text box
+        txtLastSplitTimeMetric = (TextView) findViewById(R.id.txtLastSplitTimeMetric); // split time text box
+        txtIntervalFeedbackMetric = (TextView) findViewById(R.id.txtIntervalFeedbackMetric); // interval feedback text box
+        txtPaceFeedbackMetric = (TextView) findViewById(R.id.txtPaceFeedbackMetric); // pace feedback text box
         txtInstructionMetric = (TextView) findViewById(R.id.txtInstructionMetric); // feedback text box
-        txtAvgPowerMetric = (TextView) findViewById(R.id.txtAvgPowerMetric); // feedback text box
 
         // Receive workout choice data from WorkoutMainActivity
         int colorToSet = getIntent().getIntExtra("attributeColor", Color.WHITE); // default is white (means problem)
@@ -92,7 +104,12 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 if (!buttonPressed) { // if this is the FIRST time user clicks btnStart
 
-                    // Task 1: Prepare for workout calls
+                    // Task 1: Hide start button, prompt, and organize metric layout
+                    btnStart.setVisibility(View.GONE); // remove button
+                    txtStartPrompt.setVisibility(View.GONE); // remove prompt
+                    MetricsRelativeLayout.setVisibility(View.VISIBLE); // show layout
+
+                    // Task 2: Prepare and start workout tasks
 
                     // 1. Declare/Initialize instances, set listeners
                     DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this); // prepare database
@@ -257,9 +274,6 @@ public class WorkoutActivity extends AppCompatActivity {
                         pace40Task.execute();
                     }
 
-                    // Task 2: Change button color and text to indicate workout has started
-                    btnStart.setBackgroundColor(ContextCompat.getColor(WorkoutActivity.this, R.color.bubblegum_red));
-                    btnStart.setText("STOP");
                 }
                 else { // if user wants to END workout, start PostWorkoutActivity
                     Intent i = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
@@ -315,7 +329,7 @@ public class WorkoutActivity extends AppCompatActivity {
     }
 
     // ftpCalc Background functionality class: defines background task
-    private class ftpCalcTask extends AsyncTask<Void, Integer, Integer> {
+    private class ftpCalcTask extends AsyncTask<Void, Object, Integer> {
 
         @Override // 1st function for background task
         protected Integer doInBackground(Void... voids) {
@@ -333,7 +347,7 @@ public class WorkoutActivity extends AppCompatActivity {
             int i = 0;
             
             // main loop
-            while (db.getTime_33() < 180.0) { // [TEST] 3 minutes
+            while (db.getTime_33() < 30.0) { // [TEST] 3 minutes
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -345,12 +359,12 @@ public class WorkoutActivity extends AppCompatActivity {
                 int calories = GlobalVariables.totalCalories33;
                 int driveLength = GlobalVariables.driveLength35.intValue();
                 int driveTime = GlobalVariables.driveTime35.intValue();
-                int strokeCount = GlobalVariables.strokeCount35;
+  //              int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, lastSplit); // Update the UI with the current counter value
                 i++;
             }
 
@@ -377,22 +391,36 @@ public class WorkoutActivity extends AppCompatActivity {
         }
 
         @Override // 2nd function for background task: updates UI
-        protected void onProgressUpdate(Integer... values) {
+        protected void onProgressUpdate(Object... values) {
             super.onProgressUpdate(values);
-            //int time = (int) values[0]; // extract distance value passed
-            int dist = (int) values[1]; // extract distance value passed
-            int cal = (int) values[2]; // extract calories value passed
-            int avgPwr = (int) values[6]; // extract average power
+
+            // Extract (using values array), Update UI elements here
+
+            int time = (int) values[0];
+            int minutes = time / 60;
+            int seconds = time % 60;
+            String formattedTime = String.format("%02d:%02d", minutes, seconds);
+
+            int dist = (int) values[1];
+            int cal = (int) values[2];
+            int driveLength = (int) values[3];
+            int driveTime = (int) values[4];
+            int avgPwr = (int) values[5];
+            int lastSplit = (int) values[6];
 
             // Update the UI with the current counter value
-            txtDistanceMetric.setText("Distance: " + dist);
-            txtCaloriesMetric.setText("Calories: " + cal);
-            txtAvgPowerMetric.setText(avgPwr); // comes with animation
+            //publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, lastSplit); // Update the UI with the current counter value
+            txtTimeMetric.setText(formattedTime);
+            txtDistanceMetric.setText(Integer.toString(dist));
+            txtCaloriesMetric.setText(Integer.toString(cal));
+            txtDriveLengthMetric.setText(Integer.toString(driveLength));
+            txtDriveTimeMetric.setText(Integer.toString(driveTime));
+            txtAvgPwrMetric.setText(Integer.toString(avgPwr));
+            txtLastSplitTimeMetric.setText(Integer.toString(lastSplit));
 
-
-            // Animations for metrics
-            Animation pulseAnimation = AnimationUtils.loadAnimation(WorkoutActivity.this, R.anim.pulse);
-            txtAvgPowerMetric.startAnimation(pulseAnimation);
+//            // Animations for metrics
+//            Animation pulseAnimation = AnimationUtils.loadAnimation(WorkoutActivity.this, R.anim.pulse);
+//            txtAvgPwrMetric.startAnimation(pulseAnimation);
 
             //TODO: add rest of variables/text boxes
         }
@@ -1123,9 +1151,8 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 2nd function for background task: updates UI
         protected void onProgressUpdate(Object... values) {
             super.onProgressUpdate(values);
-            // Extract (using values array), Update UI elements here
 
-            //int time = (int) values[0]; // extract distance value passed
+            // Extract (using values array), Update UI elements here
             int dist = (int) values[1]; // extract distance value passed
             int cal = (int) values[2]; // extract calories value passed
             int avgPwr = (int) values[6]; // extract average power
@@ -1136,9 +1163,6 @@ public class WorkoutActivity extends AppCompatActivity {
             txtDistanceMetric.setText("Distance: " + dist);
             txtCaloriesMetric.setText("Calories: " + cal);
             txtInstructionMetric.setText(instruction);
-            txtFeedbackMetric.setText(feedback);
-            txtAvgPowerMetric.setText("Average Power: " + avgPwr);
-            //TODO: add rest of variables/text boxes
 
         }
 
@@ -1386,9 +1410,6 @@ public class WorkoutActivity extends AppCompatActivity {
             txtDistanceMetric.setText("Distance: " + dist);
             txtCaloriesMetric.setText("Calories: " + cal);
             txtInstructionMetric.setText(instruction);
-            txtFeedbackMetric.setText(feedback);
-            txtAvgPowerMetric.setText("Average Power: " + avgPwr);
-            //TODO: add rest of variables/text boxes
 
         }
 
@@ -1802,10 +1823,6 @@ public class WorkoutActivity extends AppCompatActivity {
             txtDistanceMetric.setText("Distance: " + dist);
             txtCaloriesMetric.setText("Calories: " + cal);
             txtInstructionMetric.setText(instruction);
-            txtFeedbackMetric.setText(feedback);
-            txtAvgPowerMetric.setText("Average Power: " + avgPwr);
-            //TODO: add rest of variables/text boxes
-
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -1897,9 +1914,6 @@ public class WorkoutActivity extends AppCompatActivity {
             txtDistanceMetric.setText("Distance: " + dist);
             txtCaloriesMetric.setText("Calories: " + cal);
             txtInstructionMetric.setText(instruction);
-            txtFeedbackMetric.setText(feedback);
-            txtAvgPowerMetric.setText("Average Power: " + avgPwr);
-            //TODO: add rest of variables/text boxes
 
         }
 
@@ -1992,10 +2006,6 @@ public class WorkoutActivity extends AppCompatActivity {
             txtDistanceMetric.setText("Distance: " + dist);
             txtCaloriesMetric.setText("Calories: " + cal);
             txtInstructionMetric.setText(instruction);
-            txtFeedbackMetric.setText(feedback);
-            txtAvgPowerMetric.setText("Average Power: " + avgPwr);
-            //TODO: add rest of variables/text boxes
-
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -2087,9 +2097,6 @@ public class WorkoutActivity extends AppCompatActivity {
             txtDistanceMetric.setText("Distance: " + dist);
             txtCaloriesMetric.setText("Calories: " + cal);
             txtInstructionMetric.setText(instruction);
-            txtFeedbackMetric.setText(feedback);
-            txtAvgPowerMetric.setText("Average Power: " + avgPwr);
-            //TODO: add rest of variables/text boxes
 
         }
 
