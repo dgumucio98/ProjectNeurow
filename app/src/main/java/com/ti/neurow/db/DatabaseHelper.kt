@@ -338,6 +338,7 @@ class DatabaseHelper //Constructor
     }
 
 
+
     fun get3D_avg_y(): java.util.ArrayList<Double> {
         val DB = this.readableDatabase
         val rowList = ArrayList<DoubleArray>()

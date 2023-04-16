@@ -1,11 +1,17 @@
 package com.ti.neurow.ui;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.ColorRes;
@@ -37,6 +43,10 @@ public class PostWorkoutActivity extends AppCompatActivity {
 
         Power_vs_Time = findViewById(R.id.Power_vs_Time);
         Power_vs_Pull = findViewById(R.id.Power_vs_Pull);
+        TextView txtFtp = findViewById(R.id.txtFtp);
+
+        txtFtp.setText("FTP: " + GlobalVariables.ftp + "W"); // set FTP text box to updated FTP value
+
 
         // [TEST] Populate list before graphing
         int length = GlobalVariables.finalListTimePower.size(); // length of list
@@ -48,6 +58,8 @@ public class PostWorkoutActivity extends AppCompatActivity {
                 j++;
             }
         }
+
+        // ***Start graphing stuff ***
 
         // Set series to graph
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(dp);
@@ -87,5 +99,14 @@ public class PostWorkoutActivity extends AppCompatActivity {
         Power_vs_Time.animate();
 
         series.setColor(getResources().getColor(R.color.teal_200)); // set color of line
+    }
+
+    @Override
+    public void onBackPressed() { // handle back button press (take us to workout dashboard)
+        Intent intent = new Intent(PostWorkoutActivity.this, WorkoutMainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        startActivity(intent);
+        finish(); // Can't go back
     }
 }

@@ -34,5 +34,10 @@
     <color name="dark_blue">#3C5A8C</color>
     <color name="dark_orange">#CC7723</color>
     <color name="light_green">#AFE1AF</color>
+    <color name="mint_green">#5db39a</color>
+    <color name="brick_red">#AA4A44</color>
+    <color name="bubblegum_red">#fa4d56</color>
+
+
 
 </resources>
