@@ -623,7 +623,7 @@ object ConnectionManager {
                     //println("This is where it should read the first message compile the data")
                     val DF3D: DataFrame3D = DataFrame3D(value.toUByteArray())
                     GlobalVariables.pol3D = DF3D.messages
-                    GlobalVariables.message3D = DF3D.forceVals.toString()
+                    GlobalVariables.message3D = DF3D.forceVals.joinToString(separator = " ")
                     GlobalVariables.globalTimeInstance3D.setMessage(DF3D.forceVals.toString())
                     DF3D.printAllAtt()
                     /*
