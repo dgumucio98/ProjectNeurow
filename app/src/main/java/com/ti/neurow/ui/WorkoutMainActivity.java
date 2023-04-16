@@ -20,9 +20,12 @@ import android.widget.Toast;
 
 import com.ti.neurow.GlobalVariables;
 import com.ti.neurow.R;
+import com.ti.neurow.db.DatabaseHelper;
+import com.ti.neurow.wkt.workouts;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -90,9 +93,8 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         txtUserFtp.setTextColor(getResources().getColor(R.color.mint_green));
         txtUserFtp.setText(Html.fromHtml("<b>FTP:</b> " + GlobalVariables.ftp + "W"));
 
-        // Handle when ftpCalc button is clicked (standalone case from other workout click listeners)
-        // Handle when demo button is clicked
-        // Handle when predictor button is clicked
+
+        // Handle button clicks
         View.OnClickListener workoutClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +113,7 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
                         launchWorkoutActivity.putExtra("attributeColor", color2); // pass color data
                         launchWorkoutActivity.putExtra("attributeText", "404 Demo"); // pass text data
                         launchWorkoutActivity.putExtra("attributeName", "DEMO WORKOUT"); // pass titles text data
-                        launchWorkoutActivity.putExtra("methodName", "demoWorkout"); // pass target workout name data
+                        launchWorkoutActivity.putExtra("methodName", "demo"); // pass target workout name data
                         break;
                     case R.id.btnPredictor: // predictor button is clicked
                         showPredictionOptionsDialog(); // launch dialog box
@@ -226,31 +228,53 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
                     public void onClick(DialogInterface dialog, int which) {
 
                         TextView txtPrediction = findViewById(R.id.txtPrediction); // create local instance of txtPrediction
-
+                        DatabaseHelper db = new DatabaseHelper(WorkoutMainActivity.this); // prepare database
+                        workouts workouts = new workouts(); // construct workouts instance
+                        String workoutType = "";
+                        ArrayList<Double> allPow;
+                        String prediction = "";
                         switch (which) {
                             case 0:
                                 // "Pace-20 Prediction" selected
-                                txtPrediction.setText("[Pace-20] Your expected power output is: 302W");
+                                workoutType = "pace20";
+                                allPow = db.getAllPower(GlobalVariables.loggedInUsername, workoutType);
+                                prediction = workouts.powerPredictor(allPow);
+                                txtPrediction.setText(prediction);
                                 break;
                             case 1:
                                 // "Pace-30 Prediction" selected
-                                txtPrediction.setText("[Pace-30] Your expected power output is: 122W");
+                                workoutType = "pace30";
+                                allPow = db.getAllPower(GlobalVariables.loggedInUsername, workoutType);
+                                prediction = workouts.powerPredictor(allPow);
+                                txtPrediction.setText(prediction);
                                 break;
                             case 2:
                                 // "Pace-40 Prediction" selected
-                                txtPrediction.setText("[Pace-40] Your expected power output is: 95W");
+                                workoutType = "pace40";
+                                allPow = db.getAllPower(GlobalVariables.loggedInUsername, workoutType);
+                                prediction = workouts.powerPredictor(allPow);
+                                txtPrediction.setText(prediction);
                                 break;
                             case 3:
                                 // "Interval-20 Prediction" selected
-                                txtPrediction.setText("[Interval-20] Your expected power output is: 489W");
+                                workoutType = "interval1";
+                                allPow = db.getAllPower(GlobalVariables.loggedInUsername, workoutType);
+                                prediction = workouts.powerPredictor(allPow);
+                                txtPrediction.setText(prediction);
                                 break;
                             case 4:
                                 // "Interval-30 Prediction" selected
-                                txtPrediction.setText("[Interval-30] Your expected power output is: 221W");
+                                workoutType = "interval2";
+                                allPow = db.getAllPower(GlobalVariables.loggedInUsername, workoutType);
+                                prediction = workouts.powerPredictor(allPow);
+                                txtPrediction.setText(prediction);
                                 break;
                             case 5:
                                 // "Interval-40 Prediction" selected
-                                txtPrediction.setText("[Interval-40] Your expected power output is: 109W");
+                                workoutType = "interval3";
+                                allPow = db.getAllPower(GlobalVariables.loggedInUsername, workoutType);
+                                prediction = workouts.powerPredictor(allPow);
+                                txtPrediction.setText(prediction);
                                 break;
                         }
                     }

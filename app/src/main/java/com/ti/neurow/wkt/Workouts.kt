@@ -1287,7 +1287,7 @@ class workouts : AppCompatActivity() {
         val x = ArrayList<Int>()
         val length = power.size
         var message = ""
-        if (length <= 0) {
+        if (length <= 1) {
             message = "Do more workouts and check back for a prediction"
         }
         else {
@@ -1331,13 +1331,17 @@ class workouts : AppCompatActivity() {
             // in five more workouts your power output might be...
             // y = mx + b
             val predic = (slope * (length + 4)) + y_int // TODO is that length + 4 correct?
+            val formattedPredic = String.format("%.2f", predic)
 
+//            if (formattedPredic == "NaN") {
+//                message = "Check back later, NaN error"
+//            }
             if (slope < 0) {
                 //user is trending backwards
-                message = "You are trending downwards. In 5 more workouts your power could be" + predic + " watts"
+                message = "You are trending downwards. In 5 more workouts your power could be " + formattedPredic + " watts"
             }
             else {
-                message = "You are trending upwards. In 5 more workouts your power could be" + predic + " watts"
+                message = "You are trending upwards. In 5 more workouts your power could be " + formattedPredic + " watts"
             }
         }
         return message
@@ -1386,6 +1390,8 @@ class workouts : AppCompatActivity() {
             } else {
                 Suggestion = "You did well! Nice work!"
             }
+        } else if (wkrt == "demo") {
+            Suggestion = "GREAT JOB!"
         }
         return Suggestion
     }

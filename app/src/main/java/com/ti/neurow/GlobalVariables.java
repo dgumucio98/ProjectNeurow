@@ -15,7 +15,7 @@ public class GlobalVariables {
     public static Integer splitIntAvgPwr33 = 0;
     public static Double splitIntAvgCal33 = 0.0;
     public static Double lastSplitTime33 = 0.0;
-    public static Double lastSplitDist33; // Metric displayed in UI
+    public static Double lastSplitDist33 = 0.0; // Metric displayed in UI
     public static VariableChanges globalTimeInstance33;
 
     // Dataframe 35 stuff
