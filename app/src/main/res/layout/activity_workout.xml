@@ -127,7 +127,7 @@
             android:layout_below="@id/txtCaloriesMetric"
             android:fontFamily="@font/BadBrush"
             android:includeFontPadding="true"
-            android:text="21 W"
+            android:text="47 W"
             android:textColor="#ff696e"
             android:textSize="90sp"
             android:textStyle="bold" />
