@@ -1287,7 +1287,7 @@ class workouts : AppCompatActivity() {
         val x = ArrayList<Int>()
         val length = power.size
         var message = ""
-        if (length <= 0) {
+        if (length <= 1) {
             message = "Do more workouts and check back for a prediction"
         }
         else {
@@ -1331,67 +1331,68 @@ class workouts : AppCompatActivity() {
             // in five more workouts your power output might be...
             // y = mx + b
             val predic = (slope * (length + 4)) + y_int // TODO is that length + 4 correct?
+            val formattedPredic = String.format("%.2f", predic)
 
+//            if (formattedPredic == "NaN") {
+//                message = "Check back later, NaN error"
+//            }
             if (slope < 0) {
                 //user is trending backwards
-                message = "You are trending downwards. In 5 more workouts your power could be" + predic + " watts"
+                message = "You are trending downwards. In 5 more workouts your power could be " + formattedPredic + " watts"
             }
             else {
-                message = "You are trending upwards. In 5 more workouts your power could be" + predic + " watts"
+                message = "You are trending upwards. In 5 more workouts your power could be " + formattedPredic + " watts"
             }
         }
         return message
     }
 
-    fun intervalSuggestion( interval_num: String, failCount: Int): String {
-        var intSuggestion = "" //declare string to change and print to screen
-        if (interval_num === "1") { //20 min interval
+    fun Suggestion(wkrt: String, failCount: Int): String {
+        var Suggestion = "" //declare string to change and print to screen
+        if (wkrt === "interval1") { //20 min interval
             if (failCount > 20) {
-                intSuggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
+                Suggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
             } else {
-                intSuggestion = "You did well! Go again or try a longer interval workout!"
+                Suggestion = "You did well! Go again or try a longer interval workout!"
             }
-        } else if (interval_num === "2") { //30 min interval
+        } else if (wkrt === "interval2") { //30 min interval
             if (failCount > 20 && failCount < 50) {
-                intSuggestion = "You left your power zone often. Try doing the Interval 1 workout"
+                Suggestion = "You left your power zone often. Try doing the Interval 1 workout"
             } else if (failCount >= 50) {
-                intSuggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
+                Suggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
             } else {
-                intSuggestion = "You did well! Go again or try a longer interval workout!"
+                Suggestion = "You did well! Go again or try a longer interval workout!"
             }
-        } else if (interval_num === "3") { //40 min interval
+        } else if (wkrt === "interval3") { //40 min interval
             if (failCount > 20 && failCount < 50) {
-                intSuggestion = "You left your power zone often. Try doing the Interval 2 workout"
+                Suggestion = "You left your power zone often. Try doing the Interval 2 workout"
             } else if (failCount >= 50) {
-                intSuggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
+                Suggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
             } else {
-                intSuggestion = "You did well! Go again or try redoing your FTP Calculator workout!"
+                Suggestion = "You did well! Go again or try redoing your FTP Calculator workout!"
             }
         }
-        return intSuggestion
-    }
-
-    fun paceSuggestion(pace_num: String, failCount: Int): String {
-        var paceSuggestion = "" //declare string to change and print to screen
-        if (pace_num === "20") {
+        else if (wkrt === "pace20") {
             if (failCount > 14) {
-                paceSuggestion = "Your pace was very inconsistent. Try again or do an interval workout to work on fitness"
+                Suggestion = "Your pace was very inconsistent. Try again or do an interval workout to work on fitness"
             } else {
-                paceSuggestion = "You did well! Go again or try a longer pace workout!"
+                Suggestion = "You did well! Go again or try a longer pace workout!"
             }
-        } else if (pace_num === "30") {
+        } else if (wkrt === "pace30") {
             if (failCount > 14) {
-                paceSuggestion = "Your pace was very inconsistent. Try doing the 20 min pace workout instead"
+                Suggestion = "Your pace was very inconsistent. Try doing the 20 min pace workout instead"
             } else {
-                paceSuggestion = "You did well! Go again or try a longer pace workout!"
+                Suggestion = "You did well! Go again or try a longer pace workout!"
             }
-        } else if (pace_num === "40") {
+        } else if (wkrt === "pace40") {
             if (failCount > 14) {
-                paceSuggestion = "Your pace was very inconsistent. Try doing the 30 min pace workout instead"
+                Suggestion = "Your pace was very inconsistent. Try doing the 30 min pace workout instead"
             } else {
-                paceSuggestion = "You did well! Nice work!"
+                Suggestion = "You did well! Nice work!"
             }
+        } else if (wkrt == "demo") {
+            Suggestion = "GREAT JOB!"
         }
-        return paceSuggestion
+        return Suggestion
     }
 }
