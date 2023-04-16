@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper
 //import java.util.Date;
 class DatabaseHelper //Constructor
     (context: Context?) :
-    SQLiteOpenHelper(context, "Smart_Rower_Tables.db", null, 18) {
+    SQLiteOpenHelper(context, "Smart_Rower_Tables.db", null, 19) {
     //methods that must be implemented
     //this is called the first time a database is accessed. There should be code in here to create a new database
     override fun onCreate(db: SQLiteDatabase) {
@@ -26,7 +26,7 @@ class DatabaseHelper //Constructor
             "Create TABLE " + HISTORY_INFO + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USER + " TEXT, " + COLUMN_TIMESTAMP + " TEXT default (datetime('now','localtime')), " + COLUMN_WORKOUT + " TEXT, " + COLUMN_ERROR + " INT, " + COLUMN_AVGPOWER + " DOUB)"
         val emptyList = ArrayList<Int>()
         val table3D =
-            "Create TABLE " + INFO3D + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_MESSAGE + " INT, " + COLUMN_FORCEVALS1 + " TEXT, " + COLUMN_FORCEVALS2 + " TEXT, " + COLUMN_FORCEVALS3 + " TEXT, " + COLUMN_FORCEVALS4 + " TEXT, " + COLUMN_FORCEVALS5 + " TEXT, " + COLUMN_FORCEVALS6 + " TEXT, " + COLUMN_FORCEVALS7 + " TEXT, " + COLUMN_FORCEVALS8 + " TEXT, " + COLUMN_FORCEVALS9 + " TEXT, " + COLUMN_FORCEVALS10 + " TEXT)"
+            "Create TABLE " + INFO3D + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_MESSAGE + " INT, " + COLUMN_FORCEVALS1 + " TEXT, " + COLUMN_FORCEVALS2 + " TEXT, " + COLUMN_FORCEVALS3 + " TEXT, " + COLUMN_FORCEVALS4 + " TEXT, " + COLUMN_FORCEVALS5 + " TEXT, " + COLUMN_FORCEVALS6 + " TEXT, " + COLUMN_FORCEVALS7 + " TEXT, " + COLUMN_FORCEVALS8 + " TEXT, " + COLUMN_FORCEVALS9 + " TEXT, " + COLUMN_FORCEVALS10 + " TEXT, " + COLUMN_FORCEVALS11 + " TEXT, " + COLUMN_FORCEVALS12 + " TEXT)"
         db.execSQL(user_table)
         db.execSQL(dataframe33_table)
         db.execSQL(dataframe35_table)
@@ -48,43 +48,44 @@ class DatabaseHelper //Constructor
 
     //Methods!!!
     //add to tables
+
     fun add_3Dmessage(message: Int, forceVals: String?): Boolean {
+        //This is the correct code
         val db = this.writableDatabase
-        //If username exists return false
-        val cursor = db.rawQuery(
-            "SELECT * FROM info3D ORDER BY COLUMN_ID DESC LIMIT 1", null
-        )
-/*        val cursor = db.rawQuery(
-            "Select * from info3D where COLUMN_MESSAGE = ?",
-            arrayOf(message.toString())
-        ) */
-        //Find sequenceNumber in info3D
-        return if (cursor.count > 0) {
+        //finding past message
+        val lastMessageCursor = db.rawQuery("SELECT * FROM INFO3D ORDER BY COLUMN_ID DESC LIMIT 1", null)
+        var past_message = 0
+        if (lastMessageCursor.moveToFirst()) {
+            val messageIndex = lastMessageCursor.getColumnIndex("COLUMN_MESSAGE")
+            past_message = lastMessageCursor.getInt(messageIndex)
+        }
+        lastMessageCursor.close()
+
+
+        //cursor for updating
+        val cursor = db.rawQuery("SELECT * FROM INFO3D ORDER BY COLUMN_ID DESC LIMIT 1", null)
+
+        //finding all number on enteries on last row
+        var numNonNullValues = 0;
+        if (cursor.moveToFirst()) {
+            numNonNullValues = (0 until cursor.columnCount).count { columnIndex ->
+                !cursor.isNull(columnIndex)
+            }
+        }
+
+
+        return if ((cursor.count > 0) && (numNonNullValues < (past_message + 2)) && (past_message == message)) {
             cursor.moveToFirst()
             val cv = ContentValues()
             var columnIndex = -1
             // loop through the columns in the row and find the next null column
             for (i in 2..cursor.columnCount) {
-                if (i >= (message + 2)) {
-                    //add to new row
-                    val cv = ContentValues()
-                    cv.put(COLUMN_MESSAGE, message)
-                    cv.put(COLUMN_FORCEVALS1, forceVals)
-
-                    //ID is a auto increment in the database
-                    val insert = db.insert(INFO3D, null, cv)
-                    //cursor.close()
-                    insert != -1L
-                }
-
-                if (i >= 12) {
+                if (i >= (12+2)) {
                     break
                 }
 
                 if (cursor.getString(i) == null) {
-                    if (i < (message + 2)) {
-                        columnIndex = i
-                    }
+                    columnIndex = i
                     break
                 }
             }
@@ -92,15 +93,8 @@ class DatabaseHelper //Constructor
                 // update the null column with new force values
                 cv.put(cursor.getColumnName(columnIndex), forceVals)
                 val id = "(SELECT MAX(COLUMN_ID) FROM INFO3D)"
-                //val result = db.update("INFO3D", cv, "COLUMN_ID = $id", null)
                 val result = db.update("INFO3D", cv, "COLUMN_ID = $id", null).toLong()
                 cursor.close()
-                //val result = db.update("INFO3D", cv, "COLUMN_ID = $id", arrayOf(message.toString())).toLong()
-                //val result =
-                //    db.update(INFO3D, cv, "COLUMN_MESSAGE = ?", arrayOf(message.toString()))
-                //        .toLong()
-                //cursor.close()
-
                 result != -1L
             } else {
                 // no null column found, cannot update the row
@@ -197,18 +191,8 @@ class DatabaseHelper //Constructor
         return insert != -1L
     }
 
-    /*    public boolean add_error(String User, int error) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(COLUMN_USER, User);
-        cv.put(COLUMN_ERROR, error);
 
-        //ID is a auto increment in the database
-        long insert = db.insert(ERROR_INFO, null, cv);
-        return insert != -1;
-    }*/
     //delete methods
-    //delete one account from table
     fun delete_account(username: String, password: String): Boolean //Username and password entered
     {
         val DB = this.writableDatabase
@@ -353,83 +337,18 @@ class DatabaseHelper //Constructor
         return allPower
     }
 
-    /*    public Cursor get_error(String username) {  //display history table user specific
-        SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from error_info where COLUMN_USER = ?", new String[]{username});//Find the data
-        return cursor;
-    }*/
 
 
-
-/*    fun get3D_avg_y(): List<Double> {
+    fun get3D_avg_y(): java.util.ArrayList<Double> {
         val DB = this.readableDatabase
-        val concatenatedList = MutableList(10) { mutableListOf<Long>() }
-        val cursor = DB.rawQuery("SELECT COLUMN_FORCEVALS1, COLUMN_FORCEVALS2, COLUMN_FORCEVALS3, COLUMN_FORCEVALS4, COLUMN_FORCEVALS5, COLUMN_FORCEVALS6, COLUMN_FORCEVALS7, COLUMN_FORCEVALS8, COLUMN_FORCEVALS9, COLUMN_FORCEVALS10  FROM INFO3D", null) //EXCEPT (COLUMN_ID, COLUMN_MESSAGE)
-        //val cursor = DB.rawQuery("SELECT *  FROM INFO3D", null) //EXCEPT (COLUMN_ID, COLUMN_MESSAGE)
-        cursor.use {
-            val columnCount = it.columnCount
-            while (it.moveToNext()) {
-                for (i in 0 until columnCount) {
-                    val columnValues = it.getString(i)?.split(" ")?.map { it.toLong() }
-                    if (columnValues != null) {
-                        if (i < concatenatedList.size) {
-                            concatenatedList[i].addAll(columnValues)
-                        } else {
-                            concatenatedList.add(columnValues.toMutableList())
-                        }
-                    }
-                }
-            }
-        }
-
-        val combinedList = concatenatedList.flatten()
-        val avgList = combinedList.mapIndexed { index, value ->
-            val columnValues = concatenatedList[index]
-            columnValues.average()
-        }
-        return avgList
-    }*/
-
-
-/*    fun get3D_avg_y(): List<Double> {
-        val DB = this.readableDatabase
-        val columnValuesList = mutableListOf<List<Double>>()
-        val cursor = DB.rawQuery("SELECT COLUMN_FORCEVALS1, COLUMN_FORCEVALS2, COLUMN_FORCEVALS3, COLUMN_FORCEVALS4, COLUMN_FORCEVALS5, COLUMN_FORCEVALS6, COLUMN_FORCEVALS7, COLUMN_FORCEVALS8, COLUMN_FORCEVALS9, COLUMN_FORCEVALS10 FROM INFO3D", null)
-        cursor.use {
-            val columnCount = it.columnCount
-            while (it.moveToNext()) {
-                for (i in 0 until columnCount) {
-                    val columnValues = it.getString(i)?.split(" ")?.map { it.toDouble() }
-                    if (columnValues != null) {
-                        if (i < columnValuesList.size) {
-                            columnValuesList[i].addAll(columnValues)
-                        } else {
-                            columnValuesList.add(ArrayList(columnValues))
-                        }
-                    }
-                }
-                }
-
-            }
-
-        val combinedList = columnValuesList.flatten()
-        val avgList = combinedList.mapIndexed { index, value ->
-            val columnValues = columnValuesList[index]
-            columnValues.average()
-        }
-        return avgList
-    }*/
-
-
-    fun get3D_avg_y(): ArrayList<Double> {
-        val DB = this.readableDatabase
-        val rowList = ArrayList<String>()
+        val rowList = ArrayList<DoubleArray>()
+        val avgList = ArrayList<Double>()
         val cursor = DB.rawQuery(
-            "SELECT COLUMN_FORCEVALS1, COLUMN_FORCEVALS2, COLUMN_FORCEVALS3, COLUMN_FORCEVALS4, COLUMN_FORCEVALS5, COLUMN_FORCEVALS6, COLUMN_FORCEVALS7, COLUMN_FORCEVALS8, COLUMN_FORCEVALS9, COLUMN_FORCEVALS10 FROM INFO3D",
+            "SELECT COLUMN_FORCEVALS1, COLUMN_FORCEVALS2, COLUMN_FORCEVALS3, COLUMN_FORCEVALS4, COLUMN_FORCEVALS5, COLUMN_FORCEVALS6, COLUMN_FORCEVALS7, COLUMN_FORCEVALS8, COLUMN_FORCEVALS9, COLUMN_FORCEVALS10, COLUMN_FORCEVALS11, COLUMN_FORCEVALS12 FROM INFO3D",
             null
         )
 
-        if (!cursor.moveToFirst()) {
+        if (cursor.count == 0) {
             // No data in table, return empty list
             return ArrayList()
         }
@@ -441,67 +360,27 @@ class DatabaseHelper //Constructor
                     it.getString(i) ?: ""
                 }
                 val rowString = rowValues.joinToString(" ")
-                rowList.add(rowString)
+                val rowDouble = rowString.split(" ").map { it.toDoubleOrNull()}.filterNotNull()
+                rowList.add(rowDouble.toDoubleArray())
             }
         }
+        cursor.close()
 
-        val avgRowList = ArrayList<DoubleArray>()
-        for (rowString in rowList) {
-            val doubleList = rowString.split(" ").map { it.toDoubleOrNull() ?: 0.0 }
-            val doubleArray = doubleList.toDoubleArray()
-            avgRowList.add(doubleArray)
+        //finding the most common list
+        val sizeCounts = rowList.groupingBy { it.size }.eachCount()
+        val maxCount = sizeCounts.values.maxOrNull() ?: 0
+        val mostCommonSizes = sizeCounts.filterValues { it == maxCount }.keys
+        val mostCommonSize = mostCommonSizes.maxOrNull() ?: 0
+
+        //only using the arrays with the mostCommonSize
+        val filteredRowList = rowList.filter { it.size == mostCommonSize }
+
+        //taking the average
+        for (i in 0 until mostCommonSize) {
+            val columnValues = filteredRowList.map { it[i] }
+            val columnAverage = columnValues.average()
+            avgList.add(columnAverage)
         }
-
-        // Filter out columns with null values
-        val nonNullColumns = mutableListOf<Int>()
-        for (j in 0 until avgRowList[0].size) {
-            var hasNull = false
-            for (k in avgRowList.indices) {
-                if (avgRowList[k][j] == 0.0) {
-                    hasNull = true
-                    break
-                }
-            }
-            if (!hasNull) {
-                nonNullColumns.add(j)
-            }
-        }
-
-        //check to see if avgRowList only contains 1 list then return that one list
-/*        if (avgRowList.size == 1 && !avgRowList[0].isEmpty()) {
-            return ArrayList(avgRowList[0].toList())
-        }*/
-
-
-
-        // Find the length of the smallest array
-        var minLength = Int.MAX_VALUE
-        for (row in avgRowList) {
-            if (row.size < minLength) {
-                minLength = row.size
-            }
-        }
-
-       // Adjust all arrays to the smallest length
-        for (i in avgRowList.indices) {
-            val row = avgRowList[i]
-            if (row.size > minLength) {
-                avgRowList[i] = row.copyOfRange(0, minLength)
-            }
-        }
-
-        // Compute averages of non-null columns
-        val avgList = ArrayList<Double>()
-        for (j in 0 until nonNullColumns.size step 1) {
-            var sum = 0.0
-            for (k in avgRowList.indices) {
-                sum += avgRowList[k][nonNullColumns[j]]
-            }
-            val avg = sum / (avgRowList.size)
-            avgList.add(avg)
-        }
-
-        //val avgStringList = avgList.map { String.format("%.2f", it) }.toTypedArray()
         return avgList
     }
 
@@ -1589,5 +1468,7 @@ class DatabaseHelper //Constructor
         const val COLUMN_FORCEVALS8 = "COLUMN_FORCEVALS8"
         const val COLUMN_FORCEVALS9 = "COLUMN_FORCEVALS9"
         const val COLUMN_FORCEVALS10 = "COLUMN_FORCEVALS10"
+        const val COLUMN_FORCEVALS11 = "COLUMN_FORCEVALS11"
+        const val COLUMN_FORCEVALS12 = "COLUMN_FORCEVALS12"
     }
 }

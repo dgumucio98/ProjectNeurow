@@ -489,9 +489,8 @@ class MainDBActivity : AppCompatActivity() {
 
             //Adding to 3D table
 
-            val pol = 10
-            val message: ArrayList<Int> = arrayListOf(3, 3, 3, 9, 9, 9)
-
+            val pol = 5
+            val message: ArrayList<Int> = arrayListOf(3,3)
             val message_string = message.joinToString(separator = " ")
             //val message = "123456"
             val success = db.add_3Dmessage(pol, message_string)
@@ -506,20 +505,28 @@ class MainDBActivity : AppCompatActivity() {
                 ).show()
             }
 
-/*            val avg_y_string: ArrayList<Double>  = db.get3D_avg_y()
+            //val avg_y: ArrayList<DoubleArray>  = db.get3D_avg_y()
+            val avg_y: ArrayList<Double>  = db.get3D_avg_y()
+
             val buffer2 = StringBuffer()
-            for (i in avg_y_string.indices) {
-                buffer.append(avg_y_string.get(i).toString()+ "----")
-            val avg_y_string: List<Double> = db.get3D_avg_y()
-            val buffer2 = StringBuffer()
-            for (i in avg_y_string.indices) {
-                buffer.append(avg_y_string.get(i).toString()+ ' ')
+            for (i in avg_y.indices) {
+/*                //testing ArrayList<DoubleArray>
+                var row : DoubleArray = avg_y.get(i)
+                for (i in row) {
+                        buffer2.append(i.toString() + " ")
+                }
+                buffer2.append("----")*/
+
+                //testing ArrayList<Double>
+                buffer2.append(avg_y.get(i).toString() + "----")
             }
+
+
             val builder2 = AlertDialog.Builder(this@MainDBActivity)
             builder.setCancelable(true)
             builder.setTitle(usernameTXT + "Avg Y Values")
-            builder.setMessage(buffer.toString())
-            builder.show()*/
+            builder.setMessage(buffer2.toString())
+            builder.show()
 
         })
 

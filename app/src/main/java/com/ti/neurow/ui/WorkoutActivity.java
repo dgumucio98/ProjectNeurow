@@ -276,7 +276,6 @@ public class WorkoutActivity extends AppCompatActivity {
                         demoTask demoTask = new demoTask();
                         demoTask.execute();
                     }
-
                 }
                 else { // if user wants to END workout, start PostWorkoutActivity
                     Intent i = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
