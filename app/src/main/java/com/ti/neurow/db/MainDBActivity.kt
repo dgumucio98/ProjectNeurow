@@ -491,7 +491,6 @@ class MainDBActivity : AppCompatActivity() {
 
             val pol = 5
             val message: ArrayList<Int> = arrayListOf(3,3)
-
             val message_string = message.joinToString(separator = " ")
             //val message = "123456"
             val success = db.add_3Dmessage(pol, message_string)
