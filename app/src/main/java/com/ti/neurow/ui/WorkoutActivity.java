@@ -278,6 +278,42 @@ public class WorkoutActivity extends AppCompatActivity {
         });
     }
 
+    // Demo workout Background functionality class: defines background task
+    private class demoTask extends AsyncTask<Void, Integer, Integer> {
+
+        @Override // 1st function for background task
+        protected Integer doInBackground(Void... voids) {
+
+            // Create database instance
+            DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
+
+            // [PASTE CODE HERE]
+
+            return 0;
+        }
+
+        @Override // 2nd function for background task: updates UI
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+
+            // [UPDATE ELEMENTS HERE]
+
+        }
+
+        @Override // 3rd function for background task: follows background task after completion
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+
+            // Define intent and pass workout name to PostWorkoutActivity
+            Intent launchPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+            launchPostWorkoutActivity.putExtra("workoutName", "ftpCalc"); // pass workout name data
+
+            // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
+            startActivity(launchPostWorkoutActivity); // Launch BLE Data View
+            finish(); // can't go back
+        }
+    }
+
     // ftpCalc Background functionality class: defines background task
     private class ftpCalcTask extends AsyncTask<Void, Integer, Integer> {
 
@@ -364,11 +400,12 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 3rd function for background task: follows background task after completion
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-            // This is called when the background task is finished
+            // Define intent and pass workout name to PostWorkoutActivity
+            Intent launchPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+            launchPostWorkoutActivity.putExtra("workoutName", "ftpCalc"); // pass workout name data
 
-            // Exit WorkoutActivity, launch PostWorkoutActivity
-            Intent i = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
-            startActivity(i); // Launch BLE Data View
+            // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
+            startActivity(launchPostWorkoutActivity); // Launch BLE Data View
             finish(); // can't go back
         }
     }
@@ -1108,10 +1145,12 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 3rd function for background task: follows background task after completion
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-            // Define intent and launch next activity
-            // Exit WorkoutActivity, launch PostWorkoutActivity
-            Intent i = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
-            startActivity(i); // Launch BLE Data View
+            // Define intent and pass workout name to PostWorkoutActivity
+            Intent launchPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+            launchPostWorkoutActivity.putExtra("workoutName", "interval1"); // pass workout name data
+
+            // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
+            startActivity(launchPostWorkoutActivity); // Launch BLE Data View
             finish(); // can't go back
         }
     }
@@ -1356,10 +1395,13 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 3rd function for background task: follows background task after completion
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-            // Define intent and launch next activity
-            // Exit WorkoutActivity, launch PostWorkoutActivity
-            Intent i = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
-            startActivity(i); // Launch BLE Data View
+
+            // Define intent and pass workout name to PostWorkoutActivity
+            Intent launchPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+            launchPostWorkoutActivity.putExtra("workoutName", "interval2"); // pass workout name data
+
+            // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
+            startActivity(launchPostWorkoutActivity); // Launch BLE Data View
             finish(); // can't go back
         }
     }
@@ -1769,10 +1811,12 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 3rd function for background task: follows background task after completion
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-            // Define intent and launch next activity
-            // Exit WorkoutActivity, launch PostWorkoutActivity
-            Intent i = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
-            startActivity(i); // Launch BLE Data View
+            // Define intent and pass workout name to PostWorkoutActivity
+            Intent launchPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+            launchPostWorkoutActivity.putExtra("workoutName", "interval30"); // pass workout name data
+
+            // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
+            startActivity(launchPostWorkoutActivity); // Launch BLE Data View
             finish(); // can't go back
         }
     }
@@ -1862,10 +1906,13 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 3rd function for background task: follows background task after completion
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-            // Define intent and launch next activity
-            // Exit WorkoutActivity, launch PostWorkoutActivity
-            Intent i = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
-            startActivity(i); // Launch BLE Data View
+
+            // Define intent and pass workout name to PostWorkoutActivity
+            Intent launchPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+            launchPostWorkoutActivity.putExtra("workoutName", "pace20"); // pass workout name data
+
+            // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
+            startActivity(launchPostWorkoutActivity); // Launch BLE Data View
             finish(); // can't go back
         }
     }
@@ -1954,10 +2001,13 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 3rd function for background task: follows background task after completion
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-            // Define intent and launch next activity
-            // Exit WorkoutActivity, launch PostWorkoutActivity
-            Intent i = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
-            startActivity(i); // Launch BLE Data View
+
+            // Define intent and pass workout name to PostWorkoutActivity
+            Intent launchPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+            launchPostWorkoutActivity.putExtra("workoutName", "pace30"); // pass workout name data
+
+            // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
+            startActivity(launchPostWorkoutActivity); // Launch BLE Data View
             finish(); // can't go back
         }
     }
@@ -2046,10 +2096,13 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 3rd function for background task: follows background task after completion
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-            // Define intent and launch next activity
-            // Exit WorkoutActivity, launch PostWorkoutActivity
-            Intent i = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
-            startActivity(i); // Launch BLE Data View
+
+            // Define intent and pass workout name to PostWorkoutActivity
+            Intent launchPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+            launchPostWorkoutActivity.putExtra("workoutName", "pace40"); // pass workout name data
+
+            // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
+            startActivity(launchPostWorkoutActivity); // Launch BLE Data View
             finish(); // can't go back
         }
     }
