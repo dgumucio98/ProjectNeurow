@@ -155,7 +155,7 @@ public class LoginActivity extends AppCompatActivity {
 
         GlobalVariables.loggedInUsername = "MrBypass"; // set as Mr. Bypass
 
-        // Launch Log-in activity
+        // Launch PromptRotateActivity
         Intent i = new Intent(this, PromptRotateActivity.class);
         startActivity(i);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

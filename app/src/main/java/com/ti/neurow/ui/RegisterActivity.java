@@ -137,6 +137,10 @@ public class RegisterActivity extends AppCompatActivity {
     // DEV BYPASS: Launch PromptRotateActivity when "Bypass Login" button is pressed (bypasses actual user authentication)
     public void launchPromptRotate(View v) {
         // Launch Log-in activity
+
+        GlobalVariables.loggedInUsername = "MrBypass"; // set as Mr. Bypass
+
+        // Launch PromptRotateActivity
         Intent i = new Intent(this, PromptRotateActivity.class);
         startActivity(i);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

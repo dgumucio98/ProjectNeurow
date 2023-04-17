@@ -78,10 +78,13 @@ public class MainUIActivity extends AppCompatActivity {
         existingUser = findViewById(R.id.btnExistingUser);
         newUser = findViewById(R.id.btnNewUser);
         rowerIcon = findViewById(R.id.rower_icon);
-        BLEData = findViewById(R.id.btnBLEData);
-        DBdata = findViewById(R.id.btnDBViewer);
         Config = findViewById(R.id.btnBluetoothConnections);
-        AddToDB = findViewById(R.id.btnAddToDB);
+
+        // [DEV] Developer button definitions
+//        BLEData = findViewById(R.id.btnBLEData);
+//        DBdata = findViewById(R.id.btnDBViewer);
+//        AddToDB = findViewById(R.id.btnAddToDB);
+
 
 
         Animation animation1 = AnimationUtils.loadAnimation(MainUIActivity.this, R.anim.slide_in_left);
@@ -113,13 +116,14 @@ public class MainUIActivity extends AppCompatActivity {
                 newUser.setAlpha(0f);
                 newUser.animate().alpha(1f).setDuration(500).start();
 
-                BLEData.setVisibility(View.VISIBLE);
-                BLEData.setAlpha(0f);
-                BLEData.animate().alpha(1f).setDuration(500).start();
-
-                DBdata.setVisibility(View.VISIBLE);
-                DBdata.setAlpha(0f);
-                DBdata.animate().alpha(1f).setDuration(500).start();
+                // [DEV] Developer buttons
+//                BLEData.setVisibility(View.VISIBLE);
+//                BLEData.setAlpha(0f);
+//                BLEData.animate().alpha(1f).setDuration(500).start();
+//
+//                DBdata.setVisibility(View.VISIBLE);
+//                DBdata.setAlpha(0f);
+//                DBdata.animate().alpha(1f).setDuration(500).start();
 
                 Config.setVisibility(View.VISIBLE);
                 Config.setAlpha(0f);
@@ -168,25 +172,25 @@ public class MainUIActivity extends AppCompatActivity {
             }
         });
 
-        // TEMP: BLE Data Viewer (Dev) button listener
-        BLEData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Create intent to launch next activity (RawDataActivity)
-                Intent i = new Intent(MainUIActivity.this, MainActivity.class);
-                startActivity(i); // Launch BLE Data View
-            }
-        });
+        // [DEV]: BLE Data Viewer button listener
+//        BLEData.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // Create intent to launch next activity (RawDataActivity)
+//                Intent i = new Intent(MainUIActivity.this, MainActivity.class);
+//                startActivity(i); // Launch BLE Data View
+//            }
+//        });
 
-        // TEMP: DB Data Viewer (Dev) button listener
-        DBdata.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Create intent to launch next activity (RawDataActivity)
-                Intent i = new Intent(MainUIActivity.this, MainDBActivity.class);
-                startActivity(i); // Launch BLE Data View
-            }
-        });
+        // [DEV]: DB Data Viewer button listener
+//        DBdata.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // Create intent to launch next activity (RawDataActivity)
+//                Intent i = new Intent(MainUIActivity.this, MainDBActivity.class);
+//                startActivity(i); // Launch BLE Data View
+//            }
+//        });
 
         // Easter egg message: If rower icon is held
         rowerIcon.setOnLongClickListener(new View.OnLongClickListener() {

@@ -7,46 +7,6 @@
     android:background="@drawable/dark_grey_background"
     tools:context=".ui.WorkoutActivity">
 
-    <Button
-        android:id="@+id/btnAlyson"
-        android:layout_width="900dp"
-        android:layout_height="425dp"
-        android:layout_below="@id/simpleChronometer"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="350dp"
-        android:backgroundTint="#6082B6"
-        android:fontFamily="sans-serif-black"
-        android:text="[TEST] Run ftpCalc"
-        android:textColor="@color/white"
-        android:textSize="80sp" />
-
-    <Button
-        android:id="@+id/btnBegin"
-        android:layout_width="250dp"
-        android:layout_height="425dp"
-        android:layout_below="@id/simpleChronometer"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="50dp"
-        android:backgroundTint="#50C878"
-        android:fontFamily="sans-serif-black"
-        android:text="Start"
-        android:textColor="@color/white"
-        android:textSize="40sp" />
-
-    <TextView
-        android:id="@+id/txtUserID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="25dp"
-        android:layout_marginRight="25dp"
-        android:backgroundTint="#E5E4E2"
-        android:fontFamily="sans-serif-black"
-        android:text="[UserID]"
-        android:textColor="#D3D3D3"
-        android:textSize="35sp" />
-
     <TextView
         android:id="@+id/txtWorkoutName"
         android:layout_width="wrap_content"
@@ -56,7 +16,7 @@
         android:layout_below="@id/txtWorkoutAttribute"
         android:layout_centerHorizontal="true"
         android:textColor="@color/white"
-        android:textSize="80sp"
+        android:textSize="60sp"
         android:textStyle="normal" />
 
     <TextView
@@ -71,13 +31,300 @@
         android:textSize="50sp"
         android:textStyle="bold" />
 
-    <Chronometer
-        android:id="@+id/simpleChronometer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtWorkoutName"
-        android:layout_centerHorizontal="true"
-        android:textColor="#D3D3D3"
-        android:textSize="60sp" />
+    <!-- Starting Layout -->
+    <RelativeLayout
+        android:id="@+id/StartRelativeLayout"
+        android:visibility="visible"
+        android:layout_width="1250dp"
+        android:layout_height="580dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="20dp"
+        android:animateLayoutChanges="true">
 
+        <TextView
+            android:id="@+id/txtStartPrompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:text="Are you ready?"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="100dp"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="1250dp"
+            android:layout_height="300dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="80dp"
+            android:layout_marginLeft="40dp"
+            android:background="@drawable/rounded_button_background"
+            android:backgroundTint="#50C878"
+            android:fontFamily="sans-serif-black"
+            android:text="I'm ready. Start!"
+            android:textColor="@color/white"
+            android:textSize="50sp" />
+
+    </RelativeLayout>
+
+
+    <!-- Metrics Layout -->
+    <RelativeLayout
+        android:id="@+id/MetricsRelativeLayout"
+        android:visibility="invisible"
+        android:layout_width="1250dp"
+        android:layout_height="580dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="50dp"
+        android:animateLayoutChanges="true">
+
+        <TextView
+            android:id="@+id/txtTimeMetric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:layout_below="@id/txtTimeMetricDescriptor"
+            android:fontFamily="sans-serif"
+            android:text="03:28"
+            android:textColor="#ebe8e8"
+            android:textSize="90sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtTimeMetricDescriptor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="Elapsed Time"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtDistanceMetric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:fontFamily="sans-serif"
+            android:text="187 m"
+            android:textColor="#04cf9f"
+            android:layout_below="@id/txtDistanceDescriptor"
+            android:textSize="70sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtDistanceDescriptor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:layout_alignParentLeft="true"
+            android:text="Distance Rowed"
+            android:layout_below="@id/txtTimeMetric"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtCaloriesMetric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="206 cal"
+            android:layout_below="@id/txtCaloriesMetricDescriptor"
+            android:textColor="#c2f2ac"
+            android:textSize="70sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtCaloriesMetricDescriptor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:layout_alignParentLeft="true"
+            android:text="Calories"
+            android:layout_below="@id/txtDistanceMetric"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtAvgPwrMetric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="47 W"
+            android:layout_below="@id/txtAvgPwrMetricDescriptor"
+            android:textColor="@color/bubblegum_red"
+            android:textSize="70sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtAvgPwrMetricDescriptor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:layout_alignParentLeft="true"
+            android:text="Average Power"
+            android:layout_below="@id/txtCaloriesMetric"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtDriveLengthMetric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDriveLengthMetricDescriptor"
+            android:layout_alignParentRight="true"
+            android:includeFontPadding="false"
+            android:fontFamily="sans-serif"
+            android:text="1.2 m"
+            android:textColor="#afc4e0"
+            android:textSize="70sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtDriveLengthMetricDescriptor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:text="Drive Length"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtDriveTimeMetric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDriveTimeMetricDescriptor"
+            android:layout_alignParentRight="true"
+            android:includeFontPadding="false"
+            android:fontFamily="sans-serif"
+            android:text="820 ms"
+            android:textColor="#c7a258"
+            android:textSize="70sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtDriveTimeMetricDescriptor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/txtDriveLengthMetric"
+            android:text="Drive Time"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtSplitTimeMetric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtSplitTimeMetricDescriptor"
+            android:layout_alignParentRight="true"
+            android:includeFontPadding="false"
+            android:fontFamily="sans-serif"
+            android:text="29 sec"
+            android:textColor="#fc9dbc"
+            android:textSize="70sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtSplitTimeMetricDescriptor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/txtDriveTimeMetric"
+            android:text="Split Time"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtLastSplitTimeMetric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtLastSplitTimeMetricDescriptor"
+            android:layout_alignParentRight="true"
+            android:includeFontPadding="false"
+            android:fontFamily="sans-serif"
+            android:text="33 sec"
+            android:textColor="#79d9af"
+            android:textSize="70sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtLastSplitTimeMetricDescriptor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/txtSplitTimeMetric"
+            android:text="Last Split Time"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/txtIntervalFeedbackMetric"
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"
+            android:fontFamily="sans-serif"
+            android:text="[Interval Feedback will go here!]"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtPaceFeedbackMetric"
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"
+            android:fontFamily="sans-serif"
+            android:text="[Pace Feedback will go here!]"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtInstructionMetric"
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"            android:fontFamily="sans-serif"
+            android:text="[Feedback will go here!]"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnStop"
+            android:layout_width="400dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="420dp"
+            android:background="@drawable/rounded_button_background"
+            android:backgroundTint="#BE6868"
+            android:text="STOP WORKOUT"
+            android:textSize="30dp"
+            android:textColor="@color/white" />
+    </RelativeLayout>
 </RelativeLayout>

@@ -8,37 +8,20 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.WorkoutMainActivity">
 
-    <ImageView
-        android:id="@+id/rower_icon"
-        android:layout_width="103dp"
-        android:layout_height="103dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:srcCompat="@drawable/rowing_empty_white" />
-
-    <TextView
-        android:id="@+id/txtWelcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rower_icon"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="75dp"
-        android:fontFamily="sans-serif"
-        android:text="Select an Activity"
-        android:textColor="@color/white"
-        android:textSize="65sp"
-        android:textStyle="normal" />
-
     <Button
         android:id="@+id/btnWorkout1"
         android:layout_width="254dp"
         android:layout_height="130dp"
-        android:layout_marginTop="370dp"
+        android:layout_below="@id/txtWelcome"
+        android:layout_marginTop="70dp"
         android:layout_marginRight="70dp"
         android:layout_toLeftOf="@id/btnWorkout2"
         android:background="@drawable/ftp_button_background"
+        android:drawableTop="@drawable/ic_ftp"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
         android:text="FTP Calculator"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="22sp" />
 
@@ -46,11 +29,16 @@
         android:id="@+id/btnWorkout2"
         android:layout_width="254dp"
         android:layout_height="130dp"
+        android:layout_below="@id/txtWelcome"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="370dp"
+        android:layout_marginTop="70dp"
         android:background="@drawable/pace_button_background"
+        android:drawableTop="@drawable/ic_pace"
         android:onClick="showPopup2"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
         android:text="Pace Workout"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="22sp" />
 
@@ -58,14 +46,54 @@
         android:id="@+id/btnWorkout3"
         android:layout_width="254dp"
         android:layout_height="130dp"
+        android:layout_below="@id/txtWelcome"
         android:layout_marginLeft="70dp"
-        android:layout_marginTop="370dp"
+        android:layout_marginTop="70dp"
         android:layout_toRightOf="@id/btnWorkout2"
         android:background="@drawable/interval_button_background"
+        android:drawableTop="@drawable/ic_interval"
         android:onClick="showPopup1"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
         android:text="Interval Workout"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="22sp" />
+
+    <Button
+        android:id="@+id/btnDemo"
+        android:layout_width="254dp"
+        android:layout_height="130dp"
+        android:layout_below="@id/btnWorkout1"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="130dp"
+        android:background="@drawable/demo_button_background"
+        android:drawableTop="@drawable/ic_demo"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
+        android:text="Demo Workout"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="22sp" />
+
+    <Button
+        android:id="@+id/btnPredictor"
+        android:layout_width="260dp"
+        android:layout_height="70dp"
+        android:layout_below="@id/btnWorkout2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/rounded_button_background"
+        android:backgroundTint="#5db39a"
+        android:drawableRight="@drawable/ic_predictor"
+        android:onClick="launchMain"
+        android:paddingLeft="15dp"
+        android:paddingTop="3dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="3dp"
+        android:text="Power Predictor  "
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/txtUserID"
@@ -81,20 +109,6 @@
         android:textColor="#D3D3D3"
         android:textSize="40sp" />
 
-    <Button
-        android:id="@+id/btnHistory"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/txtUserID"
-        android:layout_marginLeft="1160dp"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/rounded_button_background"
-        android:backgroundTint="#0fa64b"
-        android:onClick="showPopup2"
-        android:text="History"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
-
     <TextView
         android:id="@+id/txtDate"
         android:layout_width="wrap_content"
@@ -102,56 +116,100 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="25dp"
         android:fontFamily="sans-serif"
+        android:text="[Date]\n[Time]"
         android:textColor="#D3D3D3"
         android:textSize="35sp" />
 
-    <Button
-        android:id="@+id/btnLogOut"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="725dp"
-        android:backgroundTint="#D22B2B"
-        android:onClick="launchMain"
-        android:text="Log Out"
+    <TextView
+        android:id="@+id/txtUserFtp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/txtUserID"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="25dp"
+        android:fontFamily="sans-serif"
+        android:text="[User FTP]"
+        android:textColor="#D3D3D3"
+        android:textSize="32sp" />
+
+    <TextView
+        android:id="@+id/txtInfo"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="30dp"
+        android:text="Press and hold a button for more information"
+        android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/txtPrediction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnPredictor"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="#5db39a"
+        android:textSize="27sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rower_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:fontFamily="sans-serif"
+        android:text="Select an Activity"
+        android:textColor="@color/white"
+        android:textSize="65sp"
+        android:textStyle="normal" />
 
     <ImageView
-        android:id="@+id/infoIcon"
+        android:id="@+id/rower_icon"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/rowing_empty_white" />
+
+    <ImageView
+        android:id="@+id/myImage"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="585dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="95dp"
+        android:layout_marginBottom="75dp"
         android:src="@drawable/info_icon" />
-
-    <ImageView
-        android:id="@+id/baselineBanner"
-        android:layout_width="61dp"
-        android:layout_height="107dp"
-        android:layout_marginStart="240dp"
-        android:layout_marginTop="430dp"
-        android:src="@drawable/green_banner" />
 
     <TextView
         android:id="@+id/txtBanner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/btnWorkout1"
-        android:layout_marginStart="249dp"
+        android:layout_marginStart="247dp"
+        android:elevation="1dp"
         android:text="baseline"
         android:textColor="@color/white"
         android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/infoText"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="620dp"
-        android:text="Press and hold an option for more information"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="15sp" />
+    <ImageView
+        android:id="@+id/baselineBanner"
+        android:layout_width="61dp"
+        android:layout_height="107dp"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="400dp"
+        android:src="@drawable/green_banner" />
 
 </RelativeLayout>

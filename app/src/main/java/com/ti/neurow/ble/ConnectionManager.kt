@@ -508,7 +508,6 @@ object ConnectionManager {
             with(characteristic) {
                 // The value when subscribed to a characteristic
                 Timber.i("Characteristic $uuid changed | value: ${value.toHexString()}")
-
                 //uuidParsing(myTime2, uuid.toString(), value.toUByteArray(), true)
                 // Basically for each listener registered in a given activity with it's
                 // respective callback
