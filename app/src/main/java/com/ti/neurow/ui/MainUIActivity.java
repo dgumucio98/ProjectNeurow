@@ -47,6 +47,8 @@ public class MainUIActivity extends AppCompatActivity {
         Intent intent = getIntent();
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
         boolean isDeviceReceived = false;
+        // Start the timber log
+        Timber.plant(new Timber.DebugTree());
         if (device != null) {
             //throw new RuntimeException("Missing BluetoothDevice from MainActivity!");
             isDeviceReceived = true;
