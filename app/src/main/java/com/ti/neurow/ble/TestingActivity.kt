@@ -77,10 +77,10 @@ class TestingActivity: AppCompatActivity() {
         btn33End.setOnClickListener({PM5.end33()})
 
         val btn35End = findViewById(R.id.button35End) as Button
-        btn35End.setOnClickListener({PM5.end33()})
+        btn35End.setOnClickListener({PM5.end35()})
 
         val btn3DEnd = findViewById(R.id.button3DEnd) as Button
-        btn3DEnd.setOnClickListener({PM5.end33()})
+        btn3DEnd.setOnClickListener({PM5.end3D()})
 
         val btn22 = findViewById(R.id.buttonRead22) as Button
         btn22.setOnClickListener({PM5.read22()})

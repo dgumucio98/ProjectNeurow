@@ -91,6 +91,7 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         // This is how you can just call the stream to turn on and off, uncomment them out
         // There we have the device and just start calling the utilities
         // pm5Utility testingDevice = new pm5Utility(device);
+        // an example on how to start the stream for data33, look at pm5utility or in testingActivity.kt
         // testingDevice.start33();
 
         /* End addition */

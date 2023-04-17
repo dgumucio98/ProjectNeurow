@@ -13,7 +13,7 @@ BLE operations to poll data, rest, and close connections
  */
 class pm5Utility(device: BluetoothDevice) {
 
-    //Characteristics for the PM5
+    //The PM5 itself referred to in the device
     private val PM5 = device
 
     private val characteristics by lazy {
@@ -76,6 +76,7 @@ class pm5Utility(device: BluetoothDevice) {
     }
 
     //Begin util functions
+    // Start [33,35,3D]: Simple starts the stream, same for end
     fun start33() {
         Timber.i("PM5 Utilities has started polling for Dataframe 33")
         ConnectionManager.enableNotifications(PM5, char33)

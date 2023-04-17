@@ -72,7 +72,7 @@ public class WorkoutActivity extends AppCompatActivity {
         }
         // This is how you can just call the stream to turn on and off, uncomment them out
         // There we have the device and just start calling the utilities
-        pm5Utility testingDevice = new pm5Utility(device);
+        //pm5Utility testingDevice = new pm5Utility(device);
         // TODO: Call the starting services at some point before the workout starts
         //testingDevice.start33(); <- call the object and start the service
         /* End addition */
