@@ -20,6 +20,8 @@ import com.ti.neurow.R;
 
 import java.util.regex.Pattern; // regular expression support for registration validation
 
+import timber.log.Timber;
+
 public class LoginActivity extends AppCompatActivity {
 
     // Declare buttons and EditTexts
@@ -46,10 +48,13 @@ public class LoginActivity extends AppCompatActivity {
             //throw new RuntimeException("Missing BluetoothDevice from MainActivity!");
             isDeviceReceived = true;
         }
+        // For logging and debugging, uncomment for app visual queue
         if(isDeviceReceived == true) {
-            Toast.makeText(this, "The BLE device was successfully passed.", Toast.LENGTH_LONG).show();
+            Timber.i("The BLE device was successfully passed.");
+            //Toast.makeText(this, "The BLE device was successfully passed.", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
+            Timber.i("The BLE device was not passed.");
+            //Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
         }
         /* End addition */
 

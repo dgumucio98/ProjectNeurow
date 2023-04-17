@@ -116,35 +116,5 @@ class pm5Utility(device: BluetoothDevice) {
     }
 
 
-    // What is .apply? A fast way to apply properties to a constructor methods or the object that
-    // returns an object and then apply the properties / function overrides
-    // This event listener is completed it launches the second activity
-    private val connectionEventListener by lazy {
-        ConnectionEventListener().apply {
-            /* There are two callbacks being defined with this listener
-            *onconnectionSetupComplete, which takes the BluetoothGatt object and launches the second
-            * activity, BleOperationsActivity
-             */
-            /*
-            onConnectionSetupComplete = { gatt ->
-                //Intent(this@MainActivity, BleOperationsActivity::class.java).also {
-                Intent(this@MainActivity, TestingActivity::class.java).also {
-                    //Intent(this@MainActivity, MainUIActivity::class.java).also {
-                    it.putExtra(BluetoothDevice.EXTRA_DEVICE, gatt.device)
-                    startActivity(it)
-                }
-                ConnectionManager.unregisterListener(this)
-            }
-            onDisconnect = {
-                runOnUiThread {
-                    alert {
-                        title = "Disconnected"
-                        message = "Disconnected or unable to connect to device."
-                        positiveButton("OK") {}
-                    }.show()
-                }
-            }
-             */
-        }
-    }
+
 }
