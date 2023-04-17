@@ -23,9 +23,14 @@ import com.jjoe64.graphview.GridLabelRenderer;
 import com.ti.neurow.GlobalVariables; // for access to finalListTimePower
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.ti.neurow.db.DatabaseHelper;
 
 import com.ti.neurow.R;
 import com.ti.neurow.wkt.workouts;
+
+import java.util.ArrayList;
+
+import timber.log.Timber;
 
 
 public class PostWorkoutActivity extends AppCompatActivity {
@@ -57,39 +62,36 @@ public class PostWorkoutActivity extends AppCompatActivity {
 
         txtFtp.setText("FTP: " + GlobalVariables.ftp + "W"); // set FTP text box to updated FTP value
 
-
+        /////// Power vs Time Graphing ///////
         // [TEST] Populate list before graphing
-        int length = GlobalVariables.finalListTimePower.size(); // length of list
+        int length1 = GlobalVariables.finalListTimePower.size(); // length of list
         int j = 0; // double-time iterator
-        DataPoint[] dp = new DataPoint[length/2];
-        for (int i = 0; i < length - 1; i += 2) {
-            dp[j] = new DataPoint(GlobalVariables.finalListTimePower.get(i), GlobalVariables.finalListTimePower.get(i + 1));
+        DataPoint[] dp1 = new DataPoint[length1/2];
+        for (int i = 0; i < length1 - 1; i += 2) {
+            dp1[j] = new DataPoint(GlobalVariables.finalListTimePower.get(i), GlobalVariables.finalListTimePower.get(i + 1));
             if (i % 2 == 0){
                 j++;
             }
         }
-
-        // ***Start graphing stuff ***
-
         // Set series to graph
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(dp);
+        LineGraphSeries<DataPoint> series1 = new LineGraphSeries<DataPoint>(dp1);
 
-        Power_vs_Time.addSeries(series); // add our data
+        Power_vs_Time.addSeries(series1); // add our data
         Power_vs_Time.setTitle("Power vs. Time"); // set title of graph
         Power_vs_Time.setTitleColor(getResources().getColor(R.color.purple_200)); // set color of title
         Power_vs_Time.setTitleTextSize(35); // set title text size
 
         // Get the maximum and minimum x and y values from the series
-        double maxX = series.getHighestValueX();
-        double minX = 0;
-        double maxY = series.getHighestValueY() + 2;
-        double minY = 0;
+        double maxX1 = series1.getHighestValueX();
+        double minX1 = 0;
+        double maxY1 = series1.getHighestValueY() + 2;
+        double minY1 = 0;
 
         // Set the bounds of the viewport to the maximum and minimum values
-        Power_vs_Time.getViewport().setMinX(minX);
-        Power_vs_Time.getViewport().setMaxX(maxX);
-        Power_vs_Time.getViewport().setMinY(minY);
-        Power_vs_Time.getViewport().setMaxY(maxY);
+        Power_vs_Time.getViewport().setMinX(minX1);
+        Power_vs_Time.getViewport().setMaxX(maxX1);
+        Power_vs_Time.getViewport().setMinY(minY1);
+        Power_vs_Time.getViewport().setMaxY(maxY1);
 
         // Enable scrolling and scaling
         Power_vs_Time.getViewport().setScalable(true);
@@ -107,8 +109,57 @@ public class PostWorkoutActivity extends AppCompatActivity {
         Power_vs_Time.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
 
         Power_vs_Time.animate();
+        
+        series1.setColor(getResources().getColor(R.color.teal_200)); // set color of line
 
-        series.setColor(getResources().getColor(R.color.teal_200)); // set color of line
+        /////// Power of Pull Graphing ///////
+        // Create database instance
+        DatabaseHelper db = new DatabaseHelper(PostWorkoutActivity.this);
+        ArrayList<Double> powPull = db.get3D_avg_y();
+        Timber.d("ArrayList contents: %s", powPull);
+        int length2 = powPull.size();
+        DataPoint[] dp2 = new DataPoint[length2];
+        for (int i = 0; i < length2; i++) {
+            dp2[i] = new DataPoint(i, powPull.get(i));
+        }
+        // Set series to graph
+        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<DataPoint>(dp2);
+
+        Power_vs_Pull.addSeries(series2); // add our data
+        Power_vs_Pull.setTitle("Power of Pull"); // set title of graph
+        Power_vs_Pull.setTitleColor(getResources().getColor(R.color.purple_200)); // set color of title
+        Power_vs_Pull.setTitleTextSize(35); // set title text size
+
+        // Get the maximum and minimum x and y values from the series
+        double maxX2 = series2.getHighestValueX();
+        double minX2 = 0;
+        double maxY2 = series2.getHighestValueY() + 2;
+        double minY2 = 0;
+
+        // Set the bounds of the viewport to the maximum and minimum values
+        Power_vs_Pull.getViewport().setMinX(minX2);
+        Power_vs_Pull.getViewport().setMaxX(maxX2);
+        Power_vs_Pull.getViewport().setMinY(minY2);
+        Power_vs_Pull.getViewport().setMaxY(maxY2);
+
+        // Enable scrolling and scaling
+        Power_vs_Pull.getViewport().setScalable(true);
+        Power_vs_Pull.getViewport().setScalableY(true);
+        Power_vs_Pull.getViewport().setScrollable(true);
+        Power_vs_Pull.getViewport().setScrollableY(true);
+
+        Power_vs_Pull.getGridLabelRenderer().setVerticalAxisTitle("Power (W)"); // set vertical label
+        Power_vs_Pull.getGridLabelRenderer().setHorizontalAxisTitle("Sequential Time Increments"); // set horizontal label
+
+        // Axis colors
+        Power_vs_Pull.getGridLabelRenderer().setHorizontalAxisTitleColor(Color.WHITE);
+        Power_vs_Pull.getGridLabelRenderer().setVerticalAxisTitleColor(Color.WHITE);
+        Power_vs_Pull.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+        Power_vs_Pull.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
+
+        Power_vs_Pull.animate();
+
+        series2.setColor(getResources().getColor(R.color.teal_200)); // set color of line
 
         // Done button listener
         btnDone.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +169,6 @@ public class PostWorkoutActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
         // Show suggestion depending on workout
         String workoutName = getIntent().getStringExtra("workoutName");

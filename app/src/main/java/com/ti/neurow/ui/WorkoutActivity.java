@@ -406,7 +406,7 @@ public class WorkoutActivity extends AppCompatActivity {
             ArrayList<Double> powtimearray = new ArrayList<>(); // create new arraylist
 
             // main loop
-            while (db.getTime_33() < 30.0) { // [TEST] 30 seconds
+            while (db.getTime_33() < 15.0) { // [TEST] 15 seconds
 
                 sum += db.getPower();
                 length += 1;
