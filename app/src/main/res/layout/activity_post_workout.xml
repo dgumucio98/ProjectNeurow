@@ -11,29 +11,12 @@
     tools:context=".ui.PostWorkoutActivity">
 
     <TextView
-        android:id="@+id/idTVHead"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
-        android:gravity="center"
-        android:padding="4dp"
-        android:text="[TEST] Post Workout Results"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <TextView
         android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
         android:text="POST-WORKOUT RESULTS"
-        android:layout_below="@id/idTVHead"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
         android:textColor="@color/white"
         android:textSize="75sp"
@@ -45,50 +28,60 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
         android:text="[FTP]"
-        android:layout_below="@id/idTVHead"
-        android:layout_marginTop="600dp"
+        android:layout_marginTop="390dp"
         android:layout_centerHorizontal="true"
         android:textColor="#FFFF00"
-        android:textSize="50sp"
+        android:textSize="30sp"
         android:textStyle="normal" />
 
     <TextView
-        android:id="@+id/txtMaintenance"
+        android:id="@+id/txtSuggestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:text="[Under Construction]"
-        android:layout_alignParentTop="true"
-        android:textColor="#FF0000"
-        android:textSize="50sp"
-        android:layout_marginLeft="800dp"
-        android:layout_marginTop="375dp"
-        android:textStyle="normal"
-        android:rotation="-10"/>
-
-
+        android:text="[Post-workout suggestion goes here]"
+        android:layout_marginTop="560dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="35sp"
+        android:textStyle="normal" />
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/Power_vs_Time"
         android:layout_width="500dp"
         android:layout_height="350dp"
-        android:layout_marginTop="250dp"
-        android:layout_marginLeft="75dp"/>
+        android:layout_marginTop="180dp"
+        android:layout_marginLeft="55dp"/>
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/Power_vs_Pull"
         android:layout_width="500dp"
         android:layout_height="350dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="180dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="75dp"/>
+        android:layout_marginRight="55dp"/>
 
     <ImageView
         android:id="@+id/rower_icon"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:src="@drawable/rowing_empty_white"
-        android:layout_marginTop="380dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_marginTop="280dp"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/btnDone"
+        android:layout_width="350dp"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/rounded_button_background"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="35dp"
+        android:text="Done"
+        android:textSize="30dp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:backgroundTint="#94a9d6"/>
+
 
 </RelativeLayout>

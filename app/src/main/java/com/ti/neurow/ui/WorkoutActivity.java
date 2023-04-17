@@ -2,7 +2,6 @@ package com.ti.neurow.ui;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,15 +9,11 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.Chronometer;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,8 +26,6 @@ import com.ti.neurow.db.DatabaseHelper;
 import com.ti.neurow.wkt.workouts; // for workout testing
 import com.ti.neurow.R;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 import pl.droidsonroids.gif.GifImageView;
@@ -41,8 +34,8 @@ import timber.log.Timber;
 public class WorkoutActivity extends AppCompatActivity {
 
     // Define UI elements
-    RelativeLayout metricsRelativeLayout; // layout that holds all metrics (TextViews)
-    Button btnStart, btnAdvanced; // buttons
+    RelativeLayout metricsRelativeLayout, StartRelativeLayout; // layout that holds all metrics (TextViews)
+    Button btnStart; // buttons
     boolean buttonPressed = false; // tracks if workout has been started using button already
     TextView txtStartPrompt, txtWorkoutAttribute, txtWorkoutName, txtTimeMetric, txtDistanceMetric, txtCaloriesMetric, txtAvgPwrMetric, txtDriveLengthMetric, txtDriveTimeMetric,
             txtSplitTimeMetric, txtLastSplitTimeMetric, txtIntervalFeedbackMetric, txtPaceFeedbackMetric, txtInstructionMetric; // metrics
@@ -62,8 +55,8 @@ public class WorkoutActivity extends AppCompatActivity {
         txtWorkoutName = (TextView) findViewById(R.id.txtWorkoutName); // workout name (interval/pace)
         txtStartPrompt = (TextView) findViewById(R.id.txtStartPrompt); // start workout prompt
         btnStart = (Button) findViewById(R.id.btnStart); // button that starts workouts
-        btnAdvanced = (Button) findViewById(R.id.btnAdvanced); // button that shows more metrics
         RelativeLayout MetricsRelativeLayout = findViewById(R.id.MetricsRelativeLayout); // metrics layout
+        RelativeLayout StartRelativeLayout = findViewById(R.id.StartRelativeLayout); // starting layout
 
 
         // Metrics
@@ -107,7 +100,11 @@ public class WorkoutActivity extends AppCompatActivity {
                     // Task 1: Hide start button, prompt, and organize metric layout
                     btnStart.setVisibility(View.GONE); // remove button
                     txtStartPrompt.setVisibility(View.GONE); // remove prompt
-                    MetricsRelativeLayout.setVisibility(View.VISIBLE); // show layout
+                    txtIntervalFeedbackMetric.setVisibility(View.GONE);
+                    txtPaceFeedbackMetric.setVisibility(View.GONE);
+                    txtInstructionMetric.setVisibility(View.GONE);
+                    StartRelativeLayout.setVisibility(View.GONE); // hide starting layout
+                    MetricsRelativeLayout.setVisibility(View.VISIBLE); // show metrics layout
 
                     // Task 2: Prepare and start workout tasks
 
@@ -284,13 +281,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 }
 
             } // end of onClick
-        });
-
-        btnAdvanced.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { // when btnStart is clicked
-
-            }
         });
     }
 

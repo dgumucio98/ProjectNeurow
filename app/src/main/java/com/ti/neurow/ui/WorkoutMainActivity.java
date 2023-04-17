@@ -68,6 +68,8 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
 
         setContentView(R.layout.activity_workout_main);
 
+        Handler handler = new Handler(); // define handler
+
         // Initialize UI elements
         TextView txtUserID = findViewById(R.id.txtUserID);
         TextView txtUserFtp = findViewById(R.id.txtUserFtp);
@@ -130,6 +132,8 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         btnDemo.setOnClickListener(workoutClickListener);
         btnPredictor.setOnClickListener(workoutClickListener);
 
+        // Start updateTime handler
+        handler.post(updateTime);
     }
 
     // Define a runnable to update time status every second
