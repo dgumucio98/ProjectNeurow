@@ -27,6 +27,8 @@ public class RegisterActivity extends AppCompatActivity {
     // Declare buttons and EditTexts
     EditText usernameEditText,passwordEditText;
     Button registerButton, backButton;
+    // Need to over ride the  listener upon creation
+    Button bypassButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
         usernameEditText = (EditText) findViewById(R.id.edtTxtPromptUserID);
         passwordEditText = (EditText)findViewById(R.id.edtTxtPromptPassword);
         registerButton = (Button)findViewById(R.id.btnRegister);
+        bypassButton = (Button)findViewById(R.id.btnBypass);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,6 +123,25 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+
+        bypassButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Launch Log-in activity
+                GlobalVariables.loggedInUsername = "MrBypass"; // set as Mr. Bypass
+                // Launch PromptRotateActivity
+
+                Intent i = new Intent(RegisterActivity.this, PromptRotateActivity.class);
+                //Needed to pass BLE device
+                if(device != null) {
+                    i.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
+                }
+                startActivity(i);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish(); // close activity
+
+            }
+        });
     }
 
     // Define valid username guidelines
@@ -135,6 +157,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     // DEV BYPASS: Launch PromptRotateActivity when "Bypass Login" button is pressed (bypasses actual user authentication)
+    //Moved the function into the onclick listener in the onCreate
     public void launchPromptRotate(View v) {
         // Launch Log-in activity
 

@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // Declare buttons and EditTexts
     EditText usernameEditText,passwordEditText;
-    Button loginButton, backButton;
+    Button loginButton, backButton, bypassButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +62,8 @@ public class LoginActivity extends AppCompatActivity {
         usernameEditText = (EditText) findViewById(R.id.edtTxtPromptUserID);
         passwordEditText = (EditText)findViewById(R.id.edtTxtPromptPassword);
         loginButton = (Button)findViewById(R.id.btnLogin);
+        //Bypass button to use onclick listener below
+        bypassButton = (Button)findViewById(R.id.btnBypass);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +113,25 @@ public class LoginActivity extends AppCompatActivity {
                         return;
                     }
                 }
+            }
+        });
+
+        bypassButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Launch Log-in activity
+                GlobalVariables.loggedInUsername = "MrBypass"; // set as Mr. Bypass
+                // Launch PromptRotateActivity
+
+                Intent i = new Intent(LoginActivity.this, PromptRotateActivity.class);
+                //Needed to pass BLE device
+                if(device != null) {
+                    i.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
+                }
+                startActivity(i);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish(); // close activity
+
             }
         });
     }

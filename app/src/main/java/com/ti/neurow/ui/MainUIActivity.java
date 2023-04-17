@@ -44,11 +44,12 @@ public class MainUIActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ui_main);
 
         /* Additions to pass the BLE device */
+        // Start the timber log
+        Timber.plant(new Timber.DebugTree());
         Intent intent = getIntent();
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
         boolean isDeviceReceived = false;
-        // Start the timber log
-        Timber.plant(new Timber.DebugTree());
+
         if (device != null) {
             //throw new RuntimeException("Missing BluetoothDevice from MainActivity!");
             isDeviceReceived = true;
@@ -61,8 +62,6 @@ public class MainUIActivity extends AppCompatActivity {
             Timber.i("The BLE device was not passed.");
             //Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
         }
-
-
         // This is how you can just call the stream to turn on and off, uncomment them out
         // There we have the device and just start calling the utilities
         // pm5Utility testingDevice = new pm5Utility(device);

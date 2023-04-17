@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.ti.neurow.ble.pm5Utility;
 import com.ti.neurow.db.data33;
 import com.ti.neurow.db.data35;
 
@@ -55,15 +57,24 @@ public class WorkoutActivity extends AppCompatActivity {
         Intent intent = getIntent();
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
         boolean isDeviceReceived = false;
+
         if (device != null) {
             //throw new RuntimeException("Missing BluetoothDevice from MainActivity!");
             isDeviceReceived = true;
         }
+        // For logging and debugging, uncomment for app visual queue
         if(isDeviceReceived == true) {
-            Toast.makeText(this, "The BLE device was successfully passed.", Toast.LENGTH_LONG).show();
+            Timber.i("The BLE device was successfully passed.");
+            //Toast.makeText(this, "The BLE device was successfully passed.", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
+            Timber.i("The BLE device was not passed.");
+            //Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
         }
+        // This is how you can just call the stream to turn on and off, uncomment them out
+        // There we have the device and just start calling the utilities
+        pm5Utility testingDevice = new pm5Utility(device);
+        // TODO: Call the starting services at some point before the workout starts
+        //testingDevice.start33(); <- call the object and start the service
         /* End addition */
 
         // Define elements
