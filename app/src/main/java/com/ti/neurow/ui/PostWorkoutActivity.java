@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.ti.neurow.db.DatabaseHelper;
 
 import com.ti.neurow.R;
+import com.ti.neurow.wkt.workouts;
 
 import java.util.ArrayList;
 
@@ -33,6 +35,10 @@ import timber.log.Timber;
 
 public class PostWorkoutActivity extends AppCompatActivity {
 
+
+    // Define UI elements
+    Button btnDone;
+    TextView txtSuggestion;
     GraphView Power_vs_Time; // declare left graph
     GraphView Power_vs_Pull; // declare right graph
 
@@ -48,7 +54,11 @@ public class PostWorkoutActivity extends AppCompatActivity {
 
         Power_vs_Time = findViewById(R.id.Power_vs_Time);
         Power_vs_Pull = findViewById(R.id.Power_vs_Pull);
+        btnDone = findViewById(R.id.btnDone);
         TextView txtFtp = findViewById(R.id.txtFtp);
+        TextView txtSuggestion = findViewById(R.id.txtSuggestion);
+
+        workouts workouts = new workouts(); // create instance of workouts
 
         txtFtp.setText("FTP: " + GlobalVariables.ftp + "W"); // set FTP text box to updated FTP value
 
@@ -99,7 +109,7 @@ public class PostWorkoutActivity extends AppCompatActivity {
         Power_vs_Time.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
 
         Power_vs_Time.animate();
-
+        
         series1.setColor(getResources().getColor(R.color.teal_200)); // set color of line
 
         /////// Power of Pull Graphing ///////
@@ -150,6 +160,20 @@ public class PostWorkoutActivity extends AppCompatActivity {
         Power_vs_Pull.animate();
 
         series2.setColor(getResources().getColor(R.color.teal_200)); // set color of line
+
+        // Done button listener
+        btnDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PostWorkoutActivity.this, WorkoutMainActivity.class); // send user back to dashboard
+                startActivity(intent);
+            }
+        });
+
+        // Show suggestion depending on workout
+        String workoutName = getIntent().getStringExtra("workoutName");
+        String suggestion = workouts.Suggestion(workoutName);
+        txtSuggestion.setText(suggestion);
     }
 
     @Override
