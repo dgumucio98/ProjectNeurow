@@ -1347,45 +1347,48 @@ class workouts : AppCompatActivity() {
         return message
     }
 
-    fun Suggestion(wkrt: String, failCount: Int): String {
+    fun Suggestion(wkrt: String): String {
         var Suggestion = "" //declare string to change and print to screen
-        if (wkrt === "interval1") { //20 min interval
-            if (failCount > 20) {
+        if (wkrt == "ftpCalc") {
+            Suggestion = "Now that you have an FTP, try doing an interval workout!"
+        }
+        else if (wkrt === "interval1") { //20 min interval
+            if (GlobalVariables.failCount > 20) {
                 Suggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
             } else {
                 Suggestion = "You did well! Go again or try a longer interval workout!"
             }
         } else if (wkrt === "interval2") { //30 min interval
-            if (failCount > 20 && failCount < 50) {
+            if (GlobalVariables.failCount > 20 && GlobalVariables.failCount < 50) {
                 Suggestion = "You left your power zone often. Try doing the Interval 1 workout"
-            } else if (failCount >= 50) {
+            } else if (GlobalVariables.failCount >= 50) {
                 Suggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
             } else {
                 Suggestion = "You did well! Go again or try a longer interval workout!"
             }
         } else if (wkrt === "interval3") { //40 min interval
-            if (failCount > 20 && failCount < 50) {
+            if (GlobalVariables.failCount > 20 && GlobalVariables.failCount < 50) {
                 Suggestion = "You left your power zone often. Try doing the Interval 2 workout"
-            } else if (failCount >= 50) {
+            } else if (GlobalVariables.failCount >= 50) {
                 Suggestion = "You left your power zone a lot! Try redoing your FTP Calculator workout"
             } else {
                 Suggestion = "You did well! Go again or try redoing your FTP Calculator workout!"
             }
         }
         else if (wkrt === "pace20") {
-            if (failCount > 14) {
+            if (GlobalVariables.failCount > 14) {
                 Suggestion = "Your pace was very inconsistent. Try again or do an interval workout to work on fitness"
             } else {
                 Suggestion = "You did well! Go again or try a longer pace workout!"
             }
         } else if (wkrt === "pace30") {
-            if (failCount > 14) {
+            if (GlobalVariables.failCount > 14) {
                 Suggestion = "Your pace was very inconsistent. Try doing the 20 min pace workout instead"
             } else {
                 Suggestion = "You did well! Go again or try a longer pace workout!"
             }
         } else if (wkrt === "pace40") {
-            if (failCount > 14) {
+            if (GlobalVariables.failCount > 14) {
                 Suggestion = "Your pace was very inconsistent. Try doing the 30 min pace workout instead"
             } else {
                 Suggestion = "You did well! Nice work!"
