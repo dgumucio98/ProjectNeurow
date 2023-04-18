@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.ti.neurow.db.data33;
 import com.ti.neurow.db.data35;
 
@@ -37,8 +38,8 @@ public class WorkoutActivity extends AppCompatActivity {
     RelativeLayout metricsRelativeLayout, StartRelativeLayout; // layout that holds all metrics (TextViews)
     Button btnStart; // buttons
     boolean buttonPressed = false; // tracks if workout has been started using button already
-    TextView txtStartPrompt, txtWorkoutAttribute, txtWorkoutName, txtTimeMetric, txtDistanceMetric, txtCaloriesMetric, txtAvgPwrMetric, txtDriveLengthMetric, txtDriveTimeMetric,
-            txtSplitTimeMetric, txtLastSplitTimeMetric, txtIntervalFeedbackMetric, txtPaceFeedbackMetric, txtInstructionMetric; // metrics
+    TextView txtStartPrompt, txtWorkoutAttribute, txtWorkoutName, txtTimeMetric, txtDistanceMetric, txtCaloriesMetric, txtAvgPwrMetric, txtDriveLengthMetric,
+            txtDriveTimeMetric, txtAvgDriveForceMetric, txtStrokeCountMetric, txtIntervalPZMetric, txtIntervalFixMetric, txtPaceFeedbackMetric, txtInstructionMetric; // metrics
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,25 +52,25 @@ public class WorkoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_workout);
 
         // Define elements
-        txtWorkoutAttribute = (TextView) findViewById(R.id.txtWorkoutAttribute); // workout "subtitle"
-        txtWorkoutName = (TextView) findViewById(R.id.txtWorkoutName); // workout name (interval/pace)
-        txtStartPrompt = (TextView) findViewById(R.id.txtStartPrompt); // start workout prompt
-        btnStart = (Button) findViewById(R.id.btnStart); // button that starts workouts
+        txtWorkoutAttribute = findViewById(R.id.txtWorkoutAttribute); // workout "subtitle"
+        txtWorkoutName = findViewById(R.id.txtWorkoutName); // workout name (interval/pace)
+        txtStartPrompt = findViewById(R.id.txtStartPrompt); // start workout prompt
+        btnStart = findViewById(R.id.btnStart); // button that starts workouts
         RelativeLayout MetricsRelativeLayout = findViewById(R.id.MetricsRelativeLayout); // metrics layout
         RelativeLayout StartRelativeLayout = findViewById(R.id.StartRelativeLayout); // starting layout
 
         // Assign metrics to UI elements
-        txtTimeMetric = (TextView) findViewById(R.id.txtTimeMetric); // distance text box
-        txtDistanceMetric = (TextView) findViewById(R.id.txtDistanceMetric); // distance text box
-        txtCaloriesMetric = (TextView) findViewById(R.id.txtCaloriesMetric); // calories text box
-        txtDriveLengthMetric = (TextView) findViewById(R.id.txtDriveLengthMetric); // drive length metric
-        txtDriveTimeMetric = (TextView) findViewById(R.id.txtDriveTimeMetric); // drive time metric
-        txtAvgPwrMetric = (TextView) findViewById(R.id.txtAvgPwrMetric); // average power text box
-        txtSplitTimeMetric = (TextView) findViewById(R.id.txtSplitTimeMetric); // split time text box
-        txtLastSplitTimeMetric = (TextView) findViewById(R.id.txtLastSplitTimeMetric); // split time text box
-        txtIntervalFeedbackMetric = (TextView) findViewById(R.id.txtIntervalFeedbackMetric); // interval feedback text box
-        txtPaceFeedbackMetric = (TextView) findViewById(R.id.txtPaceFeedbackMetric); // pace feedback text box
-        txtInstructionMetric = (TextView) findViewById(R.id.txtInstructionMetric); // feedback text box
+        txtTimeMetric = findViewById(R.id.txtTimeMetric); // distance text box
+        txtDistanceMetric = findViewById(R.id.txtDistanceMetric); // distance text box
+        txtCaloriesMetric = findViewById(R.id.txtCaloriesMetric); // calories text box
+        txtDriveLengthMetric = findViewById(R.id.txtDriveLengthMetric); // drive length metric
+        txtDriveTimeMetric = findViewById(R.id.txtDriveTimeMetric); // drive time metric
+        txtAvgPwrMetric = findViewById(R.id.txtAvgPwrMetric); // average power text box
+        txtAvgDriveForceMetric = findViewById(R.id.txtAvgDriveForce); // split time text box
+        txtStrokeCountMetric = findViewById(R.id.txtStrokeCountMetric); // split time text box
+        txtIntervalPZMetric = findViewById(R.id.txtIntervalPZMetric); // interval PZ feedback text box
+        txtIntervalFixMetric = findViewById(R.id.txtIntervalFixMetric); // interval fix feedback text box
+        txtPaceFeedbackMetric = findViewById(R.id.txtPaceFeedbackMetric); // pace feedback text box
 
         // Receive workout choice data from WorkoutMainActivity
         int colorToSet = getIntent().getIntExtra("attributeColor", Color.WHITE); // default is white (means problem)
@@ -96,9 +97,9 @@ public class WorkoutActivity extends AppCompatActivity {
                 // Task 1: Hide start button, prompt, and organize metric layout
                 btnStart.setVisibility(View.GONE); // remove button
                 txtStartPrompt.setVisibility(View.GONE); // remove prompt
-                txtIntervalFeedbackMetric.setVisibility(View.GONE);
+                txtIntervalPZMetric.setVisibility(View.GONE);
+                txtIntervalFixMetric.setVisibility(View.GONE);
                 txtPaceFeedbackMetric.setVisibility(View.GONE);
-                txtInstructionMetric.setVisibility(View.GONE);
                 StartRelativeLayout.setVisibility(View.GONE); // hide starting layout
                 MetricsRelativeLayout.setVisibility(View.VISIBLE); // show metrics layout
 
@@ -208,7 +209,6 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
                 });
 
-
                 // 2. Call workout methods through conditions
                 if (methodName.equals("ftpCalc")) { // CALL FTPCALC
                     ftpCalcTask ftpCalcTask = new ftpCalcTask();
@@ -261,20 +261,22 @@ public class WorkoutActivity extends AppCompatActivity {
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double) db.getPower());
 
-                // Update UI elements
+                // Update metric values
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
                 int calories = GlobalVariables.totalCalories33;
                 int driveLength = GlobalVariables.driveLength35.intValue();
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int avgPower = GlobalVariables.averagePower33;
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount); // Update the UI with the current counter value
             }
 
             double avgPow = (double) sum / length; // calculate average power
-            
+
             int ftp = (int) (0.95 * avgPow); // calculate ftp (95% of average power)
             GlobalVariables.ftp = ftp; // set ftp as global so UI can display it
 
@@ -309,15 +311,19 @@ public class WorkoutActivity extends AppCompatActivity {
             int driveLength = (int) values[3];
             int driveTime = (int) values[4];
             int avgPwr = (int) values[5];
+            int avgDriveForce = (int) values[6];
+            int strokeCount = (int) values[7];
 
             // Update the UI with the current counter value
             txtTimeMetric.setText(formattedTime);
-            txtDistanceMetric.setText(Integer.toString(dist));
-            txtCaloriesMetric.setText(Integer.toString(cal));
-            txtDriveLengthMetric.setText(Integer.toString(driveLength));
-            txtDriveTimeMetric.setText(Integer.toString(driveTime));
-            txtAvgPwrMetric.setText(Integer.toString(avgPwr));
-            txtLastSplitTimeMetric.setText(Integer.toString(lastSplit));
+            txtDistanceMetric.setText(dist + "m");
+            txtCaloriesMetric.setText(cal + "cal");
+            txtDriveLengthMetric.setText(driveLength + "m");
+            txtDriveTimeMetric.setText(driveTime + "s");
+            txtAvgPwrMetric.setText(avgPwr + "W");
+            txtAvgDriveForceMetric.setText(avgDriveForce + "lbf");
+            txtStrokeCountMetric.setText(Integer.toString(strokeCount));
+
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -359,7 +365,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
+                powtimearray.add((double) db.getPower());
                 pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
@@ -372,17 +378,18 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone! Keep it up!";
                     count = 0;
                 }
-                // Update UI elements
+                // Update metric values
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
                 int calories = GlobalVariables.totalCalories33;
                 int driveLength = GlobalVariables.driveLength35.intValue();
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             /*// 40 sec at zone 5
             while (db.getTime_33() <= 340 && db.getTime_33() > 300) {
@@ -413,7 +420,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 360 && db.getTime_33() > 340) {
@@ -444,7 +452,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 400 && db.getTime_33() > 360) {
@@ -475,7 +484,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 420 && db.getTime_33() > 400) {
@@ -506,7 +516,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 460 && db.getTime_33() > 420) {
@@ -537,7 +548,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 480 && db.getTime_33() > 460) {
@@ -568,7 +580,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 520 && db.getTime_33() > 480) {
@@ -599,7 +612,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 540 && db.getTime_33() > 520) {
@@ -630,7 +644,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 580 && db.getTime_33() > 540) {
@@ -661,7 +676,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 600 && db.getTime_33() > 580) {
@@ -692,7 +708,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 640 && db.getTime_33() > 600) {
@@ -723,7 +740,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 660 && db.getTime_33() > 640) {
@@ -754,7 +772,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 700 && db.getTime_33() > 660) {
@@ -785,7 +804,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 720 && db.getTime_33() > 700) {
@@ -816,7 +836,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 760 && db.getTime_33() > 720) {
@@ -847,7 +868,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 780 && db.getTime_33() > 760) {
@@ -878,7 +900,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 820 && db.getTime_33() > 780) {
@@ -909,7 +932,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 840 && db.getTime_33() > 820) {
@@ -940,7 +964,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 880 && db.getTime_33() > 840) {
@@ -971,7 +996,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 900 && db.getTime_33() > 880) {
@@ -1002,7 +1028,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 5 min at zone 1
             while (db.getTime_33() <= 1200 && db.getTime_33() > 900) {
@@ -1033,7 +1060,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }*/
 
             double avgPow = (double) sum / (double) length; // calculate average power
@@ -1057,14 +1085,22 @@ public class WorkoutActivity extends AppCompatActivity {
             int driveLength = (int) values[3];
             int driveTime = (int) values[4];
             int avgPwr = (int) values[5];
-            int lastSplit = (int) values[6];
-
+            int avgDriveForce = (int) values[6];
+            int strokeCount = (int) values[7];
+            String pzMessage = (String) values[8];
+            String fixMessage = (String) values[9];
 
             // Update the UI with the current counter value
-            txtDistanceMetric.setText("Distance: " + dist);
-            txtCaloriesMetric.setText("Calories: " + cal);
-            //txtInstructionMetric.setText(instruction);
-
+            txtTimeMetric.setText(formattedTime);
+            txtDistanceMetric.setText(dist + "m");
+            txtCaloriesMetric.setText(cal + "cal");
+            txtDriveLengthMetric.setText(driveLength + "m");
+            txtDriveTimeMetric.setText(driveTime + "s");
+            txtAvgPwrMetric.setText(avgPwr + "W");
+            txtAvgDriveForceMetric.setText(avgDriveForce + "lbf");
+            txtStrokeCountMetric.setText(Integer.toString(strokeCount));
+            txtIntervalPZMetric.setText(pzMessage);
+            txtIntervalFixMetric.setText(fixMessage);
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -1089,8 +1125,7 @@ public class WorkoutActivity extends AppCompatActivity {
             // Create database instance
             DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
 
-            // [PASTE WORKOUT HERE]
-            //interval2 (30 min) method code
+            // Interval2 (30 min) method code
             int count = 0; //count subsequent errors
             int failCount = 0; //actual fail count
             int sum = 0; //summing up power
@@ -1105,7 +1140,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
+                powtimearray.add((double) db.getPower());
                 pzMessage = "Row in power zone 3";
                 if (db.getPower() < GlobalVariables.pz_3 || db.getPower() >= GlobalVariables.pz_4) {
                     count++;
@@ -1118,18 +1153,19 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
-                // Update UI elements
+                // Update metric values
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
                 int calories = GlobalVariables.totalCalories33;
                 int driveLength = GlobalVariables.driveLength35.intValue();
                 int driveTime = GlobalVariables.driveTime35.intValue();
-                int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // UNCOMMENT FOR FULL WORKOUT
             /*// 5 min at zone 1
@@ -1161,7 +1197,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 5 min at zone 4
             while (db.getTime_33() <= 960 && db.getTime_33() > 660) {
@@ -1193,7 +1230,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 5 min at zone 1
             while (db.getTime_33() <= 1260 && db.getTime_33() > 960) {
@@ -1224,7 +1262,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 4 min at zone 5
             while (db.getTime_33() <= 1500 && db.getTime_33() > 1260) {
@@ -1255,7 +1294,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 5 min at zone 1
             while (db.getTime_33() <= 1800 && db.getTime_33() > 1500) {
@@ -1286,7 +1326,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }*/
             double avgPower = (double) sum / (double) length;
             GlobalVariables.failCount = failCount;
@@ -1298,19 +1339,33 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 2nd function for background task: updates UI
         protected void onProgressUpdate(Object... values) {
             super.onProgressUpdate(values);
-            // Extract (using values array), Update UI elements here
 
-            //int time = (int) values[0]; // extract distance value passed
-            int dist = (int) values[1]; // extract distance value passed
-            int cal = (int) values[2]; // extract calories value passed
-            int avgPwr = (int) values[6]; // extract average power
-            String instruction = (String) values[8]; // extract instruction
-            String feedback = (String) values[9]; // extract feedback
+            // Extract (using values array), Update UI elements here
+            int time = (int) values[0];
+            int minutes = time / 60;
+            int seconds = time % 60;
+            String formattedTime = String.format("%02d:%02d", minutes, seconds); // display as MM:SS
+            int dist = (int) values[1];
+            int cal = (int) values[2];
+            int driveLength = (int) values[3];
+            int driveTime = (int) values[4];
+            int avgPwr = (int) values[5];
+            int avgDriveForce = (int) values[6];
+            int strokeCount = (int) values[7];
+            String pzMessage = (String) values[8];
+            String fixMessage = (String) values[9];
 
             // Update the UI with the current counter value
-            txtDistanceMetric.setText("Distance: " + dist);
-            txtCaloriesMetric.setText("Calories: " + cal);
-            txtInstructionMetric.setText(instruction);
+            txtTimeMetric.setText(formattedTime);
+            txtDistanceMetric.setText(dist + "m");
+            txtCaloriesMetric.setText(cal + "cal");
+            txtDriveLengthMetric.setText(driveLength + "m");
+            txtDriveTimeMetric.setText(driveTime + "s");
+            txtAvgPwrMetric.setText(avgPwr + "W");
+            txtAvgDriveForceMetric.setText(avgDriveForce + "lbf");
+            txtStrokeCountMetric.setText(Integer.toString(strokeCount));
+            txtIntervalPZMetric.setText(pzMessage);
+            txtIntervalPZMetric.setText(fixMessage);
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -1336,7 +1391,6 @@ public class WorkoutActivity extends AppCompatActivity {
             // Create database instance
             DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
 
-            // [PASTE WORKOUT HERE]
             //interval 3 (40 min) method code
             int count = 0; //count subsequent errors
             int failCount = 0; //actual fail count
@@ -1353,7 +1407,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
+                powtimearray.add((double) db.getPower());
                 pzMessage = "Row in power zone 2";
                 //System.out.println("Row in power zone 2");
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
@@ -1367,18 +1421,19 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
-                // Update UI elements
+                // Update metric values
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
                 int calories = GlobalVariables.totalCalories33;
                 int driveLength = GlobalVariables.driveLength35.intValue();
                 int driveTime = GlobalVariables.driveTime35.intValue();
-                int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             /*// 1 min at zone 5
             while (db.getTime_33() <= 180 && db.getTime_33() > 120) {
@@ -1410,7 +1465,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 2 min at zone 2
             while (db.getTime_33() <= 300 && db.getTime_33() > 180) {
@@ -1442,7 +1498,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 1 min at zone 5
             while (db.getTime_33() <= 360 && db.getTime_33() > 300) {
@@ -1474,7 +1531,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 2 min at zone 2
             while (db.getTime_33() <= 480 && db.getTime_33() > 360) {
@@ -1506,7 +1564,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 1 min at zone 5
             while (db.getTime_33() <= 540 && db.getTime_33() > 480) {
@@ -1538,7 +1597,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 2 min at zone 2
             while (db.getTime_33() <= 660 && db.getTime_33() > 540) {
@@ -1570,7 +1630,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 10 min at zone 4
             while (db.getTime_33() <= 1260 && db.getTime_33() > 660) {
@@ -1602,7 +1663,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 5 min at zone 1
             while (db.getTime_33() <= 1560 && db.getTime_33() > 1260) {
@@ -1634,7 +1696,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 10 min at zone 4
             while (db.getTime_33() <= 2160 && db.getTime_33() > 1560) {
@@ -1666,7 +1729,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }
             // 5 min at zone 1
             while (db.getTime_33() <= 2460 && db.getTime_33() > 2160) {
@@ -1698,7 +1762,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
             }*/
             double avgPow = (double) sum / (double) length; //uncomment
             GlobalVariables.failCount = failCount;
@@ -1710,19 +1775,32 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 2nd function for background task: updates UI
         protected void onProgressUpdate(Object... values) {
             super.onProgressUpdate(values);
-            // Extract (using values array), Update UI elements here
 
-            //int time = (int) values[0]; // extract distance value passed
-            int dist = (int) values[1]; // extract distance value passed
-            int cal = (int) values[2]; // extract calories value passed
-            int avgPwr = (int) values[6]; // extract average power
-            String instruction = (String) values[8]; // extract instruction
-            String feedback = (String) values[9]; // extract feedback
+            // Extract (using values array), Update UI elements here
+            int time = (int) values[0];
+            int minutes = time / 60;
+            int seconds = time % 60;
+            String formattedTime = String.format("%02d:%02d", minutes, seconds); // display as MM:SS
+            int dist = (int) values[1];
+            int cal = (int) values[2];
+            int driveLength = (int) values[3];
+            int driveTime = (int) values[4];
+            int avgPwr = (int) values[5];
+            int avgDriveForce = (int) values[6];
+            int strokeCount = (int) values[7];
+            String pzMessage = (String) values[8];
+            String fixMessage = (String) values[9];
 
             // Update the UI with the current counter value
-            txtDistanceMetric.setText("Distance: " + dist);
-            txtCaloriesMetric.setText("Calories: " + cal);
-            txtInstructionMetric.setText(instruction);
+            txtTimeMetric.setText(formattedTime);
+            txtDistanceMetric.setText(dist + "m");
+            txtCaloriesMetric.setText(cal + "cal");
+            txtDriveLengthMetric.setText(driveLength + "m");
+            txtDriveTimeMetric.setText(driveTime + "s");
+            txtAvgPwrMetric.setText(avgPwr + "W");
+            txtAvgDriveForceMetric.setText(avgDriveForce + "lbf");
+            txtStrokeCountMetric.setText(Integer.toString(strokeCount));
+
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -1746,14 +1824,13 @@ public class WorkoutActivity extends AppCompatActivity {
 
             // Create database instance
             DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
-
-            // [PASTE WORKOUT HERE]
+            
             //pace code 20 min
             int failCount = 0;
             int count = 0;
             int sum = 0;
             int length = 0;
-            ArrayList<Double> powtimearray = new ArrayList<>(); //arraylist to hold time and power
+            ArrayList<Double> powtimearray = new ArrayList<>(); // arraylist to hold time and power
 
             String pzMessage = "";
             String fixMessage = "";
@@ -1764,17 +1841,17 @@ public class WorkoutActivity extends AppCompatActivity {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
-                //if difference between current stroke and previous stroke is greater than 4 watts
+                powtimearray.add((double) db.getPower());
+                // if difference between current stroke and previous stroke is greater than 4 watts
                 if (Math.abs(db.getPower() - db.getPastPower()) > 2) { //TODO: what num is good here
                     count++;
                     if (count > 2) {
-                        fixMessage = "Your power output is inconsistent! Try to improve pacing!";
+                        fixMessage = "Your power output is inconsistent, try to improve pacing!";
                         failCount++;
                         count = 0;
                     }
                 } else {
-                    fixMessage = "Nice pace!! Keep it up!!";
+                    fixMessage = "Nice pace, Keep it up!";
                     count = 0;
                 }
                 // Update UI elements
@@ -1801,19 +1878,32 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 2nd function for background task: updates UI
         protected void onProgressUpdate(Object... values) {
             super.onProgressUpdate(values);
-            // Extract (using values array), Update UI elements here
 
-            //int time = (int) values[0]; // extract distance value passed
-            int dist = (int) values[1]; // extract distance value passed
-            int cal = (int) values[2]; // extract calories value passed
-            int avgPwr = (int) values[6]; // extract average power
-            String instruction = (String) values[8]; // extract instruction
-            String feedback = (String) values[9]; // extract feedback
+            // Extract (using values array), Update UI elements here
+            int time = (int) values[0];
+            int minutes = time / 60;
+            int seconds = time % 60;
+            String formattedTime = String.format("%02d:%02d", minutes, seconds); // display as MM:SS
+            int dist = (int) values[1];
+            int cal = (int) values[2];
+            int driveLength = (int) values[3];
+            int driveTime = (int) values[4];
+            int avgPwr = (int) values[5];
+            int avgDriveForce = (int) values[6];
+            int strokeCount = (int) values[7];
+            String pzMessage = (String) values[8];
+            String fixMessage = (String) values[9];
 
             // Update the UI with the current counter value
-            txtDistanceMetric.setText("Distance: " + dist);
-            txtCaloriesMetric.setText("Calories: " + cal);
-            txtInstructionMetric.setText(instruction);
+            txtTimeMetric.setText(formattedTime);
+            txtDistanceMetric.setText(dist + "m");
+            txtCaloriesMetric.setText(cal + "cal");
+            txtDriveLengthMetric.setText(driveLength + "m");
+            txtDriveTimeMetric.setText(driveTime + "s");
+            txtAvgPwrMetric.setText(avgPwr + "W");
+            txtAvgDriveForceMetric.setText(avgDriveForce + "lbf");
+            txtStrokeCountMetric.setText(Integer.toString(strokeCount));
+
 
         }
 
@@ -1856,31 +1946,32 @@ public class WorkoutActivity extends AppCompatActivity {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
+                powtimearray.add((double) db.getPower());
                 //if difference between current stroke and previous stroke is greater than 4 watts
                 if (Math.abs(db.getPower() - db.getPastPower()) > 2) { //TODO: what num is good here
                     count++;
                     if (count > 2) {
-                        fixMessage = "Your power output is inconsistent! Try to improve pacing!";
+                        fixMessage = "Your power output is inconsistent, try to improve pacing!";
                         failCount++;
                         count = 0;
                     }
                 } else {
-                    fixMessage = "Nice pace!! Keep it up!!";
+                    fixMessage = "Nice pace, keep it up!";
                     count = 0;
                 }
-                // Update UI elements
+                // Update metric values
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
                 int calories = GlobalVariables.totalCalories33;
                 int driveLength = GlobalVariables.driveLength35.intValue();
                 int driveTime = GlobalVariables.driveTime35.intValue();
-                int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
 
             }
             GlobalVariables.failCount = failCount;
@@ -1893,19 +1984,32 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 2nd function for background task: updates UI
         protected void onProgressUpdate(Object... values) {
             super.onProgressUpdate(values);
-            // Extract (using values array), Update UI elements here
 
-            //int time = (int) values[0]; // extract distance value passed
-            int dist = (int) values[1]; // extract distance value passed
-            int cal = (int) values[2]; // extract calories value passed
-            int avgPwr = (int) values[6]; // extract average power
-            String instruction = (String) values[8]; // extract instruction
-            String feedback = (String) values[9]; // extract feedback
+            // Extract (using values array), Update UI elements here
+            int time = (int) values[0];
+            int minutes = time / 60;
+            int seconds = time % 60;
+            String formattedTime = String.format("%02d:%02d", minutes, seconds); // display as MM:SS
+            int dist = (int) values[1];
+            int cal = (int) values[2];
+            int driveLength = (int) values[3];
+            int driveTime = (int) values[4];
+            int avgPwr = (int) values[5];
+            int avgDriveForce = (int) values[6];
+            int strokeCount = (int) values[7];
+            String pzMessage = (String) values[8];
+            String fixMessage = (String) values[9];
 
             // Update the UI with the current counter value
-            txtDistanceMetric.setText("Distance: " + dist);
-            txtCaloriesMetric.setText("Calories: " + cal);
-            txtInstructionMetric.setText(instruction);
+            txtTimeMetric.setText(formattedTime);
+            txtDistanceMetric.setText(dist + "m");
+            txtCaloriesMetric.setText(cal + "cal");
+            txtDriveLengthMetric.setText(driveLength + "m");
+            txtDriveTimeMetric.setText(driveTime + "s");
+            txtAvgPwrMetric.setText(avgPwr + "W");
+            txtAvgDriveForceMetric.setText(avgDriveForce + "lbf");
+            txtStrokeCountMetric.setText(Integer.toString(strokeCount));
+
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -1947,31 +2051,32 @@ public class WorkoutActivity extends AppCompatActivity {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
+                powtimearray.add((double) db.getPower());
                 //if difference between current stroke and previous stroke is greater than 4 watts
                 if (Math.abs(db.getPower() - db.getPastPower()) > 2) { //TODO: what num is good here
                     count++;
                     if (count > 2) {
-                        fixMessage = "Your power output is inconsistent! Try to improve pacing!";
+                        fixMessage = "Your power output is inconsistent, try to improve pacing!";
                         failCount++;
                         count = 0;
                     }
                 } else {
-                    fixMessage = "Nice pace!! Keep it up!!";
+                    fixMessage = "Nice pace, keep it up!";
                     count = 0;
                 }
-                // Update UI elements
+                // Update metric values
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
                 int calories = GlobalVariables.totalCalories33;
                 int driveLength = GlobalVariables.driveLength35.intValue();
                 int driveTime = GlobalVariables.driveTime35.intValue();
-                int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, strokeCount, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+
 
             }
             GlobalVariables.failCount = failCount;
@@ -1984,20 +2089,31 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 2nd function for background task: updates UI
         protected void onProgressUpdate(Object... values) {
             super.onProgressUpdate(values);
-            // Extract (using values array), Update UI elements here
 
-            //int time = (int) values[0]; // extract distance value passed
-            int dist = (int) values[1]; // extract distance value passed
-            int cal = (int) values[2]; // extract calories value passed
-            int avgPwr = (int) values[6]; // extract average power
-            String instruction = (String) values[8]; // extract instruction
-            String feedback = (String) values[9]; // extract feedback
+            // Extract (using values array), Update UI elements here
+            int time = (int) values[0];
+            int minutes = time / 60;
+            int seconds = time % 60;
+            String formattedTime = String.format("%02d:%02d", minutes, seconds); // display as MM:SS
+            int dist = (int) values[1];
+            int cal = (int) values[2];
+            int driveLength = (int) values[3];
+            int driveTime = (int) values[4];
+            int avgPwr = (int) values[5];
+            int avgDriveForce = (int) values[6];
+            int strokeCount = (int) values[7];
+            String pzMessage = (String) values[8];
+            String fixMessage = (String) values[9];
 
             // Update the UI with the current counter value
-            txtDistanceMetric.setText("Distance: " + dist);
-            txtCaloriesMetric.setText("Calories: " + cal);
-            txtInstructionMetric.setText(instruction);
-
+            txtTimeMetric.setText(formattedTime);
+            txtDistanceMetric.setText(dist + "m");
+            txtCaloriesMetric.setText(cal + "cal");
+            txtDriveLengthMetric.setText(driveLength + "m");
+            txtDriveTimeMetric.setText(driveTime + "s");
+            txtAvgPwrMetric.setText(avgPwr + "W");
+            txtAvgDriveForceMetric.setText(avgDriveForce + "lbf");
+            txtStrokeCountMetric.setText(Integer.toString(strokeCount));
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -2040,7 +2156,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
+                powtimearray.add((double) db.getPower());
                 pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     pzCount++;
@@ -2056,27 +2172,27 @@ public class WorkoutActivity extends AppCompatActivity {
                 if (Math.abs(db.getPower() - db.getPastPower()) > 2) { //TODO: what num is good here
                     paceCount++;
                     if (paceCount > 2) {
-                        paceMessage = "Your power output is inconsistent! Try to improve pacing!";
+                        paceMessage = "Your power output is inconsistent, try to improve pacing!";
                         failCount++;
                         paceCount = 0;
                     }
                 } else {
-                    paceMessage = "Nice pace!! Keep it up!!";
+                    paceMessage = "Nice pace, keep it up!";
                     paceCount = 0;
                 }
 
-                // Update UI elements
+                // Update metric values
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
                 int calories = GlobalVariables.totalCalories33;
                 int driveLength = GlobalVariables.driveLength35.intValue();
                 int driveTime = GlobalVariables.driveTime35.intValue();
-                int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, lastSplit, pzMessage, fixMessage, paceMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage, paceMessage); // Update the UI with the current counter value
             }
 
             double avgPow = (double) sum / (double) length; //uncomment
@@ -2090,23 +2206,34 @@ public class WorkoutActivity extends AppCompatActivity {
         protected void onProgressUpdate(Object... values) {
             super.onProgressUpdate(values);
 
-            // Update UI elements
-            //int time = (int) values[0]; // extract distance value passed
-            int dist = (int) values[1]; // extract distance value passed
-            int cal = (int) values[2]; // extract calories value passed
-            int avgPwr = (int) values[6]; // extract average power
+            // Extract (using values array), Update UI elements here
+            int time = (int) values[0];
+            int minutes = time / 60;
+            int seconds = time % 60;
+            String formattedTime = String.format("%02d:%02d", minutes, seconds); // display as MM:SS
+            int dist = (int) values[1];
+            int cal = (int) values[2];
+            int driveLength = (int) values[3];
+            int driveTime = (int) values[4];
+            int avgPwr = (int) values[5];
+            int avgDriveForce = (int) values[6];
+            int strokeCount = (int) values[7];
+            String pzMessage = (String) values[8];
+            String fixMessage = (String) values[9];
+            String paceMessage = (String) values[10];
 
             // Update the UI with the current counter value
-            txtDistanceMetric.setText("Distance: " + dist);
-            txtCaloriesMetric.setText("Calories: " + cal);
-            //TODO: add text box for extra feedback, three total
-            // one for what pz, one for feedback on pz, one for pacing feedback
-
-            // Animations for metrics
-            Animation pulseAnimation = AnimationUtils.loadAnimation(WorkoutActivity.this, R.anim.pulse);
-
-            //TODO: add rest of variables/text boxes
-
+            txtTimeMetric.setText(formattedTime);
+            txtDistanceMetric.setText(dist + "m");
+            txtCaloriesMetric.setText(cal + "cal");
+            txtDriveLengthMetric.setText(driveLength + "m");
+            txtDriveTimeMetric.setText(driveTime + "s");
+            txtAvgPwrMetric.setText(avgPwr + "W");
+            txtAvgDriveForceMetric.setText(avgDriveForce + "lbf");
+            txtStrokeCountMetric.setText(Integer.toString(strokeCount));
+            txtIntervalPZMetric.setText(pzMessage);
+            txtIntervalFixMetric.setText(fixMessage);
+            txtPaceFeedbackMetric.setText(paceMessage);
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -2126,8 +2253,8 @@ public class WorkoutActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() { // handle back button press during workout
         AlertDialog.Builder builder = new AlertDialog.Builder(WorkoutActivity.this);
-        builder.setTitle("Exit current workout?");
-        builder.setMessage("Your workout is currently running. Any unsaved progress will be lost.");
+        builder.setTitle("Exit workout?");
+        builder.setMessage("Any unsaved progress will be lost.");
 
         builder.setPositiveButton("EXIT", new DialogInterface.OnClickListener() {
             @Override

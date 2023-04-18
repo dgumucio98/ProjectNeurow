@@ -65,7 +65,7 @@
         android:layout_width="254dp"
         android:layout_height="130dp"
         android:layout_below="@id/btnWorkout1"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="25dp"
         android:layout_marginTop="130dp"
         android:background="@drawable/demo_button_background"
         android:drawableTop="@drawable/ic_demo"
@@ -148,15 +148,16 @@
 
     <TextView
         android:id="@+id/txtPrediction"
-        android:layout_width="wrap_content"
+        android:layout_width="600dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/btnPredictor"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text=""
+        android:text="[Prediction for workout goes here]"
         android:textAlignment="center"
+        android:visibility="invisible"
         android:textColor="#5db39a"
         android:textSize="27sp"
         android:textStyle="bold" />
@@ -184,7 +185,7 @@
         app:srcCompat="@drawable/rowing_empty_white" />
 
     <ImageView
-        android:id="@+id/myImage"
+        android:id="@+id/infoIcon"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentEnd="true"

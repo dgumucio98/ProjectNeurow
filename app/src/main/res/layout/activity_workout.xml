@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:text="INTERVAL WORKOUT"
+        android:text="[SELECTED WORKOUT]"
         android:layout_below="@id/txtWorkoutAttribute"
         android:layout_centerHorizontal="true"
         android:textColor="@color/white"
@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
-        android:text="20-MINUTE"
+        android:text="[SELECTED-TIME]"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:textColor="#6082B6"
@@ -47,8 +47,10 @@
             android:id="@+id/txtStartPrompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="serif"
-            android:text="Are you ready?"
+            android:layout_above="@id/btnStart"
+            android:layout_marginBottom="90dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Get ready to row!"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:textSize="100dp"
@@ -59,7 +61,7 @@
             android:layout_width="1250dp"
             android:layout_height="300dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="40dp"
             android:background="@drawable/rounded_button_background"
             android:backgroundTint="#50C878"
@@ -171,7 +173,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:layout_alignParentLeft="true"
-            android:text="Average Power"
+            android:text="Avg. Power"
             android:layout_below="@id/txtCaloriesMetric"
             android:textColor="@color/white"
             android:textSize="30sp"
@@ -210,7 +212,7 @@
             android:layout_alignParentRight="true"
             android:includeFontPadding="false"
             android:fontFamily="sans-serif"
-            android:text="820 ms"
+            android:text="820 s"
             android:textColor="#c7a258"
             android:textSize="70sp"
             android:textStyle="normal" />
@@ -228,63 +230,76 @@
             android:textStyle="normal" />
 
         <TextView
-            android:id="@+id/txtSplitTimeMetric"
+            android:id="@+id/txtAvgDriveForce"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txtSplitTimeMetricDescriptor"
+            android:layout_below="@id/txtAvgDriveForceDescriptor"
             android:layout_alignParentRight="true"
             android:includeFontPadding="false"
             android:fontFamily="sans-serif"
-            android:text="29 sec"
+            android:text="29 lbf"
             android:textColor="#fc9dbc"
             android:textSize="70sp"
             android:textStyle="normal" />
 
         <TextView
-            android:id="@+id/txtSplitTimeMetricDescriptor"
+            android:id="@+id/txtAvgDriveForceDescriptor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:layout_alignParentRight="true"
             android:layout_below="@id/txtDriveTimeMetric"
-            android:text="Split Time"
+            android:text="Avg. Drive Force"
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="normal" />
 
         <TextView
-            android:id="@+id/txtLastSplitTimeMetric"
+            android:id="@+id/txtStrokeCountMetric"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txtLastSplitTimeMetricDescriptor"
+            android:layout_below="@id/txtStrokeCountMetricDescriptor"
             android:layout_alignParentRight="true"
             android:includeFontPadding="false"
             android:fontFamily="sans-serif"
-            android:text="33 sec"
+            android:text="33"
             android:textColor="#79d9af"
             android:textSize="70sp"
             android:textStyle="normal" />
 
         <TextView
-            android:id="@+id/txtLastSplitTimeMetricDescriptor"
+            android:id="@+id/txtStrokeCountMetricDescriptor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/txtSplitTimeMetric"
-            android:text="Last Split Time"
+            android:layout_below="@id/txtAvgDriveForce"
+            android:text="Stroke Count"
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="normal" />
 
         <TextView
-            android:id="@+id/txtIntervalFeedbackMetric"
-            android:layout_width="500dp"
+            android:id="@+id/txtIntervalPZMetric"
+            android:layout_width="400dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="200dp"
             android:fontFamily="sans-serif"
-            android:text="[Interval Feedback will go here!]"
+            android:text="[Interval PZ Feedback will go here!]"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtIntervalFixMetric"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"
+            android:fontFamily="sans-serif"
+            android:text="[Interval Fix Feedback will go here!]"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="35sp"
@@ -292,7 +307,7 @@
 
         <TextView
             android:id="@+id/txtPaceFeedbackMetric"
-            android:layout_width="500dp"
+            android:layout_width="400dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="200dp"
@@ -303,24 +318,12 @@
             android:textSize="35sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/txtInstructionMetric"
-            android:layout_width="500dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="200dp"            android:fontFamily="sans-serif"
-            android:text="[Feedback will go here!]"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="35sp"
-            android:textStyle="bold" />
-
         <Button
             android:id="@+id/btnStop"
             android:layout_width="400dp"
             android:layout_height="100dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="420dp"
+            android:layout_marginTop="490dp"
             android:background="@drawable/rounded_button_background"
             android:backgroundTint="#BE6868"
             android:text="STOP WORKOUT"

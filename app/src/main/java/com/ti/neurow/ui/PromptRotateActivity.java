@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,8 @@ public class PromptRotateActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_prompt_rotate);
 
+        showFeedbackAfterDelay();
+
         // Define elements
         WelcomeMessage = (TextView) findViewById(R.id.txtWelcome);
         WelcomeMessage.setText("Welcome, " + GlobalVariables.loggedInUsername);
@@ -42,6 +46,26 @@ public class PromptRotateActivity extends AppCompatActivity {
                 Toast.makeText(PromptRotateActivity.this, "Rotate your device to get started", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    // Show user feedback after some time
+    private void showFeedbackAfterDelay() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                TextView txtFeedback = findViewById(R.id.txtFeedback);
+                ImageView infoIcon = findViewById(R.id.infoIcon);
+
+                txtFeedback.setVisibility(View.VISIBLE);
+                txtFeedback.setAlpha(0f);
+                txtFeedback.animate().alpha(1f).setDuration(500).start();
+
+                infoIcon.setVisibility(View.VISIBLE);
+                txtFeedback.setAlpha(0f);
+                txtFeedback.animate().alpha(1f).setDuration(500).start();
+
+            }
+        }, 3500); // 3000 milliseconds = 3 seconds
     }
 
     @Override
