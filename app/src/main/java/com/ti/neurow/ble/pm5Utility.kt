@@ -92,14 +92,37 @@ class pm5Utility(device: BluetoothDevice) {
         Timber.i("We are tyring to perform the read operation on the char22")
     }
 
+    /* Sets the polling speed
+    * give string to set speed
+    * between:
+    * slowest
+    * medium
+    * fast fastest
+    * */
     fun setPollSpeed(speed: String) {
-        payload:
+        var payload: Byte = when(speed) {
+            "slowest" -> 0x00 //Sets for 1 poll per second
+            "medium" -> 0x01 //Sets for 1 poll per 500 ms
+            "fast" -> 0x02 //Sets for 1 poll per 250 ms
+            "fastest" -> 0x03 //Sets for 1 poll per 100 ms
+            else -> 0x01 //default speed
+        }
+        val byteArray = ByteArray(payload.toInt())
+        ConnectionManager.writeCharacteristic(PM5, char34, byteArray)
+        Timber.i("Set speed to ${payload} on characteristic 34")
     }
+
+
     fun resetDevice() {
         //TODO: Implement the reset using the writes to and from the device
         //UUID: 21(write) & 22 (read)
     }
 
+    // Private functions
+    //TODO: Write function to send CSAFE Command
+    private fun write21(command: ByteArray) {
+
+    }
 
     // Characteristics to be used with Connection manager operations
     private val char21 by lazy {
