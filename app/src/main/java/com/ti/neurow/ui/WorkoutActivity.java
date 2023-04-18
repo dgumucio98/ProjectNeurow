@@ -36,7 +36,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
     // Define UI elements
     RelativeLayout metricsRelativeLayout, StartRelativeLayout; // layout that holds all metrics (TextViews)
-    Button btnStart; // buttons
+    Button btnStart, btnStop; // buttons
     boolean buttonPressed = false; // tracks if workout has been started using button already
     TextView txtStartPrompt, txtWorkoutAttribute, txtWorkoutName, txtTimeMetric, txtDistanceMetric, txtCaloriesMetric, txtAvgPwrMetric, txtDriveLengthMetric,
             txtDriveTimeMetric, txtAvgDriveForceMetric, txtStrokeCountMetric, txtIntervalPZMetric, txtIntervalFixMetric, txtPaceFeedbackMetric, txtInstructionMetric; // metrics
@@ -56,6 +56,7 @@ public class WorkoutActivity extends AppCompatActivity {
         txtWorkoutName = findViewById(R.id.txtWorkoutName); // workout name (interval/pace)
         txtStartPrompt = findViewById(R.id.txtStartPrompt); // start workout prompt
         btnStart = findViewById(R.id.btnStart); // button that starts workouts
+        btnStop = findViewById(R.id.btnStop); // button that stops workouts
         RelativeLayout MetricsRelativeLayout = findViewById(R.id.MetricsRelativeLayout); // metrics layout
         RelativeLayout StartRelativeLayout = findViewById(R.id.StartRelativeLayout); // starting layout
 
@@ -95,11 +96,6 @@ public class WorkoutActivity extends AppCompatActivity {
             public void onClick(View v) { // when btnStart is clicked
 
                 // Task 1: Hide start button, prompt, and organize metric layout
-                btnStart.setVisibility(View.GONE); // remove button
-                txtStartPrompt.setVisibility(View.GONE); // remove prompt
-                txtIntervalPZMetric.setVisibility(View.GONE);
-                txtIntervalFixMetric.setVisibility(View.GONE);
-                txtPaceFeedbackMetric.setVisibility(View.GONE);
                 StartRelativeLayout.setVisibility(View.GONE); // hide starting layout
                 MetricsRelativeLayout.setVisibility(View.VISIBLE); // show metrics layout
 
@@ -237,6 +233,35 @@ public class WorkoutActivity extends AppCompatActivity {
                 }
             } // end of onClick
         });
+
+        // Button to stop workout
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(WorkoutActivity.this);
+                builder.setTitle("Stop workout?");
+                builder.setMessage("Any ongoing workout progress will be lost.");
+
+                builder.setPositiveButton("Stop", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(WorkoutActivity.this, WorkoutMainActivity.class);
+                        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        startActivity(intent);
+                        finish(); // Can't go back
+                    }
+                });
+
+                builder.setNegativeButton("Continue", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss(); // close the dialog
+                    }
+                });
+                AlertDialog dialog = builder.show();
+            }
+        });
     }
 
     // ftpCalc Background functionality class
@@ -254,7 +279,7 @@ public class WorkoutActivity extends AppCompatActivity {
             ArrayList<Double> powtimearray = new ArrayList<>(); // create new arraylist
 
             // main loop
-            while (db.getTime_33() < 15.0) { // [TEST] 15 seconds
+            while (db.getTime_33() < 45.0) { // [TEST] 15 seconds
 
                 sum += db.getPower();
                 length += 1;
@@ -316,13 +341,16 @@ public class WorkoutActivity extends AppCompatActivity {
 
             // Update the UI with the current counter value
             txtTimeMetric.setText(formattedTime);
-            txtDistanceMetric.setText(dist + "m");
-            txtCaloriesMetric.setText(cal + "cal");
-            txtDriveLengthMetric.setText(driveLength + "m");
-            txtDriveTimeMetric.setText(driveTime + "s");
-            txtAvgPwrMetric.setText(avgPwr + "W");
-            txtAvgDriveForceMetric.setText(avgDriveForce + "lbf");
+            txtDistanceMetric.setText(dist + " m");
+            txtCaloriesMetric.setText(cal + " cal");
+            txtDriveLengthMetric.setText(driveLength + " m");
+            txtDriveTimeMetric.setText(driveTime + " s");
+            txtAvgPwrMetric.setText(avgPwr + " W");
+            txtAvgDriveForceMetric.setText(avgDriveForce + " lbf");
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
+            txtIntervalPZMetric.setText("Row for 20 minutes at a challenging, but sustainable pace!");
+            txtIntervalFixMetric.setText("");
+            txtPaceFeedbackMetric.setText("");
 
         }
 
@@ -1092,12 +1120,12 @@ public class WorkoutActivity extends AppCompatActivity {
 
             // Update the UI with the current counter value
             txtTimeMetric.setText(formattedTime);
-            txtDistanceMetric.setText(dist + "m");
-            txtCaloriesMetric.setText(cal + "cal");
-            txtDriveLengthMetric.setText(driveLength + "m");
-            txtDriveTimeMetric.setText(driveTime + "s");
-            txtAvgPwrMetric.setText(avgPwr + "W");
-            txtAvgDriveForceMetric.setText(avgDriveForce + "lbf");
+            txtDistanceMetric.setText(dist + " m");
+            txtCaloriesMetric.setText(cal + " cal");
+            txtDriveLengthMetric.setText(driveLength + " m");
+            txtDriveTimeMetric.setText(driveTime + " s");
+            txtAvgPwrMetric.setText(avgPwr + " W");
+            txtAvgDriveForceMetric.setText(avgDriveForce + "  lbf");
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
             txtIntervalPZMetric.setText(pzMessage);
             txtIntervalFixMetric.setText(fixMessage);
@@ -1357,12 +1385,12 @@ public class WorkoutActivity extends AppCompatActivity {
 
             // Update the UI with the current counter value
             txtTimeMetric.setText(formattedTime);
-            txtDistanceMetric.setText(dist + "m");
-            txtCaloriesMetric.setText(cal + "cal");
-            txtDriveLengthMetric.setText(driveLength + "m");
-            txtDriveTimeMetric.setText(driveTime + "s");
-            txtAvgPwrMetric.setText(avgPwr + "W");
-            txtAvgDriveForceMetric.setText(avgDriveForce + "lbf");
+            txtDistanceMetric.setText(dist + " m");
+            txtCaloriesMetric.setText(cal + " cal");
+            txtDriveLengthMetric.setText(driveLength + " m");
+            txtDriveTimeMetric.setText(driveTime + " s");
+            txtAvgPwrMetric.setText(avgPwr + " W");
+            txtAvgDriveForceMetric.setText(avgDriveForce + " lbf");
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
             txtIntervalPZMetric.setText(pzMessage);
             txtIntervalPZMetric.setText(fixMessage);
@@ -1793,12 +1821,12 @@ public class WorkoutActivity extends AppCompatActivity {
 
             // Update the UI with the current counter value
             txtTimeMetric.setText(formattedTime);
-            txtDistanceMetric.setText(dist + "m");
-            txtCaloriesMetric.setText(cal + "cal");
-            txtDriveLengthMetric.setText(driveLength + "m");
-            txtDriveTimeMetric.setText(driveTime + "s");
-            txtAvgPwrMetric.setText(avgPwr + "W");
-            txtAvgDriveForceMetric.setText(avgDriveForce + "lbf");
+            txtDistanceMetric.setText(dist + " m");
+            txtCaloriesMetric.setText(cal + " cal");
+            txtDriveLengthMetric.setText(driveLength + " m");
+            txtDriveTimeMetric.setText(driveTime + " s");
+            txtAvgPwrMetric.setText(avgPwr + " W");
+            txtAvgDriveForceMetric.setText(avgDriveForce + " lbf");
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
 
         }
@@ -1896,12 +1924,12 @@ public class WorkoutActivity extends AppCompatActivity {
 
             // Update the UI with the current counter value
             txtTimeMetric.setText(formattedTime);
-            txtDistanceMetric.setText(dist + "m");
-            txtCaloriesMetric.setText(cal + "cal");
-            txtDriveLengthMetric.setText(driveLength + "m");
-            txtDriveTimeMetric.setText(driveTime + "s");
-            txtAvgPwrMetric.setText(avgPwr + "W");
-            txtAvgDriveForceMetric.setText(avgDriveForce + "lbf");
+            txtDistanceMetric.setText(dist + " m");
+            txtCaloriesMetric.setText(cal + " cal");
+            txtDriveLengthMetric.setText(driveLength + " m");
+            txtDriveTimeMetric.setText(driveTime + " s");
+            txtAvgPwrMetric.setText(avgPwr + " W");
+            txtAvgDriveForceMetric.setText(avgDriveForce + " lbf");
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
 
 
@@ -2002,12 +2030,12 @@ public class WorkoutActivity extends AppCompatActivity {
 
             // Update the UI with the current counter value
             txtTimeMetric.setText(formattedTime);
-            txtDistanceMetric.setText(dist + "m");
-            txtCaloriesMetric.setText(cal + "cal");
-            txtDriveLengthMetric.setText(driveLength + "m");
-            txtDriveTimeMetric.setText(driveTime + "s");
-            txtAvgPwrMetric.setText(avgPwr + "W");
-            txtAvgDriveForceMetric.setText(avgDriveForce + "lbf");
+            txtDistanceMetric.setText(dist + " m");
+            txtCaloriesMetric.setText(cal + " cal");
+            txtDriveLengthMetric.setText(driveLength + " m");
+            txtDriveTimeMetric.setText(driveTime + " s");
+            txtAvgPwrMetric.setText(avgPwr + " W");
+            txtAvgDriveForceMetric.setText(avgDriveForce + " lbf");
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
 
         }
@@ -2107,12 +2135,12 @@ public class WorkoutActivity extends AppCompatActivity {
 
             // Update the UI with the current counter value
             txtTimeMetric.setText(formattedTime);
-            txtDistanceMetric.setText(dist + "m");
-            txtCaloriesMetric.setText(cal + "cal");
-            txtDriveLengthMetric.setText(driveLength + "m");
-            txtDriveTimeMetric.setText(driveTime + "s");
-            txtAvgPwrMetric.setText(avgPwr + "W");
-            txtAvgDriveForceMetric.setText(avgDriveForce + "lbf");
+            txtDistanceMetric.setText(dist + " m");
+            txtCaloriesMetric.setText(cal + " cal");
+            txtDriveLengthMetric.setText(driveLength + " m");
+            txtDriveTimeMetric.setText(driveTime + " s");
+            txtAvgPwrMetric.setText(avgPwr + " W");
+            txtAvgDriveForceMetric.setText(avgDriveForce + " lbf");
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
         }
 
@@ -2224,12 +2252,12 @@ public class WorkoutActivity extends AppCompatActivity {
 
             // Update the UI with the current counter value
             txtTimeMetric.setText(formattedTime);
-            txtDistanceMetric.setText(dist + "m");
-            txtCaloriesMetric.setText(cal + "cal");
-            txtDriveLengthMetric.setText(driveLength + "m");
-            txtDriveTimeMetric.setText(driveTime + "s");
-            txtAvgPwrMetric.setText(avgPwr + "W");
-            txtAvgDriveForceMetric.setText(avgDriveForce + "lbf");
+            txtDistanceMetric.setText(dist + " m");
+            txtCaloriesMetric.setText(cal + " cal");
+            txtDriveLengthMetric.setText(driveLength + " m");
+            txtDriveTimeMetric.setText(driveTime + " s");
+            txtAvgPwrMetric.setText(avgPwr + " W");
+            txtAvgDriveForceMetric.setText(avgDriveForce + " lbf");
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
             txtIntervalPZMetric.setText(pzMessage);
             txtIntervalFixMetric.setText(fixMessage);
@@ -2252,23 +2280,5 @@ public class WorkoutActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() { // handle back button press during workout
-        AlertDialog.Builder builder = new AlertDialog.Builder(WorkoutActivity.this);
-        builder.setTitle("Exit workout?");
-        builder.setMessage("Any unsaved progress will be lost.");
-
-        builder.setPositiveButton("EXIT", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
-            }
-        });
-
-        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-        AlertDialog dialog = builder.show();
     }
 }

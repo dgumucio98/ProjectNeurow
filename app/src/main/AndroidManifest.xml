@@ -56,13 +56,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.Pace30Activity"
-            android:exported="true">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".ui.WorkoutActivity"
             android:exported="true">
             <meta-data

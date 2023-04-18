@@ -68,6 +68,12 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
 
         setContentView(R.layout.activity_workout_main);
 
+        // [TEST] Activity creation
+        Toast.makeText(WorkoutMainActivity.this, "Just CREATED ", Toast.LENGTH_SHORT).show();
+
+        // Create instance of database in this activity
+        DatabaseHelper db = new DatabaseHelper(WorkoutMainActivity.this);
+
         Handler handler = new Handler(); // define handler
 
         // Initialize UI elements
@@ -93,7 +99,7 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
 
         // Display user's FTP
         txtUserFtp.setTextColor(getResources().getColor(R.color.mint_green));
-        txtUserFtp.setText(Html.fromHtml("<b>My FTP:</b> " + GlobalVariables.ftp + "W"));
+        txtUserFtp.setText(Html.fromHtml("<b>My FTP:</b> " + db.getFTP(GlobalVariables.loggedInUsername) + "W"));
         txtUserFtp.setTextSize(25);
 
         // Handle button clicks
