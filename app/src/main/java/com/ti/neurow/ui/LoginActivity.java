@@ -40,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
+
         /* Additions to pass the BLE device */
         Intent intent = getIntent();
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -59,12 +60,15 @@ public class LoginActivity extends AppCompatActivity {
         /* End addition */
 
         // Define views to elements in XML
+
+        // Define UI elements
         usernameEditText = (EditText) findViewById(R.id.edtTxtPromptUserID);
         passwordEditText = (EditText)findViewById(R.id.edtTxtPromptPassword);
         loginButton = (Button)findViewById(R.id.btnLogin);
         //Bypass button to use onclick listener below
         bypassButton = (Button)findViewById(R.id.btnBypass);
 
+        // Log In button listener
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed() { // Override back button press
         // Check if the user is coming from the LoginActivity
         if (isTaskRoot()) { // if user just logged in/registered
             Intent intent = new Intent(this, MainUIActivity.class);
@@ -167,8 +171,6 @@ public class LoginActivity extends AppCompatActivity {
     void logUserIn(String username, String password) {
         String Username = usernameEditText.getText().toString();
         String Password = usernameEditText.getText().toString();
-
-
     }
 
     // DEV BYPASS: Launch PromptRotateActivity when login button is pressed (bypasses actual user authentication)

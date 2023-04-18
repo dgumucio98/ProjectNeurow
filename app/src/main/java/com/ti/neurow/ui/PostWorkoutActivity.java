@@ -167,6 +167,8 @@ public class PostWorkoutActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(PostWorkoutActivity.this, WorkoutMainActivity.class); // send user back to dashboard
                 startActivity(intent);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 

@@ -85,7 +85,6 @@ public class MainUIActivity extends AppCompatActivity {
 //        AddToDB = findViewById(R.id.btnAddToDB);
 
 
-
         Animation animation1 = AnimationUtils.loadAnimation(MainUIActivity.this, R.anim.slide_in_left);
         Animation animation2 = AnimationUtils.loadAnimation(MainUIActivity.this, R.anim.slide_in_right);
         rower.startAnimation(animation1);
