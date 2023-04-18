@@ -93,8 +93,8 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
 
         // Display user's FTP
         txtUserFtp.setTextColor(getResources().getColor(R.color.mint_green));
-        txtUserFtp.setText(Html.fromHtml("<b>FTP:</b> " + GlobalVariables.ftp + "W"));
-
+        txtUserFtp.setText(Html.fromHtml("<b>My FTP:</b> " + GlobalVariables.ftp + "W"));
+        txtUserFtp.setTextSize(25);
 
         // Handle button clicks
         View.OnClickListener workoutClickListener = new View.OnClickListener() {
@@ -244,6 +244,7 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
                                 allPow = db.getAllPower(GlobalVariables.loggedInUsername, workoutType);
                                 prediction = workouts.powerPredictor(allPow);
                                 txtPrediction.setText(prediction);
+                                txtPrediction.setVisibility(View.VISIBLE);
                                 break;
                             case 1:
                                 // "Pace-30 Prediction" selected
@@ -251,6 +252,7 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
                                 allPow = db.getAllPower(GlobalVariables.loggedInUsername, workoutType);
                                 prediction = workouts.powerPredictor(allPow);
                                 txtPrediction.setText(prediction);
+                                txtPrediction.setVisibility(View.VISIBLE);
                                 break;
                             case 2:
                                 // "Pace-40 Prediction" selected
@@ -258,6 +260,7 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
                                 allPow = db.getAllPower(GlobalVariables.loggedInUsername, workoutType);
                                 prediction = workouts.powerPredictor(allPow);
                                 txtPrediction.setText(prediction);
+                                txtPrediction.setVisibility(View.VISIBLE);
                                 break;
                             case 3:
                                 // "Interval-20 Prediction" selected
@@ -265,6 +268,7 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
                                 allPow = db.getAllPower(GlobalVariables.loggedInUsername, workoutType);
                                 prediction = workouts.powerPredictor(allPow);
                                 txtPrediction.setText(prediction);
+                                txtPrediction.setVisibility(View.VISIBLE);
                                 break;
                             case 4:
                                 // "Interval-30 Prediction" selected
@@ -272,6 +276,7 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
                                 allPow = db.getAllPower(GlobalVariables.loggedInUsername, workoutType);
                                 prediction = workouts.powerPredictor(allPow);
                                 txtPrediction.setText(prediction);
+                                txtPrediction.setVisibility(View.VISIBLE);
                                 break;
                             case 5:
                                 // "Interval-40 Prediction" selected
@@ -279,6 +284,7 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
                                 allPow = db.getAllPower(GlobalVariables.loggedInUsername, workoutType);
                                 prediction = workouts.powerPredictor(allPow);
                                 txtPrediction.setText(prediction);
+                                txtPrediction.setVisibility(View.VISIBLE);
                                 break;
                         }
                     }

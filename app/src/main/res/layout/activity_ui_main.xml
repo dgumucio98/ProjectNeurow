@@ -98,37 +98,37 @@
         app:layout_constraintTop_toBottomOf="@+id/btnNewUser"
         tools:visibility="visible" />
 
-<!--    <Button-->
-<!--        android:id="@+id/btnBLEData"-->
-<!--        android:layout_width="185dp"-->
-<!--        android:layout_height="68dp"-->
-<!--        android:layout_marginTop="548dp"-->
-<!--        android:backgroundTint="#DE3164"-->
-<!--        android:text="BLE Data Viewer"-->
-<!--        android:textAllCaps="false"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textSize="15sp"-->
-<!--        android:visibility="gone"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/btnDBViewer"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/txtWelcome"-->
-<!--        tools:visibility="visible" />-->
+    <!--    <Button-->
+    <!--        android:id="@+id/btnBLEData"-->
+    <!--        android:layout_width="185dp"-->
+    <!--        android:layout_height="68dp"-->
+    <!--        android:layout_marginTop="548dp"-->
+    <!--        android:backgroundTint="#DE3164"-->
+    <!--        android:text="BLE Data Viewer"-->
+    <!--        android:textAllCaps="false"-->
+    <!--        android:textColor="@color/white"-->
+    <!--        android:textSize="15sp"-->
+    <!--        android:visibility="gone"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/btnDBViewer"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/txtWelcome"-->
+    <!--        tools:visibility="visible" />-->
 
-<!--    <Button-->
-<!--        android:id="@+id/btnDBViewer"-->
-<!--        android:layout_width="185dp"-->
-<!--        android:layout_height="68dp"-->
-<!--        android:layout_marginTop="548dp"-->
-<!--        android:backgroundTint="#F28C28"-->
-<!--        android:text="DB Viewer"-->
-<!--        android:textAllCaps="false"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textSize="12sp"-->
-<!--        android:visibility="gone"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toStartOf="@id/btnBLEData"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/txtWelcome"-->
-<!--        tools:visibility="visible" />-->
+    <!--    <Button-->
+    <!--        android:id="@+id/btnDBViewer"-->
+    <!--        android:layout_width="185dp"-->
+    <!--        android:layout_height="68dp"-->
+    <!--        android:layout_marginTop="548dp"-->
+    <!--        android:backgroundTint="#F28C28"-->
+    <!--        android:text="DB Viewer"-->
+    <!--        android:textAllCaps="false"-->
+    <!--        android:textColor="@color/white"-->
+    <!--        android:textSize="12sp"-->
+    <!--        android:visibility="gone"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintEnd_toStartOf="@id/btnBLEData"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/txtWelcome"-->
+    <!--        tools:visibility="visible" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
