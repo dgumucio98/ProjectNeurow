@@ -30,6 +30,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.testing_activity.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.runOnUiThread
+import timber.log.Timber
+import java.util.*
+import kotlin.experimental.and
 
 /* A testing ground for the new functions to use in the application */
 class TestingActivity: AppCompatActivity() {
@@ -106,6 +109,10 @@ class TestingActivity: AppCompatActivity() {
     running code for a specific activity, this event listener runs the additional coder after
     the connection manager one.
      */
+    private val uuidString22 = "ce060022-43e5-11e4-916c-0800200c9a66"
+    private val char22UUID: UUID = UUID.fromString(uuidString22)
+    val statusMask: Byte = 0b00001111.toByte() // bitmask for the last four bits within the byte array for
+
     private val testEventListener by lazy {
         ConnectionEventListener().apply {
             /* There are two callbacks being defined with this listener
@@ -125,10 +132,39 @@ class TestingActivity: AppCompatActivity() {
             */
             val context = this@TestingActivity
             val db = DatabaseHelper(context) //making reference to database
+
             onCharacteristicChanged = {
                 bleDevice, bleChar ->
                 val uuid = bleChar.uuid
                 val value = bleChar.value
+
+                if(bleChar.uuid == char22UUID) {
+                    Timber.i("We have received a packet from ${bleChar.uuid.toString()}\n")
+                    Timber.i("${bleChar.value}\n")
+                    if(bleChar.value.size == 4) {
+                        val status = bleChar.value[1] and statusMask
+                        val message = when (status) {
+                            0x00.toByte() ->  "ERROR"
+                            0x01.toByte() ->  "READY"
+                            0x02.toByte() ->  "IDLE"
+                            0x03.toByte() ->  "HAVE ID"
+                            //Note 0x04 is not used: 0x04.toByte() ->
+                            0x05.toByte() ->  "IN USE"
+                            0x06.toByte() ->  "PAUSE"
+                            0x07.toByte() ->  "FINISH"
+                            0x08.toByte() ->  "MANUAL"
+                            0x09.toByte() ->  "OFF LINE"
+                            else -> "Unknown Status"
+
+                        }
+                        Timber.i("The status of the PM5 is ${message}")
+                        /*
+                        Timber.i("The status has a value of ${status}\n")
+                        Timber.i("The status has a value of ${status.toString()}\n")
+                         */
+                    }
+                    //Timber.i("The status mask has a value of ${statusMask.toString()}\n")
+                }
 
                 //uuidParsing function code
                 if(uuid.toString() == "ce060032-43e5-11e4-916c-0800200c9a66") {

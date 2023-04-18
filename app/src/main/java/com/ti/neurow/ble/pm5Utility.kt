@@ -12,6 +12,11 @@ Works in conjunction with the ConnectionManager object to provide abstraction fo
 BLE operations to poll data, rest, and close connections
  */
 class pm5Utility(device: BluetoothDevice) {
+    /* Legend:
+    Characteristics and what they do
+    Functions
+    Variables for building
+     */
 
     //The PM5 itself referred to in the device
     private val PM5 = device
@@ -25,55 +30,31 @@ class pm5Utility(device: BluetoothDevice) {
     }
 
     /* Values need to create the on demand variables */
+    //Getting the UUID to pull the characteristic
+    //Data stream 33
     private val uuidString33 = "ce060033-43e5-11e4-916c-0800200c9a66"
     private val char33UUID: UUID = UUID.fromString(uuidString33)
 
+    //Data stream 35
     private val uuidString35 = "ce060035-43e5-11e4-916c-0800200c9a66"
     private val char35UUID: UUID = UUID.fromString(uuidString35)
 
+    //Character to set data polling write for subscriptions
+    private val uuidString34 = "ce060034-43e5-11e4-916c-0800200c9a66"
+    private val char34UUID: UUID = UUID.fromString(uuidString34)
+
+    //Data stream 3D
     private val uuidString3D = "ce06003D-43e5-11e4-916c-0800200c9a66"
     private val char3DUUID: UUID = UUID.fromString(uuidString3D)
 
-    //Getting the UUID to pull the characteristic
+    //Read CSAFE format
+    private val uuidString21 = "ce060021-43e5-11e4-916c-0800200c9a66"
+    private val char21UUID: UUID = UUID.fromString(uuidString21)
+
+    //Command write in CSAFE format
     private val uuidString22 = "ce060022-43e5-11e4-916c-0800200c9a66"
     private val char22UUID: UUID = UUID.fromString(uuidString22)
 
-    // Characteristics to be used with Connection manager operations
-    private val char22 by lazy {
-        // for a given item if it matches the UUID return the index of
-        val indexOf22 = characteristics.indexOfFirst { characteristic ->
-            characteristic.uuid == char22UUID
-        }
-        // we assign char33 the to char33 for use in the Connection Manager
-        characteristics[indexOf22]
-    }
-
-    private val char33 by lazy {
-        // for a given item if it matches the UUID return the index of
-        val indexOf33 = characteristics.indexOfFirst { characteristic ->
-            characteristic.uuid == char33UUID
-        }
-        // we assign char33 the to char33 for use in the Connection Manager
-        characteristics[indexOf33]
-    }
-
-    private val char35 by lazy {
-        // for a given item if it matches the UUID return the index of
-        val indexOf35 = characteristics.indexOfFirst { characteristic ->
-            characteristic.uuid == char35UUID
-        }
-        // we assign char33 the to char33 for use in the Connection Manager
-        characteristics[indexOf35]
-    }
-
-    private val char3D by lazy {
-        // for a given item if it matches the UUID return the index of
-        val indexOf3D = characteristics.indexOfFirst { characteristic ->
-            characteristic.uuid == char3DUUID
-        }
-        // we assign char33 the to char33 for use in the Connection Manager
-        characteristics[indexOf3D]
-    }
 
     //Begin util functions
     // Start [33,35,3D]: Simple starts the stream, same for end
@@ -111,11 +92,67 @@ class pm5Utility(device: BluetoothDevice) {
         Timber.i("We are tyring to perform the read operation on the char22")
     }
 
+    fun setPollSpeed(speed: String) {
+        payload:
+    }
     fun resetDevice() {
         //TODO: Implement the reset using the writes to and from the device
         //UUID: 21(write) & 22 (read)
     }
 
 
+    // Characteristics to be used with Connection manager operations
+    private val char21 by lazy {
+        // for a given item if it matches the UUID return the index of
+        val indexOf21 = characteristics.indexOfFirst { characteristic ->
+            characteristic.uuid == char21UUID
+        }
+        // we assign char33 the to char33 for use in the Connection Manager
+        characteristics[indexOf21]
+    }
 
+    private val char22 by lazy {
+        // for a given item if it matches the UUID return the index of
+        val indexOf22 = characteristics.indexOfFirst { characteristic ->
+            characteristic.uuid == char22UUID
+        }
+        // we assign char33 the to char33 for use in the Connection Manager
+        characteristics[indexOf22]
+    }
+
+    private val char33 by lazy {
+        // for a given item if it matches the UUID return the index of
+        val indexOf33 = characteristics.indexOfFirst { characteristic ->
+            characteristic.uuid == char33UUID
+        }
+        // we assign char33 the to char33 for use in the Connection Manager
+        characteristics[indexOf33]
+    }
+
+    private val char35 by lazy {
+        // for a given item if it matches the UUID return the index of
+        val indexOf35 = characteristics.indexOfFirst { characteristic ->
+            characteristic.uuid == char35UUID
+        }
+        // we assign char33 the to char33 for use in the Connection Manager
+        characteristics[indexOf35]
+    }
+
+    private val char3D by lazy {
+        // for a given item if it matches the UUID return the index of
+        val indexOf3D = characteristics.indexOfFirst { characteristic ->
+            characteristic.uuid == char3DUUID
+        }
+        // we assign char33 the to char33 for use in the Connection Manager
+        characteristics[indexOf3D]
+    }
+
+    private val char34 by lazy {
+        // for a given item if it matches the UUID return the index of
+        val indexOf34 = characteristics.indexOfFirst { characteristic ->
+            characteristic.uuid == char34UUID
+        }
+        // we assign char33 the to char33 for use in the Connection Manager
+        characteristics[indexOf34]
+    }
 }
