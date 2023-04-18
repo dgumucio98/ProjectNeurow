@@ -2240,7 +2240,7 @@ public class WorkoutActivity extends AppCompatActivity {
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
 
-            // Define intent and pass workout name to PostWorkoutActivity
+            // Define intent, pass workout name to PostWorkoutActivity
             Intent launchPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
             launchPostWorkoutActivity.putExtra("workoutName", "demo"); // pass workout name data
 
