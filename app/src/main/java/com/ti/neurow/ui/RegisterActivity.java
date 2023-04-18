@@ -1,6 +1,8 @@
 package com.ti.neurow.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -18,11 +20,15 @@ import com.ti.neurow.R;
 
 import java.util.regex.Pattern; // regular expression support for registration validation
 
+import timber.log.Timber;
+
 public class RegisterActivity extends AppCompatActivity {
 
     // Declare buttons and EditTexts
     EditText usernameEditText,passwordEditText;
     Button registerButton, backButton;
+    // Need to over ride the  listener upon creation
+    Button bypassButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +42,28 @@ public class RegisterActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_register);
 
+        Intent intent = getIntent();
+        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+        boolean isDeviceReceived = false;
+        if (device != null) {
+            //throw new RuntimeException("Missing BluetoothDevice from MainActivity!");
+            isDeviceReceived = true;
+        }
+        // For logging and debugging, uncomment for app visual queue
+        if(isDeviceReceived == true) {
+            Timber.i("The BLE device was successfully passed.");
+            //Toast.makeText(this, "The BLE device was successfully passed.", Toast.LENGTH_LONG).show();
+        } else {
+            Timber.i("The BLE device was not passed.");
+            //Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
+        }
+
+
         // Define views to elements in XML
         usernameEditText = (EditText) findViewById(R.id.edtTxtPromptUserID);
         passwordEditText = (EditText)findViewById(R.id.edtTxtPromptPassword);
         registerButton = (Button)findViewById(R.id.btnRegister);
+        bypassButton = (Button)findViewById(R.id.btnBypass);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +109,10 @@ public class RegisterActivity extends AppCompatActivity {
 
                         // Logged in, now launch PromptRotateActivity
                         Intent i = new Intent(RegisterActivity.this, PromptRotateActivity.class);
+                        //Needed to pass BLE device
+                        if(device != null) {
+                            i.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
+                        }
                         startActivity(i); // launches PromptRotateActivity
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
@@ -93,6 +121,25 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "[TEST] User " + Username + " has NOT been registered", Toast.LENGTH_SHORT).show();
                     }
                 }
+            }
+        });
+
+        bypassButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Launch Log-in activity
+                GlobalVariables.loggedInUsername = "MrBypass"; // set as Mr. Bypass
+                // Launch PromptRotateActivity
+
+                Intent i = new Intent(RegisterActivity.this, PromptRotateActivity.class);
+                //Needed to pass BLE device
+                if(device != null) {
+                    i.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
+                }
+                startActivity(i);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish(); // close activity
+
             }
         });
     }
@@ -110,6 +157,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     // DEV BYPASS: Launch PromptRotateActivity when "Bypass Login" button is pressed (bypasses actual user authentication)
+    //Moved the function into the onclick listener in the onCreate
     public void launchPromptRotate(View v) {
         // Launch Log-in activity
 

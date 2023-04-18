@@ -2,6 +2,7 @@ package com.ti.neurow.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class PromptRotateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_prompt_rotate);
 
         showFeedbackAfterDelay();
+
 
         // Define elements
         WelcomeMessage = (TextView) findViewById(R.id.txtWelcome);
@@ -71,8 +73,29 @@ public class PromptRotateActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        /* Additions to pass the BLE device */
+        Intent intent = getIntent();
+        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+        boolean isDeviceReceived = false;
+        if (device != null) {
+            //throw new RuntimeException("Missing BluetoothDevice from MainActivity!");
+            isDeviceReceived = true;
+        }
+        if(isDeviceReceived == true) {
+            Toast.makeText(this, "The BLE device was successfully passed.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
+        }
+        /* End addition */
+
         if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            startActivity(new Intent(this, WorkoutMainActivity.class));
+            //Changed the intent for a longer statement to insert device check
+            Intent i = new Intent(this, WorkoutMainActivity.class);
+            //Needed to pass BLE device
+            if(device != null) {
+                i.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
+            }
+            startActivity(i);
             finish(); // Can't go back
         }
     }

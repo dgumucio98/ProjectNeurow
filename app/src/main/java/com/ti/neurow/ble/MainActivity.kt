@@ -27,8 +27,12 @@ import org.jetbrains.anko.alert
 import timber.log.Timber
 // For uuid parsing
 import android.os.ParcelUuid
+import android.view.View
+import android.view.WindowManager
+import android.widget.TextView
 import com.ti.neurow.BuildConfig
 import com.ti.neurow.R
+import com.ti.neurow.ui.MainUIActivity
 
 private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1
 private const val LOCATION_PERMISSION_REQUEST_CODE = 2
@@ -84,6 +88,9 @@ class MainActivity : AppCompatActivity() {
     * and an onclick listener, which in this case is the lambda function as the argument, so when
     *  a user clicks on said item from the adapter, the lambda is ran hence vvvvvvvv
     * This is where we connect to the device selected on screen from adapter in the recylerview
+    *
+    * The connection is done and the connectionEventListener
+    * then runs the onConnectionSetupComplete callback
      */
     private val scanResultAdapter: ScanResultAdapter by lazy {
         ScanResultAdapter(scanResults) { result ->
@@ -107,7 +114,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_config)
+        //setContentView(R.layout.activity_main)
+
+        //Remove the bars at the top of the scan
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        supportActionBar?.hide()
+
+
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
@@ -237,6 +251,12 @@ class MainActivity : AppCompatActivity() {
         if (animator is SimpleItemAnimator) {
             animator.supportsChangeAnimations = false
         }
+
+        // If the adapter has data, hide the TextView inside the RecyclerView
+        // An addition to make the new screen work
+        if (scanResultAdapter.itemCount > 0) {
+            findViewById<TextView>(R.id.txtLoading).visibility = View.GONE
+        }
     }
 
     /*******************************************
@@ -260,7 +280,7 @@ class MainActivity : AppCompatActivity() {
                     Timber.i("Found BLE device! Name: ${name ?: "Unnamed"}, address: $address")
                 }
                 scanResults.add(result)
-                //since they are inserted ay end and starting is at 0
+                //since they are inserted ay end and starting is at 0 we -1 to it
                 scanResultAdapter.notifyItemInserted(scanResults.size - 1)
             }
         }
@@ -270,13 +290,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // What is .apply?
+    // What is .apply? A fast way to apply properties to a constructor methods or the object that
+    // returns an object and then apply the properties / function overrides
     // This event listener is completed it launches the second activity
-    // The connectionEvent Listener is
     private val connectionEventListener by lazy {
         ConnectionEventListener().apply {
+            /* There are two callbacks being defined with this listener
+            *onconnectionSetupComplete, which takes the BluetoothGatt object and launches the second
+            * activity, BleOperationsActivity
+             */
             onConnectionSetupComplete = { gatt ->
-                Intent(this@MainActivity, BleOperationsActivity::class.java).also {
+                //Intent(this@MainActivity, BleOperationsActivity::class.java).also {
+                Intent(this@MainActivity, TestingActivity::class.java).also {
+                //Intent(this@MainActivity, MainUIActivity::class.java).also {
                     it.putExtra(BluetoothDevice.EXTRA_DEVICE, gatt.device)
                     startActivity(it)
                 }
@@ -307,4 +333,3 @@ class MainActivity : AppCompatActivity() {
         ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
     }
 }
-

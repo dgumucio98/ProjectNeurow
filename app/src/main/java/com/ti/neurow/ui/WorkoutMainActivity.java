@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -29,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import timber.log.Timber;
 
 // Strictly-Landscape activity
 public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener, View.OnLongClickListener {
@@ -68,11 +71,37 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
 
         setContentView(R.layout.activity_workout_main);
 
+        /* Additions to pass the BLE device */
+        Intent intent = getIntent();
+        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+        boolean isDeviceReceived = false;
+
+        if (device != null) {
+            //throw new RuntimeException("Missing BluetoothDevice from MainActivity!");
+            isDeviceReceived = true;
+        }
+        // For logging and debugging, uncomment for app visual queue
+        if(isDeviceReceived == true) {
+            Timber.i("The BLE device was successfully passed.");
+            //Toast.makeText(this, "The BLE device was successfully passed.", Toast.LENGTH_LONG).show();
+        } else {
+            Timber.i("The BLE device was not passed.");
+            //Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
+        }
+        // This is how you can just call the stream to turn on and off, uncomment them out
+        // There we have the device and just start calling the utilities
+        // pm5Utility testingDevice = new pm5Utility(device);
+        // an example on how to start the stream for data33, look at pm5utility or in testingActivity.kt
+        // testingDevice.start33();
+
+        /* End addition */
+
         // [TEST] Activity creation
         Toast.makeText(WorkoutMainActivity.this, "Just CREATED ", Toast.LENGTH_SHORT).show();
 
         // Create instance of database in this activity
         DatabaseHelper db = new DatabaseHelper(WorkoutMainActivity.this);
+
 
         Handler handler = new Handler(); // define handler
 
@@ -106,7 +135,11 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         View.OnClickListener workoutClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent launchWorkoutActivity = new Intent(WorkoutMainActivity.this, WorkoutActivity.class); // define intent for launching activity
+                //Changed the way Intent is defined to add attribute to add BLE
+                Intent launchWorkoutActivity = new Intent(WorkoutMainActivity.this, WorkoutActivity.class); // define intent for launching activity                //Needed to pass BLE device
+                if(device != null) {
+                    launchWorkoutActivity.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
+                }
 
                 switch (v.getId()) {
                     case R.id.btnWorkout1: // ftpCalc button is clicked

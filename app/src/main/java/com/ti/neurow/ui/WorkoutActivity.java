@@ -3,6 +3,7 @@ package com.ti.neurow.ui;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -18,6 +19,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.ti.neurow.ble.pm5Utility;
 import com.ti.neurow.db.data33;
 import com.ti.neurow.db.data35;
 
@@ -50,6 +53,30 @@ public class WorkoutActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); // Lock orientation to landscape
         setContentView(R.layout.activity_workout);
+
+        /* Additions to pass the BLE device */
+        Intent intent = getIntent();
+        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+        boolean isDeviceReceived = false;
+
+        if (device != null) {
+            //throw new RuntimeException("Missing BluetoothDevice from MainActivity!");
+            isDeviceReceived = true;
+        }
+        // For logging and debugging, uncomment for app visual queue
+        if(isDeviceReceived == true) {
+            Timber.i("The BLE device was successfully passed.");
+            //Toast.makeText(this, "The BLE device was successfully passed.", Toast.LENGTH_LONG).show();
+        } else {
+            Timber.i("The BLE device was not passed.");
+            //Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
+        }
+        // This is how you can just call the stream to turn on and off, uncomment them out
+        // There we have the device and just start calling the utilities
+        //pm5Utility testingDevice = new pm5Utility(device);
+        // TODO: Call the starting services at some point before the workout starts
+        //testingDevice.start33(); <- call the object and start the service
+        /* End addition */
 
         // Define elements
         txtWorkoutAttribute = findViewById(R.id.txtWorkoutAttribute); // workout "subtitle"
