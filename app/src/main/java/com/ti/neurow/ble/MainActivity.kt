@@ -301,8 +301,8 @@ class MainActivity : AppCompatActivity() {
              */
             onConnectionSetupComplete = { gatt ->
                 //Intent(this@MainActivity, BleOperationsActivity::class.java).also {
-                Intent(this@MainActivity, TestingActivity::class.java).also {
-                //Intent(this@MainActivity, MainUIActivity::class.java).also {
+                //Intent(this@MainActivity, TestingActivity::class.java).also {
+                Intent(this@MainActivity, MainUIActivity::class.java).also {
                     it.putExtra(BluetoothDevice.EXTRA_DEVICE, gatt.device)
                     startActivity(it)
                 }
