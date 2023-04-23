@@ -136,7 +136,9 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
             @Override
             public void onClick(View v) {
                 //Changed the way Intent is defined to add attribute to add BLE
-                Intent launchWorkoutActivity = new Intent(WorkoutMainActivity.this, WorkoutActivity.class); // define intent for launching activity                //Needed to pass BLE device
+                Intent launchWorkoutActivity = new Intent(WorkoutMainActivity.this, WorkoutActivity.class);
+                // define intent for launching activity
+                // Needed to pass BLE device
                 if(device != null) {
                     launchWorkoutActivity.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
                 }

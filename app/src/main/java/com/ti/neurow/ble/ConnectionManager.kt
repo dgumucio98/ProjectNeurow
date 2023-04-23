@@ -501,6 +501,7 @@ object ConnectionManager {
             }
         }
 
+
         override fun onCharacteristicChanged(
             gatt: BluetoothGatt,
             characteristic: BluetoothGattCharacteristic
@@ -508,12 +509,117 @@ object ConnectionManager {
             with(characteristic) {
                 // The value when subscribed to a characteristic
                 Timber.i("Characteristic $uuid changed | value: ${value.toHexString()}")
+                val context = this
+                //val myTime33 = VariableChanges()
+                //val myTime35 = VariableChanges()
+                val myTime3D = VariableChanges()
+                //val db = DatabaseHelper(context = this@ConnectionManager) //making reference to database
+                //val appContext = ContextCompat.getApplicationContext(context)
+
+                //val db = DatabaseHelper.getInstance(getApplicationContext())
+
+/*                // [TEST] Test variable change with BLE time33
+                myTime33.setTimeListener(object : VariableChanges.TimeListener {
+                    override fun onTimeChanged(newTime: Double) {
+                        //finish implementing
+                        Timber.i("[TEST] onCharacteristicChanged time33: %s", newTime.toString())
+
+                    }
+                })
+
+                // [TEST] Test variable change with BLE time35
+                myTime35.setTimeListener(object : VariableChanges.TimeListener {
+                    override fun onTimeChanged(newTime: Double) {
+                        //finish implementing
+                        Timber.i("[TEST] onCharacteristicChanged time35: %s", newTime.toString())
+                    }
+                })*/
+
+                //uuidParsing function code
+                if(uuid.toString() == "ce060032-43e5-11e4-916c-0800200c9a66") {
+                    //Timber.i("You are reading 0x0032")
+                    //Timber.i("Your heart rate is is ${df[6].toUByte()} BPM")
+                } else if (uuid.toString() == "ce060033-43e5-11e4-916c-0800200c9a66") {
+                    val DF33: DataFrame33 = DataFrame33(value.toUByteArray())
+                    //Set's all df33 global variables to respective DF33 variables
+                    GlobalVariables.elapsedTime33 = DF33.elapsedTime
+                    GlobalVariables.intervalCount33 = DF33.intervalCount
+                    GlobalVariables.averagePower33 = DF33.averagePower
+                    GlobalVariables.totalCalories33 = DF33.totalCalories
+                    GlobalVariables.splitIntAvgPace33 = DF33.splitIntAvgPace
+                    GlobalVariables.splitIntAvgPwr33 = DF33.splitIntAvgPwr
+                    GlobalVariables.splitIntAvgCal33 = DF33.splitIntAvgCal
+                    GlobalVariables.lastSplitTime33 = DF33.lastSplitTime
+                    GlobalVariables.lastSplitDist33 = DF33.lastSplitDist
+                    //sets time listener with newTime
+                    //lets Interval20Activity know global variables have changed
+                    GlobalVariables.globalTimeInstance33.setTime(DF33.elapsedTime)
+
+                    DF33.printAllAtt()
+                } else if (uuid.toString() == "ce060035-43e5-11e4-916c-0800200c9a66") {
+                    val DF35: DataFrame35 = DataFrame35(value.toUByteArray())
+                    //Set's all df35 global variables to respective DF35 variables
+                    GlobalVariables.elapsedTime35 = DF35.elapsedTime
+                    GlobalVariables.distance35 = DF35.distance
+                    GlobalVariables.driveLength35 = DF35.driveLength
+                    GlobalVariables.driveTime35 = DF35.driveTime
+                    GlobalVariables.strokeRecTime35 = DF35.strokeRecTime
+                    GlobalVariables.strokeDistance35 = DF35.strokeDistance
+                    GlobalVariables.peakDriveForce35 = DF35.peakDriveForce
+                    GlobalVariables.averageDriveForce35 = DF35.averageDriveForce
+                    GlobalVariables.workPerStroke35 = DF35.workPerStroke
+                    GlobalVariables.strokeCount35 = DF35.strokeCount
+                    //sets time listener with newTime
+                    //lets Interval20Activity know global variables have changed
+                    GlobalVariables.globalTimeInstance35.setTime(DF35.elapsedTime)
+
+                    DF35.printAllAtt()
+/*                    if(false) {
+                        if(dataFrame35Queue.size < queSize) {
+                            if(dataFrame35Queue.offer(DF35) != null) {
+                                println("An item has been placed in the 35 Queue.")
+                            } else {
+                                println("An item failed to be placed in the 35 Queue.")
+                            }
+                        } else {
+                            println("The queue full: ${dataFrame35Queue.size} items")
+                            println("Popping the most recent dataframe.")
+                            dataFrame35Queue.poll().printAllAtt()
+                            println("The queue will now clear.")
+                            dataFrame35Queue.clear()
+                        }
+                    } else { DF35.printAllAtt() }*/
+                } else if (uuid.toString() == "ce06003d-43e5-11e4-916c-0800200c9a66") {
+                    //TODO add listener when 3D table is completed
+                    //println("This is where it should read the first message compile the data")
+                    val DF3D: DataFrame3D = DataFrame3D(value.toUByteArray())
+                    GlobalVariables.pol3D = DF3D.messages
+                    GlobalVariables.message3D = DF3D.forceVals.joinToString(separator = " ")
+                    GlobalVariables.globalTimeInstance3D.setMessage(DF3D.forceVals.toString())
+                    DF3D.printAllAtt()
+                    /*
+                    if(onToggle) {
+                        if(dataFrame3DQueue.size < queSize) {
+                            if(dataFrame3DQueue.offer(DF3D) != null) {
+                                println("An item has been placed in the 3D Queue.")
+                            } else {
+                                println("An item failed to be placed in the 3D Queue.")
+                            }
+                        } else {
+                            println("The queue full: ${dataFrame3DQueue.size} items")
+                            println("Poping the most recent dataframe.")
+                            dataFrame3DQueue.poll().printAllAtt()
+                            println("The queue will now clear.")
+                        }
+                    } else { DF3D.printAllAtt() }
+                     */
+                }
+
                 //uuidParsing(myTime2, uuid.toString(), value.toUByteArray(), true)
-                // Basically for each listener registered in a given activity with it's
-                // respective callback
                 listeners.forEach { it.get()?.onCharacteristicChanged?.invoke(gatt.device, this) }
             }
         }
+
 
         override fun onDescriptorRead(
             gatt: BluetoothGatt,

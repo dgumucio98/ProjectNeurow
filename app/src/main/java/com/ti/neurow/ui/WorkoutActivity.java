@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.ti.neurow.ble.MainActivity;
 import com.ti.neurow.ble.pm5Utility;
 import com.ti.neurow.db.data33;
 import com.ti.neurow.db.data35;
@@ -73,10 +74,12 @@ public class WorkoutActivity extends AppCompatActivity {
         }
         // This is how you can just call the stream to turn on and off, uncomment them out
         // There we have the device and just start calling the utilities
-        //pm5Utility testingDevice = new pm5Utility(device);
-        // TODO: Call the starting services at some point before the workout starts
-        //testingDevice.start33(); <- call the object and start the service
-        /* End addition */
+
+        // Toggle notifications
+        pm5Utility testingDevice = new pm5Utility(device);
+        testingDevice.start33();
+        testingDevice.start35();
+        testingDevice.start3D();
 
         // Define elements
         txtWorkoutAttribute = findViewById(R.id.txtWorkoutAttribute); // workout "subtitle"
@@ -272,9 +275,19 @@ public class WorkoutActivity extends AppCompatActivity {
                 builder.setPositiveButton("Stop", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
+                        // Stop BT data stream
+                        testingDevice.end33();
+                        testingDevice.end35();
+                        testingDevice.end3D();
+
                         Intent intent = new Intent(WorkoutActivity.this, WorkoutMainActivity.class);
-                        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        //Needed to pass BLE device
+                        if(device != null) {
+                            intent.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
+                        }
                         startActivity(intent);
                         finish(); // Can't go back
                     }
@@ -390,6 +403,7 @@ public class WorkoutActivity extends AppCompatActivity {
             launchPostWorkoutActivity.putExtra("workoutName", "ftpCalc"); // pass workout name data - necessary for specific suggestions
 
             // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
+            //launchPostWorkoutActivity.putExtra(BluetoothDevice.EXTRA_DEVICE, MainActivity.);
             startActivity(launchPostWorkoutActivity); // launch BLE Data View
             finish(); // can't go back
         }

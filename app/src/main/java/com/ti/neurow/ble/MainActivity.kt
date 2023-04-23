@@ -42,6 +42,8 @@ private const val ENABLE_BLUETOOTHSCAN_REQUEST_CODE = 3
 
 class MainActivity : AppCompatActivity() {
 
+    //setting global BLE device for use in later activity, garbage collection may be an issue
+    lateinit var globalBleDevice: BluetoothDevice
     /*******************************************
      * Properties
      *******************************************/
@@ -300,9 +302,10 @@ class MainActivity : AppCompatActivity() {
             * activity, BleOperationsActivity
              */
             onConnectionSetupComplete = { gatt ->
+                globalBleDevice = gatt.device
                 //Intent(this@MainActivity, BleOperationsActivity::class.java).also {
-                Intent(this@MainActivity, TestingActivity::class.java).also {
-                //Intent(this@MainActivity, MainUIActivity::class.java).also {
+                //Intent(this@MainActivity, TestingActivity::class.java).also {
+                Intent(this@MainActivity, MainUIActivity::class.java).also {
                     it.putExtra(BluetoothDevice.EXTRA_DEVICE, gatt.device)
                     startActivity(it)
                 }

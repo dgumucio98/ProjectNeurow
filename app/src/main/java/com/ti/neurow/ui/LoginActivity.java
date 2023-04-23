@@ -40,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-
         /* Additions to pass the BLE device */
         Intent intent = getIntent();
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -138,6 +137,7 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     @Override
@@ -181,6 +181,7 @@ public class LoginActivity extends AppCompatActivity {
         // Launch PromptRotateActivity
         Intent i = new Intent(this, PromptRotateActivity.class);
         startActivity(i);
+
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         finish(); // close activity
     }
