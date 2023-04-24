@@ -100,7 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
                 else { // add user to database
-                    User newUser = new User(Username, Password, 0, 0, 0, 0, 0, 0, 0,0);
+                    User newUser = new User(Username, Password, 45, 0, 25, 34, 40, 47, 54,67);
                     boolean success = db.add_account(newUser);
                     if (success == true) { // if successful
                         Toast.makeText(RegisterActivity.this, "[TEST] User " + Username + " has been registered!", Toast.LENGTH_SHORT).show();
