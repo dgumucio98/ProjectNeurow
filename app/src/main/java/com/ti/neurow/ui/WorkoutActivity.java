@@ -12,16 +12,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.ti.neurow.ble.MainActivity;
-import com.ti.neurow.ble.pm5Utility;
 import com.ti.neurow.db.data33;
 import com.ti.neurow.db.data35;
 
@@ -33,23 +29,26 @@ import com.ti.neurow.R;
 
 import java.util.ArrayList;
 
-import pl.droidsonroids.gif.GifImageView;
 import timber.log.Timber;
 
 public class WorkoutActivity extends AppCompatActivity {
 
+    // Define task objects for task quitting
+    private ftpCalcTask ftpTask;
+    // TODO: Add other task definitions here (if fix works)
+
     // Define UI elements
-    RelativeLayout metricsRelativeLayout, StartRelativeLayout; // layout that holds all metrics (TextViews)
     Button btnStart, btnStop; // buttons
-    boolean buttonPressed = false; // tracks if workout has been started using button already
     TextView txtStartPrompt, txtWorkoutAttribute, txtWorkoutName, txtTimeMetric, txtDistanceMetric, txtCaloriesMetric, txtAvgPwrMetric, txtDriveLengthMetric,
             txtDriveTimeMetric, txtAvgDriveForceMetric, txtStrokeCountMetric, txtIntervalPZMetric, txtIntervalFixMetric, txtPaceFeedbackMetric, txtInstructionMetric; // metrics
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        // Tweak visible elements
         super.onCreate(savedInstanceState);
+
+        Toast.makeText(getApplicationContext(), "[TEST] WorkoutActivity created!", Toast.LENGTH_SHORT).show();
+
+        // Hide Action bar and Status bar, lock orientation to landscape
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); // Hide Action bar and Status bar
         getSupportActionBar().hide();
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); // Lock orientation to landscape
@@ -76,10 +75,10 @@ public class WorkoutActivity extends AppCompatActivity {
         // There we have the device and just start calling the utilities
 
         // Toggle notifications
-        pm5Utility testingDevice = new pm5Utility(device);
-        testingDevice.start33();
-        testingDevice.start35();
-        testingDevice.start3D();
+        //pm5Utility testingDevice = new pm5Utility(device); THIS IS THROWING A NULL REFERENCE ERROR
+//        testingDevice.start33();
+//        testingDevice.start35();
+//        testingDevice.start3D();
 
         // Define elements
         txtWorkoutAttribute = findViewById(R.id.txtWorkoutAttribute); // workout "subtitle"
@@ -103,7 +102,7 @@ public class WorkoutActivity extends AppCompatActivity {
         txtIntervalFixMetric = findViewById(R.id.txtIntervalFixMetric); // interval fix feedback text box
         txtPaceFeedbackMetric = findViewById(R.id.txtPaceFeedbackMetric); // pace feedback text box
 
-        // Receive workout choice data from WorkoutMainActivity
+        // Receive workout choice data from DashboardActivity
         int colorToSet = getIntent().getIntExtra("attributeColor", Color.WHITE); // default is white (means problem)
         String textToSet = getIntent().getStringExtra("attributeText");
         String titleToSet = getIntent().getStringExtra("attributeName");
@@ -120,7 +119,7 @@ public class WorkoutActivity extends AppCompatActivity {
         db.delete_dataframe35_table();
         db.delete_table3D();
 
-        // Button to start workout
+        // Listener for button to start workout
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // when btnStart is clicked
@@ -163,20 +162,6 @@ public class WorkoutActivity extends AppCompatActivity {
                                 GlobalVariables.lastSplitDist33
                         );
                         boolean success = db.add_dataframe33(realdata33);
-
-//                        if (success) {
-//                            Toast.makeText(
-//                                    WorkoutActivity.this,
-//                                    "[TEST] Successfully entered table",
-//                                    Toast.LENGTH_SHORT
-//                            ).show(); //Testing
-//                        } else {
-//                            Toast.makeText(
-//                                    WorkoutActivity.this,
-//                                    "[TEST] Did not enter table",
-//                                    Toast.LENGTH_SHORT
-//                            ).show(); //Testing
-//                        }
                     }
                 });
 
@@ -198,19 +183,6 @@ public class WorkoutActivity extends AppCompatActivity {
                         );
 
                         boolean success = db.add_dataframe35(realdata35);
-//                        if (success) {
-//                            Toast.makeText(
-//                                    WorkoutActivity.this,
-//                                    "[TEST] Successfully entered table",
-//                                    Toast.LENGTH_SHORT
-//                            ).show(); //Testing
-//                        } else {
-//                            Toast.makeText(
-//                                    WorkoutActivity.this,
-//                                    "[TEST] Did not enter table",
-//                                    Toast.LENGTH_SHORT
-//                            ).show(); //Testing
-//                        }
                     }
                 });
 
@@ -219,19 +191,6 @@ public class WorkoutActivity extends AppCompatActivity {
                     @Override
                     public void onMessageChanged(String newMessage) {
                         boolean success = db.add_3Dmessage(GlobalVariables.pol3D, GlobalVariables.message3D);
-//                        if (success) {
-//                            Toast.makeText(
-//                                    WorkoutActivity.this,
-//                                    "[TEST] Successfully entered table",
-//                                    Toast.LENGTH_SHORT
-//                            ).show(); //Testing
-//                        } else {
-//                            Toast.makeText(
-//                                    WorkoutActivity.this,
-//                                    "[TEST] Did not enter table",
-//                                    Toast.LENGTH_SHORT
-//                            ).show(); //Testing
-//                        }
                     }
                 });
 
@@ -264,7 +223,7 @@ public class WorkoutActivity extends AppCompatActivity {
             } // end of onClick
         });
 
-        // Button to stop workout
+        // Listener for button to stop workout
         btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -272,31 +231,28 @@ public class WorkoutActivity extends AppCompatActivity {
                 builder.setTitle("Stop workout?");
                 builder.setMessage("Any ongoing workout progress will be lost.");
 
+                // Stop option is clicked
                 builder.setPositiveButton("Stop", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         // Stop BT data stream
-                        testingDevice.end33();
-                        testingDevice.end35();
-                        testingDevice.end3D();
+//                        testingDevice.end33();
+//                        testingDevice.end35();
+//                        testingDevice.end3D();
 
-                        Intent intent = new Intent(WorkoutActivity.this, WorkoutMainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        WorkoutActivity.super.onBackPressed(); // go back (should be DashboardActivity)
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                        //Needed to pass BLE device
-                        if(device != null) {
-                            intent.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
-                        }
-                        startActivity(intent);
-                        finish(); // Can't go back
+
+                        GlobalVariables.stopTask = true; // workout was cut short, set flag
                     }
                 });
 
+                // Continue option is clicked
                 builder.setNegativeButton("Continue", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss(); // close the dialog
+                        dialogInterface.dismiss(); // nothing to do here, close dialog
                     }
                 });
                 AlertDialog dialog = builder.show();
@@ -304,7 +260,7 @@ public class WorkoutActivity extends AppCompatActivity {
         });
     }
 
-    // ftpCalc Background functionality class
+    // ftpCalc background functionality class
     private class ftpCalcTask extends AsyncTask<Void, Object, Integer> {
 
         @Override // 1st function for background task: workout functionality
@@ -318,9 +274,8 @@ public class WorkoutActivity extends AppCompatActivity {
             int length = 0;
             ArrayList<Double> powtimearray = new ArrayList<>(); // create new arraylist
 
-            // main loop
-            while (db.getTime_33() < 45.0) { // [TEST] 15 seconds
-
+            // Main workout loop
+            while (db.getTime_33() < 30.0 && !GlobalVariables.stopTask)  {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -336,29 +291,32 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
                 int strokeCount = GlobalVariables.strokeCount35.intValue();
 
-                // Send data to main UI thread
+                // Send data to main UI thread after each loop iteration
                 publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount); // Update the UI with the current counter value
             }
 
-            double avgPow = (double) sum / length; // calculate average power
+            // Final tasks
+            if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
+                double avgPow = (double) sum / length; // calculate average power
+                int ftp = (int) (0.95 * avgPow); // calculate ftp (95% of average power)
+                GlobalVariables.ftp = ftp; // set ftp as global so UI can display it
 
-            int ftp = (int) (0.95 * avgPow); // calculate ftp (95% of average power)
-            GlobalVariables.ftp = ftp; // set ftp as global so UI can display it
+                // Load power zones
+                int pz_1 = 0; // Very Easy: <55% of FTP
+                int pz_2 = (int) (0.56 * ftp); // Moderate: 56%-75% of FTP
+                int pz_3 = (int) (0.76 * ftp); // Sustainable: 76%-90% of FTP
+                int pz_4 = (int) (0.91 * ftp); // Challenging: 91%-105% of FTP
+                int pz_5 = (int) (1.06 * ftp); // Hard: 106%-120% of FTP
+                int pz_6 = (int) (1.21 * ftp); // Very Hard: 121%-150% of FTP
+                int pz_7 = (int) (1.51 * ftp); // Max Effort: >151% of FTP
 
-            // Load power zones
-            int pz_1 = 0; //Very Easy: <55% of FTP
-            int pz_2 = (int) (0.56 * ftp); // Moderate: 56%-75% of FTP
-            int pz_3 = (int) (0.76 * ftp); // Sustainable: 76%-90% of FTP
-            int pz_4 = (int) (0.91 * ftp); // Challenging: 91%-105% of FTP
-            int pz_5 = (int) (1.06 * ftp); // Hard: 106%-120% of FTP
-            int pz_6 = (int) (1.21 * ftp); // Very Hard: 121%-150% of FTP
-            int pz_7 = (int) (1.51 * ftp); // Max Effort: >151% of FTP
+                // Populate database User table
+                db.updateuserFTP(GlobalVariables.loggedInUsername, ftp,
+                        pz_1, pz_2, pz_3, pz_4, pz_5, pz_6, pz_7);
 
-            // populate database User table
-            db.updateuserFTP(GlobalVariables.loggedInUsername, ftp, pz_1, pz_2, pz_3, pz_4, pz_5, pz_6, pz_7);
-
-            // Set global arraylist of time and power
-            GlobalVariables.finalListTimePower = powtimearray;
+                // Set global arraylist of time and power
+                GlobalVariables.finalListTimePower = powtimearray;
+            }
             return 0;
         }
 
@@ -389,9 +347,8 @@ public class WorkoutActivity extends AppCompatActivity {
             txtAvgDriveForceMetric.setText(avgDriveForce + " lbf");
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
             txtIntervalPZMetric.setText("Row for 20 minutes at a challenging, but sustainable pace!");
-            txtIntervalFixMetric.setText("");
-            txtPaceFeedbackMetric.setText("");
-
+            txtIntervalFixMetric.setText(""); // not needed for ftpCalc
+            txtPaceFeedbackMetric.setText(""); // not needed for FTP Calc
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -399,17 +356,29 @@ public class WorkoutActivity extends AppCompatActivity {
             super.onPostExecute(integer);
 
             // Define intent and pass workout name to PostWorkoutActivity
-            Intent launchPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
-            launchPostWorkoutActivity.putExtra("workoutName", "ftpCalc"); // pass workout name data - necessary for specific suggestions
+            if (!GlobalVariables.stopTask) { // only launch PostWorkoutActivity if workout wasn't cut short
+                Intent goToPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+                goToPostWorkoutActivity.putExtra("workoutName", "ftpCalc"); // pass workout name data - necessary for specific suggestions
 
-            // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
-            //launchPostWorkoutActivity.putExtra(BluetoothDevice.EXTRA_DEVICE, MainActivity.);
-            startActivity(launchPostWorkoutActivity); // launch BLE Data View
-            finish(); // can't go back
+                startActivity(goToPostWorkoutActivity); // launch PostWorkoutActivity
+                finish(); // can't go back
+            }
+            else { // if workout was cut short
+                GlobalVariables.stopTask = false; // reset flag
+                finish(); // can't go back
+            }
+
+            // [TEST] If we reach here, task is completed
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(WorkoutActivity.this, "[TEST] Workout Task Finished!", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
-    // interval1 background functionality class
+    // Interval1 background functionality class
     private class interval1Task extends AsyncTask<Void, Object, Integer> {
 
         @Override // 1st function for background task: defines background task
@@ -1185,7 +1154,7 @@ public class WorkoutActivity extends AppCompatActivity {
         }
     }
 
-    // interval2 background functionality class
+    // Interval2 background functionality class
     private class interval2Task extends AsyncTask<Void, Object, Integer> {
 
         @Override // 1st function for background task: defines background task
@@ -1451,7 +1420,7 @@ public class WorkoutActivity extends AppCompatActivity {
         }
     }
 
-    // interval3 background functionality class
+    // Interval3 background functionality class
     private class interval3Task extends AsyncTask<Void, Object, Integer> {
 
         @Override // 1st function for background task: defines background task
@@ -1885,7 +1854,7 @@ public class WorkoutActivity extends AppCompatActivity {
         }
     }
 
-    // pace20 background functionality class
+    // Pace20 background functionality class
     private class pace20Task extends AsyncTask<Void, Object, Integer> {
 
         @Override // 1st function for background task: defines background task
@@ -1990,7 +1959,7 @@ public class WorkoutActivity extends AppCompatActivity {
         }
     }
 
-    // pace30 background functionality class
+    // Pace30 background functionality class
     private class pace30Task extends AsyncTask<Void, Object, Integer> {
 
         @Override // 1st function for background task: defines background task
@@ -2095,7 +2064,7 @@ public class WorkoutActivity extends AppCompatActivity {
         }
     }
 
-    // pace40 background functionality class
+    // Pace40 background functionality class
     private class pace40Task extends AsyncTask<Void, Object, Integer> {
 
         @Override // 1st function for background task: defines background task
@@ -2320,6 +2289,41 @@ public class WorkoutActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() { // handle back button press during workout
+    public void onBackPressed() { // mimic btnStop functionality
+        AlertDialog.Builder builder = new AlertDialog.Builder(WorkoutActivity.this);
+        builder.setTitle("Stop workout?");
+        builder.setMessage("Any ongoing workout progress will be lost.");
+
+        builder.setPositiveButton("Stop", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                // Stop BT data stream
+//                        testingDevice.end33();
+//                        testingDevice.end35();
+//                        testingDevice.end3D();
+
+                WorkoutActivity.super.onBackPressed(); // just go back to Dashboard
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
+                GlobalVariables.stopTask = true; // set task stop flag
+
+                finish(); // Can't go back
+            }
+        });
+
+        builder.setNegativeButton("Continue", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss(); // close the dialog
+            }
+        });
+        AlertDialog dialog = builder.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Toast.makeText(this, "[TEST] WorkoutActivity destroyed!", Toast.LENGTH_SHORT).show();
     }
 }

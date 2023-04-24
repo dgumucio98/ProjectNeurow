@@ -24,13 +24,15 @@ import timber.log.Timber;
 
 public class LoginActivity extends AppCompatActivity {
 
-    // Declare buttons and EditTexts
+    // Declare views
     EditText usernameEditText,passwordEditText;
     Button loginButton, backButton, bypassButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Toast.makeText(getApplicationContext(), "[TEST] LoginActivity created!", Toast.LENGTH_SHORT).show();
 
         // Hide Action bar and Status bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -40,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-        /* Additions to pass the BLE device */
+        // BLE Device Passing
         Intent intent = getIntent();
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
         boolean isDeviceReceived = false;
@@ -140,22 +142,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onBackPressed() { // Override back button press
-        // Check if the user is coming from the LoginActivity
-        if (isTaskRoot()) { // if user just logged in/registered
-            Intent intent = new Intent(this, MainUIActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-        }
-        else {
-            // If the user is not coming from LoginActivity, continue with the default behavior
-            super.onBackPressed();
-
-        }
-    }
-
     // Define valid username guidelines
     boolean isValidUsername(String username) {
         Pattern pattern = Pattern.compile("^[a-zA-Z0-9]*$"); // no special characters allowed
@@ -179,10 +165,16 @@ public class LoginActivity extends AppCompatActivity {
         GlobalVariables.loggedInUsername = "MrBypass"; // set as Mr. Bypass
 
         // Launch PromptRotateActivity
-        Intent i = new Intent(this, PromptRotateActivity.class);
-        startActivity(i);
+        Intent goToPromptRotateActivity = new Intent(this, PromptRotateActivity.class);
+        startActivity(goToPromptRotateActivity);
 
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         finish(); // close activity
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Toast.makeText(this, "[TEST] LoginActivity destroyed!", Toast.LENGTH_SHORT).show();
     }
 }
