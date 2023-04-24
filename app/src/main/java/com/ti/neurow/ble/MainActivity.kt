@@ -39,11 +39,12 @@ private const val LOCATION_PERMISSION_REQUEST_CODE = 2
 // For the extra bluetooth scan and connect permissions now
 private const val ENABLE_BLUETOOTHSCAN_REQUEST_CODE = 3
 
+lateinit var globalBleDevice: BluetoothDevice
 
 class MainActivity : AppCompatActivity() {
 
     //setting global BLE device for use in later activity, garbage collection may be an issue
-    lateinit var globalBleDevice: BluetoothDevice
+    //lateinit var globalBleDevice: BluetoothDevice
     /*******************************************
      * Properties
      *******************************************/

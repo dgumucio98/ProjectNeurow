@@ -87,15 +87,16 @@ class pm5Utility(device: BluetoothDevice) {
     * between:    * slowest    * medium    * fast   * fastest */
     fun setPollSpeed(speed: String) {
         var payload: Byte = when(speed) {
-            "SLOWEST" -> 0x00 //Sets for 1 poll per second
-            "MEDIUM" -> 0x01 //Sets for 1 poll per 500 ms
-            "FAST" -> 0x02 //Sets for 1 poll per 250 ms
-            "FASTEST" -> 0x03 //Sets for 1 poll per 100 ms
-            else -> 0x01 //default speed
+            "SLOWEST" -> 0x00.toByte() //Sets for 1 poll per second
+            "MEDIUM" -> 0x01.toByte() //Sets for 1 poll per 500 ms
+            "FAST" -> 0x02.toByte() //Sets for 1 poll per 250 ms
+            "FASTEST" -> 0x03.toByte() //Sets for 1 poll per 100 ms
+            else -> 0x01.toByte() //default speed
         }
         val byteArray = ByteArray(payload.toInt())
         ConnectionManager.writeCharacteristic(PM5, char34, byteArray)
-        Timber.i("Set speed to ${payload} on characteristic 34")
+        Timber.i("Attempt to write ${payload} on characteristic 34")
+        ConnectionManager.readCharacteristic(PM5, char34);
     }
 
     fun getStatus(): String {
@@ -219,6 +220,8 @@ class pm5Utility(device: BluetoothDevice) {
                         }
                         Timber.i("The current state is: ${state}")
                     }
+                } else if (characteristic.uuid == char34UUID) {
+                    Timber.i("Characteristic 34 has speed of ${characteristic.toString()}")
                 }
             }
         }
