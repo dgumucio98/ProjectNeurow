@@ -308,18 +308,10 @@ class MainActivity : AppCompatActivity() {
                 globalBleDevice = gatt.device
                 //Intent(this@MainActivity, BleOperationsActivity::class.java).also {
                 //Intent(this@MainActivity, TestingActivity::class.java).also {
-                runOnUiThread {
-                    alert {
-                        title = "Connection established"
-                        message = "The device has been connected, please press the back button"
-                        positiveButton("OK") {}
-                    }.show()
+                Intent(this@MainActivity, MainUIActivity::class.java).also {
+                    it.putExtra(BluetoothDevice.EXTRA_DEVICE, gatt.device)
+                    startActivity(it)
                 }
-                ConnectionManager.unregisterListener(this)
-//                Intent(this@MainActivity, MainUIActivity::class.java).also {
-//                    it.putExtra(BluetoothDevice.EXTRA_DEVICE, gatt.device)
-//                    startActivity(it)
-//                }
 //                ConnectionManager.unregisterListener(this)
             }
             onDisconnect = {

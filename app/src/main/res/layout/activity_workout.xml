@@ -302,6 +302,7 @@
             android:layout_width="400dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+
             android:layout_marginTop="280dp"
             android:fontFamily="sans-serif"
             android:text="[Interval Fix Feedback]"
@@ -344,6 +345,7 @@
             android:layout_width="400dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+
             android:layout_marginTop="190dp"
             android:fontFamily="sans-serif"
             android:text="[Pace Feedback]"

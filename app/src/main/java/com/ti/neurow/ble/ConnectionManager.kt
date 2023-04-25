@@ -433,31 +433,19 @@ object ConnectionManager {
                             val DF33: DataFrame33 = DataFrame33(value.toUByteArray())
                             val newTime = DF33.elapsedTime
                             myTime33.setTime(newTime)
-                            DF33.printAllAtt()
+                            //Debug statement
+                            //DF33.printAllAtt()
                         } else if (uuid.toString() == "ce060035-43e5-11e4-916c-0800200c9a66") {
                             val DF35: DataFrame35 = DataFrame35(value.toUByteArray())
                             val newTime = DF35.elapsedTime
                             myTime35.setTime(newTime)
+                            //Debug statement
                             //DF35.printAllAtt()
-                            if(false) {
-                                if(dataFrame35Queue.size < queSize) {
-                                    if(dataFrame35Queue.offer(DF35) != null) {
-                                        println("An item has been placed in the 35 Queue.")
-                                    } else {
-                                        println("An item failed to be placed in the 35 Queue.")
-                                    }
-                                } else {
-                                    println("The queue full: ${dataFrame35Queue.size} items")
-                                    println("Popping the most recent dataframe.")
-                                    dataFrame35Queue.poll().printAllAtt()
-                                    println("The queue will now clear.")
-                                    dataFrame35Queue.clear()
-                                }
-                            } else { DF35.printAllAtt() }
                         } else if (uuid.toString() == "ce06003d-43e5-11e4-916c-0800200c9a66") {
                             //println("This is where it should read the first message compile the data")
                             val DF3D: DataFrame3D = DataFrame3D(value.toUByteArray())
-                            DF3D.printAllAtt()
+                            //Debug statement
+                            //DF3D.printAllAtt()
                         }
                         //uuidParsing(myTime1, uuid.toString(), value.toUByteArray(), false)
                         listeners.forEach { it.get()?.onCharacteristicRead?.invoke(gatt.device, this) }
