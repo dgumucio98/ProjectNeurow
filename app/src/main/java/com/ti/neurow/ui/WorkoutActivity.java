@@ -54,35 +54,6 @@ public class WorkoutActivity extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); // Lock orientation to landscape
         setContentView(R.layout.activity_workout);
 
-        /* Additions to pass the BLE device */
-        Intent intent = getIntent();
-        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-        boolean isDeviceReceived = false;
-
-
-        if (device != null) {
-            //throw new RuntimeException("Missing BluetoothDevice from MainActivity!");
-            isDeviceReceived = true;
-        }
-        // For logging and debugging, uncomment for app visual queue
-        if(isDeviceReceived == true) {
-            Timber.i("The BLE device was successfully passed.");
-            //Toast.makeText(this, "The BLE device was successfully passed.", Toast.LENGTH_LONG).show();
-        } else {
-            Timber.i("The BLE device was not passed.");
-            //Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
-        }
-        // This is how you can just call the stream to turn on and off, uncomment them out
-        // There we have the device and just start calling the utilities
-
-        // Toggle notifications
-
-//        testingDevice.start33();
-//        testingDevice.start35();
-//        testingDevice.start3D();
-
-
-
         // Define elements
         txtWorkoutAttribute = findViewById(R.id.txtWorkoutAttribute); // workout "subtitle"
         txtWorkoutName = findViewById(R.id.txtWorkoutName); // workout name (interval/pace)
@@ -198,18 +169,16 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
                 });
 
-                /* The workout begins right here */
+                //Starting workout state for pm5
+                testingDevice.startWorkOut();
+                testingDevice.start33();
+                testingDevice.start3D();
+                testingDevice.start35();
+
                 // 2. Call workout methods through conditions
                 if (methodName.equals("ftpCalc")) { // CALL FTPCALC
-                    //Starting workout state for pm5
-                    testingDevice.startWorkOut();
-                    testingDevice.start33();
-                    testingDevice.start3D();
-                    testingDevice.start35();
-
                     ftpCalcTask ftpCalcTask = new ftpCalcTask();
                     ftpCalcTask.execute();
-
 
                 } else if (methodName.equals("interval1")) { // CALL INTERVAL1
                     interval1Task interval1Task = new interval1Task();
@@ -268,27 +237,6 @@ public class WorkoutActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Toast.makeText(this, "[WorkoutActivity] onResume called", Toast.LENGTH_SHORT).show();
-    }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Toast.makeText(this, "[WorkoutActivity] onStart called", Toast.LENGTH_SHORT).show();
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Toast.makeText(this, "[WorkoutActivity] onPause called", Toast.LENGTH_SHORT).show();
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Toast.makeText(this, "[WorkoutActivity] onStop called", Toast.LENGTH_SHORT).show();
-    }
-
     // ftpCalc background functionality class
     private class ftpCalcTask extends AsyncTask<Void, Object, Integer> {
 
@@ -303,29 +251,32 @@ public class WorkoutActivity extends AppCompatActivity {
             int length = 0;
             ArrayList<Double> powtimearray = new ArrayList<>(); // create new arraylist
             double pastTime = db.getTime_33();
+            int Iterations = 0;
             int numIterations = 0;
-            // main loop
-            //Timber.d("in ftp calc");
+
             // Main workout loop
             while (db.getTime_33() < 30.0 && !GlobalVariables.stopTask)  {
-                numIterations ++;
-                //Timber.d("in loop");
+                Iterations ++;
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double) db.getPower());
-/*                double currentTime = db.getTime_33();
-                if (currentTime == pastTime) {
-                    Timber.d("in cur = past");
+                double currentTime = db.getTime_33();
+
+                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
                     numIterations += 1;
-                    if (numIterations > 3000) { // TODO: edit? set a threshold of 300 iterations
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
                         break; // terminate the loop if threshold is exceeded
                     }
+
                 } else {
-                    Timber.d("else");
                     pastTime = currentTime;
                     numIterations = 0;
-                }*/
+                }
                 // Update metric values
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -339,7 +290,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 // Send data to main UI thread after each loop iteration
                 publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount); // Update the UI with the current counter value
             }
-            Timber.d("[TIMBER] 30 sec num of iterations: " + numIterations);
+            Timber.d("[TEST] 30 sec num of iterations: " + Iterations);
 
             // Final tasks
             if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
@@ -409,6 +360,15 @@ public class WorkoutActivity extends AppCompatActivity {
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
 
+            // Stop BLE data polling
+            testingDevice.end33();
+            Timber.d("[TEST] Polling of 33 ended");
+            testingDevice.end35();
+            Timber.d("[TEST] Polling of 35 ended");
+            testingDevice.end3D();
+            Timber.d("[TEST] Polling of 3D ended");
+            testingDevice.endWorkOut();
+
             // Define intent and pass workout name to PostWorkoutActivity
             if (!GlobalVariables.stopTask) { // only launch PostWorkoutActivity if workout wasn't cut short
                 Intent goToPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
@@ -419,14 +379,8 @@ public class WorkoutActivity extends AppCompatActivity {
             }
             else { // if workout was cut short
                 GlobalVariables.stopTask = false; // reset flag
-                finish(); // can't go back
+                finish(); // destroy workout activity, go back to dashboard
             }
-
-            // Stop BLE data polling
-            testingDevice.end33();
-            testingDevice.end3D();
-            testingDevice.end35();
-            testingDevice.endWorkOut();
         }
     }
 
@@ -2241,12 +2195,18 @@ public class WorkoutActivity extends AppCompatActivity {
             String fixMessage = ""; //declaring power zone error message
             String paceMessage = ""; //declaring pace message
 
+            int Iterations = 0; //how many loop iterations
+            int numIterations = 0; //time=time iterations
+
+            double pastTime = db.getTime_33();
             // 45 seconds at zone 2
-            while (db.getTime_33() <= 45) {
+            while (db.getTime_33() <= 45 && !GlobalVariables.stopTask) {
+                Iterations++;
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double) db.getPower());
+                double currentTime = db.getTime_33();
                 pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     pzCount++;
@@ -2262,13 +2222,27 @@ public class WorkoutActivity extends AppCompatActivity {
                 if (Math.abs(db.getPower() - db.getPastPower()) > 2) { //TODO: what num is good here
                     paceCount++;
                     if (paceCount > 2) {
-                        paceMessage = "Your power output is inconsistent, try to improve pacing!";
+                        paceMessage = "Your power output is inconsistent!";
                         failCount++;
                         paceCount = 0;
                     }
                 } else {
                     paceMessage = "Nice pace, keep it up!";
                     paceCount = 0;
+                }
+                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 10000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 10,000 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+                }
+                else {
+                    pastTime = currentTime;
+                    numIterations = 0;
                 }
 
                 // Update metric values
@@ -2284,18 +2258,21 @@ public class WorkoutActivity extends AppCompatActivity {
                 // Send data to main UI thread
                 publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage, paceMessage); // Update the UI with the current counter value
                 //TODO: where to put thread sleep for message display. here? after setting text box?
-                try {
+/*                try {
                     Thread.sleep(500); // pause for 500 milliseconds
                 } catch (InterruptedException e) {
                     // handle the exception if the thread is interrupted while sleeping
-                    Timber.d("exception in demo thread sleep block");
-                }
+                    Timber.d("[TEST]exception in demo thread sleep block");
+                }*/
             }
+            Timber.d("[TEST] 45 sec num of iterations: " + Iterations);
 
-            double avgPow = (double) sum / (double) length; //uncomment
-            GlobalVariables.failCount = failCount;
-            db.add_history(GlobalVariables.loggedInUsername, "interval1", failCount, avgPow);
-            GlobalVariables.finalListTimePower = powtimearray;
+            if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
+                double avgPow = (double) sum / (double) length; //uncomment
+                GlobalVariables.failCount = failCount;
+                db.add_history(GlobalVariables.loggedInUsername, "interval1", failCount, avgPow);
+                GlobalVariables.finalListTimePower = powtimearray;
+            }
             return 0;
         }
 
@@ -2337,13 +2314,26 @@ public class WorkoutActivity extends AppCompatActivity {
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
 
-            // Define intent, pass workout name to PostWorkoutActivity
-            Intent launchPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
-            launchPostWorkoutActivity.putExtra("workoutName", "demo"); // pass workout name data
+            // Stop BLE data polling
+            testingDevice.end33();
+            Timber.d("[TEST] Polling of 33 ended");
+            testingDevice.end35();
+            Timber.d("[TEST] Polling of 35 ended");
+            testingDevice.end3D();
+            Timber.d("[TEST] Polling of 3D ended");
+            testingDevice.endWorkOut();
 
-            // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
-            startActivity(launchPostWorkoutActivity); // Launch BLE Data View
-            finish(); // can't go back
+            // Define intent and pass workout name to PostWorkoutActivity
+            if (!GlobalVariables.stopTask) { // only launch PostWorkoutActivity if workout wasn't cut short
+                Intent goToPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+                goToPostWorkoutActivity.putExtra("workoutName", "demo"); // pass workout name data - necessary for specific suggestions
+
+                startActivity(goToPostWorkoutActivity); // launch PostWorkoutActivity
+                finish(); // can't go back
+            } else { // if workout was cut short
+                GlobalVariables.stopTask = false; // reset flag
+                finish(); // destroy workout activity, go back to dashboard
+            }
         }
     }
 

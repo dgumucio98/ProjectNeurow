@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
@@ -88,33 +89,8 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
 
         setContentView(R.layout.activity_dashboard);
 
-        // Change tip every 7 seconds
+        // Change tip text box every 7 seconds
         tipChanger.postDelayed(updateTipRunnable, 7000);
-
-        /* Additions to pass the BLE device */
-        Intent intent = getIntent();
-        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-        boolean isDeviceReceived = false;
-
-        if (device != null) {
-            //throw new RuntimeException("Missing BluetoothDevice from MainActivity!");
-            isDeviceReceived = true;
-        }
-        // For logging and debugging, uncomment for app visual queue
-        if(isDeviceReceived == true) {
-            Timber.i("The BLE device was successfully passed.");
-            //Toast.makeText(this, "The BLE device was successfully passed.", Toast.LENGTH_LONG).show();
-        } else {
-            //Timber.i("The BLE device was not passed.");
-            //Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
-        }
-        // This is how you can just call the stream to turn on and off, uncomment them out
-        // There we have the device and just start calling the utilities
-        // pm5Utility testingDevice = new pm5Utility(device);
-        // an example on how to start the stream for data33, look at pm5utility or in testingActivity.kt
-        // testingDevice.start33();
-
-        /* End addition */
 
         // Create instance of database in this activity
         DatabaseHelper db = new DatabaseHelper(DashboardActivity.this);
@@ -146,20 +122,21 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
         // Display user's FTP
         txtUserFtp.setTextColor(getResources().getColor(R.color.mint_green));
 
-        txtUserFtp.setText(Html.fromHtml("<b>My FTP:</b> " + db.getFTP(GlobalVariables.loggedInUsername) + "W"));
+        try {
+            txtUserFtp.setText(Html.fromHtml("<b>My FTP:</b> " + db.getFTP(GlobalVariables.loggedInUsername)));
+        } catch (NullPointerException e) {
+            // handle the null value error here
+            GlobalVariables.loggedInUsername = "CRASH";
+            txtUserFtp.setText(Html.fromHtml("<b>My FTP: CRASH</b>"));
+        }
         txtUserFtp.setTextSize(25);
 
         // Handle button clicks
         View.OnClickListener workoutClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Changed the way Intent is defined to add attribute to add BLE
-                Intent goToWorkoutActivity = new Intent(DashboardActivity.this, WorkoutActivity.class);
-                // define intent for launching activity
-                // Needed to pass BLE device
-                if(device != null) {
-                    goToWorkoutActivity.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
-                }
+
+                Intent goToWorkoutActivity = new Intent(DashboardActivity.this, WorkoutActivity.class); // define intent for launching activity
 
                 switch (v.getId()) {
                     case R.id.btnWorkout1: // ftpCalc button is clicked
@@ -380,6 +357,16 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
         AlertDialog dialog = builder.show();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Handle coming back to activity from a timed-out workout
+        if (GlobalVariables.timeout) {
+            showWarningDialog(); // inform user their workout was timed out
+        }
+    }
+
 
     // Tip changer
     private Runnable updateTipRunnable = new Runnable() {
@@ -413,22 +400,13 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
         }
     };
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Toast.makeText(this, "[WorkoutMainActivity] onDestroy called", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Toast.makeText(this, "[WorkoutMainActivity] onPause called", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Toast.makeText(this, "[TEST] DashboardActivity destroyed!", Toast.LENGTH_SHORT).show();
+    // Prepares and shows dialog box warning of workout timeout
+    private void showWarningDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Your Workout Timed Out");
+        builder.setMessage("Your last workout was ended due to inactivity");
+        AlertDialog dialog = builder.create();
+        Timber.d("[TEST] Inside showWarningDialog");
+        dialog.show();
     }
 }
