@@ -1879,13 +1879,20 @@ public class WorkoutActivity extends AppCompatActivity {
             String pzMessage = "";
             String fixMessage = "";
 
+            int Iterations = 0; //how many loop iterations
+            int numIterations = 0; //time=time iterations
+
+            double pastTime = db.getTime_33();
+
             pzMessage = "Begin Rowing!";
             // TODO: change back to 1200
             while (db.getTime_33() <= 30) { // less than 20-min
+                Iterations++;
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double) db.getPower());
+                double currentTime = db.getTime_33();
                 // if difference between current stroke and previous stroke is greater than 4 watts
                 if (Math.abs(db.getPower() - db.getPastPower()) > 2) { //TODO: what num is good here
                     count++;
@@ -1897,6 +1904,20 @@ public class WorkoutActivity extends AppCompatActivity {
                 } else {
                     fixMessage = "Nice pace, Keep it up!";
                     count = 0;
+                }
+                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 10000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 10,000 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+                }
+                else {
+                    pastTime = currentTime;
+                    numIterations = 0;
                 }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
@@ -1947,8 +1968,6 @@ public class WorkoutActivity extends AppCompatActivity {
             txtAvgPwrMetric.setText(avgPwr + " W");
             txtAvgDriveForceMetric.setText(avgDriveForce + " lbf");
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
-
-
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -1984,13 +2003,20 @@ public class WorkoutActivity extends AppCompatActivity {
             String pzMessage = "";
             String fixMessage = "";
 
+            int Iterations = 0; //how many loop iterations
+            int numIterations = 0; //time=time iterations
+
+            double pastTime = db.getTime_33();
+
             pzMessage = "Begin Rowing!";
             // TODO: change back to 1800
             while (db.getTime_33() <= 30) { // less than 30-min
+                Iterations++;
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double) db.getPower());
+                double currentTime = db.getTime_33();
                 //if difference between current stroke and previous stroke is greater than 4 watts
                 if (Math.abs(db.getPower() - db.getPastPower()) > 2) { //TODO: what num is good here
                     count++;
@@ -2002,6 +2028,20 @@ public class WorkoutActivity extends AppCompatActivity {
                 } else {
                     fixMessage = "Nice pace, keep it up!";
                     count = 0;
+                }
+                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 10000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 10,000 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+                }
+                else {
+                    pastTime = currentTime;
+                    numIterations = 0;
                 }
                 // Update metric values
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
@@ -2089,13 +2129,20 @@ public class WorkoutActivity extends AppCompatActivity {
             String pzMessage = "";
             String fixMessage = "";
 
+            int Iterations = 0; //how many loop iterations
+            int numIterations = 0; //time=time iterations
+
+            double pastTime = db.getTime_33();
+
             pzMessage = "Begin Rowing!";
             // TODO: change back to 2400
             while (db.getTime_33() <= 30) { // less than 40-min
+                Iterations++;
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double) db.getPower());
+                double currentTime = db.getTime_33();
                 //if difference between current stroke and previous stroke is greater than 4 watts
                 if (Math.abs(db.getPower() - db.getPastPower()) > 2) { //TODO: what num is good here
                     count++;
@@ -2107,6 +2154,20 @@ public class WorkoutActivity extends AppCompatActivity {
                 } else {
                     fixMessage = "Nice pace, keep it up!";
                     count = 0;
+                }
+                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 10000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 10,000 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+                }
+                else {
+                    pastTime = currentTime;
+                    numIterations = 0;
                 }
                 // Update metric values
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
