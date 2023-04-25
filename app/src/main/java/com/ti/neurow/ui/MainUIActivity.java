@@ -2,6 +2,7 @@ package com.ti.neurow.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ValueAnimator;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -27,8 +28,8 @@ import timber.log.Timber;
 public class MainUIActivity extends AppCompatActivity {
 
     // Declare views
-    ImageView rower, rowerIcon, TIIcon; // image
-    TextView neurowText, welcomeText, txtSponsor; // text views
+    ImageView rower, rowerIcon, TIIcon, imageArrow; // image
+    TextView neurowText, welcomeText, txtSponsor, txtConnectPrompt; // text views
     Button existingUser, newUser, BLEData, DBdata, Config, AddToDB; // buttons
 
     @Override
@@ -46,32 +47,7 @@ public class MainUIActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_ui_main);
 
-        /* Additions to pass the BLE device */
-        Timber.plant(new Timber.DebugTree());
-        Intent intent = getIntent();
-        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-        boolean isDeviceReceived = false;
-
-        if (device != null) {
-            //throw new RuntimeException("Missing BluetoothDevice from MainActivity!");
-            isDeviceReceived = true;
-        }
-        // For logging and debugging, uncomment for app visual queue
-        if(isDeviceReceived == true) {
-            Timber.i("The BLE device was successfully passed.");
-            //Toast.makeText(this, "The BLE device was successfully passed.", Toast.LENGTH_LONG).show();
-        } else {
-            Timber.i("The BLE device was not passed.");
-            //Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
-        }
-        // This is how you can just call the stream to turn on and off, uncomment them out
-        // There we have the device and just start calling the utilities
-        // pm5Utility testingDevice = new pm5Utility(device);
-        // testingDevice.start33();
-
-        /* End addition */
-
-        // Animate rower icon and "Neurow" text
+        // Define UI Elements
         rower = (ImageView)findViewById(R.id.rower_icon);
         neurowText = (TextView)findViewById(R.id.neurow_text);
         welcomeText = (TextView)findViewById(R.id.txtWelcome);
@@ -81,13 +57,30 @@ public class MainUIActivity extends AppCompatActivity {
         Config = findViewById(R.id.btnBluetoothConnections);
         txtSponsor = findViewById(R.id.txtSponsor);
         TIIcon = findViewById(R.id.icon_TI);
+        txtConnectPrompt = findViewById(R.id.txtConnectPrompt);
+        imageArrow = findViewById(R.id.imageArrow);
 
-
-        // Animate Neurow Icon and Text
+        // Neurow text and icon Animation
         Animation animation1 = AnimationUtils.loadAnimation(MainUIActivity.this, R.anim.slide_in_left);
         Animation animation2 = AnimationUtils.loadAnimation(MainUIActivity.this, R.anim.slide_in_right);
         rower.startAnimation(animation1);
         neurowText.startAnimation(animation2);
+
+        // For pulsating animation
+        ValueAnimator animator = ValueAnimator.ofFloat(1f, 1.2f, 1f);
+        animator.setDuration(1000);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setRepeatMode(ValueAnimator.REVERSE);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float scale = (float) valueAnimator.getAnimatedValue();
+                txtConnectPrompt.setScaleX(scale);
+                txtConnectPrompt.setScaleY(scale);
+            }
+        });
+
+        animator.start();
 
         // Animation Handlers
         new Handler().postDelayed(new Runnable() {
@@ -116,6 +109,14 @@ public class MainUIActivity extends AppCompatActivity {
                 Config.setVisibility(View.VISIBLE);
                 Config.setAlpha(0f);
                 Config.animate().alpha(1f).setDuration(500).start();
+
+                imageArrow.setVisibility(View.VISIBLE);
+                imageArrow.setAlpha(0f);
+                imageArrow.animate().alpha(1f).setDuration(500).start();
+
+                txtConnectPrompt.setVisibility(View.VISIBLE);
+                txtConnectPrompt.setAlpha(0f);
+                txtConnectPrompt.animate().alpha(1f).setDuration(500).start();
             }
         }, 2400);
         new Handler().postDelayed(new Runnable() {
@@ -137,13 +138,9 @@ public class MainUIActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent goToLoginActivity = new Intent(MainUIActivity.this, LoginActivity.class);
-
-                // Needed to pass BLE device
-                if(device != null) {
-                    goToLoginActivity.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
-                }
                 startActivity(goToLoginActivity); // Launch Login
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                // Note: MainUIActivity is NEVER to be destroyed. Will always be reference homebase
             }
         });
 
@@ -154,9 +151,6 @@ public class MainUIActivity extends AppCompatActivity {
                 // Create intent to launch next activity (SignupActivity)
                 Intent goToRegisterActivity = new Intent(MainUIActivity.this, RegisterActivity.class);
                 //Needed to pass BLE device
-                if(device != null) {
-                    goToRegisterActivity.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
-                }
                 startActivity(goToRegisterActivity); // Launch Registration screen
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }

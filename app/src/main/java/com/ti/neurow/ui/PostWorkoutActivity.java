@@ -52,12 +52,21 @@ public class PostWorkoutActivity extends AppCompatActivity {
         Power_vs_Pull = findViewById(R.id.Power_vs_Pull);
         btnDone = findViewById(R.id.btnDone);
         TextView txtFtpVal = findViewById(R.id.txtFtpVal);
-
         TextView txtSuggestion = findViewById(R.id.txtSuggestion);
 
         workouts workouts = new workouts(); // create instance of workouts
 
         txtFtpVal.setText(GlobalVariables.ftp + "W"); // set FTP text box to updated FTP value
+
+        // Show elements depending on workout
+        String workoutName = getIntent().getStringExtra("workoutName"); // get workout name data
+
+        if (!workoutName.equals("ftpCalc")) { // if workout was not ftpCalc
+            txtFtpVal.setVisibility(View.GONE); // no need to show FTP
+        }
+
+        String suggestion = workouts.Suggestion(workoutName);
+        txtSuggestion.setText(suggestion); // set suggestions
 
         // Power vs Time Graphing
         int length1 = GlobalVariables.finalListTimePower.size(); // length of list
@@ -166,11 +175,6 @@ public class PostWorkoutActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
-
-        // Show suggestion depending on workout
-        String workoutName = getIntent().getStringExtra("workoutName");
-        String suggestion = workouts.Suggestion(workoutName);
-        txtSuggestion.setText(suggestion);
     }
 
     @Override
