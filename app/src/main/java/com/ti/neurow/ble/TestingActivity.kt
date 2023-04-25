@@ -44,6 +44,7 @@ class TestingActivity: AppCompatActivity() {
     private lateinit var pwrTextElement: TextView
     private lateinit var calTextElement: TextView
     private lateinit var distTextElement: TextView
+    private lateinit var stateTextElement: TextView
 
 
 
@@ -64,6 +65,8 @@ class TestingActivity: AppCompatActivity() {
 
         //Create PM5 util obj
         val PM5 = pm5Utility(device)
+        //Needed in order to properly use the class
+        PM5.selfSetUp()
         setContentView(R.layout.testing_activity)
 
         /*Setting the buttons & Their listeners */
@@ -86,14 +89,39 @@ class TestingActivity: AppCompatActivity() {
         btn3DEnd.setOnClickListener({PM5.end3D()})
 
         val btn22 = findViewById(R.id.buttonRead22) as Button
-        btn22.setOnClickListener({PM5.read22()})
+        //btn22.setOnClickListener({PM5.start22()})
+
+        //Creation of the button that automates the whole thing
+        val endWorkout = findViewById(R.id.endWktout) as Button
+        endWorkout.setOnClickListener({
+            PM5.end33()
+            PM5.endWorkOut()
+        })
+
+        val startWorkout = findViewById(R.id.startWktout) as Button
+        startWorkout.setOnClickListener({
+            PM5.setPollSpeed("Fastest")
+            PM5.startWorkOut()
+            PM5.start33()
+        })
+
+        val checkStatusButton = findViewById(R.id.getStateButton) as Button
+        checkStatusButton.setOnClickListener({
+            runOnUiThread { checkStatusButton.text = "STATE: ${PM5.getStatus()}" }
+        })
 
         timeTextView = findViewById<TextView>(R.id.timeTextView)
         //myTextView.text = "Nothing here yet"
         pwrTextElement = findViewById<TextView>(R.id.pwrTextView)
         calTextElement = findViewById<TextView>(R.id.calTextView)
         distTextElement = findViewById<TextView>(R.id.distTextView)
+        stateTextElement = findViewById<TextView>(R.id.stateTextView)
 
+    }
+
+    override fun onDestroy() {
+        ConnectionManager.unregisterListener(testEventListener)
+        super.onDestroy()
     }
 
     /*
@@ -115,57 +143,11 @@ class TestingActivity: AppCompatActivity() {
 
     private val testEventListener by lazy {
         ConnectionEventListener().apply {
-            /* There are two callbacks being defined with this listener
-            *onconnectionSetupComplete, which takes the BluetoothGatt object and launches the second
-            * activity, BleOperationsActivity
-             */
-            /*
-            onConnectionSetupComplete = { gatt ->
-                //Intent(this@MainActivity, BleOperationsActivity::class.java).also {
-                Intent(this@MainActivity, TestingActivity::class.java).also {
-                    //Intent(this@MainActivity, MainUIActivity::class.java).also {
-                    it.putExtra(BluetoothDevice.EXTRA_DEVICE, gatt.device)
-                    startActivity(it)
-                }
-                ConnectionManager.unregisterListener(this)
-            }
-            */
-            val context = this@TestingActivity
-            val db = DatabaseHelper(context) //making reference to database
 
             onCharacteristicChanged = {
-                bleDevice, bleChar ->
+                    bleDevice, bleChar ->
                 val uuid = bleChar.uuid
                 val value = bleChar.value
-
-                if(bleChar.uuid == char22UUID) {
-                    Timber.i("We have received a packet from ${bleChar.uuid.toString()}\n")
-                    Timber.i("${bleChar.value}\n")
-                    if(bleChar.value.size == 4) {
-                        val status = bleChar.value[1] and statusMask
-                        val message = when (status) {
-                            0x00.toByte() ->  "ERROR"
-                            0x01.toByte() ->  "READY"
-                            0x02.toByte() ->  "IDLE"
-                            0x03.toByte() ->  "HAVE ID"
-                            //Note 0x04 is not used: 0x04.toByte() ->
-                            0x05.toByte() ->  "IN USE"
-                            0x06.toByte() ->  "PAUSE"
-                            0x07.toByte() ->  "FINISH"
-                            0x08.toByte() ->  "MANUAL"
-                            0x09.toByte() ->  "OFF LINE"
-                            else -> "Unknown Status"
-
-                        }
-                        Timber.i("The status of the PM5 is ${message}")
-                        /*
-                        Timber.i("The status has a value of ${status}\n")
-                        Timber.i("The status has a value of ${status.toString()}\n")
-                         */
-                    }
-                    //Timber.i("The status mask has a value of ${statusMask.toString()}\n")
-                }
-
                 //uuidParsing function code
                 if(uuid.toString() == "ce060032-43e5-11e4-916c-0800200c9a66") {
                     //Timber.i("You are reading 0x0032")

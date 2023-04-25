@@ -167,7 +167,7 @@ public class MainUIActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Create intent to launch next activity (RawDataActivity)
-                Intent goToUserBTConfig = new Intent(MainUIActivity.this, UserBTConfig.class);
+                Intent goToUserBTConfig = new Intent(MainUIActivity.this, MainActivity.class);
                 //Intent i = new Intent(MainUIActivity.this, MainActivity.class);
                 startActivity(goToUserBTConfig); // Launch BLE Data View
             }
