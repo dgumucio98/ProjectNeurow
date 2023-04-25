@@ -104,6 +104,15 @@ public class LoginActivity extends AppCompatActivity {
                     else if (userExists && db.getPassword(Username).equals(Password)) { // if user exists and passwords match
 
                         GlobalVariables.loggedInUsername = Username; // update universal loggedinUsername value
+                        // populate ftp and pz of user
+                        GlobalVariables.ftp = db.getFTP(Username);
+                        GlobalVariables.pz_1 = db.getPZ_1(Username);
+                        GlobalVariables.pz_2 = db.getPZ_2(Username);
+                        GlobalVariables.pz_3 = db.getPZ_3(Username);
+                        GlobalVariables.pz_4 = db.getPZ_4(Username);
+                        GlobalVariables.pz_5 = db.getPZ_5(Username);
+                        GlobalVariables.pz_6 = db.getPZ_6(Username);
+                        GlobalVariables.pz_7 = db.getPZ_7(Username);
 
                         // Logged in, now launch PromptRotateActivity
                         Intent i = new Intent(LoginActivity.this, PromptRotateActivity.class);

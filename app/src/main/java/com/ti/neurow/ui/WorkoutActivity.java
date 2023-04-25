@@ -175,7 +175,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 testingDevice.start3D();
                 testingDevice.start35();
 
-                
+
 
                 // 2. Call workout methods through conditions
                 if (methodName.equals("ftpCalc")) { // CALL FTPCALC
