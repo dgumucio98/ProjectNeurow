@@ -132,6 +132,7 @@
     <TextView
         android:id="@+id/txtConnectPrompt"
         android:layout_width="170dp"
+        tools:visibility="visible"
         android:layout_height="wrap_content"
         android:visibility="invisible"
         android:layout_marginLeft="410dp"
@@ -147,6 +148,7 @@
     <ImageView
         android:id="@+id/imageArrow"
         android:layout_width="150dp"
+        tools:visibility="visible"
         android:layout_height="200dp"
         android:layout_marginTop="1000dp"
         android:layout_marginRight="130dp"
