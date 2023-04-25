@@ -52,6 +52,7 @@ public class WorkoutActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        testingDevice.setPollSpeed("FAST");
 
         Toast.makeText(getApplicationContext(), "[TEST] WorkoutActivity created!", Toast.LENGTH_SHORT).show();
 
@@ -82,11 +83,6 @@ public class WorkoutActivity extends AppCompatActivity {
         // This is how you can just call the stream to turn on and off, uncomment them out
         // There we have the device and just start calling the utilities
 
-        // Toggle notifications
-
-//        testingDevice.start33();
-//        testingDevice.start35();
-//        testingDevice.start3D();
 
 
 
