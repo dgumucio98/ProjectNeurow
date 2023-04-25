@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.ti.neurow.ble.pm5Utility;
 import com.ti.neurow.db.data33;
 import com.ti.neurow.db.data35;
 
@@ -33,9 +34,15 @@ import timber.log.Timber;
 
 public class WorkoutActivity extends AppCompatActivity {
 
-    // Define task objects for task quitting
-    private ftpCalcTask ftpTask;
-    // TODO: Add other task definitions here (if fix works)
+//    // If there is no device this throws a null error, duh do a check
+//    pm5Utility testingDevice = new pm5Utility(GlobalVariables.globalBleDevice);
+//
+//    // Set up device
+//    testingDevice.startWorkOut();
+//    testingDevice.setPollSpeed("FASTEST");
+    pm5Utility testingDevice = new pm5Utility(GlobalVariables.globalBleDevice);
+    //testingDevice.setPollSpeed("FASTEST");
+
 
     // Define UI elements
     Button btnStart, btnStop; // buttons
@@ -59,6 +66,7 @@ public class WorkoutActivity extends AppCompatActivity {
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
         boolean isDeviceReceived = false;
 
+
         if (device != null) {
             //throw new RuntimeException("Missing BluetoothDevice from MainActivity!");
             isDeviceReceived = true;
@@ -75,10 +83,12 @@ public class WorkoutActivity extends AppCompatActivity {
         // There we have the device and just start calling the utilities
 
         // Toggle notifications
-        //pm5Utility testingDevice = new pm5Utility(device); THIS IS THROWING A NULL REFERENCE ERROR
+
 //        testingDevice.start33();
 //        testingDevice.start35();
 //        testingDevice.start3D();
+
+
 
         // Define elements
         txtWorkoutAttribute = findViewById(R.id.txtWorkoutAttribute); // workout "subtitle"
@@ -194,10 +204,19 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
                 });
 
+                /* The workout begins right here */
                 // 2. Call workout methods through conditions
                 if (methodName.equals("ftpCalc")) { // CALL FTPCALC
+                    //Starting workout state for pm5
+                    testingDevice.startWorkOut();
+                    testingDevice.start33();
+                    testingDevice.start3D();
+                    testingDevice.start35();
+
                     ftpCalcTask ftpCalcTask = new ftpCalcTask();
                     ftpCalcTask.execute();
+
+
                 } else if (methodName.equals("interval1")) { // CALL INTERVAL1
                     interval1Task interval1Task = new interval1Task();
                     interval1Task.execute();
@@ -221,6 +240,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     demoTask.execute();
                 }
             } // end of onClick
+
         });
 
         // Listener for button to stop workout
@@ -368,13 +388,11 @@ public class WorkoutActivity extends AppCompatActivity {
                 finish(); // can't go back
             }
 
-            // [TEST] If we reach here, task is completed
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(WorkoutActivity.this, "[TEST] Workout Task Finished!", Toast.LENGTH_SHORT).show();
-                }
-            });
+            // Stop BLE data polling
+            testingDevice.end33();
+            testingDevice.end3D();
+            testingDevice.end35();
+            testingDevice.endWorkOut();
         }
     }
 

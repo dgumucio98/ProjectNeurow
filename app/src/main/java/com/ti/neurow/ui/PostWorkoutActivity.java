@@ -79,9 +79,9 @@ public class PostWorkoutActivity extends AppCompatActivity {
 
         // Get the maximum and minimum x and y values from the series
         double maxX1 = series1.getHighestValueX();
-        double minX1 = 0;
-        double maxY1 = series1.getHighestValueY() + 2;
-        double minY1 = 0;
+        double minX1 = 0.0;
+        double maxY1 = series1.getHighestValueY() + 2.0;
+        double minY1 = 0.0;
 
         // Set the bounds of the viewport to the maximum and minimum values
         Power_vs_Time.getViewport().setMinX(minX1);

@@ -31,20 +31,22 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import com.ti.neurow.BuildConfig
+import com.ti.neurow.GlobalVariables.globalBleDevice
 import com.ti.neurow.R
 import com.ti.neurow.ui.MainUIActivity
+import org.jetbrains.anko.runOnUiThread
 
 private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1
 private const val LOCATION_PERMISSION_REQUEST_CODE = 2
 // For the extra bluetooth scan and connect permissions now
 private const val ENABLE_BLUETOOTHSCAN_REQUEST_CODE = 3
 
-//lateinit var globalBleDevice: BluetoothDevice
+// lateinit var globalBleDevice: BluetoothDevice
 
 class MainActivity : AppCompatActivity() {
 
     //setting global BLE device for use in later activity, garbage collection may be an issue
-    lateinit var globalBleDevice: BluetoothDevice
+    //lateinit var globalBleDevice: BluetoothDevice
     /*******************************************
      * Properties
      *******************************************/
@@ -306,11 +308,19 @@ class MainActivity : AppCompatActivity() {
                 globalBleDevice = gatt.device
                 //Intent(this@MainActivity, BleOperationsActivity::class.java).also {
                 //Intent(this@MainActivity, TestingActivity::class.java).also {
-                Intent(this@MainActivity, MainUIActivity::class.java).also {
-                    it.putExtra(BluetoothDevice.EXTRA_DEVICE, gatt.device)
-                    startActivity(it)
+                runOnUiThread {
+                    alert {
+                        title = "Connection established"
+                        message = "The device has been connected, please press the back button"
+                        positiveButton("OK") {}
+                    }.show()
                 }
                 ConnectionManager.unregisterListener(this)
+//                Intent(this@MainActivity, MainUIActivity::class.java).also {
+//                    it.putExtra(BluetoothDevice.EXTRA_DEVICE, gatt.device)
+//                    startActivity(it)
+//                }
+//                ConnectionManager.unregisterListener(this)
             }
             onDisconnect = {
                 runOnUiThread {
