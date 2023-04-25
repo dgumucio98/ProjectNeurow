@@ -333,4 +333,34 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         });
         AlertDialog dialog = builder.show();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Toast.makeText(this, "[WorkoutMainActivity] onResume called", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Toast.makeText(this, "[WorkoutMainActivity] onStart called", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Toast.makeText(this, "[WorkoutMainActivity] onDestroy called", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Toast.makeText(this, "[WorkoutMainActivity] onPause called", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Toast.makeText(this, "[WorkoutMainActivity] onStop called", Toast.LENGTH_SHORT).show();
+    }
 }
