@@ -48,3 +48,39 @@ class ScanResultAdapter(
         }
     }
 }
+
+
+/*
+This is a Kotlin code that defines a ScanResultAdapter class for a RecyclerView.
+
+The ScanResultAdapter class takes two parameters in its constructor - a list of ScanResult objects
+and an onClickListener lambda function that takes a ScanResult object as input and returns no output.
+
+
+The ScanResultAdapter class extends the RecyclerView.Adapter class and overrides three methods:
+
+onCreateViewHolder(): This method inflates the layout for a single row of the RecyclerView
+and returns a new ViewHolder object that holds the inflated layout and the onClickListener function.
+
+getItemCount(): This method returns the number of items in the list of ScanResult objects.
+
+onBindViewHolder(): This method updates the view holder with
+data from the ScanResult object at the given position.
+
+The ViewHolder class is defined inside the ScanResultAdapter class and
+takes two parameters - a View object and the onClickListener lambda function.
+It extends the RecyclerView.ViewHolder class and overrides the bind() method to populate
+the view with data from a ScanResult object.
+
+
+
+Inside the bind() method, the view's device_name, mac_address, and signal_strength fields
+are populated with data from the ScanResult object. The view object is also set to respond to
+click events by setting an onClickListener using the setOnClickListener() method.
+When the view is clicked, the onClick() method of the onClickListener
+is called with the ScanResult object as an argument.
+
+Overall, this code defines a ScanResultAdapter class for a RecyclerView
+and sets up a listener to respond to click events on the view it contains.
+The adapter is used to populate the RecyclerView with data from a list of ScanResult objects.
+ */

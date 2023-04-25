@@ -355,12 +355,18 @@ object ConnectionManager {
             }
         }
 
+        /* This function is responsible for the sending the success signal that transfers
+        us over to the new activity
+         */
         override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
             with(gatt) {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
                     Timber.w("Discovered ${services.size} services for ${device.address}.")
                     printGattTable()
                     requestMtu(device, GATT_MAX_MTU_SIZE)
+                    // The code below says for each of the listeners, take the onConn callback
+                    // with the invoke(this), this being the bluetooth gatt object
+                    // which then runs that code which starts the second activity
                     listeners.forEach { it.get()?.onConnectionSetupComplete?.invoke(this) }
                 } else {
                     Timber.e("Service discovery failed due to status $status")
@@ -396,6 +402,8 @@ object ConnectionManager {
                         //Ex Time Lo [0], Time Mid [1], Time High [2]
                         Timber.i("Read characteristic $uuid | value: ${value.toHexString()}")
                         //This allows for the conversion to the objects
+                        //TODO: Move this code to the listener where the activity will run, this shouldn't be here
+                        //Just place the changes in the uuid parsing, no need to make this messier than it is
 
                         val myTime33 = VariableChanges()
                         val myTime35 = VariableChanges()
@@ -426,25 +434,6 @@ object ConnectionManager {
                             val newTime = DF33.elapsedTime
                             myTime33.setTime(newTime)
                             DF33.printAllAtt()
-                            /*
-                            if(onToggle) { //onCharacter change
-                                if(dataFrame33Queue.size < queSize) {
-                                    if(dataFrame33Queue.offer(DF33) != null) {
-                                        println("An item has been placed in the 33 Queue.")
-                                    } else {
-                                        println("An item failed to be placed in the 33 Queue.")
-                                    }
-                                } else {
-                                    println("The queue full: ${dataFrame33Queue.size} items")
-                                    println("Poping the most recent dataframe.")
-                                    dataFrame33Queue.poll().printAllAtt()
-                                    println("The queue will now clear.")
-                                    dataFrame33Queue.clear()
-                                }
-                            }
-                            else //meaning it's onRead
-                                DF33.printAllAtt()
-                            */
                         } else if (uuid.toString() == "ce060035-43e5-11e4-916c-0800200c9a66") {
                             val DF35: DataFrame35 = DataFrame35(value.toUByteArray())
                             val newTime = DF35.elapsedTime
@@ -468,26 +457,7 @@ object ConnectionManager {
                         } else if (uuid.toString() == "ce06003d-43e5-11e4-916c-0800200c9a66") {
                             //println("This is where it should read the first message compile the data")
                             val DF3D: DataFrame3D = DataFrame3D(value.toUByteArray())
-                            println(DF3D)
-                            //val newTime = DF3D.elapsedTime
-                            //myTime3D.setTime(newTime)
                             DF3D.printAllAtt()
-                            /*
-                            if(onToggle) {
-                                if(dataFrame3DQueue.size < queSize) {
-                                    if(dataFrame3DQueue.offer(DF3D) != null) {
-                                        println("An item has been placed in the 3D Queue.")
-                                    } else {
-                                        println("An item failed to be placed in the 3D Queue.")
-                                    }
-                                } else {
-                                    println("The queue full: ${dataFrame3DQueue.size} items")
-                                    println("Poping the most recent dataframe.")
-                                    dataFrame3DQueue.poll().printAllAtt()
-                                    println("The queue will now clear.")
-                                }
-                            } else { DF3D.printAllAtt() }
-                             */
                         }
                         //uuidParsing(myTime1, uuid.toString(), value.toUByteArray(), false)
                         listeners.forEach { it.get()?.onCharacteristicRead?.invoke(gatt.device, this) }
@@ -530,6 +500,7 @@ object ConnectionManager {
                 signalEndOfOperation()
             }
         }
+
 
         override fun onCharacteristicChanged(
             gatt: BluetoothGatt,
@@ -648,6 +619,7 @@ object ConnectionManager {
                 listeners.forEach { it.get()?.onCharacteristicChanged?.invoke(gatt.device, this) }
             }
         }
+
 
         override fun onDescriptorRead(
             gatt: BluetoothGatt,

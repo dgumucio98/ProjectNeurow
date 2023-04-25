@@ -8,35 +8,35 @@
     tools:context=".ui.PromptRotateActivity">
 
     <TextView
+        android:id="@+id/txtWelcome"
+        android:layout_width="600dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="350dp"
+        android:fontFamily="sans-serif-light"
+        android:text="[Welcome User Message]"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="65dp" />
+
+    <TextView
         android:id="@+id/txtPrompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/txtWelcome"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="450dp"
-        android:fontFamily="sans-serif-light"
-        android:text="Please rotate your device"
-        android:textColor="@color/white"
-        android:textSize="45sp" />
-
-    <TextView
-        android:id="@+id/txtWelcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/txtPrompt"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="450dp"
-        android:layout_marginBottom="35dp"
-        android:text="[Welcome Message to User]"
-        android:textColor="@color/white"
-        android:textSize="55sp" />
+        android:layout_marginTop="50dp"
+        android:text="Rotate your device to begin"
+        android:textColor="#e8e4e3"
+        android:textSize="35dp" />
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gifRotate"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtPrompt"
+        android:layout_height="400dp"
+        android:layout_below="@+id/txtPrompt"
         android:layout_centerHorizontal="true"
-        android:scaleX="-1"
+        android:scaleX="-0.95"
         android:src="@drawable/rotate_device" />
 
     <ImageView
@@ -47,7 +47,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
         android:src="@drawable/info_icon"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/txtFeedback"
@@ -60,6 +61,7 @@
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="25sp"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        tools:visibility="visible" />
 
 </RelativeLayout>

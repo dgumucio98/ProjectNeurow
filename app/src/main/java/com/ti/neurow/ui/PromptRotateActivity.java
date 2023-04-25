@@ -2,13 +2,13 @@ package com.ti.neurow.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +25,8 @@ public class PromptRotateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Toast.makeText(getApplicationContext(), "[TEST] PromptRotateActivity created!", Toast.LENGTH_SHORT).show();
+
         // Hide Action bar and Status bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
@@ -32,6 +34,7 @@ public class PromptRotateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_prompt_rotate);
 
         showFeedbackAfterDelay();
+
 
         // Define elements
         WelcomeMessage = (TextView) findViewById(R.id.txtWelcome);
@@ -71,15 +74,43 @@ public class PromptRotateActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        /* Additions to pass the BLE device */
+        Intent intent = getIntent();
+        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+        boolean isDeviceReceived = false;
+        if (device != null) {
+            //throw new RuntimeException("Missing BluetoothDevice from MainActivity!");
+            isDeviceReceived = true;
+        }
+        if(isDeviceReceived == true) {
+            Toast.makeText(this, "The BLE device was successfully passed.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
+        }
+        /* End addition */
+
         if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            startActivity(new Intent(this, WorkoutMainActivity.class));
-            finish(); // Can't go back
+            //Changed the intent for a longer statement to insert device check
+            Intent goToWorkoutMainActivity = new Intent(this, DashboardActivity.class);
+            //Needed to pass BLE device
+            if(device != null) {
+                goToWorkoutMainActivity.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
+            }
+            startActivity(goToWorkoutMainActivity);
+            finish(); // Can't go back - should take us to MainUIActivity
         }
     }
 
     @Override
     public void onBackPressed() {
-        // Do nothing
+        GlobalVariables.loggedInUsername = "NULL"; // clear logged in user (log out)
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Toast.makeText(this, "[TEST] PromptRotateActivity destroyed!", Toast.LENGTH_SHORT).show();
     }
 
 }

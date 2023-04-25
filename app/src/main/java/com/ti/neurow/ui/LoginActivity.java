@@ -1,6 +1,8 @@
 package com.ti.neurow.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -18,15 +20,19 @@ import com.ti.neurow.R;
 
 import java.util.regex.Pattern; // regular expression support for registration validation
 
+import timber.log.Timber;
+
 public class LoginActivity extends AppCompatActivity {
 
-    // Declare buttons and EditTexts
+    // Declare views
     EditText usernameEditText,passwordEditText;
-    Button loginButton, backButton;
+    Button loginButton, backButton, bypassButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Toast.makeText(getApplicationContext(), "[TEST] LoginActivity created!", Toast.LENGTH_SHORT).show();
 
         // Hide Action bar and Status bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -36,10 +42,32 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
+        // BLE Device Passing
+        Intent intent = getIntent();
+        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+        boolean isDeviceReceived = false;
+        if (device != null) {
+            //throw new RuntimeException("Missing BluetoothDevice from MainActivity!");
+            isDeviceReceived = true;
+        }
+        // For logging and debugging, uncomment for app visual queue
+        if(isDeviceReceived == true) {
+            Timber.i("The BLE device was successfully passed.");
+            //Toast.makeText(this, "The BLE device was successfully passed.", Toast.LENGTH_LONG).show();
+        } else {
+            Timber.i("The BLE device was not passed.");
+            //Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
+        }
+        /* End addition */
+
+        // Define views to elements in XML
+
         // Define UI elements
         usernameEditText = (EditText) findViewById(R.id.edtTxtPromptUserID);
         passwordEditText = (EditText)findViewById(R.id.edtTxtPromptPassword);
         loginButton = (Button)findViewById(R.id.btnLogin);
+        //Bypass button to use onclick listener below
+        bypassButton = (Button)findViewById(R.id.btnBypass);
 
         // Log In button listener
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +107,12 @@ public class LoginActivity extends AppCompatActivity {
 
                         // Logged in, now launch PromptRotateActivity
                         Intent i = new Intent(LoginActivity.this, PromptRotateActivity.class);
+
+                        //Needed to pass BLE device
+                        if(device != null) {
+                            i.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
+                        }
+
                         startActivity(i); // launches PromptRotateActivity
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         return;
@@ -86,22 +120,26 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-    }
 
-    @Override
-    public void onBackPressed() { // Override back button press
-        // Check if the user is coming from the LoginActivity
-        if (isTaskRoot()) { // if user just logged in/registered
-            Intent intent = new Intent(this, MainUIActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-        }
-        else {
-            // If the user is not coming from LoginActivity, continue with the default behavior
-            super.onBackPressed();
+        bypassButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Launch Log-in activity
+                GlobalVariables.loggedInUsername = "MrBypass"; // set as Mr. Bypass
+                // Launch PromptRotateActivity
 
-        }
+                Intent i = new Intent(LoginActivity.this, PromptRotateActivity.class);
+                //Needed to pass BLE device
+                if(device != null) {
+                    i.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
+                }
+                startActivity(i);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish(); // close activity
+
+            }
+        });
+
     }
 
     // Define valid username guidelines
@@ -127,9 +165,16 @@ public class LoginActivity extends AppCompatActivity {
         GlobalVariables.loggedInUsername = "MrBypass"; // set as Mr. Bypass
 
         // Launch PromptRotateActivity
-        Intent i = new Intent(this, PromptRotateActivity.class);
-        startActivity(i);
+        Intent goToPromptRotateActivity = new Intent(this, PromptRotateActivity.class);
+        startActivity(goToPromptRotateActivity);
+
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         finish(); // close activity
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Toast.makeText(this, "[TEST] LoginActivity destroyed!", Toast.LENGTH_SHORT).show();
     }
 }

@@ -33,9 +33,15 @@ import java.util.UUID
 import com.ti.neurow.db.DatabaseHelper// access database
 import com.ti.neurow.db.data33       // access data33 class
 import com.ti.neurow.db.data35       // access data33 class
+import timber.log.Timber
 
+
+
+
+var callNum : Int = 0 //How many times does this onlcick listener run
 
 class BleOperationsActivity : AppCompatActivity() {
+    //val db = DatabaseHelper(this@BleOperationsActivity) //making reference to database
     lateinit var add_to_db: Button
 
     private lateinit var device: BluetoothDevice
@@ -126,85 +132,56 @@ class BleOperationsActivity : AppCompatActivity() {
         }
 
 
+        /*
+        * This function is not working leads to hangups in the code do not use this
+        * the while loop stalls the entire application
+        * TO DO: Rewrite this with listeners
+         */
         add_to_db.setOnClickListener {
+            Timber.d("The `ADD TO DB` button has been pressed!\n")
+            Timber.d("The onclick for this button has been called $callNum times before.\n")
+            Timber.d("Adding one more to the `callNum` variable")
+            callNum += 1 // to increment our count.
             val db = DatabaseHelper(this@BleOperationsActivity) //making reference to database
-            //Adding to data33 table
-            var time_limit = 300.0 // 2400sec for 40mins     300.0sec for 5mins
-            var past_time33 = 0.0
-            var past_time35 = 0.0
-            while (globalTime33 > time_limit || globalTime33 > time_limit) {
-                // adding to data33 Table
-                var current_time33 = globalTime33
-                  if (past_time33 < current_time33) {
-                      var realdata33 = data33(
-                          globalTime33,
-                          globalIntCnt,
-                          globalAvgPwr33,
-                          globalTotCal33,
-                          globalSpltIntAvgPace33,
-                          globalSpltIntAvgPwr33,
-                          globalSpltIntAvgCal33.toDouble(),
-                          globalLstSpltTime33,
-                          globalLstSpltDist33.toDouble()
-                      )
-                      var success = db.add_dataframe33(realdata33)
-                      if (success == true) {
-                          Toast.makeText(
-                              this@BleOperationsActivity,
-                              "Successfully entered table",
-                              Toast.LENGTH_SHORT
-                          ).show() //Testing
-                      } else {
-                          Toast.makeText(
-                              this@BleOperationsActivity,
-                              "Did not enter table",
-                              Toast.LENGTH_SHORT
-                          ).show() //Testing
-                      }
-                  } else {
-                      continue
-                  }
-                  past_time33 = current_time33
-
-
-/*                // adding to data35 Table
-                var current_time35 = time.ble
-                if (past_time35 < current_time35) {
-                    var realdata35 = data35(
-                        time_35.ble,
-                        dist.ble,
-                        drive_len.ble,
-                        drive_time.ble,
-                        stroke_rec_time.ble,
-                        stroke_dist.ble,
-                        peak_drive_force.ble,
-                        avg_drive_force.ble,
-                        work_per_stroke.ble,
-                        stroke_count.ble
+            if(dataFrame33Queue.isEmpty()) {
+                Timber.d("The data 33 Queue is empty\n")
+            } else {
+                Timber.d("The data 33 Queue has item(s) in it.\n")
+                //It's not empty let's add to the databasea
+                //Most recent DF from stack
+                var df = dataFrame33Queue.poll()
+                while(df != null) {
+                    val inputDB = data33(
+                        df.elapsedTime, df.intervalCount, df.averagePower,
+                        df.totalCalories, df.splitIntAvgPace, df.splitIntAvgPwr,
+                        df.splitIntAvgCal.toDouble(), df.lastSplitTime, df.lastSplitDist.toDouble()
                     )
-                    var success35 = db.add_dataframe35(realdata35)
-                    if (success35 == true) {
-                        Toast.makeText(
-                            this@BleOperationsActivity,
-                            "Successfully entered table",
-                            Toast.LENGTH_SHORT
-                        ).show() //Testing
-                    } else {
-                        Toast.makeText(
-                            this@BleOperationsActivity,
-                            "Did not enter table",
-                            Toast.LENGTH_SHORT
-                        ).show() //Testing
-                    }
-                } else {
-                    continue
+                    var success = db.add_dataframe33(inputDB)
+
+                    df = dataFrame33Queue.poll()
                 }
-                past_time35 = current_time35 */
+            }
+            //For 35
+            if(dataFrame35Queue.isEmpty()) {
+                Timber.d("The data 35 Queue is empty\n")
+            } else {
+                Timber.d("The data 35 Queue has item(s) in it.\n")
+                //It's not empty let's add to the databasea
+                //Most recent DF from stack
+                var df = dataFrame35Queue.poll()
+                while(df != null) {
+                    val inputDB = data35(
+                        df.elapsedTime, df.distance, df.driveLength,
+                        df.driveTime, df.strokeRecTime, df.strokeDistance,
+                        df.peakDriveForce, df.averageDriveForce,
+                        df.workPerStroke, df.strokeCount
+                    )
+                    var success = db.add_dataframe35(inputDB)
 
-
+                    df = dataFrame35Queue.poll()
+                }
             }
         }
-
     }
 //commented out so that you can leave BLE screen without disconnecting
 /*    override fun onDestroy() {

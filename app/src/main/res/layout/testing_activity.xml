@@ -1,0 +1,147 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/button33Start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginLeft="50dp"
+        android:text="Start 33"
+        android:layout_alignParentTop="true"/>
+
+    <Button
+        android:id="@+id/button33End"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="End 33"
+        android:layout_below="@id/button33Start"
+        android:layout_alignStart="@id/button33Start" />
+
+    <Button
+        android:id="@+id/button35Start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Start 3D"
+        android:layout_below="@id/button33End"
+        android:layout_alignStart="@id/button33End" />
+
+    <Button
+        android:id="@+id/button35End"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="End 35"
+        android:layout_below="@id/button35Start"
+        android:layout_alignStart="@id/button33Start" />
+
+
+    <Button
+        android:id="@+id/button3DEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button35Start"
+        android:layout_alignStart="@id/button33Start"
+        android:layout_marginStart="-1dp"
+        android:layout_marginTop="114dp"
+        android:text="End 3D" />
+
+    <Button
+        android:id="@+id/buttonRead22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button3DEnd"
+        android:layout_alignStart="@id/button33Start"
+        android:layout_marginStart="-1dp"
+        android:layout_marginTop="25dp"
+        android:text="Read 22" />
+
+    <TextView
+        android:id="@+id/timeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="511dp"
+        android:text="Time: -1 s" />
+
+    <TextView
+        android:id="@+id/pwrTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Power: -1 W"
+        android:layout_below="@id/timeTextView"
+        android:layout_alignStart="@id/timeTextView" />
+
+    <TextView
+        android:id="@+id/distTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Distance: -1 m"
+        android:layout_below="@id/pwrTextView"
+        android:layout_alignStart="@id/timeTextView" />
+
+    <TextView
+        android:id="@+id/calTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calories: -1 joules"
+        android:layout_below="@id/distTextView"
+        android:layout_alignStart="@id/timeTextView" />
+
+    <TextView
+        android:id="@+id/stateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/calTextView"
+        android:layout_alignStart="@id/timeTextView"
+        android:text="STATE: Not set in TextView" />
+
+    <Button
+        android:id="@+id/getStateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginEnd="79dp"
+        android:layout_toEndOf="@+id/button33Start"
+        android:text="Get Status" />
+
+    <Button
+        android:id="@+id/startWktout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/getStateButton"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginEnd="79dp"
+        android:layout_toEndOf="@+id/button33Start"
+        android:text="Start Workout" />
+
+    <Button
+        android:id="@+id/endWktout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/startWktout"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginEnd="79dp"
+        android:layout_toEndOf="@+id/button33Start"
+        android:text="End Workout" />
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/endWktout"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginEnd="79dp"
+        android:layout_toEndOf="@+id/button33Start"
+        android:text="Button" />
+
+</RelativeLayout>

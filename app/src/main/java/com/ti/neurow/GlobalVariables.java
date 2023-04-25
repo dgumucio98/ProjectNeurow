@@ -1,5 +1,7 @@
 package com.ti.neurow;
 
+import android.bluetooth.BluetoothDevice;
+
 import java.util.ArrayList;
 
 public class GlobalVariables {
@@ -46,4 +48,6 @@ public class GlobalVariables {
     public static Integer pz_5 = 47; // default FTP value
     public static Integer pz_6 = 54; // default FTP value
     public static Integer pz_7 = 67; // default FTP value
+    public static Boolean stopTask = false; // stop task flag
+    public static BluetoothDevice globalBleDevice; // global BLE device
 }
