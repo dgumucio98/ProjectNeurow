@@ -34,15 +34,8 @@ import timber.log.Timber;
 
 public class WorkoutActivity extends AppCompatActivity {
 
-//    // If there is no device this throws a null error, duh do a check
-//    pm5Utility testingDevice = new pm5Utility(GlobalVariables.globalBleDevice);
-//
-//    // Set up device
-//    testingDevice.startWorkOut();
-//    testingDevice.setPollSpeed("FASTEST");
     pm5Utility testingDevice = new pm5Utility(GlobalVariables.globalBleDevice);
     //testingDevice.setPollSpeed("FASTEST");
-
 
     // Define UI elements
     Button btnStart, btnStop; // buttons
@@ -95,6 +88,7 @@ public class WorkoutActivity extends AppCompatActivity {
         txtWorkoutName = findViewById(R.id.txtWorkoutName); // workout name (interval/pace)
         txtStartPrompt = findViewById(R.id.txtStartPrompt); // start workout prompt
         btnStart = findViewById(R.id.btnStart); // button that starts workouts
+
         btnStop = findViewById(R.id.btnStop); // button that stops workouts
         RelativeLayout MetricsRelativeLayout = findViewById(R.id.MetricsRelativeLayout); // metrics layout
         RelativeLayout StartRelativeLayout = findViewById(R.id.StartRelativeLayout); // starting layout
@@ -255,12 +249,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 builder.setPositiveButton("Stop", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
-                        // Stop BT data stream
-//                        testingDevice.end33();
-//                        testingDevice.end35();
-//                        testingDevice.end3D();
-
                         WorkoutActivity.super.onBackPressed(); // go back (should be DashboardActivity)
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
@@ -280,6 +268,27 @@ public class WorkoutActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Toast.makeText(this, "[WorkoutActivity] onResume called", Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Toast.makeText(this, "[WorkoutActivity] onStart called", Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Toast.makeText(this, "[WorkoutActivity] onPause called", Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Toast.makeText(this, "[WorkoutActivity] onStop called", Toast.LENGTH_SHORT).show();
+    }
+
     // ftpCalc background functionality class
     private class ftpCalcTask extends AsyncTask<Void, Object, Integer> {
 
@@ -293,14 +302,30 @@ public class WorkoutActivity extends AppCompatActivity {
             int sum = 0;
             int length = 0;
             ArrayList<Double> powtimearray = new ArrayList<>(); // create new arraylist
-
+            double pastTime = db.getTime_33();
+            int numIterations = 0;
+            // main loop
+            //Timber.d("in ftp calc");
             // Main workout loop
             while (db.getTime_33() < 30.0 && !GlobalVariables.stopTask)  {
+                numIterations ++;
+                //Timber.d("in loop");
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double) db.getPower());
-
+/*                double currentTime = db.getTime_33();
+                if (currentTime == pastTime) {
+                    Timber.d("in cur = past");
+                    numIterations += 1;
+                    if (numIterations > 3000) { // TODO: edit? set a threshold of 300 iterations
+                        break; // terminate the loop if threshold is exceeded
+                    }
+                } else {
+                    Timber.d("else");
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }*/
                 // Update metric values
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -309,26 +334,34 @@ public class WorkoutActivity extends AppCompatActivity {
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int avgPower = GlobalVariables.averagePower33;
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
-                int strokeCount = GlobalVariables.strokeCount35.intValue();
+                int strokeCount = GlobalVariables.strokeCount35;
 
                 // Send data to main UI thread after each loop iteration
                 publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount); // Update the UI with the current counter value
             }
+            Timber.d("[TIMBER] 30 sec num of iterations: " + numIterations);
 
             // Final tasks
             if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
                 double avgPow = (double) sum / length; // calculate average power
                 int ftp = (int) (0.95 * avgPow); // calculate ftp (95% of average power)
                 GlobalVariables.ftp = ftp; // set ftp as global so UI can display it
-
                 // Load power zones
-                int pz_1 = 0; // Very Easy: <55% of FTP
+                int pz_1 = 0; //Very Easy: <55% of FTP
                 int pz_2 = (int) (0.56 * ftp); // Moderate: 56%-75% of FTP
                 int pz_3 = (int) (0.76 * ftp); // Sustainable: 76%-90% of FTP
                 int pz_4 = (int) (0.91 * ftp); // Challenging: 91%-105% of FTP
                 int pz_5 = (int) (1.06 * ftp); // Hard: 106%-120% of FTP
                 int pz_6 = (int) (1.21 * ftp); // Very Hard: 121%-150% of FTP
                 int pz_7 = (int) (1.51 * ftp); // Max Effort: >151% of FTP
+                //write power zones into global variables?
+                GlobalVariables.pz_1 = pz_1;
+                GlobalVariables.pz_2 = pz_2;
+                GlobalVariables.pz_3 = pz_3;
+                GlobalVariables.pz_4 = pz_4;
+                GlobalVariables.pz_5 = pz_5;
+                GlobalVariables.pz_6 = pz_6;
+                GlobalVariables.pz_7 = pz_7;
 
                 // Populate database User table
                 db.updateuserFTP(GlobalVariables.loggedInUsername, ftp,
@@ -367,6 +400,7 @@ public class WorkoutActivity extends AppCompatActivity {
             txtAvgDriveForceMetric.setText(avgDriveForce + " lbf");
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
             txtIntervalPZMetric.setText("Row for 20 minutes at a challenging, but sustainable pace!");
+
             txtIntervalFixMetric.setText(""); // not needed for ftpCalc
             txtPaceFeedbackMetric.setText(""); // not needed for FTP Calc
         }
@@ -1880,7 +1914,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             // Create database instance
             DatabaseHelper db = new DatabaseHelper(WorkoutActivity.this);
-            
+
             //pace code 20 min
             int failCount = 0;
             int count = 0;
@@ -2249,6 +2283,13 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 // Send data to main UI thread
                 publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage, paceMessage); // Update the UI with the current counter value
+                //TODO: where to put thread sleep for message display. here? after setting text box?
+                try {
+                    Thread.sleep(500); // pause for 500 milliseconds
+                } catch (InterruptedException e) {
+                    // handle the exception if the thread is interrupted while sleeping
+                    Timber.d("exception in demo thread sleep block");
+                }
             }
 
             double avgPow = (double) sum / (double) length; //uncomment
@@ -2337,11 +2378,5 @@ public class WorkoutActivity extends AppCompatActivity {
             }
         });
         AlertDialog dialog = builder.show();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Toast.makeText(this, "[TEST] WorkoutActivity destroyed!", Toast.LENGTH_SHORT).show();
     }
 }

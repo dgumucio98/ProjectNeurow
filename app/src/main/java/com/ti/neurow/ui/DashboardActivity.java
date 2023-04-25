@@ -145,6 +145,7 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
 
         // Display user's FTP
         txtUserFtp.setTextColor(getResources().getColor(R.color.mint_green));
+
         txtUserFtp.setText(Html.fromHtml("<b>My FTP:</b> " + db.getFTP(GlobalVariables.loggedInUsername) + "W"));
         txtUserFtp.setTextSize(25);
 
@@ -379,6 +380,7 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
         AlertDialog dialog = builder.show();
     }
 
+
     // Tip changer
     private Runnable updateTipRunnable = new Runnable() {
         @Override
@@ -415,6 +417,18 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Toast.makeText(this, "[WorkoutMainActivity] onDestroy called", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Toast.makeText(this, "[WorkoutMainActivity] onPause called", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
         Toast.makeText(this, "[TEST] DashboardActivity destroyed!", Toast.LENGTH_SHORT).show();
     }
 }

@@ -41,11 +41,10 @@ public class GlobalVariables {
     // Others
     public static Integer failCount;
     public static Integer ftp = 45; // default FTP value
-    //TODO: change pz vals
     public static Integer pz_1 = 0; // default FTP value
     public static Integer pz_2 = 25; // default FTP value
-    public static Integer pz_3 = 50; // default FTP value 34
-    public static Integer pz_4 = 100; // default FTP value 40
+    public static Integer pz_3 = 34; // default FTP value 34
+    public static Integer pz_4 = 40; // default FTP value 40
     public static Integer pz_5 = 47; // default FTP value
     public static Integer pz_6 = 54; // default FTP value
     public static Integer pz_7 = 67; // default FTP value
