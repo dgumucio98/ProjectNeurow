@@ -403,7 +403,8 @@ public class WorkoutActivity extends AppCompatActivity {
             launchPostWorkoutActivity.putExtra("workoutName", "ftpCalc"); // pass workout name data - necessary for specific suggestions
 
             // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
-            //launchPostWorkoutActivity.putExtra(BluetoothDevice.EXTRA_DEVICE, MainActivity.);
+            //TODO: Find a way to pass this device
+            //launchPostWorkoutActivity.putExtra(BluetoothDevice.EXTRA_DEVICE, com.ti.neurow.ble.MainActivity);
             startActivity(launchPostWorkoutActivity); // launch BLE Data View
             finish(); // can't go back
         }
