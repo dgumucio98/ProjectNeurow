@@ -1,25 +1,18 @@
 package com.ti.neurow.ui;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.ColorRes;
-import androidx.annotation.Nullable;
-
 import com.jjoe64.graphview.GraphView; // for graphs
-import com.jjoe64.graphview.GridLabelRenderer;
 import com.ti.neurow.GlobalVariables; // for access to finalListTimePower
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -44,9 +37,12 @@ public class PostWorkoutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        // Tweak visible elements
         super.onCreate(savedInstanceState);
+
+        Toast.makeText(getApplicationContext(), "[TEST] PostWorkoutActivity created!", Toast.LENGTH_SHORT).show();
+
+
+        // Hide Action bar and Status bar, lock orientation to landscape
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); // Hide Action bar and Status bar
         getSupportActionBar().hide();
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); // Lock orientation to landscape
@@ -55,15 +51,15 @@ public class PostWorkoutActivity extends AppCompatActivity {
         Power_vs_Time = findViewById(R.id.Power_vs_Time);
         Power_vs_Pull = findViewById(R.id.Power_vs_Pull);
         btnDone = findViewById(R.id.btnDone);
-        TextView txtFtp = findViewById(R.id.txtFtp);
+        TextView txtFtpVal = findViewById(R.id.txtFtpVal);
+
         TextView txtSuggestion = findViewById(R.id.txtSuggestion);
 
         workouts workouts = new workouts(); // create instance of workouts
 
-        txtFtp.setText("FTP: " + GlobalVariables.ftp + "W"); // set FTP text box to updated FTP value
+        txtFtpVal.setText(GlobalVariables.ftp + "W"); // set FTP text box to updated FTP value
 
-        /////// Power vs Time Graphing ///////
-        // [TEST] Populate list before graphing
+        // Power vs Time Graphing
         int length1 = GlobalVariables.finalListTimePower.size(); // length of list
         int j = 0; // double-time iterator
         DataPoint[] dp1 = new DataPoint[length1/2];
@@ -112,8 +108,7 @@ public class PostWorkoutActivity extends AppCompatActivity {
         
         series1.setColor(getResources().getColor(R.color.teal_200)); // set color of line
 
-        /////// Power of Pull Graphing ///////
-        // Create database instance
+        // Power of Pull Graphing
         DatabaseHelper db = new DatabaseHelper(PostWorkoutActivity.this);
         ArrayList<Double> powPull = db.get3D_avg_y();
         Timber.d("ArrayList contents: %s", powPull);
@@ -165,7 +160,7 @@ public class PostWorkoutActivity extends AppCompatActivity {
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PostWorkoutActivity.this, WorkoutMainActivity.class); // send user back to dashboard
+                Intent intent = new Intent(PostWorkoutActivity.this, DashboardActivity.class); // send user back to dashboard
                 startActivity(intent);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -180,10 +175,14 @@ public class PostWorkoutActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() { // handle back button press (take us to workout dashboard)
-        Intent intent = new Intent(PostWorkoutActivity.this, WorkoutMainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        startActivity(intent);
         finish(); // Can't go back
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Toast.makeText(this, "[TEST] PostWorkoutActivity destroyed!", Toast.LENGTH_SHORT).show();
+    }
+
 }

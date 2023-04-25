@@ -6,14 +6,14 @@
     android:layout_height="match_parent"
     android:background="@drawable/dark_grey_background"
     android:fitsSystemWindows="true"
-    tools:context=".ui.WorkoutMainActivity">
+    tools:context=".ui.DashboardActivity">
 
     <Button
         android:id="@+id/btnWorkout1"
         android:layout_width="254dp"
         android:layout_height="130dp"
         android:layout_below="@id/txtWelcome"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="120dp"
         android:layout_marginRight="70dp"
         android:layout_toLeftOf="@id/btnWorkout2"
         android:background="@drawable/ftp_button_background"
@@ -31,7 +31,7 @@
         android:layout_height="130dp"
         android:layout_below="@id/txtWelcome"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="120dp"
         android:background="@drawable/pace_button_background"
         android:drawableTop="@drawable/ic_pace"
         android:onClick="showPopup2"
@@ -48,7 +48,7 @@
         android:layout_height="130dp"
         android:layout_below="@id/txtWelcome"
         android:layout_marginLeft="70dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="120dp"
         android:layout_toRightOf="@id/btnWorkout2"
         android:background="@drawable/interval_button_background"
         android:drawableTop="@drawable/ic_interval"
@@ -66,7 +66,7 @@
         android:layout_height="130dp"
         android:layout_below="@id/btnWorkout1"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="120dp"
         android:background="@drawable/demo_button_background"
         android:drawableTop="@drawable/ic_demo"
         android:paddingTop="30dp"
@@ -82,16 +82,16 @@
         android:layout_height="70dp"
         android:layout_below="@id/btnWorkout2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="75dp"
         android:background="@drawable/rounded_button_background"
-        android:backgroundTint="#5db39a"
+        android:backgroundTint="#4fab8b"
         android:drawableRight="@drawable/ic_predictor"
-        android:onClick="launchMain"
         android:paddingLeft="15dp"
         android:paddingTop="3dp"
-        android:paddingRight="15dp"
+        android:paddingRight="30dp"
         android:paddingBottom="3dp"
-        android:text="Power Predictor  "
+        android:text="Power Predictor"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="20sp" />
 
@@ -167,13 +167,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rower_icon"
+        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
         android:fontFamily="sans-serif"
         android:text="Select an Activity"
         android:textColor="@color/white"
         android:textSize="65sp"
         android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/txtTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtWelcome"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="italic" />
 
     <ImageView
         android:id="@+id/rower_icon"
@@ -203,14 +216,14 @@
         android:elevation="1dp"
         android:text="baseline"
         android:textColor="@color/white"
-        android:textSize="12sp" />
+        android:textSize="11sp" />
 
     <ImageView
         android:id="@+id/baselineBanner"
         android:layout_width="61dp"
         android:layout_height="107dp"
         android:layout_marginStart="240dp"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="403dp"
         android:src="@drawable/green_banner" />
 
 </RelativeLayout>

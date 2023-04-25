@@ -35,6 +35,7 @@
     <RelativeLayout
         android:id="@+id/StartRelativeLayout"
         android:visibility="visible"
+        tools:visibility="invisible"
         android:layout_width="1250dp"
         android:layout_height="580dp"
         android:layout_alignParentRight="true"
@@ -54,19 +55,22 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             android:textSize="100dp"
+            tools:visibility="gone"
             android:layout_centerHorizontal="true" />
 
         <Button
             android:id="@+id/btnStart"
             android:layout_width="1250dp"
             android:layout_height="300dp"
+            tools:visibility="gone"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="15dp"
             android:background="@drawable/rounded_button_background"
             android:backgroundTint="#50C878"
             android:fontFamily="sans-serif-black"
             android:text="I'm ready. Start!"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="50sp" />
 
@@ -77,6 +81,7 @@
     <RelativeLayout
         android:id="@+id/MetricsRelativeLayout"
         android:visibility="invisible"
+        tools:visibility="visible"
         android:layout_width="1250dp"
         android:layout_height="580dp"
         android:layout_alignParentRight="true"
@@ -118,7 +123,7 @@
             android:text="187 m"
             android:textColor="#04cf9f"
             android:layout_below="@id/txtDistanceDescriptor"
-            android:textSize="70sp"
+            android:textSize="75sp"
             android:textStyle="normal" />
 
         <TextView
@@ -141,7 +146,7 @@
             android:text="206 cal"
             android:layout_below="@id/txtCaloriesMetricDescriptor"
             android:textColor="#c2f2ac"
-            android:textSize="70sp"
+            android:textSize="75sp"
             android:textStyle="normal" />
 
         <TextView
@@ -164,7 +169,7 @@
             android:text="47 W"
             android:layout_below="@id/txtAvgPwrMetricDescriptor"
             android:textColor="@color/bubblegum_red"
-            android:textSize="70sp"
+            android:textSize="90sp"
             android:textStyle="normal" />
 
         <TextView
@@ -189,7 +194,7 @@
             android:fontFamily="sans-serif"
             android:text="1.2 m"
             android:textColor="#afc4e0"
-            android:textSize="70sp"
+            android:textSize="90sp"
             android:textStyle="normal" />
 
         <TextView
@@ -214,7 +219,7 @@
             android:fontFamily="sans-serif"
             android:text="820 s"
             android:textColor="#c7a258"
-            android:textSize="70sp"
+            android:textSize="75sp"
             android:textStyle="normal" />
 
         <TextView
@@ -239,7 +244,7 @@
             android:fontFamily="sans-serif"
             android:text="29 lbf"
             android:textColor="#fc9dbc"
-            android:textSize="70sp"
+            android:textSize="75sp"
             android:textStyle="normal" />
 
         <TextView
@@ -264,7 +269,7 @@
             android:fontFamily="sans-serif"
             android:text="33"
             android:textColor="#79d9af"
-            android:textSize="70sp"
+            android:textSize="90sp"
             android:textStyle="normal" />
 
         <TextView
@@ -284,11 +289,11 @@
             android:layout_width="400dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="200dp"
+            android:layout_marginTop="380dp"
             android:fontFamily="sans-serif"
-            android:text="[Interval PZ Feedback will go here!]"
+            android:text="[Interval PZ Feedback]"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="#16e7f2"
             android:textSize="35sp"
             android:textStyle="bold" />
 
@@ -297,31 +302,60 @@
             android:layout_width="400dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="200dp"
+            android:layout_marginTop="280dp"
             android:fontFamily="sans-serif"
-            android:text="[Interval Fix Feedback will go here!]"
+            android:text="[Interval Fix Feedback]"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="#f0cf4d"
             android:textSize="35sp"
             android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iconHeartbeat1"
+            android:layout_width="350dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="72dp"
+            android:layout_marginLeft="415dp"
+            app:srcCompat="@drawable/ic_heartbeat" />
+
+        <ImageView
+            android:id="@+id/iconHeartbeat2"
+            android:layout_width="350dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="72dp"
+            android:scaleX="-1"
+            android:layout_marginLeft="485dp"
+            app:srcCompat="@drawable/ic_heartbeat" />
+
+        <TextView
+            android:id="@+id/txtFeedback"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif-light"
+            android:text="Feedback"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="50sp" />
 
         <TextView
             android:id="@+id/txtPaceFeedbackMetric"
             android:layout_width="400dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="200dp"
+            android:layout_marginTop="190dp"
             android:fontFamily="sans-serif"
-            android:text="[Pace Feedback will go here!]"
+            android:text="[Pace Feedback]"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="#d5e0db"
             android:textSize="35sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnStop"
             android:layout_width="400dp"
-            android:layout_height="100dp"
+            android:layout_height="90dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="490dp"
             android:background="@drawable/rounded_button_background"

@@ -18,16 +18,35 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/neurow_text"
+        android:id="@+id/txtSponsor"
         android:layout_width="300dp"
         android:layout_height="70dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_below="@+id/rower_icon"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="Sponsored by"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/neurow_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/rower_icon"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="456dp"
+        android:layout_marginBottom="400dp"
         android:gravity="center"
-        android:text="N  E  U  R  O  W"
+        android:text="N E U R O W"
+        android:fontFamily="@font/vermin"
+        android:textStyle="bold"
         android:textColor="@color/white"
-        android:textSize="40sp"
+        android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,6 +70,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/icon_TI"
+        android:layout_width="200dp"
+        android:layout_height="113dp"
+        android:visibility="gone"
+        android:layout_marginTop="70dp"
+        tools:visibility="visible"
+        android:src="@drawable/ic_ti"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/btnExistingUser"
         android:layout_width="300dp"
@@ -70,7 +101,7 @@
         android:id="@+id/btnNewUser"
         android:layout_width="300dp"
         android:layout_height="97dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#5F8575"
         android:text="Create User"
         android:textColor="@color/white"

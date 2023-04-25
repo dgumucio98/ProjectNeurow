@@ -24,23 +24,38 @@ import com.ti.neurow.R;
 import com.ti.neurow.db.DatabaseHelper;
 import com.ti.neurow.wkt.workouts;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import timber.log.Timber;
 
 // Strictly-Landscape activity
-public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener, View.OnLongClickListener {
+public class DashboardActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener, View.OnLongClickListener {
+
+    // Stuff to display a tip and change it
+    private Handler tipChanger = new Handler(); // tip text box handler
+    private int previousTipIndex = -1; // prevents same tip twice in a row
 
     private static final String[] PREDICTION_CHOICES = {"Pace (20-minute)", "Pace (30-minute)", "Pace (40-minute)",
             "Interval (20-minute)", "Interval (30-minute)", "Interval (40-minute)"}; // stores prediction choice
-    TextView MDY; // declare month-day-year text view
-    TextView txtUserID; // declare username displayer
-    TextView txtUserFtp; // declare user FTP displayer
+
+    private String[] tips = { // on-screen tips and facts
+            "⭐ Predict your performance with the 'Power Predictor' button",
+            "⭐ First time? Find your FTP with the 'FTP Calculator' workout ⭐",
+            "⭐ Did you know? Rowing is one of the original sports in the modern Olympic Games ⭐",
+            "⭐ Did you know? Rowing machines utilize ~84% of the body's muscles ⭐",
+            "⭐ Expect to be sore :) ⭐",
+            "⭐ A good Power vs. Pull graph looks parabolic ⭐",
+            "⭐ Did you know? Rowing machines are also known as 'ergometers' ⭐",
+            "⭐ Watch that form! Sit tall with your shoulders back, and engage your core ⭐",
+            "⭐ Focus on your breathing. Inhale on the way back and exhale on the way forward ⭐",
+            "⭐ Fuel up before your workout with a healthy snack like a banana or a handful of nuts ⭐",
+    };
+
+    // Define UI elements
+    TextView MDY, txtUserID, txtUserFtp, txtTip;
 
     private Handler handler = new Handler(); // handler to update status time live
 
@@ -50,11 +65,11 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         if (id == R.id.btnWorkout1) {
             Toast.makeText(this, "Find your FTP from a quick 20-minute row.", Toast.LENGTH_LONG).show();
         } else if (id == R.id.btnWorkout2) {
-            Toast.makeText(WorkoutMainActivity.this, "Pace yourself with live feedback on your row's power output.", Toast.LENGTH_LONG).show();
+            Toast.makeText(DashboardActivity.this, "Pace yourself with live feedback on your row's power output.", Toast.LENGTH_LONG).show();
         } else if (id == R.id.btnWorkout3) {
-            Toast.makeText(WorkoutMainActivity.this, "High-intensity workout based on your personal Power Zones.", Toast.LENGTH_LONG).show();
+            Toast.makeText(DashboardActivity.this, "High-intensity workout based on your personal Power Zones.", Toast.LENGTH_LONG).show();
         } else if (id == R.id.btnPredictor) {
-            Toast.makeText(WorkoutMainActivity.this, "Predict your next five rows for a specific workout.", Toast.LENGTH_LONG).show();
+            Toast.makeText(DashboardActivity.this, "Predict your next five rows for a specific workout.", Toast.LENGTH_LONG).show();
         }
 
         return true;
@@ -64,12 +79,17 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Lock orientation to landscape and hide Action bar and Status bar (for this activity)
+        Toast.makeText(getApplicationContext(), "[TEST] DashboardActivity created!", Toast.LENGTH_SHORT).show();
+
+        // Hide Action bar and Status bar, lock orientation to landscape
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
 
-        setContentView(R.layout.activity_workout_main);
+        setContentView(R.layout.activity_dashboard);
+
+        // Change tip every 7 seconds
+        tipChanger.postDelayed(updateTipRunnable, 7000);
 
         /* Additions to pass the BLE device */
         Intent intent = getIntent();
@@ -85,7 +105,7 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
             Timber.i("The BLE device was successfully passed.");
             //Toast.makeText(this, "The BLE device was successfully passed.", Toast.LENGTH_LONG).show();
         } else {
-            Timber.i("The BLE device was not passed.");
+            //Timber.i("The BLE device was not passed.");
             //Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
         }
         // This is how you can just call the stream to turn on and off, uncomment them out
@@ -96,12 +116,8 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
 
         /* End addition */
 
-        // [TEST] Activity creation
-        Toast.makeText(WorkoutMainActivity.this, "Just CREATED ", Toast.LENGTH_SHORT).show();
-
         // Create instance of database in this activity
-        DatabaseHelper db = new DatabaseHelper(WorkoutMainActivity.this);
-
+        DatabaseHelper db = new DatabaseHelper(DashboardActivity.this);
 
         Handler handler = new Handler(); // define handler
 
@@ -112,6 +128,7 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         TextView txtPrediction = findViewById(R.id.txtPrediction);
         Button btnPredictor = findViewById(R.id.btnPredictor);
         MDY = findViewById(R.id.txtDate);
+        txtTip = findViewById(R.id.txtTip);
 
         // Define buttons used for on-long-click
         Button btnWorkout1 = findViewById(R.id.btnWorkout1);
@@ -136,34 +153,34 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
             @Override
             public void onClick(View v) {
                 //Changed the way Intent is defined to add attribute to add BLE
-                Intent launchWorkoutActivity = new Intent(WorkoutMainActivity.this, WorkoutActivity.class);
+                Intent goToWorkoutActivity = new Intent(DashboardActivity.this, WorkoutActivity.class);
                 // define intent for launching activity
                 // Needed to pass BLE device
                 if(device != null) {
-                    launchWorkoutActivity.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
+                    goToWorkoutActivity.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
                 }
 
                 switch (v.getId()) {
                     case R.id.btnWorkout1: // ftpCalc button is clicked
                         int color1 = ContextCompat.getColor(getApplicationContext(), R.color.medium_gray); // parse custom color
-                        launchWorkoutActivity.putExtra("attributeColor", color1); // pass color data
-                        launchWorkoutActivity.putExtra("attributeText", "20-MINUTE"); // pass text data
-                        launchWorkoutActivity.putExtra("attributeName", "FTP CALCULATOR"); // pass titles text data
-                        launchWorkoutActivity.putExtra("methodName", "ftpCalc"); // pass target workout name data
+                        goToWorkoutActivity.putExtra("attributeColor", color1); // pass color data
+                        goToWorkoutActivity.putExtra("attributeText", "20-MINUTE"); // pass text data
+                        goToWorkoutActivity.putExtra("attributeName", "FTP CALCULATOR"); // pass titles text data
+                        goToWorkoutActivity.putExtra("methodName", "ftpCalc"); // pass target workout name data
                         break;
                     case R.id.btnDemo: // demo button is clicked
                         int color2 = ContextCompat.getColor(getApplicationContext(), R.color.brick_red); // parse custom color
-                        launchWorkoutActivity.putExtra("attributeColor", color2); // pass color data
-                        launchWorkoutActivity.putExtra("attributeText", "404 Demo"); // pass text data
-                        launchWorkoutActivity.putExtra("attributeName", "DEMO WORKOUT"); // pass titles text data
-                        launchWorkoutActivity.putExtra("methodName", "demo"); // pass target workout name data
+                        goToWorkoutActivity.putExtra("attributeColor", color2); // pass color data
+                        goToWorkoutActivity.putExtra("attributeText", "404 Demo"); // pass text data
+                        goToWorkoutActivity.putExtra("attributeName", "DEMO WORKOUT"); // pass titles text data
+                        goToWorkoutActivity.putExtra("methodName", "demo"); // pass target workout name data
                         break;
                     case R.id.btnPredictor: // predictor button is clicked
                         showPredictionOptionsDialog(); // launch dialog box
                         return; // return to avoid starting activity or animating
                 }
 
-                startActivity(launchWorkoutActivity); // start workout activity
+                startActivity(goToWorkoutActivity); // start workout activity
                 overridePendingTransition(R.anim.slide_up, R.anim.slide_down); // animate
             }
         };
@@ -214,53 +231,54 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
     public boolean onMenuItemClick(MenuItem menuItem) {
 
         int itemId = menuItem.getItemId();
-        Intent launchWorkoutActivity = new Intent(this, WorkoutActivity.class); // define intent for launching activity
+        Intent goToWorkoutActivity = new Intent(this, WorkoutActivity.class); // define intent for launching activity
 
         // Prepare data to be sent via putExtra
         if (itemId == R.id.interval20) {
             int color = ContextCompat.getColor(this, R.color.light_blue); // parse custom color
-            launchWorkoutActivity.putExtra("attributeColor", color); // pass color data
-            launchWorkoutActivity.putExtra("attributeText", "20-MINUTE"); // pass text data
-            launchWorkoutActivity.putExtra("attributeName", "INTERVAL WORKOUT"); // pass titles text data
-            launchWorkoutActivity.putExtra("methodName", "interval1"); // pass target workout name data
+            goToWorkoutActivity.putExtra("attributeColor", color); // pass color data
+            goToWorkoutActivity.putExtra("attributeText", "20-MINUTE"); // pass text data
+            goToWorkoutActivity.putExtra("attributeName", "INTERVAL WORKOUT"); // pass titles text data
+            goToWorkoutActivity.putExtra("methodName", "interval1"); // pass target workout name data
 
         } else if (itemId == R.id.interval30) {
             int color = ContextCompat.getColor(this, R.color.medium_blue);
-            launchWorkoutActivity.putExtra("attributeColor", color);
-            launchWorkoutActivity.putExtra("attributeText", "30-MINUTE");
-            launchWorkoutActivity.putExtra("attributeName", "INTERVAL WORKOUT"); // pass titles text data
-            launchWorkoutActivity.putExtra("methodName", "interval2"); // pass target workout name data
+            goToWorkoutActivity.putExtra("attributeColor", color);
+            goToWorkoutActivity.putExtra("attributeText", "30-MINUTE");
+            goToWorkoutActivity.putExtra("attributeName", "INTERVAL WORKOUT"); // pass titles text data
+            goToWorkoutActivity.putExtra("methodName", "interval2"); // pass target workout name data
         } else if (itemId == R.id.interval40) {
             int color = ContextCompat.getColor(this, R.color.dark_blue);
-            launchWorkoutActivity.putExtra("attributeColor", color);
-            launchWorkoutActivity.putExtra("attributeText", "40-MINUTE");
-            launchWorkoutActivity.putExtra("attributeName", "INTERVAL WORKOUT"); // pass titles text data
-            launchWorkoutActivity.putExtra("methodName", "interval3"); // pass target workout name data
+            goToWorkoutActivity.putExtra("attributeColor", color);
+            goToWorkoutActivity.putExtra("attributeText", "40-MINUTE");
+            goToWorkoutActivity.putExtra("attributeName", "INTERVAL WORKOUT"); // pass titles text data
+            goToWorkoutActivity.putExtra("methodName", "interval3"); // pass target workout name data
 
         } else if (itemId == R.id.pace20) {
             int color = ContextCompat.getColor(this, R.color.light_orange);
-            launchWorkoutActivity.putExtra("attributeColor", color);
-            launchWorkoutActivity.putExtra("attributeText", "20-MINUTE");
-            launchWorkoutActivity.putExtra("attributeName", "PACE WORKOUT"); // pass titles text data
-            launchWorkoutActivity.putExtra("methodName", "pace20"); // pass target workout name data
+            goToWorkoutActivity.putExtra("attributeColor", color);
+            goToWorkoutActivity.putExtra("attributeText", "20-MINUTE");
+            goToWorkoutActivity.putExtra("attributeName", "PACE WORKOUT"); // pass titles text data
+            goToWorkoutActivity.putExtra("methodName", "pace20"); // pass target workout name data
 
         } else if (itemId == R.id.pace30) {
             int color = ContextCompat.getColor(this, R.color.medium_orange);
-            launchWorkoutActivity.putExtra("attributeColor", color);
-            launchWorkoutActivity.putExtra("attributeText", "30-MINUTE");
-            launchWorkoutActivity.putExtra("attributeName", "PACE WORKOUT"); // pass titles text data
-            launchWorkoutActivity.putExtra("methodName", "pace30"); // pass target workout name data
+            goToWorkoutActivity.putExtra("attributeColor", color);
+            goToWorkoutActivity.putExtra("attributeText", "30-MINUTE");
+            goToWorkoutActivity.putExtra("attributeName", "PACE WORKOUT"); // pass titles text data
+            goToWorkoutActivity.putExtra("methodName", "pace30"); // pass target workout name data
 
         } else if (itemId == R.id.pace40) {
             int color = ContextCompat.getColor(this, R.color.dark_orange);
-            launchWorkoutActivity.putExtra("attributeColor", color);
-            launchWorkoutActivity.putExtra("attributeText", "40-MINUTE");
-            launchWorkoutActivity.putExtra("attributeName", "PACE WORKOUT"); // pass titles text data
-            launchWorkoutActivity.putExtra("methodName", "pace40"); // pass target workout name data
+            goToWorkoutActivity.putExtra("attributeColor", color);
+            goToWorkoutActivity.putExtra("attributeText", "40-MINUTE");
+            goToWorkoutActivity.putExtra("attributeName", "PACE WORKOUT"); // pass titles text data
+            goToWorkoutActivity.putExtra("methodName", "pace40"); // pass target workout name data
         }
 
-        // Start next workout activity
-        startActivity(launchWorkoutActivity); // start workout activity
+        // Start workout activity
+        startActivity(goToWorkoutActivity); // launch workout activity
+        finish(); // destroy activity
         overridePendingTransition(R.anim.slide_up, R.anim.slide_down); // animate
         return false;
     }
@@ -273,7 +291,7 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
                     public void onClick(DialogInterface dialog, int which) {
 
                         TextView txtPrediction = findViewById(R.id.txtPrediction); // create local instance of txtPrediction
-                        DatabaseHelper db = new DatabaseHelper(WorkoutMainActivity.this); // prepare database
+                        DatabaseHelper db = new DatabaseHelper(DashboardActivity.this); // prepare database
                         workouts workouts = new workouts(); // construct workouts instance
                         String workoutType = "";
                         ArrayList<Double> allPow;
@@ -334,11 +352,6 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
         dialog.show();
     }
 
-    // Log Out button: Launch LoginActivity
-    public void launchMain (View v) {
-        onBackPressed(); // call onBackPressed() method to display the confirmation dialog
-    }
-
     @Override
     public void onBackPressed() { // handle back button press
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -349,13 +362,11 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                GlobalVariables.loggedInUsername = "NULL"; // clear logged in user
+                GlobalVariables.loggedInUsername = "NULL"; // clear logged-in user (log out)
 
-                Intent intent = new Intent(WorkoutMainActivity.this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                DashboardActivity.super.onBackPressed(); // go back to existing MainUIActivity
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                startActivity(intent);
-                finish(); // Can't go back
+
             }
         });
 
@@ -366,5 +377,44 @@ public class WorkoutMainActivity extends AppCompatActivity implements PopupMenu.
             }
         });
         AlertDialog dialog = builder.show();
+    }
+
+    // Tip changer
+    private Runnable updateTipRunnable = new Runnable() {
+        @Override
+        public void run() {
+            int index;
+            do {
+                index = (int) (Math.random() * tips.length);
+            } while (index == previousTipIndex); // loop until a different tip is selected
+
+            previousTipIndex = index; // set the current tip as the previous tip
+
+            txtTip.setText(tips[index]);
+
+            txtTip.animate().alpha(1.0f).setDuration(500).withStartAction(new Runnable() {
+                @Override
+                public void run() {
+                    txtTip.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            txtTip.animate().alpha(0.0f).setDuration(500).withEndAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    tipChanger.post(updateTipRunnable);
+                                }
+                            });
+                        }
+                    }, 8000);
+                }
+            });
+        }
+    };
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Toast.makeText(this, "[TEST] DashboardActivity destroyed!", Toast.LENGTH_SHORT).show();
     }
 }

@@ -34,6 +34,9 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Toast.makeText(getApplicationContext(), "[TEST] RegisterActivity created!", Toast.LENGTH_SHORT).show();
+
+
         // Hide Action bar and Status bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
@@ -104,22 +107,20 @@ public class RegisterActivity extends AppCompatActivity {
                     User newUser = new User(Username, Password, 45, 0, 25, 34, 40, 47, 54,67);
                     boolean success = db.add_account(newUser);
                     if (success == true) { // if successful
-                        Toast.makeText(RegisterActivity.this, "[TEST] User " + Username + " has been registered!", Toast.LENGTH_SHORT).show();
                         GlobalVariables.loggedInUsername = Username; // update global value
-                        Toast.makeText(RegisterActivity.this, "[TEST] loggedInUsername: " + GlobalVariables.loggedInUsername, Toast.LENGTH_SHORT).show();
 
                         // Logged in, now launch PromptRotateActivity
-                        Intent i = new Intent(RegisterActivity.this, PromptRotateActivity.class);
+                        Intent goToPromptRotateActivity = new Intent(RegisterActivity.this, PromptRotateActivity.class);
                         //Needed to pass BLE device
                         if(device != null) {
-                            i.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
+                            goToPromptRotateActivity.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
                         }
-                        startActivity(i); // launches PromptRotateActivity
+                        startActivity(goToPromptRotateActivity); // launch PromptRotateActivity
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
                     }
                     else { // if not successful
-                        Toast.makeText(RegisterActivity.this, "[TEST] User " + Username + " has NOT been registered", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "User " + Username + " has NOT been registered", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -165,10 +166,16 @@ public class RegisterActivity extends AppCompatActivity {
         GlobalVariables.loggedInUsername = "MrBypass"; // set as Mr. Bypass
 
         // Launch PromptRotateActivity
-        Intent i = new Intent(this, PromptRotateActivity.class);
-        startActivity(i);
+        Intent goToPromptRotateActivity = new Intent(this, PromptRotateActivity.class);
+        startActivity(goToPromptRotateActivity);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         finish(); // close activity
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Toast.makeText(this, "[TEST] RegisterActivity destroyed!", Toast.LENGTH_SHORT).show();
     }
 
 }
