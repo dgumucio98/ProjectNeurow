@@ -404,7 +404,7 @@ public class WorkoutActivity extends AppCompatActivity {
             String fixMessage = ""; // declaring power zone error message
 
             // 5 min at zone 2
-            while (db.getTime_33() <= 30) { //TODO: CHANGE BACK TO 300
+            while (db.getTime_33() <= 30 && !GlobalVariables.stopTask) { //TODO: CHANGE BACK TO 300
                 // this is adding all of the powers to then get average
                 sum += db.getPower();
                 length += 1;
@@ -436,7 +436,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             /*// 40 sec at zone 5
-            while (db.getTime_33() <= 340 && db.getTime_33() > 300) {
+            while (db.getTime_33() <= 340 && db.getTime_33() > 300 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -468,7 +468,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 20 sec at zone 2
-            while (db.getTime_33() <= 360 && db.getTime_33() > 340) {
+            while (db.getTime_33() <= 360 && db.getTime_33() > 340 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -500,7 +500,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 40 sec at zone 5
-            while (db.getTime_33() <= 400 && db.getTime_33() > 360) {
+            while (db.getTime_33() <= 400 && db.getTime_33() > 360 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -532,7 +532,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 20 sec at zone 2
-            while (db.getTime_33() <= 420 && db.getTime_33() > 400) {
+            while (db.getTime_33() <= 420 && db.getTime_33() > 400 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -564,7 +564,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 40 sec at zone 5
-            while (db.getTime_33() <= 460 && db.getTime_33() > 420) {
+            while (db.getTime_33() <= 460 && db.getTime_33() > 420 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -596,7 +596,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 20 sec at zone 2
-            while (db.getTime_33() <= 480 && db.getTime_33() > 460) {
+            while (db.getTime_33() <= 480 && db.getTime_33() > 460 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -628,7 +628,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 40 sec at zone 5
-            while (db.getTime_33() <= 520 && db.getTime_33() > 480) {
+            while (db.getTime_33() <= 520 && db.getTime_33() > 480 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -660,7 +660,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 20 sec at zone 2
-            while (db.getTime_33() <= 540 && db.getTime_33() > 520) {
+            while (db.getTime_33() <= 540 && db.getTime_33() > 520 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -692,7 +692,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 40 sec at zone 5
-            while (db.getTime_33() <= 580 && db.getTime_33() > 540) {
+            while (db.getTime_33() <= 580 && db.getTime_33() > 540 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -724,7 +724,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 20 sec at zone 2
-            while (db.getTime_33() <= 600 && db.getTime_33() > 580) {
+            while (db.getTime_33() <= 600 && db.getTime_33() > 580 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -756,7 +756,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 40 sec at zone 5
-            while (db.getTime_33() <= 640 && db.getTime_33() > 600) {
+            while (db.getTime_33() <= 640 && db.getTime_33() > 600 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -788,7 +788,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 20 sec at zone 2
-            while (db.getTime_33() <= 660 && db.getTime_33() > 640) {
+            while (db.getTime_33() <= 660 && db.getTime_33() > 640 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -820,7 +820,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 40 sec at zone 5
-            while (db.getTime_33() <= 700 && db.getTime_33() > 660) {
+            while (db.getTime_33() <= 700 && db.getTime_33() > 660 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -852,7 +852,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 20 sec at zone 2
-            while (db.getTime_33() <= 720 && db.getTime_33() > 700) {
+            while (db.getTime_33() <= 720 && db.getTime_33() > 700 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -884,7 +884,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 40 sec at zone 5
-            while (db.getTime_33() <= 760 && db.getTime_33() > 720) {
+            while (db.getTime_33() <= 760 && db.getTime_33() > 720 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -916,7 +916,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 20 sec at zone 2
-            while (db.getTime_33() <= 780 && db.getTime_33() > 760) {
+            while (db.getTime_33() <= 780 && db.getTime_33() > 760 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -948,7 +948,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 40 sec at zone 5
-            while (db.getTime_33() <= 820 && db.getTime_33() > 780) {
+            while (db.getTime_33() <= 820 && db.getTime_33() > 780 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -980,7 +980,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 20 sec at zone 2
-            while (db.getTime_33() <= 840 && db.getTime_33() > 820) {
+            while (db.getTime_33() <= 840 && db.getTime_33() > 820 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1012,7 +1012,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 40 sec at zone 5
-            while (db.getTime_33() <= 880 && db.getTime_33() > 840) {
+            while (db.getTime_33() <= 880 && db.getTime_33() > 840 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1044,7 +1044,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 20 sec at zone 2
-            while (db.getTime_33() <= 900 && db.getTime_33() > 880) {
+            while (db.getTime_33() <= 900 && db.getTime_33() > 880 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1076,7 +1076,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 5 min at zone 1
-            while (db.getTime_33() <= 1200 && db.getTime_33() > 900) {
+            while (db.getTime_33() <= 1200 && db.getTime_33() > 900 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1150,13 +1150,27 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 3rd function for background task: follows background task after completion
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-            // Define intent and pass workout name to PostWorkoutActivity
-            Intent launchPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
-            launchPostWorkoutActivity.putExtra("workoutName", "interval1"); // pass workout name data
+            // Stop BLE data polling
+            testingDevice.end33();
+            Timber.d("[TEST] Polling of 33 ended");
+            testingDevice.end35();
+            Timber.d("[TEST] Polling of 35 ended");
+            testingDevice.end3D();
+            Timber.d("[TEST] Polling of 3D ended");
+            testingDevice.endWorkOut();
 
-            // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
-            startActivity(launchPostWorkoutActivity); // Launch BLE Data View
-            finish(); // can't go back
+            // Define intent and pass workout name to PostWorkoutActivity
+            if (!GlobalVariables.stopTask) { // only launch PostWorkoutActivity if workout wasn't cut short
+                Intent goToPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+                goToPostWorkoutActivity.putExtra("workoutName", "interval1"); // pass workout name data - necessary for specific suggestions
+
+                startActivity(goToPostWorkoutActivity); // launch PostWorkoutActivity
+                finish(); // can't go back
+            }
+            else { // if workout was cut short
+                GlobalVariables.stopTask = false; // reset flag
+                finish(); // destroy workout activity, go back to dashboard
+            }
         }
     }
 
@@ -1180,7 +1194,7 @@ public class WorkoutActivity extends AppCompatActivity {
             String fixMessage = ""; //declaring power zone error message
 
             // 6 min at zone 3
-            while (db.getTime_33() <= 30) { //TODO: change back to 360
+            while (db.getTime_33() <= 30 && !GlobalVariables.stopTask) { //TODO: change back to 360
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1213,7 +1227,7 @@ public class WorkoutActivity extends AppCompatActivity {
             }
             // UNCOMMENT FOR FULL WORKOUT
             /*// 5 min at zone 1
-            while (db.getTime_33() <= 660 && db.getTime_33() > 360) {
+            while (db.getTime_33() <= 660 && db.getTime_33() > 360 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1245,7 +1259,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 5 min at zone 4
-            while (db.getTime_33() <= 960 && db.getTime_33() > 660) {
+            while (db.getTime_33() <= 960 && db.getTime_33() > 660 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1278,7 +1292,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 5 min at zone 1
-            while (db.getTime_33() <= 1260 && db.getTime_33() > 960) {
+            while (db.getTime_33() <= 1260 && db.getTime_33() > 960 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1310,7 +1324,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 4 min at zone 5
-            while (db.getTime_33() <= 1500 && db.getTime_33() > 1260) {
+            while (db.getTime_33() <= 1500 && db.getTime_33() > 1260 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1342,7 +1356,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 5 min at zone 1
-            while (db.getTime_33() <= 1800 && db.getTime_33() > 1500) {
+            while (db.getTime_33() <= 1800 && db.getTime_33() > 1500 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1416,13 +1430,27 @@ public class WorkoutActivity extends AppCompatActivity {
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
 
-            // Define intent and pass workout name to PostWorkoutActivity
-            Intent launchPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
-            launchPostWorkoutActivity.putExtra("workoutName", "interval2"); // pass workout name data
+            // Stop BLE data polling
+            testingDevice.end33();
+            Timber.d("[TEST] Polling of 33 ended");
+            testingDevice.end35();
+            Timber.d("[TEST] Polling of 35 ended");
+            testingDevice.end3D();
+            Timber.d("[TEST] Polling of 3D ended");
+            testingDevice.endWorkOut();
 
-            // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
-            startActivity(launchPostWorkoutActivity); // Launch BLE Data View
-            finish(); // can't go back
+            // Define intent and pass workout name to PostWorkoutActivity
+            if (!GlobalVariables.stopTask) { // only launch PostWorkoutActivity if workout wasn't cut short
+                Intent goToPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+                goToPostWorkoutActivity.putExtra("workoutName", "interval2"); // pass workout name data - necessary for specific suggestions
+
+                startActivity(goToPostWorkoutActivity); // launch PostWorkoutActivity
+                finish(); // can't go back
+            }
+            else { // if workout was cut short
+                GlobalVariables.stopTask = false; // reset flag
+                finish(); // destroy workout activity, go back to dashboard
+            }
         }
     }
 
@@ -1447,7 +1475,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
 
             // 2 min at zone 2
-            while (db.getTime_33() <= 30) { //TODO: change back to 120
+            while (db.getTime_33() <= 30 && !GlobalVariables.stopTask) { //TODO: change back to 120
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1480,7 +1508,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             /*// 1 min at zone 5
-            while (db.getTime_33() <= 180 && db.getTime_33() > 120) {
+            while (db.getTime_33() <= 180 && db.getTime_33() > 120 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1513,7 +1541,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 2 min at zone 2
-            while (db.getTime_33() <= 300 && db.getTime_33() > 180) {
+            while (db.getTime_33() <= 300 && db.getTime_33() > 180 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1546,7 +1574,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 1 min at zone 5
-            while (db.getTime_33() <= 360 && db.getTime_33() > 300) {
+            while (db.getTime_33() <= 360 && db.getTime_33() > 300 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1579,7 +1607,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 2 min at zone 2
-            while (db.getTime_33() <= 480 && db.getTime_33() > 360) {
+            while (db.getTime_33() <= 480 && db.getTime_33() > 360 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1612,7 +1640,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 1 min at zone 5
-            while (db.getTime_33() <= 540 && db.getTime_33() > 480) {
+            while (db.getTime_33() <= 540 && db.getTime_33() > 480 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1645,7 +1673,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 2 min at zone 2
-            while (db.getTime_33() <= 660 && db.getTime_33() > 540) {
+            while (db.getTime_33() <= 660 && db.getTime_33() > 540 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1678,7 +1706,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 10 min at zone 4
-            while (db.getTime_33() <= 1260 && db.getTime_33() > 660) {
+            while (db.getTime_33() <= 1260 && db.getTime_33() > 660 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1711,7 +1739,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 5 min at zone 1
-            while (db.getTime_33() <= 1560 && db.getTime_33() > 1260) {
+            while (db.getTime_33() <= 1560 && db.getTime_33() > 1260 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1744,7 +1772,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 10 min at zone 4
-            while (db.getTime_33() <= 2160 && db.getTime_33() > 1560) {
+            while (db.getTime_33() <= 2160 && db.getTime_33() > 1560 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1777,7 +1805,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 5 min at zone 1
-            while (db.getTime_33() <= 2460 && db.getTime_33() > 2160) {
+            while (db.getTime_33() <= 2460 && db.getTime_33() > 2160 && !GlobalVariables.stopTask) {
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1850,13 +1878,27 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 3rd function for background task: follows background task after completion
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-            // Define intent and pass workout name to PostWorkoutActivity
-            Intent launchPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
-            launchPostWorkoutActivity.putExtra("workoutName", "interval30"); // pass workout name data
+            // Stop BLE data polling
+            testingDevice.end33();
+            Timber.d("[TEST] Polling of 33 ended");
+            testingDevice.end35();
+            Timber.d("[TEST] Polling of 35 ended");
+            testingDevice.end3D();
+            Timber.d("[TEST] Polling of 3D ended");
+            testingDevice.endWorkOut();
 
-            // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
-            startActivity(launchPostWorkoutActivity); // Launch BLE Data View
-            finish(); // can't go back
+            // Define intent and pass workout name to PostWorkoutActivity
+            if (!GlobalVariables.stopTask) { // only launch PostWorkoutActivity if workout wasn't cut short
+                Intent goToPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+                goToPostWorkoutActivity.putExtra("workoutName", "interval3"); // pass workout name data - necessary for specific suggestions
+
+                startActivity(goToPostWorkoutActivity); // launch PostWorkoutActivity
+                finish(); // can't go back
+            }
+            else { // if workout was cut short
+                GlobalVariables.stopTask = false; // reset flag
+                finish(); // destroy workout activity, go back to dashboard
+            }
         }
     }
 
@@ -1886,7 +1928,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             pzMessage = "Begin Rowing!";
             // TODO: change back to 1200
-            while (db.getTime_33() <= 30) { // less than 20-min
+            while (db.getTime_33() <= 30 && !GlobalVariables.stopTask) { // less than 20-min
                 Iterations++;
                 sum += db.getPower();
                 length += 1;
@@ -1931,12 +1973,13 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 // Send data to main UI thread
                 publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
-
             }
-            GlobalVariables.failCount = failCount;
-            double avgPow = (double) sum / (double) length; //uncomment
-            db.add_history(GlobalVariables.loggedInUsername, "pace20", failCount, avgPow);
-            GlobalVariables.finalListTimePower = powtimearray;
+            if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
+                double avgPow = (double) sum / (double) length; //uncomment
+                GlobalVariables.failCount = failCount;
+                db.add_history(GlobalVariables.loggedInUsername, "pace20", failCount, avgPow);
+                GlobalVariables.finalListTimePower = powtimearray;
+            }
             return 0;
         }
 
@@ -1973,14 +2016,27 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 3rd function for background task: follows background task after completion
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
+            // Stop BLE data polling
+            testingDevice.end33();
+            Timber.d("[TEST] Polling of 33 ended");
+            testingDevice.end35();
+            Timber.d("[TEST] Polling of 35 ended");
+            testingDevice.end3D();
+            Timber.d("[TEST] Polling of 3D ended");
+            testingDevice.endWorkOut();
 
             // Define intent and pass workout name to PostWorkoutActivity
-            Intent launchPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
-            launchPostWorkoutActivity.putExtra("workoutName", "pace20"); // pass workout name data
+            if (!GlobalVariables.stopTask) { // only launch PostWorkoutActivity if workout wasn't cut short
+                Intent goToPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+                goToPostWorkoutActivity.putExtra("workoutName", "pace20"); // pass workout name data - necessary for specific suggestions
 
-            // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
-            startActivity(launchPostWorkoutActivity); // Launch BLE Data View
-            finish(); // can't go back
+                startActivity(goToPostWorkoutActivity); // launch PostWorkoutActivity
+                finish(); // can't go back
+            }
+            else { // if workout was cut short
+                GlobalVariables.stopTask = false; // reset flag
+                finish(); // destroy workout activity, go back to dashboard
+            }
         }
     }
 
@@ -2010,7 +2066,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             pzMessage = "Begin Rowing!";
             // TODO: change back to 1800
-            while (db.getTime_33() <= 30) { // less than 30-min
+            while (db.getTime_33() <= 30 && !GlobalVariables.stopTask) { // less than 30-min
                 Iterations++;
                 sum += db.getPower();
                 length += 1;
@@ -2055,13 +2111,13 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 // Send data to main UI thread
                 publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
-
-
             }
-            GlobalVariables.failCount = failCount;
-            double avgPow = (double) sum / (double) length; //uncomment
-            db.add_history(GlobalVariables.loggedInUsername, "pace30", failCount, avgPow);
-            GlobalVariables.finalListTimePower = powtimearray;
+            if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
+                double avgPow = (double) sum / (double) length; //uncomment
+                GlobalVariables.failCount = failCount;
+                db.add_history(GlobalVariables.loggedInUsername, "pace30", failCount, avgPow);
+                GlobalVariables.finalListTimePower = powtimearray;
+            }
             return 0;
         }
 
@@ -2099,14 +2155,27 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 3rd function for background task: follows background task after completion
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
+            // Stop BLE data polling
+            testingDevice.end33();
+            Timber.d("[TEST] Polling of 33 ended");
+            testingDevice.end35();
+            Timber.d("[TEST] Polling of 35 ended");
+            testingDevice.end3D();
+            Timber.d("[TEST] Polling of 3D ended");
+            testingDevice.endWorkOut();
 
             // Define intent and pass workout name to PostWorkoutActivity
-            Intent launchPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
-            launchPostWorkoutActivity.putExtra("workoutName", "pace30"); // pass workout name data
+            if (!GlobalVariables.stopTask) { // only launch PostWorkoutActivity if workout wasn't cut short
+                Intent goToPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+                goToPostWorkoutActivity.putExtra("workoutName", "pace30"); // pass workout name data - necessary for specific suggestions
 
-            // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
-            startActivity(launchPostWorkoutActivity); // Launch BLE Data View
-            finish(); // can't go back
+                startActivity(goToPostWorkoutActivity); // launch PostWorkoutActivity
+                finish(); // can't go back
+            }
+            else { // if workout was cut short
+                GlobalVariables.stopTask = false; // reset flag
+                finish(); // destroy workout activity, go back to dashboard
+            }
         }
     }
 
@@ -2136,7 +2205,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             pzMessage = "Begin Rowing!";
             // TODO: change back to 2400
-            while (db.getTime_33() <= 30) { // less than 40-min
+            while (db.getTime_33() <= 30 && !GlobalVariables.stopTask) { // less than 40-min
                 Iterations++;
                 sum += db.getPower();
                 length += 1;
@@ -2181,13 +2250,13 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 // Send data to main UI thread
                 publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
-
-
             }
-            GlobalVariables.failCount = failCount;
-            double avgPow = (double) sum / (double) length; //uncomment
-            db.add_history(GlobalVariables.loggedInUsername, "pace40", failCount, avgPow);
-            GlobalVariables.finalListTimePower = powtimearray;
+            if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
+                double avgPow = (double) sum / (double) length; //uncomment
+                GlobalVariables.failCount = failCount;
+                db.add_history(GlobalVariables.loggedInUsername, "pace40", failCount, avgPow);
+                GlobalVariables.finalListTimePower = powtimearray;
+            }
             return 0;
         }
 
@@ -2224,14 +2293,27 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 3rd function for background task: follows background task after completion
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
+            // Stop BLE data polling
+            testingDevice.end33();
+            Timber.d("[TEST] Polling of 33 ended");
+            testingDevice.end35();
+            Timber.d("[TEST] Polling of 35 ended");
+            testingDevice.end3D();
+            Timber.d("[TEST] Polling of 3D ended");
+            testingDevice.endWorkOut();
 
             // Define intent and pass workout name to PostWorkoutActivity
-            Intent launchPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
-            launchPostWorkoutActivity.putExtra("workoutName", "pace40"); // pass workout name data
+            if (!GlobalVariables.stopTask) { // only launch PostWorkoutActivity if workout wasn't cut short
+                Intent goToPostWorkoutActivity = new Intent(WorkoutActivity.this, PostWorkoutActivity.class);
+                goToPostWorkoutActivity.putExtra("workoutName", "pace40"); // pass workout name data - necessary for specific suggestions
 
-            // Execute intent and leave WorkoutActivity, launch PostWorkoutActivity
-            startActivity(launchPostWorkoutActivity); // Launch BLE Data View
-            finish(); // can't go back
+                startActivity(goToPostWorkoutActivity); // launch PostWorkoutActivity
+                finish(); // can't go back
+            }
+            else { // if workout was cut short
+                GlobalVariables.stopTask = false; // reset flag
+                finish(); // destroy workout activity, go back to dashboard
+            }
         }
     }
 
