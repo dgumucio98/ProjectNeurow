@@ -57,7 +57,7 @@ public class PostWorkoutActivity extends AppCompatActivity {
 
         workouts workouts = new workouts(); // create instance of workouts
 
-        txtFtpVal.setText("FTP: " + GlobalVariables.ftp + "W"); // set FTP text box to updated FTP value
+        txtFtpVal.setText(GlobalVariables.ftp + "W"); // set FTP text box to updated FTP value
 
         // Power vs Time Graphing
         int length1 = GlobalVariables.finalListTimePower.size(); // length of list
