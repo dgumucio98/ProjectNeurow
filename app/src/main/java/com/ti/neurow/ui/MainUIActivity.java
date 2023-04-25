@@ -1,8 +1,11 @@
 package com.ti.neurow.ui;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -47,6 +50,16 @@ public class MainUIActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ui_main);
 
         /* Additions to pass the BLE device */
+        // Alert for connection verification
+        AlertDialog.Builder connAlert = new AlertDialog.Builder(this);
+        connAlert.setTitle("Connection Verification");
+        connAlert.setMessage("The device has been connected please log in or register.");
+        connAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // do something after user clicks OK
+            }
+        });
+
         Timber.plant(new Timber.DebugTree());
         Intent intent = getIntent();
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -56,18 +69,18 @@ public class MainUIActivity extends AppCompatActivity {
             //throw new RuntimeException("Missing BluetoothDevice from MainActivity!");
             isDeviceReceived = true;
         }
+
         // For logging and debugging, uncomment for app visual queue
         if(isDeviceReceived == true) {
             Timber.i("The BLE device was successfully passed.");
             //Toast.makeText(this, "The BLE device was successfully passed.", Toast.LENGTH_LONG).show();
+            connAlert.show();
         } else {
             Timber.i("The BLE device was not passed.");
             //Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
         }
-        // This is how you can just call the stream to turn on and off, uncomment them out
-        // There we have the device and just start calling the utilities
-        // pm5Utility testingDevice = new pm5Utility(device);
-        // testingDevice.start33();
+
+
 
         /* End addition */
 
