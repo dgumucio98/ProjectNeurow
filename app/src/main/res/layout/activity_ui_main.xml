@@ -21,18 +21,18 @@
         android:id="@+id/txtSponsor"
         android:layout_width="300dp"
         android:layout_height="70dp"
-        android:visibility="gone"
-        tools:visibility="visible"
         android:layout_below="@+id/rower_icon"
         android:layout_marginTop="40dp"
         android:gravity="center"
         android:text="Sponsored by"
-        android:textStyle="bold"
         android:textColor="@color/white"
         android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/neurow_text"
@@ -41,12 +41,12 @@
         android:layout_below="@+id/rower_icon"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="400dp"
+        android:fontFamily="@font/vermin"
         android:gravity="center"
         android:text="N E U R O W"
-        android:fontFamily="@font/vermin"
-        android:textStyle="bold"
         android:textColor="@color/white"
         android:textSize="60sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,21 +74,21 @@
         android:id="@+id/icon_TI"
         android:layout_width="200dp"
         android:layout_height="113dp"
-        android:visibility="gone"
         android:layout_marginTop="70dp"
-        tools:visibility="visible"
         android:src="@drawable/ic_ti"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/btnExistingUser"
         android:layout_width="300dp"
         android:layout_height="97dp"
         android:layout_marginTop="84dp"
-        android:backgroundTint="#007791"
         android:background="@drawable/rounded_button_background"
+        android:backgroundTint="#007791"
         android:text="Log In"
         android:textColor="@color/white"
         android:textSize="26sp"
@@ -102,10 +102,10 @@
         android:layout_width="300dp"
         android:layout_height="97dp"
         android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_button_background"
         android:backgroundTint="#5F8575"
         android:text="Create User"
         android:textColor="@color/white"
-        android:background="@drawable/rounded_button_background"
         android:textSize="26sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -118,10 +118,10 @@
         android:layout_width="300dp"
         android:layout_height="85dp"
         android:layout_marginTop="150dp"
+        android:background="@drawable/rounded_button_background"
         android:backgroundTint="#BE6868"
         android:text="⛭ Connections"
         android:textColor="@color/white"
-        android:background="@drawable/rounded_button_background"
         android:textSize="23sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -129,37 +129,33 @@
         app:layout_constraintTop_toBottomOf="@+id/btnNewUser"
         tools:visibility="visible" />
 
-    <!--    <Button-->
-    <!--        android:id="@+id/btnBLEData"-->
-    <!--        android:layout_width="185dp"-->
-    <!--        android:layout_height="68dp"-->
-    <!--        android:layout_marginTop="548dp"-->
-    <!--        android:backgroundTint="#DE3164"-->
-    <!--        android:text="BLE Data Viewer"-->
-    <!--        android:textAllCaps="false"-->
-    <!--        android:textColor="@color/white"-->
-    <!--        android:textSize="15sp"-->
-    <!--        android:visibility="gone"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toEndOf="@+id/btnDBViewer"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/txtWelcome"-->
-    <!--        tools:visibility="visible" />-->
+    <TextView
+        android:id="@+id/txtConnectPrompt"
+        android:layout_width="170dp"
+        tools:visibility="visible"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_marginLeft="410dp"
+        android:layout_marginBottom="30dp"
+        android:rotation="-5"
+        android:text="Connect bluetooth device first!"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@id/btnBluetoothConnections"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
-    <!--    <Button-->
-    <!--        android:id="@+id/btnDBViewer"-->
-    <!--        android:layout_width="185dp"-->
-    <!--        android:layout_height="68dp"-->
-    <!--        android:layout_marginTop="548dp"-->
-    <!--        android:backgroundTint="#F28C28"-->
-    <!--        android:text="DB Viewer"-->
-    <!--        android:textAllCaps="false"-->
-    <!--        android:textColor="@color/white"-->
-    <!--        android:textSize="12sp"-->
-    <!--        android:visibility="gone"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintEnd_toStartOf="@id/btnBLEData"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/txtWelcome"-->
-    <!--        tools:visibility="visible" />-->
-
+    <ImageView
+        android:id="@+id/imageArrow"
+        android:layout_width="150dp"
+        tools:visibility="visible"
+        android:layout_height="200dp"
+        android:layout_marginTop="1000dp"
+        android:layout_marginRight="130dp"
+        android:rotation="-20"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

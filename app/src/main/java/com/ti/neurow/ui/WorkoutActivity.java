@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,8 +39,9 @@ public class WorkoutActivity extends AppCompatActivity {
     //testingDevice.setPollSpeed("FASTEST");
 
     // Define UI elements
+    ImageView iconHeartbeat1, iconHeartbeat2;
     Button btnStart, btnStop; // buttons
-    TextView txtStartPrompt, txtWorkoutAttribute, txtWorkoutName, txtTimeMetric, txtDistanceMetric, txtCaloriesMetric, txtAvgPwrMetric, txtDriveLengthMetric,
+    TextView txtStartPrompt, txtWorkoutAttribute, txtWorkoutName, txtFeedback, txtTimeMetric, txtDistanceMetric, txtCaloriesMetric, txtAvgPwrMetric, txtDriveLengthMetric,
             txtDriveTimeMetric, txtAvgDriveForceMetric, txtStrokeCountMetric, txtIntervalPZMetric, txtIntervalFixMetric, txtPaceFeedbackMetric, txtInstructionMetric; // metrics
 
     @Override
@@ -55,10 +57,13 @@ public class WorkoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_workout);
 
         // Define elements
-        txtWorkoutAttribute = findViewById(R.id.txtWorkoutAttribute); // workout "subtitle"
-        txtWorkoutName = findViewById(R.id.txtWorkoutName); // workout name (interval/pace)
-        txtStartPrompt = findViewById(R.id.txtStartPrompt); // start workout prompt
-        btnStart = findViewById(R.id.btnStart); // button that starts workouts
+        txtWorkoutAttribute = findViewById(R.id.txtWorkoutAttribute);
+        txtWorkoutName = findViewById(R.id.txtWorkoutName);
+        txtStartPrompt = findViewById(R.id.txtStartPrompt);
+        txtFeedback = findViewById(R.id.txtFeedback);
+        btnStart = findViewById(R.id.btnStart);
+        iconHeartbeat1 = findViewById(R.id.iconHeartbeat1);
+        iconHeartbeat2 = findViewById(R.id.iconHeartbeat2);
 
         btnStop = findViewById(R.id.btnStop); // button that stops workouts
         RelativeLayout MetricsRelativeLayout = findViewById(R.id.MetricsRelativeLayout); // metrics layout
@@ -175,31 +180,45 @@ public class WorkoutActivity extends AppCompatActivity {
                 testingDevice.start3D();
                 testingDevice.start35();
 
+                // 2. Reset workout interrupt flags
+                GlobalVariables.timeout = false;
+                GlobalVariables.stopTask = false;
 
-
-                // 2. Call workout methods through conditions
+                // 3. Call workout methods through conditions
                 if (methodName.equals("ftpCalc")) { // CALL FTPCALC
+
+                    // Remove feedback elements, since we don't show any for FTP Calculator
+                    txtFeedback.setVisibility(View.GONE);
+                    iconHeartbeat1.setVisibility(View.GONE);
+                    iconHeartbeat2.setVisibility(View.GONE);
+
                     ftpCalcTask ftpCalcTask = new ftpCalcTask();
                     ftpCalcTask.execute();
 
                 } else if (methodName.equals("interval1")) { // CALL INTERVAL1
                     interval1Task interval1Task = new interval1Task();
                     interval1Task.execute();
+
                 } else if (methodName.equals("interval2")) { // CALL INTERVAL2
                     interval2Task interval2Task = new interval2Task();
                     interval2Task.execute();
+
                 } else if (methodName.equals("interval3")) { // CALL INTERVAL3
                     interval3Task interval3Task = new interval3Task();
                     interval3Task.execute();
+
                 } else if (methodName.equals("pace20")) { // CALL PACE20
                     pace20Task pace20Task = new pace20Task();
                     pace20Task.execute();
+
                 } else if (methodName.equals("pace30")) { // CALL PACE30
                     pace30Task pace30Task = new pace30Task();
                     pace30Task.execute();
+
                 } else if (methodName.equals("pace40")) { // CALL PACE40
                     pace40Task pace40Task = new pace40Task();
                     pace40Task.execute();
+
                 } else if (methodName.equals("demo")) { // CALL DEMO
                     demoTask demoTask = new demoTask();
                     demoTask.execute();

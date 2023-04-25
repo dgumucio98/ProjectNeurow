@@ -38,14 +38,14 @@
         android:id="@+id/Power_vs_Time"
         android:layout_width="500dp"
         android:layout_height="400dp"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="155dp"
         android:layout_marginLeft="50dp"/>
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/Power_vs_Pull"
         android:layout_width="500dp"
         android:layout_height="400dp"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="155dp"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="50dp"/>
 
@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="590dp"
+        android:layout_marginTop="580dp"
         android:fontFamily="sans-serif"
         android:text="[Post-workout suggestion goes here]"
         android:textAlignment="center"
@@ -76,7 +76,7 @@
         android:layout_height="70dp"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="80dp"
         android:background="@drawable/rounded_button_background"
         android:backgroundTint="@color/mint_green"
         android:text="Return to Dashboard"
