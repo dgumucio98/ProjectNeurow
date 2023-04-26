@@ -169,7 +169,7 @@
             android:text="47 W"
             android:layout_below="@id/txtAvgPwrMetricDescriptor"
             android:textColor="@color/bubblegum_red"
-            android:textSize="80sp"
+            android:textSize="75sp"
             android:textStyle="normal" />
 
         <TextView

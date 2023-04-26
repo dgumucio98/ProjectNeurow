@@ -2650,9 +2650,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
-
-
-
+                
                 // Send data to main UI thread
                 publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
             }
