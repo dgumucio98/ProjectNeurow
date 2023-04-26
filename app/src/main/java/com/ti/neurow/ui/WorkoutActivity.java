@@ -276,7 +276,7 @@ public class WorkoutActivity extends AppCompatActivity {
             int numIterations = 0;
 
             // Main workout loop
-            while (db.getTime_33() < 30.0 && !GlobalVariables.stopTask)  {
+            while (db.getTime_33() < 1200.0 && !GlobalVariables.stopTask)  {
                 Iterations ++;
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
