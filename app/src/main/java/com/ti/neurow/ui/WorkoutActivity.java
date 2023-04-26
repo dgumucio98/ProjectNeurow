@@ -371,9 +371,8 @@ public class WorkoutActivity extends AppCompatActivity {
             txtAvgPwrMetric.setText(avgPwr + " W");
             txtAvgDriveForceMetric.setText(avgDriveForce + " lbf");
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
-            txtIntervalPZMetric.setText("Row for 20 minutes at a challenging, but sustainable pace!");
-
-            txtIntervalFixMetric.setText(""); // not needed for ftpCalc
+            txtIntervalFixMetric.setText("Row for 20 minutes at a challenging, but sustainable pace!");
+            txtIntervalPZMetric.setText(""); // not needed for ftpCalc
             txtPaceFeedbackMetric.setText(""); // not needed for FTP Calc
         }
 
@@ -522,6 +521,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
 
                 // Send data to main UI thread
+
                 publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
@@ -1506,11 +1506,12 @@ public class WorkoutActivity extends AppCompatActivity {
                 publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }*/
-
-            double avgPow = (double) sum / (double) length; // calculate average power
-            GlobalVariables.failCount = failCount; // update failcount
-            db.add_history(GlobalVariables.loggedInUsername, "interval1", failCount, avgPow); // add history to database
-            GlobalVariables.finalListTimePower = powtimearray; // update resulting array
+            if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
+                double avgPow = (double) sum / (double) length; //uncomment
+                GlobalVariables.failCount = failCount;
+                db.add_history(GlobalVariables.loggedInUsername, "interval1", failCount, avgPow);
+                GlobalVariables.finalListTimePower = powtimearray;
+            }
             return 0;
         }
 
@@ -1544,6 +1545,8 @@ public class WorkoutActivity extends AppCompatActivity {
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
             txtIntervalPZMetric.setText(pzMessage);
             txtIntervalFixMetric.setText(fixMessage);
+            txtPaceFeedbackMetric.setText("");
+
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -1641,6 +1644,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
+
                 publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // UNCOMMENT FOR FULL WORKOUT
@@ -1885,10 +1889,12 @@ public class WorkoutActivity extends AppCompatActivity {
                 publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }*/
-            double avgPower = (double) sum / (double) length;
-            GlobalVariables.failCount = failCount;
-            db.add_history(GlobalVariables.loggedInUsername, "interval2", failCount, avgPower);
-            GlobalVariables.finalListTimePower = powtimearray;
+            if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
+                double avgPow = (double) sum / (double) length; //uncomment
+                GlobalVariables.failCount = failCount;
+                db.add_history(GlobalVariables.loggedInUsername, "interval2", failCount, avgPow);
+                GlobalVariables.finalListTimePower = powtimearray;
+            }
             return 0;
         }
 
@@ -1918,10 +1924,12 @@ public class WorkoutActivity extends AppCompatActivity {
             txtDriveLengthMetric.setText(driveLength + " m");
             txtDriveTimeMetric.setText(driveTime + " s");
             txtAvgPwrMetric.setText(avgPwr + " W");
-            txtAvgDriveForceMetric.setText(avgDriveForce + " lbf");
+            txtAvgDriveForceMetric.setText(avgDriveForce + "  lbf");
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
             txtIntervalPZMetric.setText(pzMessage);
-            txtIntervalPZMetric.setText(fixMessage);
+            txtIntervalFixMetric.setText(fixMessage);
+            txtPaceFeedbackMetric.setText("");
+
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -2022,6 +2030,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
+
                 publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
@@ -2516,10 +2525,12 @@ public class WorkoutActivity extends AppCompatActivity {
                 publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }*/
-            double avgPow = (double) sum / (double) length; //uncomment
-            GlobalVariables.failCount = failCount;
-            db.add_history(GlobalVariables.loggedInUsername, "interval3", failCount, avgPow);
-            GlobalVariables.finalListTimePower = powtimearray;
+            if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
+                double avgPow = (double) sum / (double) length; //uncomment
+                GlobalVariables.failCount = failCount;
+                db.add_history(GlobalVariables.loggedInUsername, "interval3", failCount, avgPow);
+                GlobalVariables.finalListTimePower = powtimearray;
+            }
             return 0;
         }
 
@@ -2549,8 +2560,11 @@ public class WorkoutActivity extends AppCompatActivity {
             txtDriveLengthMetric.setText(driveLength + " m");
             txtDriveTimeMetric.setText(driveTime + " s");
             txtAvgPwrMetric.setText(avgPwr + " W");
-            txtAvgDriveForceMetric.setText(avgDriveForce + " lbf");
+            txtAvgDriveForceMetric.setText(avgDriveForce + "  lbf");
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
+            txtIntervalPZMetric.setText(pzMessage);
+            txtIntervalFixMetric.setText(fixMessage);
+            txtPaceFeedbackMetric.setText("");
 
         }
 
@@ -2618,7 +2632,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 if (Math.abs(db.getPower() - db.getPastPower()) > 2) { //TODO: what num is good here
                     count++;
                     if (count > 2) {
-                        fixMessage = "Your power output is inconsistent, try to improve pacing!";
+                        fixMessage = "Your power output is inconsistent!";
                         failCount++;
                         count = 0;
                     }
@@ -2691,6 +2705,10 @@ public class WorkoutActivity extends AppCompatActivity {
             txtAvgPwrMetric.setText(avgPwr + " W");
             txtAvgDriveForceMetric.setText(avgDriveForce + " lbf");
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
+            txtIntervalFixMetric.setText(fixMessage);
+            txtIntervalPZMetric.setText(pzMessage);
+            txtPaceFeedbackMetric.setText(""); // not needed for this workout
+
         }
 
         @Override // 3rd function for background task: follows background task after completion
@@ -2757,7 +2775,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 if (Math.abs(db.getPower() - db.getPastPower()) > 2) { //TODO: what num is good here
                     count++;
                     if (count > 2) {
-                        fixMessage = "Your power output is inconsistent, try to improve pacing!";
+                        fixMessage = "Your power output is inconsistent!";
                         failCount++;
                         count = 0;
                     }
@@ -2829,6 +2847,10 @@ public class WorkoutActivity extends AppCompatActivity {
             txtAvgPwrMetric.setText(avgPwr + " W");
             txtAvgDriveForceMetric.setText(avgDriveForce + " lbf");
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
+            txtIntervalFixMetric.setText(fixMessage);
+            txtIntervalPZMetric.setText(pzMessage);
+            txtPaceFeedbackMetric.setText(""); // not needed for this workout
+
 
         }
 
@@ -2896,7 +2918,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 if (Math.abs(db.getPower() - db.getPastPower()) > 2) { //TODO: what num is good here
                     count++;
                     if (count > 2) {
-                        fixMessage = "Your power output is inconsistent, try to improve pacing!";
+                        fixMessage = "Your power output is inconsistent!";
                         failCount++;
                         count = 0;
                     }
@@ -2968,6 +2990,9 @@ public class WorkoutActivity extends AppCompatActivity {
             txtAvgPwrMetric.setText(avgPwr + " W");
             txtAvgDriveForceMetric.setText(avgDriveForce + " lbf");
             txtStrokeCountMetric.setText(Integer.toString(strokeCount));
+            txtIntervalFixMetric.setText(fixMessage);
+            txtIntervalPZMetric.setText(pzMessage);
+            txtPaceFeedbackMetric.setText(""); // not needed for this workout
         }
 
         @Override // 3rd function for background task: follows background task after completion

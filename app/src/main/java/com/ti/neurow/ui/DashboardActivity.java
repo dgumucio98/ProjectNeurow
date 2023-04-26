@@ -35,12 +35,15 @@ import timber.log.Timber;
 // Strictly-Landscape activity
 public class DashboardActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener, View.OnLongClickListener {
 
+    // Create instance of database in this activity
+    DatabaseHelper db = new DatabaseHelper(DashboardActivity.this);
+
     // Stuff to display a tip and change it
     private Handler tipChanger = new Handler(); // tip text box handler
     private int previousTipIndex = -1; // prevents same tip twice in a row
 
     private static final String[] PREDICTION_CHOICES = {"Pace (20-minute)", "Pace (30-minute)", "Pace (40-minute)",
-            "Interval (20-minute)", "Interval (30-minute)", "Interval (40-minute)"}; // stores prediction choice
+            "Interval (20-minute)", "Interval (30-minute)", "Interval (40-minute)" }; // stores prediction choice
 
     private String[] tips = { // on-screen tips and facts
             "⭐ Predict your performance with the 'Power Predictor' button",
@@ -48,11 +51,16 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
             "⭐ Did you know? Rowing is one of the original sports in the modern Olympic Games ⭐",
             "⭐ Did you know? Rowing machines utilize ~84% of the body's muscles ⭐",
             "⭐ Expect to be sore :) ⭐",
-            "⭐ A good Power vs. Pull graph looks parabolic ⭐",
+            "⭐ A good Power of Pull graph looks parabolic ⭐",
             "⭐ Did you know? Rowing machines are also known as 'ergometers' ⭐",
             "⭐ Watch that form! Sit tall with your shoulders back, and engage your core ⭐",
             "⭐ Focus on your breathing. Inhale on the way back and exhale on the way forward ⭐",
             "⭐ Fuel up before your workout with a healthy snack like a banana or a handful of nuts ⭐",
+            "⭐ If your Power of Pull graph is flat, try rowing with more force",
+            "⭐ If your Power of Pull graph's y-intercept is high you're exploding too much at the catch",
+            "⭐ If your Power of Pull graph has a dip in the middle work on a smooth transition between legs, back, arms",
+            "⭐ if your power of pull graph is short you need more leg drive",
+            "⭐ Matt, you're our favorite coxswain, even if you don't know port from starboard!"
     };
 
     // Define UI elements
@@ -77,6 +85,48 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        txtUserFtp = findViewById(R.id.txtUserFtp);
+
+        // Handle coming back to activity from a timed-out workout
+        if (GlobalVariables.timeout) {
+            showWarningDialog(); // inform user their workout was timed out
+        }
+
+        // Populate global variables from database data
+        try {
+            if (Integer.compare(db.getFTP(GlobalVariables.loggedInUsername),-1) == 0) { // if user doesn't have FTP in database
+                GlobalVariables.ftp = 45;
+                GlobalVariables.pz_1 = 0;
+                GlobalVariables.pz_2 = 25;
+                GlobalVariables.pz_3 = 34;
+                GlobalVariables.pz_4 = 40;
+                GlobalVariables.pz_5 = 47;
+                GlobalVariables.pz_6 = 54;
+                GlobalVariables.pz_7 = 67;
+            }
+            else { // user's FTP is in database
+                GlobalVariables.ftp = db.getFTP(GlobalVariables.loggedInUsername);
+                GlobalVariables.pz_1 = db.getPZ_1(GlobalVariables.loggedInUsername);
+                GlobalVariables.pz_2 = db.getPZ_2(GlobalVariables.loggedInUsername);
+                GlobalVariables.pz_3 = db.getPZ_3(GlobalVariables.loggedInUsername);
+                GlobalVariables.pz_4 = db.getPZ_4(GlobalVariables.loggedInUsername);
+                GlobalVariables.pz_5 = db.getPZ_5(GlobalVariables.loggedInUsername);
+                GlobalVariables.pz_6 = db.getPZ_6(GlobalVariables.loggedInUsername);
+                GlobalVariables.pz_7 = db.getPZ_7(GlobalVariables.loggedInUsername);
+            }
+            txtUserFtp.setText(Html.fromHtml("<b>My FTP:</b> " + GlobalVariables.ftp + " W"));
+        } catch (NullPointerException e) {
+            // handle the null value error here
+            GlobalVariables.loggedInUsername = "CRASH";
+//            txtUserFtp.setText(Html.fromHtml("<b>My FTP: CRASH</b>"));
+        }
+        txtUserFtp.setTextSize(25);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -92,12 +142,9 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
         // Change tip text box every 7 seconds
         tipChanger.postDelayed(updateTipRunnable, 7000);
 
-        // Create instance of database in this activity
-        DatabaseHelper db = new DatabaseHelper(DashboardActivity.this);
-
         Handler handler = new Handler(); // define handler
 
-        // Initialize UI elements
+        // Define  UI elements
         TextView txtUserID = findViewById(R.id.txtUserID);
         TextView txtUserFtp = findViewById(R.id.txtUserFtp);
         txtUserID.setText(GlobalVariables.loggedInUsername);
@@ -121,15 +168,6 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
 
         // Display user's FTP
         txtUserFtp.setTextColor(getResources().getColor(R.color.mint_green));
-
-        try {
-            txtUserFtp.setText(Html.fromHtml("<b>My FTP:</b> " + db.getFTP(GlobalVariables.loggedInUsername)));
-        } catch (NullPointerException e) {
-            // handle the null value error here
-            GlobalVariables.loggedInUsername = "CRASH";
-            txtUserFtp.setText(Html.fromHtml("<b>My FTP: CRASH</b>"));
-        }
-        txtUserFtp.setTextSize(25);
 
         // Handle button clicks
         View.OnClickListener workoutClickListener = new View.OnClickListener() {
@@ -356,17 +394,6 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
         });
         AlertDialog dialog = builder.show();
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // Handle coming back to activity from a timed-out workout
-        if (GlobalVariables.timeout) {
-            showWarningDialog(); // inform user their workout was timed out
-        }
-    }
-
 
     // Tip changer
     private Runnable updateTipRunnable = new Runnable() {

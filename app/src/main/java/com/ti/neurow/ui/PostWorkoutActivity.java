@@ -173,6 +173,7 @@ public class PostWorkoutActivity extends AppCompatActivity {
                 startActivity(intent);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish(); // destroy activity
             }
         });
     }

@@ -77,6 +77,9 @@ public class MainUIActivity extends AppCompatActivity {
                 float scale = (float) valueAnimator.getAnimatedValue();
                 txtConnectPrompt.setScaleX(scale);
                 txtConnectPrompt.setScaleY(scale);
+                imageArrow.setScaleX(scale);
+                imageArrow.setScaleY(scale);
+
             }
         });
 
