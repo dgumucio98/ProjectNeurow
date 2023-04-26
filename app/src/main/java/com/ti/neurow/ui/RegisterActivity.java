@@ -104,6 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 else { // add user to database
+                    //TODO: update values
                     User newUser = new User(Username, Password, 45, 0, 25, 34, 40, 47, 54,67);
                     boolean success = db.add_account(newUser);
                     if (success == true) { // if successful
