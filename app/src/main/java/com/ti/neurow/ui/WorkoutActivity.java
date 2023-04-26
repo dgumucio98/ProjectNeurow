@@ -278,11 +278,11 @@ public class WorkoutActivity extends AppCompatActivity {
             // Main workout loop
             while (db.getTime_33() < 30.0 && !GlobalVariables.stopTask)  {
                 Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double) db.getPower());
-                double currentTime = db.getTime_33();
 
                 // Time-out procedure
                 if (Double.compare(pastTime, currentTime) == 0) {
@@ -421,17 +421,23 @@ public class WorkoutActivity extends AppCompatActivity {
             int length = 0; // number of power entries to calc average
             ArrayList<Double> powtimearray = new ArrayList<>(); // arraylist to hold time and power
 
+            double pastTime = db.getTime_33();
+            int Iterations = 0;
+            int numIterations = 0;
+
             String pzMessage = ""; // declaring power zone message
             String fixMessage = ""; // declaring power zone error message
 
             // 5 min at zone 2
-            while (db.getTime_33() <= 30 && !GlobalVariables.stopTask) { //TODO: CHANGE BACK TO 300
+            while (db.getTime_33() <= 15 && !GlobalVariables.stopTask) { //TODO: CHANGE BACK TO 300
                 // this is adding all of the powers to then get average
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double) db.getPower());
                 pzMessage = "Row in power zone 2";
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
                     if (count > 4) {
@@ -442,6 +448,20 @@ public class WorkoutActivity extends AppCompatActivity {
                 } else { // only consecutive power zone exits increment count
                     fixMessage = "You are in zone! Keep it up!";
                     count = 0;
+                }
+                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
                 }
                 // Update metric values
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
@@ -454,15 +474,17 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
             }
-            /*// 40 sec at zone 5
-            while (db.getTime_33() <= 340 && db.getTime_33() > 300 && !GlobalVariables.stopTask) {
+            // 40 sec at zone 5
+            while (db.getTime_33() <= 30 && db.getTime_33() > 15 && !GlobalVariables.stopTask) { //change back to 340 and 300
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 5";
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
                     if (count > 4) {
@@ -474,6 +496,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -482,14 +518,17 @@ public class WorkoutActivity extends AppCompatActivity {
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
+
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
-            // 20 sec at zone 2
+            /*// 20 sec at zone 2
             while (db.getTime_33() <= 360 && db.getTime_33() > 340 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -506,6 +545,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -515,13 +568,17 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
+
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 400 && db.getTime_33() > 360 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -538,6 +595,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -547,13 +618,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 420 && db.getTime_33() > 400 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -570,6 +644,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -579,13 +667,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 460 && db.getTime_33() > 420 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -602,6 +693,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -611,13 +716,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 480 && db.getTime_33() > 460 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -634,6 +742,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -643,13 +765,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 520 && db.getTime_33() > 480 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -666,6 +791,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -675,13 +814,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 540 && db.getTime_33() > 520 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -698,6 +840,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -707,13 +863,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 580 && db.getTime_33() > 540 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -730,6 +889,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -739,13 +912,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 600 && db.getTime_33() > 580 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -762,6 +938,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -771,13 +961,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 640 && db.getTime_33() > 600 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -794,6 +987,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -803,13 +1010,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 660 && db.getTime_33() > 640 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -826,6 +1036,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -835,13 +1059,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 700 && db.getTime_33() > 660 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -858,6 +1085,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -867,13 +1108,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 720 && db.getTime_33() > 700 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -890,6 +1134,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -899,13 +1157,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 760 && db.getTime_33() > 720 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -922,6 +1183,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -931,13 +1206,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 780 && db.getTime_33() > 760 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -954,6 +1232,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -963,13 +1255,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 820 && db.getTime_33() > 780 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -986,6 +1281,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -995,13 +1304,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 840 && db.getTime_33() > 820 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1018,6 +1330,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1027,13 +1353,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 880 && db.getTime_33() > 840 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1050,6 +1379,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1059,13 +1402,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
             while (db.getTime_33() <= 900 && db.getTime_33() > 880 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1082,6 +1428,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1091,13 +1451,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 5 min at zone 1
             while (db.getTime_33() <= 1200 && db.getTime_33() > 900 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1114,6 +1477,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1123,9 +1500,10 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }*/
 
@@ -1211,11 +1589,17 @@ public class WorkoutActivity extends AppCompatActivity {
             int length = 0; //number of power entries to calc average
             ArrayList<Double> powtimearray = new ArrayList<>(); //arraylist to hold time and power
 
+            double pastTime = db.getTime_33();
+            int Iterations = 0;
+            int numIterations = 0;
+
             String pzMessage = ""; //declaring power zone message
             String fixMessage = ""; //declaring power zone error message
 
             // 6 min at zone 3
-            while (db.getTime_33() <= 30 && !GlobalVariables.stopTask) { //TODO: change back to 360
+            while (db.getTime_33() <= 15 && !GlobalVariables.stopTask) { //TODO: change back to 360
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1232,6 +1616,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update metric values
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1243,12 +1641,13 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
-
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // UNCOMMENT FOR FULL WORKOUT
-            /*// 5 min at zone 1
-            while (db.getTime_33() <= 660 && db.getTime_33() > 360 && !GlobalVariables.stopTask) {
+            // 5 min at zone 1
+            while (db.getTime_33() <= 30 && db.getTime_33() > 15 && !GlobalVariables.stopTask) { //change back to 660 and 360
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1265,6 +1664,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1273,14 +1686,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
-            // 5 min at zone 4
+            /*// 5 min at zone 4
             while (db.getTime_33() <= 960 && db.getTime_33() > 660 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1298,6 +1713,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1306,14 +1735,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 5 min at zone 1
             while (db.getTime_33() <= 1260 && db.getTime_33() > 960 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1330,6 +1761,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1338,14 +1783,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 4 min at zone 5
             while (db.getTime_33() <= 1500 && db.getTime_33() > 1260 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1362,6 +1809,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1370,14 +1831,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 5 min at zone 1
             while (db.getTime_33() <= 1800 && db.getTime_33() > 1500 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1394,6 +1857,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1402,10 +1879,10 @@ public class WorkoutActivity extends AppCompatActivity {
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }*/
             double avgPower = (double) sum / (double) length;
@@ -1491,12 +1968,18 @@ public class WorkoutActivity extends AppCompatActivity {
             int length = 0; //number of power entries to calc average
             ArrayList<Double> powtimearray = new ArrayList<>(); //arraylist to hold time and power
 
+            double pastTime = db.getTime_33();
+            int Iterations = 0;
+            int numIterations = 0;
+
             String pzMessage = ""; //declaring power zone message
             String fixMessage = ""; //declaring power zone error message
 
 
             // 2 min at zone 2
-            while (db.getTime_33() <= 30 && !GlobalVariables.stopTask) { //TODO: change back to 120
+            while (db.getTime_33() <= 15 && !GlobalVariables.stopTask) { //TODO: change back to 120
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1514,6 +1997,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update metric values
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1525,11 +2022,13 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
-            /*// 1 min at zone 5
-            while (db.getTime_33() <= 180 && db.getTime_33() > 120 && !GlobalVariables.stopTask) {
+            // 1 min at zone 5
+            while (db.getTime_33() <= 30 && db.getTime_33() > 15 && !GlobalVariables.stopTask) { //change back to 180 120
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1547,6 +2046,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1555,14 +2068,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
-            // 2 min at zone 2
+            /*// 2 min at zone 2
             while (db.getTime_33() <= 300 && db.getTime_33() > 180 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1580,6 +2095,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1588,14 +2117,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 1 min at zone 5
             while (db.getTime_33() <= 360 && db.getTime_33() > 300 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1613,6 +2144,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1621,14 +2166,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 2 min at zone 2
             while (db.getTime_33() <= 480 && db.getTime_33() > 360 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1646,6 +2193,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1654,14 +2215,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 1 min at zone 5
             while (db.getTime_33() <= 540 && db.getTime_33() > 480 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1679,6 +2242,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1687,14 +2264,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 2 min at zone 2
             while (db.getTime_33() <= 660 && db.getTime_33() > 540 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1712,6 +2291,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1720,14 +2313,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 10 min at zone 4
             while (db.getTime_33() <= 1260 && db.getTime_33() > 660 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1745,6 +2340,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1753,14 +2362,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 5 min at zone 1
             while (db.getTime_33() <= 1560 && db.getTime_33() > 1260 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1778,6 +2389,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1786,14 +2411,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 10 min at zone 4
             while (db.getTime_33() <= 2160 && db.getTime_33() > 1560 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1811,6 +2438,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1819,14 +2460,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 int driveTime = GlobalVariables.driveTime35.intValue();
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
-                int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 5 min at zone 1
             while (db.getTime_33() <= 2460 && db.getTime_33() > 2160 && !GlobalVariables.stopTask) {
+                Iterations ++;
+                double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -1844,6 +2487,20 @@ public class WorkoutActivity extends AppCompatActivity {
                     fixMessage = "You are in zone!! Keep it up!!";
                     count = 0;
                 }
+                                // Time-out procedure
+                if (Double.compare(pastTime, currentTime) == 0) {
+                    numIterations += 1;
+                    if (numIterations > 20000) { // TODO: edit? set a threshold of 300 iterations
+                        GlobalVariables.timeout = true; // set timeout flag
+                        GlobalVariables.stopTask = true; // set stop task flag
+                        Timber.d("[TEST] 15,200 iterations exceeded");
+                        break; // terminate the loop if threshold is exceeded
+                    }
+
+                } else {
+                    pastTime = currentTime;
+                    numIterations = 0;
+                }
                 // Update UI elements
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -1853,9 +2510,10 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }*/
             double avgPow = (double) sum / (double) length; //uncomment
@@ -1991,9 +2649,10 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
-
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
+                
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
                 double avgPow = (double) sum / (double) length; //uncomment
@@ -2131,7 +2790,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
                 double avgPow = (double) sum / (double) length; //uncomment
@@ -2270,7 +2929,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
                 double avgPow = (double) sum / (double) length; //uncomment
