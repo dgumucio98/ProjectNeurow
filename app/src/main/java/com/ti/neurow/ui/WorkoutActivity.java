@@ -474,7 +474,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 40 sec at zone 5
             while (db.getTime_33() <= 30 && db.getTime_33() > 15 && !GlobalVariables.stopTask) { //change back to 340 and 300
@@ -522,7 +522,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             /*// 20 sec at zone 2
@@ -572,7 +572,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
@@ -621,7 +621,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
@@ -670,7 +670,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
@@ -719,7 +719,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
@@ -768,7 +768,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
@@ -817,7 +817,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
@@ -866,7 +866,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
@@ -915,7 +915,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
@@ -964,7 +964,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
@@ -1013,7 +1013,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
@@ -1062,7 +1062,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
@@ -1111,7 +1111,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
@@ -1160,7 +1160,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
@@ -1209,7 +1209,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
@@ -1258,7 +1258,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
@@ -1307,7 +1307,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
@@ -1356,7 +1356,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 40 sec at zone 5
@@ -1405,7 +1405,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 20 sec at zone 2
@@ -1454,7 +1454,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 5 min at zone 1
@@ -1503,7 +1503,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }*/
 
@@ -1641,8 +1641,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
-
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // UNCOMMENT FOR FULL WORKOUT
             // 5 min at zone 1
@@ -1690,7 +1689,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             /*// 5 min at zone 4
@@ -1739,7 +1738,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 5 min at zone 1
@@ -1787,7 +1786,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 4 min at zone 5
@@ -1835,7 +1834,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 5 min at zone 1
@@ -1883,7 +1882,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }*/
             double avgPower = (double) sum / (double) length;
@@ -2023,7 +2022,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 1 min at zone 5
@@ -2072,7 +2071,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             /*// 2 min at zone 2
@@ -2121,7 +2120,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 1 min at zone 5
@@ -2170,7 +2169,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 2 min at zone 2
@@ -2219,7 +2218,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 1 min at zone 5
@@ -2268,7 +2267,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 2 min at zone 2
@@ -2317,7 +2316,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 10 min at zone 4
@@ -2366,7 +2365,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 5 min at zone 1
@@ -2415,7 +2414,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 10 min at zone 4
@@ -2464,7 +2463,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
             // 5 min at zone 1
@@ -2514,7 +2513,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }*/
             double avgPow = (double) sum / (double) length; //uncomment
@@ -2650,9 +2649,12 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35;
                 int avgPower = GlobalVariables.averagePower33;
                 int lastSplit = GlobalVariables.lastSplitTime33.intValue();
+                int avgDriveForce = GlobalVariables.averageDriveForce35.intValue();
+
+
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, lastSplit, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
                 double avgPow = (double) sum / (double) length; //uncomment
@@ -2790,7 +2792,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
                 double avgPow = (double) sum / (double) length; //uncomment
@@ -2929,7 +2931,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 int strokeCount = GlobalVariables.strokeCount35.intValue();
 
                 // Send data to main UI thread
-                publishProgress(elapsedTime, distance, calories, driveLength, driveTime, avgPower, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
+                publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
                 double avgPow = (double) sum / (double) length; //uncomment
