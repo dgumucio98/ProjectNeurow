@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Toast.makeText(getApplicationContext(), "[TEST] LoginActivity created!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "[TEST] LoginActivity created!", Toast.LENGTH_SHORT).show();
 
         // Hide Action bar and Status bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -184,6 +184,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Toast.makeText(this, "[TEST] LoginActivity destroyed!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "[TEST] LoginActivity destroyed!", Toast.LENGTH_SHORT).show();
     }
 }

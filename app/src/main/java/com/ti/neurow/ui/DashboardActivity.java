@@ -42,6 +42,7 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
     private Handler tipChanger = new Handler(); // tip text box handler
     private int previousTipIndex = -1; // prevents same tip twice in a row
 
+    // Define prediction choices array
     private static final String[] PREDICTION_CHOICES = {"Pace (20-minute)", "Pace (30-minute)", "Pace (40-minute)",
             "Interval (20-minute)", "Interval (30-minute)", "Interval (40-minute)" }; // stores prediction choice
 
@@ -57,10 +58,10 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
             "⭐ Focus on your breathing. Inhale on the way back and exhale on the way forward ⭐",
             "⭐ Fuel up before your workout with a healthy snack like a banana or a handful of nuts ⭐",
             "⭐ If your Power of Pull graph is flat, try rowing with more force",
-            "⭐ If your Power of Pull graph's y-intercept is high you're exploding too much at the catch",
-            "⭐ If your Power of Pull graph has a dip in the middle work on a smooth transition between legs, back, arms",
-            "⭐ if your power of pull graph is short you need more leg drive",
-            "⭐ Matt, you're our favorite coxswain, even if you don't know port from starboard!"
+            "⭐ If your Power of Pull graph's y-intercept is high you're exploding too much at the catch ⭐",
+            "⭐ If your Power of Pull graph dips in the middle, work on a smooth transition between legs, back, arms ⭐",
+            "⭐ If your power of pull graph is short you need more leg drive ⭐",
+            "⭐ Matt, you're our favorite coxswain, even if you don't know port from starboard! ⭐"
     };
 
     // Define UI elements
@@ -87,6 +88,11 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
     @Override
     public void onResume() {
         super.onResume();
+
+        if (GlobalVariables.timeToResetPM5 || GlobalVariables.timeout || GlobalVariables.stopTask ) { // tell user to reset PM5
+            showPM5ResetDialog();
+            GlobalVariables.timeToResetPM5 = false; // reset the flag
+        }
 
         txtUserFtp = findViewById(R.id.txtUserFtp);
 
@@ -130,7 +136,7 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Toast.makeText(getApplicationContext(), "[TEST] DashboardActivity created!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "[TEST] DashboardActivity created!", Toast.LENGTH_SHORT).show();
 
         // Hide Action bar and Status bar, lock orientation to landscape
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -150,14 +156,14 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
         txtUserID.setText(GlobalVariables.loggedInUsername);
         TextView txtPrediction = findViewById(R.id.txtPrediction);
         Button btnPredictor = findViewById(R.id.btnPredictor);
-        MDY = findViewById(R.id.txtDate);
-        txtTip = findViewById(R.id.txtTip);
 
         // Define buttons used for on-long-click
         Button btnWorkout1 = findViewById(R.id.btnWorkout1);
         Button btnWorkout2 = findViewById(R.id.btnWorkout2);
         Button btnWorkout3 = findViewById(R.id.btnWorkout3);
         Button btnDemo = findViewById(R.id.btnDemo);
+        MDY = findViewById(R.id.txtDate);
+        txtTip = findViewById(R.id.txtTip);
 
         // Set listeners for buttons
         btnWorkout1.setOnLongClickListener(this);
@@ -368,6 +374,22 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
         dialog.show();
     }
 
+    // Prepares and shows dialog box prompting to reset the PM5
+    private void showPM5ResetDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Reset the PM5 to Continue");
+        builder.setMessage(Html.fromHtml("In order to start a new workout, the <b>PM5 Device</b> must be reset. Press the <b>MENU</b> button on the device to reset it."));
+
+        builder.setPositiveButton("I've reset the PM5", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss(); // close the dialog
+            }
+        });
+
+        AlertDialog dialog = builder.show();
+    }
+
     @Override
     public void onBackPressed() { // handle back button press
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -430,10 +452,9 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
     // Prepares and shows dialog box warning of workout timeout
     private void showWarningDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Your Workout Timed Out");
+        builder.setTitle("Uh-oh! Workout Timed Out");
         builder.setMessage("Your last workout was ended due to inactivity");
         AlertDialog dialog = builder.create();
-        Timber.d("[TEST] Inside showWarningDialog");
         dialog.show();
     }
 }

@@ -39,8 +39,7 @@ public class PostWorkoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Toast.makeText(getApplicationContext(), "[TEST] PostWorkoutActivity created!", Toast.LENGTH_SHORT).show();
-
+        //Toast.makeText(getApplicationContext(), "[TEST] PostWorkoutActivity created!", Toast.LENGTH_SHORT).show();
 
         // Hide Action bar and Status bar, lock orientation to landscape
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); // Hide Action bar and Status bar
@@ -169,13 +168,14 @@ public class PostWorkoutActivity extends AppCompatActivity {
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PostWorkoutActivity.this, DashboardActivity.class); // send user back to dashboard
-                startActivity(intent);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish(); // destroy activity
             }
         });
+
+        // Set flag for Dashboard activity to prompt user to reset PM5
+        GlobalVariables.timeToResetPM5 = true;
+
     }
 
     @Override
@@ -187,7 +187,7 @@ public class PostWorkoutActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Toast.makeText(this, "[TEST] PostWorkoutActivity destroyed!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "[TEST] PostWorkoutActivity destroyed!", Toast.LENGTH_SHORT).show();
     }
 
 }

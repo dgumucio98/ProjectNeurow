@@ -50,5 +50,8 @@ public class GlobalVariables {
     public static Integer pz_7 = 67; // default FTP value
     public static Boolean stopTask = false; // stop task flag
     public static Boolean timeout = false; // workout timeout flag
+    public static Boolean BTconnected = false; // connected device flag
+    public static Boolean timeToResetPM5 = false; // flag to reset PM5
+
     public static BluetoothDevice globalBleDevice; // global BLE device
 }

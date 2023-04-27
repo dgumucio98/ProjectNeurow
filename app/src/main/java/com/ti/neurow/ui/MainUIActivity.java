@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ti.neurow.GlobalVariables;
 import com.ti.neurow.R;
 import com.ti.neurow.ble.MainActivity;
 import com.ti.neurow.ble.UserBTConfig;
@@ -29,14 +31,14 @@ public class MainUIActivity extends AppCompatActivity {
 
     // Declare views
     ImageView rower, rowerIcon, TIIcon, imageArrow; // image
-    TextView neurowText, welcomeText, txtSponsor, txtConnectPrompt; // text views
+    TextView neurowText, welcomeText, txtSponsor, txtConnectPrompt, txtConnectionStatus,txtConnectionFeedback; // text views
     Button existingUser, newUser, BLEData, DBdata, Config, AddToDB; // buttons
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Toast.makeText(getApplicationContext(), "[TEST] MainUIActivity created!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "[TEST] MainUIActivity created!", Toast.LENGTH_SHORT).show();
 
 
         // Hide Action bar and Status bar
@@ -46,6 +48,8 @@ public class MainUIActivity extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // Lock orientation to portrait
 
         setContentView(R.layout.activity_ui_main);
+
+        GlobalVariables.BTconnected = false;
 
         // Define UI Elements
         rower = (ImageView)findViewById(R.id.rower_icon);
@@ -59,6 +63,8 @@ public class MainUIActivity extends AppCompatActivity {
         TIIcon = findViewById(R.id.icon_TI);
         txtConnectPrompt = findViewById(R.id.txtConnectPrompt);
         imageArrow = findViewById(R.id.imageArrow);
+        txtConnectionStatus = findViewById(R.id.txtConnectionStatus);
+        txtConnectionFeedback = findViewById(R.id.txtConnectionFeedback);
 
         // Neurow text and icon Animation
         Animation animation1 = AnimationUtils.loadAnimation(MainUIActivity.this, R.anim.slide_in_left);
@@ -159,17 +165,6 @@ public class MainUIActivity extends AppCompatActivity {
             }
         });
 
-        // Connections Configurator button listener
-        Config.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Create intent to launch next activity (RawDataActivity)
-                Intent goToUserBTConfig = new Intent(MainUIActivity.this, MainActivity.class);
-                //Intent i = new Intent(MainUIActivity.this, MainActivity.class);
-                startActivity(goToUserBTConfig); // Launch BLE Data View
-            }
-        });
-
         // Easter egg message: If rower icon is held
         rowerIcon.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -189,5 +184,36 @@ public class MainUIActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        // Connections Configurator button listener
+        Config.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Only launch connections screen if device hasn't been connected
+                if (GlobalVariables.BTconnected) { // device already connected
+                    txtConnectionFeedback.setVisibility(View.VISIBLE);
+                }
+                else { // device not connected
+                    Intent goToUserBTConfig = new Intent(MainUIActivity.this, MainActivity.class);
+                    startActivity(goToUserBTConfig); // launch connections activity
+                }
+
+            }
+        });
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (GlobalVariables.BTconnected) { // if device is connected
+            txtConnectionStatus.setVisibility(View.VISIBLE); // display text
+
+            // Hide connection suggestors
+            imageArrow.setVisibility(View.GONE);
+            txtConnectPrompt.setVisibility(View.GONE);
+        }
+
     }
 }

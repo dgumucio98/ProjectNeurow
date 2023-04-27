@@ -34,8 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Toast.makeText(getApplicationContext(), "[TEST] RegisterActivity created!", Toast.LENGTH_SHORT).show();
-
+        //Toast.makeText(getApplicationContext(), "[TEST] RegisterActivity created!", Toast.LENGTH_SHORT).show();
 
         // Hide Action bar and Status bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -175,7 +174,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Toast.makeText(this, "[TEST] RegisterActivity destroyed!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "[TEST] RegisterActivity destroyed!", Toast.LENGTH_SHORT).show();
     }
 
 }

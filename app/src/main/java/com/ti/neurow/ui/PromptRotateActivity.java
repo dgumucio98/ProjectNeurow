@@ -25,7 +25,7 @@ public class PromptRotateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Toast.makeText(getApplicationContext(), "[TEST] PromptRotateActivity created!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "[TEST] PromptRotateActivity created!", Toast.LENGTH_SHORT).show();
 
         // Hide Action bar and Status bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -74,28 +74,10 @@ public class PromptRotateActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        /* Additions to pass the BLE device */
-        Intent intent = getIntent();
-        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-        boolean isDeviceReceived = false;
-        if (device != null) {
-            //throw new RuntimeException("Missing BluetoothDevice from MainActivity!");
-            isDeviceReceived = true;
-        }
-        if(isDeviceReceived == true) {
-            Toast.makeText(this, "The BLE device was successfully passed.", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, "The BLE device was not passed.", Toast.LENGTH_LONG).show();
-        }
-        /* End addition */
 
         if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             //Changed the intent for a longer statement to insert device check
             Intent goToWorkoutMainActivity = new Intent(this, DashboardActivity.class);
-            //Needed to pass BLE device
-            if(device != null) {
-                goToWorkoutMainActivity.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
-            }
             startActivity(goToWorkoutMainActivity);
             finish(); // Can't go back - should take us to MainUIActivity
         }
@@ -110,7 +92,7 @@ public class PromptRotateActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Toast.makeText(this, "[TEST] PromptRotateActivity destroyed!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "[TEST] PromptRotateActivity destroyed!", Toast.LENGTH_SHORT).show();
     }
 
 }
