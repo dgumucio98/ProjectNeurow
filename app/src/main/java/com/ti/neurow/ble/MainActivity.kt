@@ -12,6 +12,7 @@ import android.bluetooth.le.ScanSettings
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +32,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import com.ti.neurow.BuildConfig
+import com.ti.neurow.GlobalVariables
 import com.ti.neurow.GlobalVariables.globalBleDevice
 import com.ti.neurow.R
 import com.ti.neurow.ui.MainUIActivity
@@ -40,7 +42,6 @@ private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1
 private const val LOCATION_PERMISSION_REQUEST_CODE = 2
 // For the extra bluetooth scan and connect permissions now
 private const val ENABLE_BLUETOOTHSCAN_REQUEST_CODE = 3
-
 // lateinit var globalBleDevice: BluetoothDevice
 
 class MainActivity : AppCompatActivity() {
@@ -310,11 +311,15 @@ class MainActivity : AppCompatActivity() {
                 //Intent(this@MainActivity, TestingActivity::class.java).also {
                 runOnUiThread {
                     alert {
-                        title = "Connection established"
+                        title = "Connection Successful"
                         message = "The device has been connected, please press the back button"
                         positiveButton("OK") {}
                     }.show()
+                    Timber.i("The BLE device has been connected")
                 }
+                GlobalVariables.BTconnected = true
+                scan_button.setText("Connected!")
+                scan_button.setBackgroundColor(Color.parseColor("#08cc60"))
                 ConnectionManager.unregisterListener(this)
 //                Intent(this@MainActivity, MainUIActivity::class.java).also {
 //                    it.putExtra(BluetoothDevice.EXTRA_DEVICE, gatt.device)
@@ -329,6 +334,8 @@ class MainActivity : AppCompatActivity() {
                         message = "Disconnected or unable to connect to device."
                         positiveButton("OK") {}
                     }.show()
+                    GlobalVariables.BTconnected = false
+
                 }
             }
         }

@@ -48,7 +48,7 @@ public class WorkoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Toast.makeText(getApplicationContext(), "[TEST] WorkoutActivity created!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "[TEST] WorkoutActivity created!", Toast.LENGTH_SHORT).show();
 
         // Hide Action bar and Status bar, lock orientation to landscape
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); // Hide Action bar and Status bar
@@ -281,8 +281,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double) db.getPower());
 
                 // Time-out procedure
                 if (Double.compare(pastTime, currentTime) == 0) {
@@ -295,9 +293,15 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+
+                    // Only populate when t0 != t1
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
+
                     pastTime = currentTime;
                     numIterations = 0;
                 }
+
                 // Update metric values
                 int elapsedTime = GlobalVariables.elapsedTime33.intValue();
                 int distance = GlobalVariables.distance35.intValue();
@@ -335,6 +339,10 @@ public class WorkoutActivity extends AppCompatActivity {
                 GlobalVariables.pz_6 = pz_6;
                 GlobalVariables.pz_7 = pz_7;
 
+                // [TEST] Watch array contents for redundancies
+                Timber.d("[TEST] powtimearray: %s", powtimearray.toString());
+
+
                 // Populate database User table
                 db.updateuserFTP(GlobalVariables.loggedInUsername, ftp,
                         pz_1, pz_2, pz_3, pz_4, pz_5, pz_6, pz_7);
@@ -342,6 +350,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 // Set global arraylist of time and power
                 GlobalVariables.finalListTimePower = powtimearray;
             }
+            Timber.d("DONE WITH doInBackground, ABOUT TO RETURN 0");
             return 0;
         }
 
@@ -401,6 +410,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 GlobalVariables.stopTask = false; // reset flag
                 finish(); // destroy workout activity, go back to dashboard
             }
+            Timber.d("DONE WITH onPostExecute");
+
         }
     }
 
@@ -428,7 +439,7 @@ public class WorkoutActivity extends AppCompatActivity {
             String fixMessage = ""; // declaring power zone error message
 
             // 5 min at zone 2
-            while (db.getTime_33() <= 15 && !GlobalVariables.stopTask) { //TODO: CHANGE BACK TO 300
+            while (db.getTime_33() <= 300 && !GlobalVariables.stopTask) { //TODO: CHANGE BACK TO 300
                 // this is adding all of the powers to then get average
                 sum += db.getPower();
                 length += 1;
@@ -476,7 +487,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
             }
             // 40 sec at zone 5
-            while (db.getTime_33() <= 30 && db.getTime_33() > 15 && !GlobalVariables.stopTask) { //change back to 340 and 300
+            while (db.getTime_33() <= 340 && db.getTime_33() > 300 && !GlobalVariables.stopTask) { //change back to 340 and 300
                 sum += db.getPower();
                 length += 1;
                 powtimearray.add(db.getTime_33());
@@ -527,7 +538,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
-            /*// 20 sec at zone 2
+            // 20 sec at zone 2
             while (db.getTime_33() <= 360 && db.getTime_33() > 340 && !GlobalVariables.stopTask) {
                 Iterations ++;
                 double currentTime = db.getTime_33();
@@ -1507,7 +1518,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 // Send data to main UI thread
                 publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
-            }*/
+            }
             if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
                 double avgPow = (double) sum / (double) length; //uncomment
                 GlobalVariables.failCount = failCount;
@@ -1602,7 +1613,7 @@ public class WorkoutActivity extends AppCompatActivity {
             String fixMessage = ""; //declaring power zone error message
 
             // 6 min at zone 3
-            while (db.getTime_33() <= 15 && !GlobalVariables.stopTask) { //TODO: change back to 360
+            while (db.getTime_33() <= 360 && !GlobalVariables.stopTask) { //TODO: change back to 360
                 Iterations ++;
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
@@ -1651,7 +1662,7 @@ public class WorkoutActivity extends AppCompatActivity {
             }
             // UNCOMMENT FOR FULL WORKOUT
             // 5 min at zone 1
-            while (db.getTime_33() <= 30 && db.getTime_33() > 15 && !GlobalVariables.stopTask) { //change back to 660 and 360
+            while (db.getTime_33() <= 660 && db.getTime_33() > 360 && !GlobalVariables.stopTask) { //change back to 660 and 360
                 Iterations ++;
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
@@ -1698,7 +1709,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
-            /*// 5 min at zone 4
+            // 5 min at zone 4
             while (db.getTime_33() <= 960 && db.getTime_33() > 660 && !GlobalVariables.stopTask) {
                 Iterations ++;
                 double currentTime = db.getTime_33();
@@ -1890,7 +1901,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 // Send data to main UI thread
                 publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
-            }*/
+            }
             if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
                 double avgPow = (double) sum / (double) length; //uncomment
                 GlobalVariables.failCount = failCount;
@@ -1987,7 +1998,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
 
             // 2 min at zone 2
-            while (db.getTime_33() <= 15 && !GlobalVariables.stopTask) { //TODO: change back to 120
+            while (db.getTime_33() <= 120 && !GlobalVariables.stopTask) { //TODO: change back to 120
                 Iterations ++;
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
@@ -2037,7 +2048,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             }
             // 1 min at zone 5
-            while (db.getTime_33() <= 30 && db.getTime_33() > 15 && !GlobalVariables.stopTask) { //change back to 180 120
+            while (db.getTime_33() <= 180 && db.getTime_33() > 120 && !GlobalVariables.stopTask) { //change back to 180 120
                 Iterations ++;
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
@@ -2085,7 +2096,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
             }
-            /*// 2 min at zone 2
+            // 2 min at zone 2
             while (db.getTime_33() <= 300 && db.getTime_33() > 180 && !GlobalVariables.stopTask) {
                 Iterations ++;
                 double currentTime = db.getTime_33();
@@ -2526,7 +2537,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 // Send data to main UI thread
                 publishProgress(elapsedTime, distance, calories, avgPower, driveLength, driveTime, avgDriveForce, strokeCount, pzMessage, fixMessage); // Update the UI with the current counter value
 
-            }*/
+            }
             if (!GlobalVariables.stopTask) { // only if workout (loop) was completed
                 double avgPow = (double) sum / (double) length; //uncomment
                 GlobalVariables.failCount = failCount;
@@ -2623,7 +2634,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             pzMessage = "Begin Rowing!";
             // TODO: change back to 1200
-            while (db.getTime_33() <= 30 && !GlobalVariables.stopTask) { // less than 20-min
+            while (db.getTime_33() <= 1200 && !GlobalVariables.stopTask) { // less than 20-min
                 Iterations++;
                 sum += db.getPower();
                 length += 1;
@@ -2766,7 +2777,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             pzMessage = "Begin Rowing!";
             // TODO: change back to 1800
-            while (db.getTime_33() <= 30 && !GlobalVariables.stopTask) { // less than 30-min
+            while (db.getTime_33() <= 1800 && !GlobalVariables.stopTask) { // less than 30-min
                 Iterations++;
                 sum += db.getPower();
                 length += 1;
@@ -2909,7 +2920,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             pzMessage = "Begin Rowing!";
             // TODO: change back to 2400
-            while (db.getTime_33() <= 30 && !GlobalVariables.stopTask) { // less than 40-min
+            while (db.getTime_33() <= 2400 && !GlobalVariables.stopTask) { // less than 40-min
                 Iterations++;
                 sum += db.getPower();
                 length += 1;
@@ -3000,6 +3011,7 @@ public class WorkoutActivity extends AppCompatActivity {
         @Override // 3rd function for background task: follows background task after completion
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
+
             // Stop BLE data polling
             testingDevice.end33();
             Timber.d("[TEST] Polling of 33 ended");
@@ -3015,12 +3027,11 @@ public class WorkoutActivity extends AppCompatActivity {
                 goToPostWorkoutActivity.putExtra("workoutName", "pace40"); // pass workout name data - necessary for specific suggestions
 
                 startActivity(goToPostWorkoutActivity); // launch PostWorkoutActivity
-                finish(); // can't go back
             }
             else { // if workout was cut short
                 GlobalVariables.stopTask = false; // reset flag
-                finish(); // destroy workout activity, go back to dashboard
             }
+            finish(); // destroy workout activity, go back to dashboard
         }
     }
 
@@ -3057,11 +3068,11 @@ public class WorkoutActivity extends AppCompatActivity {
                 powtimearray.add(db.getTime_33());
                 powtimearray.add((double) db.getPower());
                 double currentTime = db.getTime_33();
-                pzMessage = "Row in power zone 2";
-                if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
+                pzMessage = "Row in power zone 4";
+                if (db.getPower() < GlobalVariables.pz_4 || db.getPower() >= GlobalVariables.pz_5) {
                     pzCount++;
                     if (pzCount > 4) {
-                        fixMessage = "You aren't in power zone 2!!!!";
+                        fixMessage = "You aren't in power zone 4! " + GlobalVariables.pz_4 + " < " + GlobalVariables.pz_5;
                         failCount++;
                         pzCount = 0;
                     }

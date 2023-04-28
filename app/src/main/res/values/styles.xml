@@ -25,4 +25,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- No screen dim theme. -->
+    <style name="AppTheme.NoScreenDim">
+        <item name="android:keepScreenOn">true</item>
+    </style>
+
 </resources>

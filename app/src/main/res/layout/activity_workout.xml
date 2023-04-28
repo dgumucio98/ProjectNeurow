@@ -83,11 +83,11 @@
         android:visibility="invisible"
         tools:visibility="visible"
         android:layout_width="1250dp"
-        android:layout_height="580dp"
+        android:layout_height="600dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="50dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="30dp"
         android:animateLayoutChanges="true">
 
         <TextView
@@ -315,7 +315,7 @@
             android:id="@+id/iconHeartbeat1"
             android:layout_width="350dp"
             android:layout_height="80dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="60dp"
             android:layout_marginLeft="415dp"
             app:srcCompat="@drawable/ic_heartbeat" />
 
@@ -323,7 +323,7 @@
             android:id="@+id/iconHeartbeat2"
             android:layout_width="350dp"
             android:layout_height="80dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="60dp"
             android:scaleX="-1"
             android:layout_marginLeft="485dp"
             app:srcCompat="@drawable/ic_heartbeat" />
@@ -332,7 +332,7 @@
             android:id="@+id/txtFeedback"
             android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="50dp"
             android:layout_centerHorizontal="true"
             android:fontFamily="sans-serif-light"
             android:text="Feedback"

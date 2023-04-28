@@ -433,7 +433,7 @@ object ConnectionManager {
                             val DF33: DataFrame33 = DataFrame33(value.toUByteArray())
                             val newTime = DF33.elapsedTime
                             myTime33.setTime(newTime)
-                            DF33.printAllAtt()
+                            //DF33.printAllAtt()
                         } else if (uuid.toString() == "ce060035-43e5-11e4-916c-0800200c9a66") {
                             val DF35: DataFrame35 = DataFrame35(value.toUByteArray())
                             val newTime = DF35.elapsedTime
@@ -457,7 +457,7 @@ object ConnectionManager {
                         } else if (uuid.toString() == "ce06003d-43e5-11e4-916c-0800200c9a66") {
                             //println("This is where it should read the first message compile the data")
                             val DF3D: DataFrame3D = DataFrame3D(value.toUByteArray())
-                            DF3D.printAllAtt()
+                            //DF3D.printAllAtt()
                         }
                         //uuidParsing(myTime1, uuid.toString(), value.toUByteArray(), false)
                         listeners.forEach { it.get()?.onCharacteristicRead?.invoke(gatt.device, this) }
