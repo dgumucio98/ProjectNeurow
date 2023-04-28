@@ -293,11 +293,9 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
-
                     // Only populate when t0 != t1
                     powtimearray.add(db.getTime_33());
                     powtimearray.add((double) db.getPower());
-
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -490,8 +488,6 @@ public class WorkoutActivity extends AppCompatActivity {
             while (db.getTime_33() <= 340 && db.getTime_33() > 300 && !GlobalVariables.stopTask) { //change back to 340 and 300
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 5";
                 Iterations ++;
                 double currentTime = db.getTime_33();
@@ -544,8 +540,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
@@ -569,6 +563,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -594,8 +590,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
@@ -619,6 +613,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -643,8 +639,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
@@ -668,6 +662,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -692,8 +688,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
@@ -717,6 +711,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -741,8 +737,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
@@ -766,6 +760,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -790,8 +786,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
@@ -815,6 +809,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -839,8 +835,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
@@ -864,6 +858,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -888,8 +884,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
@@ -913,6 +907,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -937,8 +933,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
@@ -962,6 +956,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -986,8 +982,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
@@ -1011,6 +1005,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -1035,8 +1031,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
@@ -1060,6 +1054,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -1084,8 +1080,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
@@ -1109,6 +1103,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -1133,8 +1129,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
@@ -1158,6 +1152,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -1182,8 +1178,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
@@ -1207,6 +1201,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -1231,8 +1227,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
@@ -1256,6 +1250,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -1280,8 +1276,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
@@ -1305,6 +1299,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -1329,8 +1325,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
@@ -1354,6 +1348,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -1378,8 +1374,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
@@ -1403,6 +1397,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -1427,8 +1423,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 2";
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
                     count++;
@@ -1452,6 +1446,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -1476,8 +1472,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 1";
                 if (db.getPower() >= GlobalVariables.pz_2) {
                     count++;
@@ -1501,6 +1495,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -1618,8 +1614,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double) db.getPower());
                 pzMessage = "Row in power zone 3";
                 if (db.getPower() < GlobalVariables.pz_3 || db.getPower() >= GlobalVariables.pz_4) {
                     count++;
@@ -1643,6 +1637,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -1667,8 +1663,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 1";
                 if (db.getPower() >= GlobalVariables.pz_2) {
                     count++;
@@ -1692,6 +1686,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -1715,8 +1711,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 4";
                 //System.out.println("Row in power zone 4");
                 if (db.getPower() < GlobalVariables.pz_4 || db.getPower() >= GlobalVariables.pz_5) {
@@ -1741,6 +1735,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -1764,8 +1760,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 1";
                 if (db.getPower() >= GlobalVariables.pz_2) {
                     count++;
@@ -1789,6 +1783,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -1812,8 +1808,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 5";
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
                     count++;
@@ -1837,6 +1831,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -1860,8 +1856,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 1";
                 if (db.getPower() >= GlobalVariables.pz_2) {
                     count++;
@@ -1885,6 +1879,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -2003,8 +1999,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double) db.getPower());
                 pzMessage = "Row in power zone 2";
                 //System.out.println("Row in power zone 2");
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
@@ -2029,6 +2023,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -2053,8 +2049,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 5";
                 //System.out.println("Row at a fast pace!!");
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
@@ -2079,6 +2073,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -2102,8 +2098,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 2";
                 //System.out.println("Row in power zone 2");
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
@@ -2128,6 +2122,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -2151,8 +2147,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 5";
                 //System.out.println("Row at a fast pace!!");
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
@@ -2177,6 +2171,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -2200,8 +2196,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 2";
                 //System.out.println("Row in power zone 2");
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
@@ -2226,6 +2220,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -2249,8 +2245,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 5";
                 //System.out.println("Row at a fast pace!!");
                 if (db.getPower() < GlobalVariables.pz_5 || db.getPower() >= GlobalVariables.pz_6) {
@@ -2275,6 +2269,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -2298,8 +2294,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 2";
                 //System.out.println("Row in power zone 2");
                 if (db.getPower() < GlobalVariables.pz_2 || db.getPower() >= GlobalVariables.pz_3) {
@@ -2324,6 +2318,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -2347,8 +2343,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 4";
                 //System.out.println("Row in power zone 4");
                 if (db.getPower() < GlobalVariables.pz_4 || db.getPower() >= GlobalVariables.pz_5) {
@@ -2373,6 +2367,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -2396,8 +2392,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 1";
                 //System.out.println("Row in power zone 1");
                 if (db.getPower() >= GlobalVariables.pz_2) {
@@ -2422,6 +2416,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -2445,8 +2441,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 4";
                 //System.out.println("Row in power zone 4");
                 if (db.getPower() < GlobalVariables.pz_4 || db.getPower() >= GlobalVariables.pz_5) {
@@ -2471,6 +2465,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -2494,8 +2490,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 double currentTime = db.getTime_33();
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double)db.getPower());
                 pzMessage = "Row in power zone 1";
                 //System.out.println("Row in power zone 1");
                 if (db.getPower() >= GlobalVariables.pz_2) {
@@ -2520,6 +2514,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -2633,13 +2629,10 @@ public class WorkoutActivity extends AppCompatActivity {
             double pastTime = db.getTime_33();
 
             pzMessage = "Begin Rowing!";
-            // TODO: change back to 1200
             while (db.getTime_33() <= 1200 && !GlobalVariables.stopTask) { // less than 20-min
                 Iterations++;
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double) db.getPower());
                 double currentTime = db.getTime_33();
                 // if difference between current stroke and previous stroke is greater than 4 watts
                 if (Math.abs(db.getPower() - db.getPastPower()) > 2) { //TODO: what num is good here
@@ -2664,6 +2657,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
                 }
                 else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -2776,13 +2771,10 @@ public class WorkoutActivity extends AppCompatActivity {
             double pastTime = db.getTime_33();
 
             pzMessage = "Begin Rowing!";
-            // TODO: change back to 1800
             while (db.getTime_33() <= 1800 && !GlobalVariables.stopTask) { // less than 30-min
                 Iterations++;
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double) db.getPower());
                 double currentTime = db.getTime_33();
                 //if difference between current stroke and previous stroke is greater than 4 watts
                 if (Math.abs(db.getPower() - db.getPastPower()) > 2) { //TODO: what num is good here
@@ -2807,6 +2799,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
                 }
                 else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -2924,8 +2918,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 Iterations++;
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double) db.getPower());
                 double currentTime = db.getTime_33();
                 //if difference between current stroke and previous stroke is greater than 4 watts
                 if (Math.abs(db.getPower() - db.getPastPower()) > 2) { //TODO: what num is good here
@@ -2950,6 +2942,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
                 }
                 else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -3065,8 +3059,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 Iterations++;
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double) db.getPower());
                 double currentTime = db.getTime_33();
                 pzMessage = "Row in power zone 4";
                 if (db.getPower() < GlobalVariables.pz_4 || db.getPower() >= GlobalVariables.pz_5) {
@@ -3102,6 +3094,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
                 }
                 else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
