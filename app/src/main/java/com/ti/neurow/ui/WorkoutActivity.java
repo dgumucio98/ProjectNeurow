@@ -432,8 +432,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 // this is adding all of the powers to then get average
                 sum += db.getPower();
                 length += 1;
-                powtimearray.add(db.getTime_33());
-                powtimearray.add((double) db.getPower());
                 pzMessage = "Row in power zone 2";
                 Iterations ++;
                 double currentTime = db.getTime_33();
@@ -459,6 +457,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
@@ -506,6 +506,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    powtimearray.add(db.getTime_33());
+                    powtimearray.add((double) db.getPower());
                     pastTime = currentTime;
                     numIterations = 0;
                 }
