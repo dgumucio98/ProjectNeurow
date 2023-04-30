@@ -1,14 +1,17 @@
 package com.ti.neurow.ui;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.ValueAnimator;
 import android.bluetooth.BluetoothDevice;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.text.Html;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -138,6 +141,8 @@ public class MainUIActivity extends AppCompatActivity {
                 txtSponsor.setVisibility(View.VISIBLE);
                 txtSponsor.setAlpha(0f);
                 txtSponsor.animate().alpha(1f).setDuration(500).start();
+                showDisclaimerDialog();
+
             }
             }, 3000);
 
@@ -215,5 +220,26 @@ public class MainUIActivity extends AppCompatActivity {
             txtConnectPrompt.setVisibility(View.GONE);
         }
 
+    }
+
+    // Prepares and shows dialog box prompting to reset the PM5
+    private void showDisclaimerDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Safety Disclaimer");
+        builder.setMessage(Html.fromHtml("Before use, please consult with your doctor " +
+                "if you have any health problems or concerns that could be affected by intense exercise. " +
+                "This includes, but is not limited to, heart disease, high blood pressure, diabetes, " +
+                "pregnancy, and any other medical conditions that may make exercise more risky. " +
+                "<b>If you experience any pain or discomfort while using Neurow, stop immediately " +
+                "and seek medical attention.</b>"));
+
+        builder.setPositiveButton("Acknowledge", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss(); // close the dialog
+            }
+        });
+
+        AlertDialog dialog = builder.show();
     }
 }
