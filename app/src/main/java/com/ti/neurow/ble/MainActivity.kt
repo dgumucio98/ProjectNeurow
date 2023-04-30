@@ -1,9 +1,10 @@
 package com.ti.neurow.ble
 
+//Timber is a log API which is responsible for the
+// For uuid parsing
 import android.Manifest
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanFilter
@@ -11,32 +12,28 @@ import android.bluetooth.le.ScanResult
 import android.bluetooth.le.ScanSettings
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.ParcelUuid
+import android.view.View
+import android.view.WindowManager
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import kotlinx.android.synthetic.main.activity_main.scan_button
-import kotlinx.android.synthetic.main.activity_main.scan_results_recycler_view
-import org.jetbrains.anko.alert
-//Timber is a log API which is responsible for the
-import timber.log.Timber
-// For uuid parsing
-import android.os.ParcelUuid
-import android.view.View
-import android.view.WindowManager
-import android.widget.TextView
 import com.ti.neurow.BuildConfig
 import com.ti.neurow.GlobalVariables
 import com.ti.neurow.GlobalVariables.globalBleDevice
 import com.ti.neurow.R
-import com.ti.neurow.ui.MainUIActivity
-import org.jetbrains.anko.runOnUiThread
+import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.alert
+import timber.log.Timber
 
 private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1
 private const val LOCATION_PERMISSION_REQUEST_CODE = 2
@@ -125,6 +122,12 @@ class MainActivity : AppCompatActivity() {
 
         //Remove the bars at the top of the scan
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
+        //Toast.makeText(getApplicationContext(), "[TEST] DashboardActivity created!", Toast.LENGTH_SHORT).show();
+
+        // Hide Action bar and Status bar, lock orientation to landscape
+        this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE // lock to landscape
+
         supportActionBar?.hide()
 
 

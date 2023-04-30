@@ -40,6 +40,7 @@ public class GlobalVariables {
 
     // Others
     public static Integer failCount;
+    //TODO: update values upon meredith rowing
     public static Integer ftp = 45; // default FTP value
     public static Integer pz_1 = 0; // default FTP value
     public static Integer pz_2 = 25; // default FTP value

@@ -104,6 +104,7 @@ public class DashboardActivity extends AppCompatActivity implements PopupMenu.On
         // Populate global variables from database data
         try {
             if (Integer.compare(db.getFTP(GlobalVariables.loggedInUsername),-1) == 0) { // if user doesn't have FTP in database
+                //TODO: update values
                 GlobalVariables.ftp = 45;
                 GlobalVariables.pz_1 = 0;
                 GlobalVariables.pz_2 = 25;
